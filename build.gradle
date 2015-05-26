@@ -97,6 +97,6 @@ def webappsCopy() {
     }
 }
 
-task testBat << {
-	('D:/servers/test.bat').execute()
+task show << {
+	println tomcat_webapps
 }
