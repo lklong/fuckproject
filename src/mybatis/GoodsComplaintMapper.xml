@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.GoodsComplaintMapper">
+	<!-- 保存 -->
+	<insert id="saveGoodsComplaint" parameterType="goodsComplaint">
+		Insert Into GoodsComplaint(UserId,Type,GoodsId,Content,Status,Time,orderDetalId) Values(#{userId},#{type},#{goodsId},#{content},#{status},Now(),#{orderDetalId});
+	</insert>
+	<!-- 查询 -->
+	<select id="queryGoodsComplaint" resultType="goodsComplaint">
+		Select * From GoodsComplaint Where 1 = 1 
+		<if test="id != null">
+			And id = #{id} 
+		</if>
+		<if test="userId != null">
+			And userId = #{userId} 
+		</if>
+		<if test="goodsId != null">
+			And goodsId = #{goodsId} 
+		</if>
+		Limit 1;
+	</select>
+	<!-- 分页查询 -->
+	<select id="queryGoodsComplaintsByPage" resultType="goodsComplaint">
+		Select * From GoodsComplaint Where goodsId = #{goodsId} 
+	</select>
+	<!-- 商品投诉类型 -->
+	<select id="queryGoodsComplaintType" resultType="goodsComplaintType">
+		Select * From GoodsComplaintType
+	</select>
+</mapper>
+

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.AccountMapper">
+	<resultMap id="BaseResultMap" type="com.zhigu.model.Account">
+		<id column="User_ID" property="userId" jdbcType="INTEGER" />
+		<result column="Normal_Money" property="normalMoney" jdbcType="DECIMAL" />
+		<result column="Freeze_Money" property="freezeMoney" jdbcType="DECIMAL" />
+		<result column="version" property="version" jdbcType="INTEGER" />
+		<result column="pay_passwd" property="payPasswd" jdbcType="VARCHAR" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<result column="bank_no" property="bankNo" jdbcType="VARCHAR" />
+		<result column="bank_card_master" property="bankCardMaster" jdbcType="VARCHAR" />
+		<result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		User_ID, Normal_Money, Freeze_Money, version, pay_passwd, salt, bank_no, bank_card_master,
+		bank_name
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from account
+		where User_ID = #{userId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from account
+		where User_ID = #{userId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zhigu.model.Account">
+		insert into account (User_ID, Normal_Money, Freeze_Money,
+		version, pay_passwd, salt,
+		bank_no, bank_card_master, bank_name
+		)
+		values (#{userId,jdbcType=INTEGER}, #{normalMoney,jdbcType=DECIMAL}, #{freezeMoney,jdbcType=DECIMAL},
+		#{version,jdbcType=INTEGER}, #{payPasswd,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR},
+		#{bankNo,jdbcType=VARCHAR}, #{bankCardMaster,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhigu.model.Account">
+		insert into account
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				User_ID,
+			</if>
+			<if test="normalMoney != null">
+				Normal_Money,
+			</if>
+			<if test="freezeMoney != null">
+				Freeze_Money,
+			</if>
+			<if test="payPasswd != null">
+				pay_passwd,
+			</if>
+			<if test="salt != null">
+				salt,
+			</if>
+			<if test="bankNo != null">
+				bank_no,
+			</if>
+			<if test="bankCardMaster != null">
+				bank_card_master,
+			</if>
+			<if test="bankName != null">
+				bank_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="normalMoney != null">
+				#{normalMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="freezeMoney != null">
+				#{freezeMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=INTEGER},
+			</if>
+			<if test="payPasswd != null">
+				#{payPasswd,jdbcType=VARCHAR},
+			</if>
+			<if test="salt != null">
+				#{salt,jdbcType=VARCHAR},
+			</if>
+			<if test="bankNo != null">
+				#{bankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="bankCardMaster != null">
+				#{bankCardMaster,jdbcType=VARCHAR},
+			</if>
+			<if test="bankName != null">
+				#{bankName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.Account">
+		update account
+		<set>
+			<if test="normalMoney != null">
+				Normal_Money = #{normalMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="freezeMoney != null">
+				Freeze_Money = #{freezeMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="payPasswd != null">
+				pay_passwd = #{payPasswd,jdbcType=VARCHAR},
+			</if>
+			<if test="salt != null">
+				salt = #{salt,jdbcType=VARCHAR},
+			</if>
+			<if test="bankNo != null">
+				bank_no = #{bankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="bankCardMaster != null">
+				bank_card_master = #{bankCardMaster,jdbcType=VARCHAR},
+			</if>
+			<if test="bankName != null">
+				bank_name = #{bankName,jdbcType=VARCHAR},
+			</if>
+			version = version +1
+		</set>
+		where User_ID = #{userId,jdbcType=INTEGER} and version = #{version}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhigu.model.Account">
+		update account
+		set Normal_Money = #{normalMoney,jdbcType=DECIMAL},
+		Freeze_Money = #{freezeMoney,jdbcType=DECIMAL},
+		version = #{version,jdbcType=INTEGER},
+		pay_passwd = #{payPasswd,jdbcType=VARCHAR},
+		salt = #{salt,jdbcType=VARCHAR},
+		bank_no = #{bankNo,jdbcType=VARCHAR},
+		bank_card_master = #{bankCardMaster,jdbcType=VARCHAR},
+		bank_name = #{bankName,jdbcType=VARCHAR},version = version +1
+		where User_ID = #{userId,jdbcType=INTEGER} and version = #{version}
+	</update>
+	
+	<!-- 查询 -->
+	<select id="queryAccountByUserId" parameterType="int" resultMap="BaseResultMap">
+		Select
+		<include refid="Base_Column_List" />
+		From Account Where User_Id = #{userId}
+	</select>
+	<!-- 修改支付密码 -->
+	<update id="updatePayPasswd">
+		Update account Set pay_passwd = #{payPasswd},salt=#{salt} Where User_id = #{userId}
+	</update>
+</mapper>

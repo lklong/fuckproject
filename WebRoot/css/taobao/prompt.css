@@ -1,0 +1,29 @@
+
+.message-lay { width:100%; height:100%; position:fixed; z-index:10000; }
+
+.message-box { border:#bbb solid 4px; background:#fff; position:absolute; z-index:10001; }
+
+.message-content { }
+
+.message-content-info { background: url(/images/info.gif) no-repeat center center; width:70px; min-height:60px; }
+.message-content-success { background: url(/images/right.gif) no-repeat center center; width:70px; min-height:60px; }
+.message-content-err { background: url(/images/err.gif) no-repeat center center; width:70px; min-height:60px; }
+.message-content-ask { background: url(/images/ask.gif) no-repeat center center; width:70px; min-height:60px; }
+
+.message-content-txt { line-height:22px; color:#333; text-align:left; padding:5px; }
+
+.message-title { height:27px; background:#eee; cursor:move; }
+.message-title .message-title-txt { float:left; display:inline; line-height:27px; height:27px; color:#333; padding-left:10px; }
+
+.message-title .message-title-close { float:right; display:inline-block; width:12px; height:12px; margin-top:7px; margin-right:8px; background: url(/images/close.gif) no-repeat 0px 0px; overflow:hidden; }
+.message-title .message-title-close:hover { float:right; display:inline-block; width:12px; height:12px; margin-top:7px; margin-right:8px; background: url(/images/close.gif) no-repeat 0px -12px; overflow:hidden; }
+
+.message-button { text-align:center; height:35px; width:95%; border-top:#ccc solid 1px; margin:auto; }
+.message-button input { color:#333; text-align:center; margin:5px; padding:0px; background:#eee; border:none; width:80px; height:23px; line-height:23px; font-size:12px; }
+
+.message-simpleconfirm { width:260px; position:absolute; z-index:9999; }
+.message-simpleconfirm .message-simpleconfirm-triangle { background: url(/images/triangle.gif) no-repeat; width:13px; height:12px; position:absolute; top:0px; left:240px; }
+.message-simpleconfirm .message-simpleconfirm-box {border:#ccc solid 1px; margin-top:10px; padding:5px; background:#fff; margin-bottom:2px; margin-right:2px; }
+.message-simpleconfirm .message-simpleconfirm-title { line-height:35px; padding-left:18px; background: url(/images/ui-icons_tip.gif) no-repeat left 10px; }
+.message-simpleconfirm .message-simpleconfirm-botton { width:100%; border-top:#ccc solid 1px; padding-top:5px; text-align:right; }
+.message-simpleconfirm .message-simpleconfirm-botton input { border:none; background:#fff; font-size:12px; font-weight:700; }

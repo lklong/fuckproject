@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.StoreNoticeMapper" >
+  <resultMap id="BaseResultMap" type="com.zhigu.model.StoreNotice" >
+    <id column="id" property="ID" jdbcType="INTEGER" />
+    <result column="store_id" property="storeID" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="store_name" property="storeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 保存店铺公告 -->
+	<insert id="saveStoreNotice" parameterType="storeNotice">
+		Insert Into store_notice(store_id,type,content,create_time,store_name) values(#{storeID},#{type},#{content},now(),#{storeName})
+	</insert>
+	<!-- 删除店铺公告 -->
+	<delete id="delStoreNotice" parameterType="int">
+		Delete From store_notice Where id = #{id}
+	</delete>
+	<!-- 修改店铺公告 -->
+	<update id="updataStoreNotice" parameterType="storeNotice">
+		Update store_notice set content=#{content},create_time=#{createTime}  where ID=#{ID};
+	</update>
+	<!-- 根据店铺ID查询店铺公告-->
+	<select id="queryStoreNoticeByPage" resultMap="BaseResultMap">
+		Select  * From store_notice Where store_id = #{storeID} and type=#{type}  order by create_time desc
+	</select>
+	
+</mapper>

@@ -1,0 +1,52 @@
+.zzcekk{ width:100%; margin:0 auto; font-size:12px;}
+.reg_title_box{width:1188;height:40px;margin:0 auto;border:1px solid red;background:url(../images/reg_bg.jpg) left top repeat-x;}
+.mt10_title{float:left;margin-left:20px;margin-top:10px;font-family:"锟斤拷锟斤拷";font-size:20px;color:#FFFFFF;font-weight:bold;}
+.mt_10_right{float:right;margin-top:12px;margin-right:20px;}
+.mt_10_right a,.mt_10_right span{margin-right:10px;}
+.mt_10_log{color:#318ac8;}
+.mt_10_log:hover{color:#FFFFFF;}
+.mt_10_ww,.mt_10_qq{color:#FFFFFF;padding:3px;border:1px solid #cef88b;border-radius:5px;}
+.mt_10_ww:hover,.mt_10_qq:hover{color:#D3F1F3;}
+.mt_10_liucheng{width:700px;margin:0 auto;padding-left:40px;}
+.liucheng_1{float:left;margin-right:20px;}
+.liucheng_1 p{width:52px;text-align:center;}
+.clr{clear:both;}
+.liucheng_1 p{margin-top:5px;font-family:锟斤拷锟斤拷;font-size:12px;font-weight:bold;color:#bfbfbf;}
+
+.password_tishi{display:none;}
+.reg_form form input{width:150px;height:25px;}
+.agree label input{width:17px;height:17px;margin-right:20px;margin-left:50px;margin-bottom:20px;}
+.next{height:25px;border:1px solid #dddddd;background:#fafafa;}
+/*锟斤拷应锟斤拷注锟斤拷*/
+.gongying_title{width:1150px;margin:0 auto;height:30px;padding-top:10px;padding-bottom:10px;padding-left:30px;font-size:25px;font-family:"锟斤拷锟斤拷";color:#FFF;}
+.gongying_box{background:#e6005c;}
+.gongying_liucheng{width:1170px;background:#f0ece5;padding-top:20px;padding-bottom:20px;margin:0 auto;padding-left:20px; font-size:16px;}
+.liucheng_2{float:left;width:80px;text-align:center;}   
+.liucheng_2 img{margin-bottom:10px;}   
+.liucheng_linehui{width:200px;height:5px;float:left;background:#bfbfbf;margin-left:10px;margin-right:10px;margin-top:20px;}
+.liucheng_2 .pink{color:#fb6b70;}
+.liucheng_2 p{color:#b2b1ad;}
+.gongyingreg{width:1188px;border:1px solid #d8d8d8;padding-top:30px;height:600px;margin:0 auto;}
+.gongyingreg_txt p{float:left;width:150px;margin-right:10px;text-align:right;font-size:14px;font-family:"微锟斤拷锟脚猴拷";line-height:30px;color:#7e7e7e;}
+.gongyingreg form{width:670px;margin:0 auto;}
+.gongyingreg_txt{margin-bottom:20px;}
+.gongyingreg_txt input,.gongyingreg_txt select{width:200px;height:30px;background:#fafafa;border:1px solid #dddddd;padding-left:5px;padding-right:5px;}
+.gongying_help{color:#f18101;margin-left:10px;line-height:20px;display:none;}
+.gongyingreg_txt span,.gongyingreg_txt img{vertical-align:middle;}
+.gongying_help img{margin-right:10px;}
+.gongying_check{width:300px;margin-left:150px;font-size:12px;line-height:15px;color:#bfbfbf;}
+.gongying_check input{width:15px;height:15px;border:1px solid #dddddd;margin-right:8px;}
+.gongying_check a{color:#000000;}
+.gongying_check a:hover{color:#06F;}
+.open_sub{width:200px;height:40px;margin-left:150px;margin-top:30px;margin-bottom:30px;background:#e6005c;border:0;color:#FFF;font-size:16px;font-weight:bold;cursor:pointer;}
+.open_sub:hover{background:#ff3c9d;}
+.yuming{color:#EF5CB0;}
+.yuming .dianpu_w{width:120px;}
+/*选锟斤拷锟皆弊拷锟�/
+.choose_mem{width:800px;border:1px solid #f0ece5;margin:0 auto;margin-top:100px;cursor:pointer;}
+#choose_men_1{margin-top:130px;}
+#choose_men_2{margin-bottom:100px;}
+.img_0{float:left;margin-left:-10px;}
+.text_01{float:left;font-size:16px;line-height:40px;margin-top:25px;margin-left:30px;width:550px;color:#949494;}
+.right_1{float:left;margin-top:60px;margin-left:30px;}
+.red_0{color:#fc9142;}

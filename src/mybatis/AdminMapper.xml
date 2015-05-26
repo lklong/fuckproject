@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.AdminMapper">
+	<resultMap id="BaseResultMap" type="com.zhigu.model.Admin">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="login_count" property="loginCount" jdbcType="INTEGER" />
+		<result column="latest_login_time" property="latestLoginTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="roleName" property="roleName" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, role_id, password, salt, status, real_name, login_count, latest_login_time,
+		create_time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from admin
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from admin
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zhigu.model.Admin">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into admin (id, name, role_id,
+		password, salt, status,
+		real_name, login_count, latest_login_time,
+		create_time)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER},
+		#{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+		#{realName,jdbcType=VARCHAR}, #{loginCount,jdbcType=INTEGER}, #{latestLoginTime,jdbcType=TIMESTAMP},
+		#{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhigu.model.Admin">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into admin
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="name != null">
+				name,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="salt != null">
+				salt,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="realName != null">
+				real_name,
+			</if>
+			<if test="loginCount != null">
+				login_count,
+			</if>
+			<if test="latestLoginTime != null">
+				latest_login_time,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=INTEGER},
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="roleId != null">
+				#{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="salt != null">
+				#{salt,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="realName != null">
+				#{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="loginCount != null">
+				#{loginCount,jdbcType=INTEGER},
+			</if>
+			<if test="latestLoginTime != null">
+				#{latestLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.Admin">
+		update admin
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="roleId != null">
+				role_id = #{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="salt != null">
+				salt = #{salt,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="realName != null">
+				real_name = #{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="loginCount != null">
+				login_count = #{loginCount,jdbcType=INTEGER},
+			</if>
+			<if test="latestLoginTime != null">
+				latest_login_time = #{latestLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhigu.model.Admin">
+		update admin
+		set name = #{name,jdbcType=VARCHAR},
+		role_id = #{roleId,jdbcType=INTEGER},
+		password = #{password,jdbcType=VARCHAR},
+		salt = #{salt,jdbcType=VARCHAR},
+		status = #{status,jdbcType=INTEGER},
+		real_name = #{realName,jdbcType=VARCHAR},
+		login_count = #{loginCount,jdbcType=INTEGER},
+		latest_login_time = #{latestLoginTime,jdbcType=TIMESTAMP},
+		create_time = #{createTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from admin
+		where name = #{name,jdbcType=VARCHAR}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap" >
+		select
+		<include refid="Base_Column_List" />
+		from admin
+	</select>
+	<select id="selectByPage" resultMap="BaseResultMap" >
+		select
+		<include refid="Base_Column_List" />,B.roleName
+		from admin A,AdminRole B where A.role_id=B.roleId
+	</select>
+	<!-- 修改管理员密码 -->
+	<update id="updateAdminPwdByID" >
+		update admin set password = #{pwd},salt = #{salt} where id = #{id}
+	</update>
+	
+	
+</mapper>

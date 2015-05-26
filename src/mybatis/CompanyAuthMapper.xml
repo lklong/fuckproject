@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.CompanyAuthMapper">
+
+	<insert id="addCompanyAuth" parameterType="companyAuth">
+		insert into CompanyAuth(UserID,StoreID,CompanyName,CompanyType,RegNumber,Corporation,BusinessTerm,perpetual,Capital,BusinessScope,RegProvince,RegCity,RegDistrict,RegStreet,CompanyProvince,CompanyCity,CompanyDistrict,CompanyStreet,Image,ApplyTime,ApproveState,ApproveUser,RejectReason,imageSmall,salesman) 
+		value(#{userID},#{storeID},#{companyName},#{companyType},#{regNumber},#{corporation},#{businessTerm},#{perpetual},#{capital},#{businessScope},#{regProvince},#{regCity},#{regDistrict},#{regStreet},#{companyProvince},#{companyCity},#{companyDistrict},#{companyStreet},#{image},#{applyTime},#{approveState},#{approveUser},#{rejectReason},#{imageSmall},#{salesman});
+		<selectKey resultType="int" keyProperty="ID" order="AFTER" >
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<select id="queryCompanyAuthByStoreID" parameterType="int" resultType="companyAuth">
+		select * from CompanyAuth where storeID=#{storeID};
+	</select>
+	
+	<select id="queryCompanyAuthByUserID" parameterType="int" resultType="companyAuth">
+		select * from CompanyAuth where UserID=#{userID};
+	</select>
+	
+	<select id="queryCompanyAuthByPage" parameterType="page" resultType="companyAuth">
+		select * from CompanyAuth where ApproveState=#{paras.approveState};
+	</select>
+	
+	<update id="updateCompanyAuth">
+		update CompanyAuth set CompanyName=#{companyAuth.companyName}, CompanyType=#{companyAuth.companyType},RegNumber=#{companyAuth.regNumber}, 
+		Corporation=#{companyAuth.corporation}, BusinessTerm=#{companyAuth.businessTerm},perpetual=#{companyAuth.perpetual},Capital=#{companyAuth.capital},
+		BusinessScope=#{companyAuth.businessScope},RegProvince=#{companyAuth.regProvince},RegCity=#{companyAuth.regCity},RegDistrict=#{companyAuth.regDistrict},
+		RegStreet=#{companyAuth.regDistrict},CompanyProvince=#{companyAuth.companyProvince},CompanyCity=#{companyAuth.companyCity},
+		CompanyDistrict=#{companyAuth.companyDistrict},CompanyStreet=#{companyAuth.companyStreet},Image=#{companyAuth.image}, imageSmall=#{companyAuth.imageSmall},ApproveState=#{companyAuth.approveState},
+		ApproveUser=#{companyAuth.approveUser},RejectReason=#{companyAuth.rejectReason},AuthTime=#{companyAuth.authTime}   
+		where storeId=#{storeID};
+	</update>
+	
+</mapper>
+

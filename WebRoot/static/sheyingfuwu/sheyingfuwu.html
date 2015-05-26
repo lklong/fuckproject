@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>摄影服务</title>
+<script src="/static/sheyingfuwu/layer-v1.8.5/layer/extend/layer.ext.js"></script>
+<script src="/static/sheyingfuwu/layer-v1.8.5/layer/animate.js"></script>
+<script src="/static/sheyingfuwu/layer-v1.8.5/layer/jquery.carouFredSel-6.0.4-packed.js"></script>
+<style type="text/css">
+	body { margin:0; padding:0; text-decoration:none}
+	.bigbanner { width:100%; height:650px; background:url(/static/sheyingfuwu/sheyingfuwu/bigbanner.jpg) repeat-x center center; margin-bottom:10px; position:relative;}
+	.nav_banner { width:1190px; height:40px; background-color:#46cc80; margin:0 auto; overflow:hidden;}
+	.big_inner { width:1190px; height:40px; margin:0 auto; padding-top:610px;}
+	.syfw_wrap { width:1190px; margin:0 auto; overflow:hidden; clear:both; position:relative;}
+	.syfw_inner { width:2000px; position:relative; overflow:hidden;}
+	.intro { float:left; margin-right:18px;}
+	.mote_wrap { width:100%; clear:both; height:400px; position:relative;}
+	.mote_inner { position:relative; height:400px; overflow:hidden; margin:0 auto;}
+	.taocan { margin-top:23px; margin-bottom:45px;}
+	.cate_title { margin-bottom:20px;}
+	.mote_img { float:left; margin-right:15px; width:286px; height:400px;}
+	.mt60 { margin-top:60px;}
+	.fushi_box { width:1190px; height:427px; position:relative;}
+	.fushi_box img { margin:0; padding:0; border:none;}
+	.fsb_01 { position:absolute; left:0; top:0; width:286px; height:206px; background-color:#000000;}
+	.fsb_02 { position:absolute; left:301px; top:0; width:286px; height:206px; background-color:#000000;}
+	.fsb_03 { position:absolute; left:602px; top:0; width:286px; height:206px; background-color:#000000;}
+	.fsb_04 { position:absolute; left:903px; top:0; width:286px; height:206px; background-color:#000000;}
+	.fsb_05 { position:absolute; left:301px; top:221px; width:286px; height:206px; background-color:#000000;}
+	.fsb_06 { position:absolute; left:602px; top:221px; width:286px; height:206px; background-color:#000000;}
+	.fsb_07 { position:absolute; left:903px; top:221px; width:286px; height:206px; background-color:#000000;}
+	.fsb_08 { position:absolute; left:0; top:221px; width:286px; height:206px; background-color:#000000;}
+	.si { height:30px;}
+	.prev{ display:block; height:51px; width:31px; position:absolute; background:url(/static/sheyingfuwu/sheyingfuwu/ui-prev.png) no-repeat; z-index:999; top:160px; left:15%;}
+	.next{ display:block; height:51px; width:31px; position:absolute; background:url(/static/sheyingfuwu/sheyingfuwu/ui-next.png) no-repeat; z-index:999; top:160px; right:15%;}
+	.nav_banner { list-style:none; margin:0; padding:0;}
+	.nav_banner li { float:left; line-height:40px;}
+	.nav_banner li a { display:block; float:left; height:40px; text-align:center; font-family:"Microsoft Sans Serif", "微软雅黑"; font-size:16px; color:#ffffff; width:297px; text-decoration:none}
+	.nav_banner li a:hover { display:block; float:left; height:40px; text-align:center; font-family:"Microsoft Sans Serif", "微软雅黑"; font-size:16px; color:#ffffff; width:297px; text-decoration:none; background-color:#303030;}
+	#qq_service { height:205px; width:157px; background:url(/static/sheyingfuwu/sheyingfuwu/qq_bg.png) no-repeat; position:fixed; display:none; right:150px; top:200px; z-index:99999;}
+	#qq_close { height:40px; width:40px; position:absolute; right:0; cursor:pointer;}
+	#qq_01 { margin-left:11px; margin-top:90px;}
+	#qq_02 { margin-left:11px; margin-top:4px;}
+</style>
+</head>
+
+<body>
+	<div class="bigbanner">
+    	<div class="big_inner">
+        	<ul class="nav_banner">
+            	<li><a href="/static/sheyingfuwu/sheyingfuwu.html#f_01">服饰配件</a></li>
+                <li><a href="/static/sheyingfuwu/sheyingfuwu.html#f_02">鞋帽箱包</a></li>
+                <li><a href="/static/sheyingfuwu/sheyingfuwu.html#f_03">化妆品</a></li>
+                <li><a href="/static/sheyingfuwu/sheyingfuwu.html#f_04">茶叶酒水</a></li>
+            </ul>
+        </div>
+    </div>
+	<div class="syfw_wrap">
+    	<div class="syfw_inner">
+        	<div class="intro"><img src="/static/sheyingfuwu/sheyingfuwu/sy_01.jpg" /></div>
+            <div class="intro"><img src="/static/sheyingfuwu/sheyingfuwu/sy_02.jpg" /></div>
+            <div class="intro"><img src="/static/sheyingfuwu/sheyingfuwu/sy_03.jpg" /></div>
+        </div>
+    </div>
+    <div class="syfw_wrap">
+    	<div class="taocan"><img src="/static/sheyingfuwu/sheyingfuwu/sy_04.jpg" /></div>
+    </div>
+    <div class="syfw_wrap">
+    	<div class="cate_title"><img src="/static/sheyingfuwu/sheyingfuwu/sy_05.jpg" /></div>
+    </div>
+    <div class="mote_wrap">
+    	<div class="mote_inner">
+        	<div id="carousel">
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_01.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_02.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_03.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_04.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_05.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_06.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_07.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_08.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_09.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_10.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_11.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_12.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_13.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_14.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_15.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_16.jpg" height="400" width="286" /></div>
+                <div class="mote_img"><img src="/static/sheyingfuwu/sheyingfuwu/mote_17.jpg" height="400" width="286" /></div>
+            </div>
+        </div>
+        <a href="#" id="prev" class="prev"></a>
+        <a href="#" id="next" class="next"></a>
+    </div>
+    <div class="syfw_wrap mt60">
+    	<a name="f_01" id="f_01"></a>
+    	<div class="cate_title"><img src="/static/sheyingfuwu/sheyingfuwu/sy_06.jpg" /></div>
+    </div>
+    <div class="syfw_wrap">
+    	<div id="fushi_imgs" class="fushi_box">
+        	<div class="fsb_01" style="height:427px !important;"><img src="/static/sheyingfuwu/sheyingfuwu/fushi_01.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/fushi_01.jpg" alt="图1" /></div>
+            <div class="fsb_02"><img src="/static/sheyingfuwu/sheyingfuwu/fushi_02.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/fushi_02.jpg" alt="图2" /></div>
+            <div class="fsb_03"><img src="/static/sheyingfuwu/sheyingfuwu/fushi_03.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/fushi_03.jpg" alt="图3" /></div>
+            <div class="fsb_04"><img src="/static/sheyingfuwu/sheyingfuwu/fushi_04.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/fushi_04.jpg" alt="图4" /></div>
+            <div class="fsb_05"><img src="/static/sheyingfuwu/sheyingfuwu/fushi_05.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/fushi_05.jpg" alt="图5" /></div>
+            <div class="fsb_06"><img src="/static/sheyingfuwu/sheyingfuwu/fushi_06.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/fushi_06.jpg" alt="图6" /></div>
+            <div class="fsb_07"><img src="/static/sheyingfuwu/sheyingfuwu/fushi_07.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/fushi_07.jpg" alt="图7" /></div>
+        </div>
+    </div>
+    <div class="syfw_wrap mt60">
+    	<a name="f_02"></a>
+    	<div class="cate_title"><img src="/static/sheyingfuwu/sheyingfuwu/sy_07.jpg" /></div>
+    </div>
+    <div id="xiemao_imgs" class="syfw_wrap">
+    	<div class="fushi_box">
+        	<div class="fsb_01"><img src="/static/sheyingfuwu/sheyingfuwu/xiemao_01.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/xiemao_01.jpg" alt="图1" /></div>
+            <div class="fsb_02"><img src="/static/sheyingfuwu/sheyingfuwu/xiemao_02.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/xiemao_02.jpg" alt="图2" /></div>
+            <div class="fsb_03" style="height:427px !important;"><img src="/static/sheyingfuwu/sheyingfuwu/xiemao_03.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/xiemao_03.jpg" alt="图3" /></div>
+            <div class="fsb_04"><img src="/static/sheyingfuwu/sheyingfuwu/xiemao_04.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/xiemao_04.jpg" alt="图4" /></div>
+            <div class="fsb_08"><img src="/static/sheyingfuwu/sheyingfuwu/xiemao_05.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/xiemao_05.jpg" alt="图5" /></div>
+            <div class="fsb_05"><img src="/static/sheyingfuwu/sheyingfuwu/xiemao_06.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/xiemao_06.jpg" alt="图6" /></div>
+            <div class="fsb_07"><img src="/static/sheyingfuwu/sheyingfuwu/xiemao_07.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/xiemao_07.jpg" alt="图7" /></div>
+        </div>
+    </div>
+    <div class="syfw_wrap mt60">
+    	<a name="f_03"></a>
+    	<div class="cate_title"><img src="/static/sheyingfuwu/sheyingfuwu/sy_08.jpg" /></div>
+    </div>
+    <div class="syfw_wrap">
+    	<div id="huazhuang_imgs" class="fushi_box">
+        	<div class="fsb_01"><img src="/static/sheyingfuwu/sheyingfuwu/huazhuang_01.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/huazhuang_01.jpg" alt="图1" /></div>
+            <div class="fsb_08"><img src="/static/sheyingfuwu/sheyingfuwu/huazhuang_02.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/huazhuang_02.jpg" alt="图2" /></div>
+            <div class="fsb_02" style="height:427px !important;"><img src="/static/sheyingfuwu/sheyingfuwu/huazhuang_03.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/huazhuang_03.jpg" alt="图3" /></div>
+            <div class="fsb_03"><img src="/static/sheyingfuwu/sheyingfuwu/huazhuang_04.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/huazhuang_04.jpg" alt="图4" /></div>
+            <div class="fsb_06"><img src="/static/sheyingfuwu/sheyingfuwu/huazhuang_05.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/huazhuang_05.jpg" alt="图5" /></div>
+            <div class="fsb_04"><img src="/static/sheyingfuwu/sheyingfuwu/huazhuang_06.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/huazhuang_06.jpg" alt="图6" /></div>
+            <div class="fsb_07"><img src="/static/sheyingfuwu/sheyingfuwu/huazhuang_07.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/huazhuang_07.jpg" alt="图7" /></div>
+        </div>
+    </div>
+    <div class="syfw_wrap mt60">
+    	<a name="f_04"></a>
+    	<div class="cate_title"><img src="/static/sheyingfuwu/sheyingfuwu/sy_09.jpg" /></div>
+    </div>
+    <div id="chaye_imgs" class="syfw_wrap">
+    	<div class="fushi_box">
+        	<div class="fsb_01" style="height:427px !important;"><img src="/static/sheyingfuwu/sheyingfuwu/chaye_01.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/chaye_01.jpg" alt="图1"  /></div>
+            <div class="fsb_02"><img src="/static/sheyingfuwu/sheyingfuwu/chaye_02.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/chaye_02.jpg" alt="图2"  /></div>
+            <div class="fsb_03"><img src="/static/sheyingfuwu/sheyingfuwu/chaye_03.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/chaye_03.jpg" alt="图3"  /></div>
+            <div class="fsb_04"><img src="/static/sheyingfuwu/sheyingfuwu/chaye_04.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/chaye_04.jpg" alt="图4"  /></div>
+            <div class="fsb_05"><img src="/static/sheyingfuwu/sheyingfuwu/chaye_05.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/chaye_05.jpg" alt="图5"  /></div>
+            <div class="fsb_06"><img src="/static/sheyingfuwu/sheyingfuwu/chaye_06.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/chaye_06.jpg" alt="图6"  /></div>
+            <div class="fsb_07"><img src="/static/sheyingfuwu/sheyingfuwu/chaye_07.jpg" layer-img="/static/sheyingfuwu/sheyingfuwu/src/chaye_07.jpg" alt="图7"  /></div>
+        </div>
+    </div>
+    <div class="si"></div>
+<!--     <div id="qq_service">
+    	<div id="qq_close"></div>
+        <div id="qq_01"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2880306189&site=qq&menu=yes"><img src="/static/sheyingfuwu/sheyingfuwu/q1.png" border="0" alt="点击咨询" title="点击咨询"></a></div>
+        <div id="qq_02"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2880623690&site=qq&menu=yes"><img src="/static/sheyingfuwu/sheyingfuwu/q2.png" border="0" alt="点击咨询" title="点击咨询"></a></div>
+    </div> -->
+    <script type="text/javascript">
+	//服饰配件
+    layer.photosPage({
+        parent: '#fushi_imgs',
+        title: '服饰配件摄影案例',
+        id: 101 //相册id，可选
+    });
+	//鞋帽箱包
+    layer.photosPage({
+        parent: '#xiemao_imgs',
+        title: '鞋帽箱包摄影案例',
+        id: 102 //相册id，可选
+    });
+	//化妆品
+    layer.photosPage({
+        parent: '#huazhuang_imgs',
+        title: '化妆品摄影案例',
+        id: 103 //相册id，可选
+    });
+	//茶叶酒水
+    layer.photosPage({
+        parent: '#chaye_imgs',
+        title: '茶叶酒水摄影案例',
+        id: 104 //相册id，可选
+    });
+	
+	$(function  () {
+		/*隐藏导航和首页qq客服  */
+		$('#qq_hover').remove();
+		
+		
+		
+		var fs_imgs = $.makeArray($("#fushi_imgs img"));
+		var xm_imgs = $.makeArray($("#xiemao_imgs img"));
+		var hz_imgs = $.makeArray($("#huazhuang_imgs img"));
+		var cy_imgs = $.makeArray($("#chaye_imgs img"));
+		//01
+		$("#fushi_imgs").mouseout(function  () {
+			  for (var i=0; i<fs_imgs.length; i++){
+			  // 需要使用自定义的animate函数，不能使用jquery自带的animate函数
+				animate(fs_imgs[i],{left:0,opacity:1},100);
+			 }
+		});
+		for (var i=0; i<fs_imgs.length; i++) {
+			  
+			  fs_imgs[i].onmouseover=function  () {
+				 
+				 for (var j=0; j<fs_imgs.length; j++) {
+				 animate(fs_imgs[j],{left:0,opacity:0.7},100);
+				  
+				 }
+				 animate(this,{left:-15,opacity:1},100);
+				
+			  }
+		
+		}
+		//02
+		$("#xiemao_imgs").mouseout(function  () {
+			  for (var i=0; i<xm_imgs.length; i++){
+			  // 需要使用自定义的animate函数，不能使用jquery自带的animate函数
+				animate(xm_imgs[i],{left:0,opacity:1},100);
+			 }
+		});
+		for (var i=0; i<xm_imgs.length; i++) {
+			  
+			  xm_imgs[i].onmouseover=function  () {
+				 
+				 for (var j=0; j<xm_imgs.length; j++) {
+				 animate(xm_imgs[j],{left:0,opacity:0.7},100);
+				  
+				 }
+				 animate(this,{left:-15,opacity:1},100);
+				
+			  }
+		
+		}
+		//03
+		$("#huazhuang_imgs").mouseout(function  () {
+			  for (var i=0; i<hz_imgs.length; i++){
+			  // 需要使用自定义的animate函数，不能使用jquery自带的animate函数
+				animate(hz_imgs[i],{left:0,opacity:1},100);
+			 }
+		});
+		for (var i=0; i<hz_imgs.length; i++) {
+			  
+			  hz_imgs[i].onmouseover=function  () {
+				 
+				 for (var j=0; j<hz_imgs.length; j++) {
+				 animate(hz_imgs[j],{left:0,opacity:0.7},100);
+				  
+				 }
+				 animate(this,{left:-15,opacity:1},100);
+				
+			  }
+		
+		}
+		//04
+		$("#chaye_imgs").mouseout(function  () {
+			  for (var i=0; i<cy_imgs.length; i++){
+			  // 需要使用自定义的animate函数，不能使用jquery自带的animate函数
+				animate(cy_imgs[i],{left:0,opacity:1},100);
+			 }
+		});
+		for (var i=0; i<cy_imgs.length; i++) {
+			  
+			  cy_imgs[i].onmouseover=function  () {
+				 
+				 for (var j=0; j<cy_imgs.length; j++) {
+				 animate(cy_imgs[j],{left:0,opacity:0.7},100);
+				  
+				 }
+				 animate(this,{left:-15,opacity:1},100);
+				
+			  }
+		
+		}
+		
+		//模特滚动
+		var _visible = 4;
+		var _onBefore = function() {
+			//$(this).find('img').stop().fadeTo( 300, 1 );
+		};
+	
+		$('#carousel').carouFredSel({
+			items: _visible,
+			width: '100%',
+			auto: true,
+			scroll: {
+				duration: 750
+			},
+			prev: {
+				button: '#prev',
+				items: 2,
+				onBefore: _onBefore
+			},
+			next: {
+				button: '#next',
+				items: 2,
+				onBefore: _onBefore
+			},
+		});
+		
+	
+		//qq_service
+		/* var d_h = $(window).height();
+		var d_w = $(window).width();
+		$("#qq_service").css({'left':d_w - 300, 'top':d_h - 50});
+		$("#qq_service").show();
+		$("#qq_close").click(function(){ $("#qq_service").hide(); }); */
+	});
+</script>
+</body>
+</html>

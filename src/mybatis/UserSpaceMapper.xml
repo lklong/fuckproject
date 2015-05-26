@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.UserSpaceMapper">
+	<insert id="saveFolder" parameterType="userFolder" >
+		insert into UserFolder(UserID,FolderName,IsDefault) values(#{userID},#{folderName},#{isDefault});
+		<selectKey resultType="int" keyProperty="folderID" order="AFTER" >
+			SELECT LAST_INSERT_ID()  
+		</selectKey>
+	</insert>
+	<insert id="saveFile" parameterType="userFile">
+		insert into UserFile(FolderID,UserID,Type,FilePath,Size,Image100,CreateDate) values(#{folderID},#{userID},#{type},#{filePath},#{size},#{image100},#{createDate});
+	</insert>
+	<!-- 用户所有文件夹 -->
+	<select id="queryFolderByUserID" parameterType="int" resultType="userFolder">
+		select * from UserFolder where userID=#{userID};
+	</select>
+	<!-- 取得文件夹byID -->
+	<select id="queryFolderByFolderID" parameterType="int" resultType="userFolder">
+		select * from UserFolder where FolderID=#{folderID};
+	</select>
+	<!-- 取得用户文件夹by folderID、userID -->
+	<select id="queryFolderByUserFolderID" parameterType="int" resultType="userFolder">
+		select * from UserFolder where FolderID=#{folderID} and UserID=#{userID};
+	</select>
+	<!-- 取得用户默认文件夹 -->
+	<select id="queryCreateUserDefaultFolder" parameterType="int" resultType="userFolder">
+		select * from UserFolder where UserID=#{userID} and IsDefault=1 limit 1;
+	</select>
+	<select id="queryFileByFolderID" parameterType="map" resultType="userFile">
+		select * from UserFile  where folderID=#{folderID} order by CreateDate DESC;
+	</select>
+	<select id="queryFileByPage" parameterType="page" resultType="userFile">
+		select * from UserFile  where Type=#{paras.type} and UserID=#{paras.userID}
+		<if test="paras.folderID!=null">
+			and  folderID=#{paras.folderID} 
+		</if>
+		order by CreateDate DESC
+	</select>
+	<select id="queryFileByFileID" parameterType="int" resultType="userFile">
+		select * from UserFile  where FileID = #{fileID};
+	</select>
+	<update id="updateFolder" parameterType="userFolder">
+		update userFolder set FolderName=#{folderName} where FolderID=#{folderID} and UserID=#{userID};
+	</update>
+	<select id="queryUserSpaceSize" parameterType="int" resultType="userInfo">
+		select UserID,UserSpaceSize,UserSpaceUseSize from userInfo where UserID=#{userID};
+	</select>
+	<update id="updateUserSpaceUseSize" parameterType="map">
+		update UserInfo set UserSpaceUseSize=#{userSpaceUseSize} where UserID=#{userID};
+	</update>
+	<delete id="deleteUserFileByID" parameterType="int">
+		DELETE from userFile where FileID=#{fileID};
+	</delete>
+</mapper>
+

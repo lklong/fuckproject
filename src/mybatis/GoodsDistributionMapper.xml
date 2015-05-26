@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.GoodsDistributionMapper" >
+  <resultMap id="BaseResultMap" type="com.zhigu.model.GoodsDistribution" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userID" property="userID" jdbcType="INTEGER" />
+    <result column="goodsID" property="goodsID" jdbcType="BIGINT" />
+    <result column="thirdGoodsID" property="thirdGoodsID" jdbcType="BIGINT" />
+    <result column="thirdSellerID" property="thirdSellerID" jdbcType="VARCHAR" />
+    <result column="thirdSellerNick" property="thirdSellerNick" jdbcType="VARCHAR" />
+    <result column="thirdPlatType" property="thirdPlatType" jdbcType="BIT" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="platPrice" property="platPrice" jdbcType="VARCHAR" />
+    <result column="commission" property="commission" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userID, goodsID, thirdGoodsID, thirdSellerID, thirdSellerNick, thirdPlatType, 
+    createTime, updateTime, platPrice, commission
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods_distribution
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from goods_distribution
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.zhigu.model.GoodsDistribution" useGeneratedKeys="true" keyProperty="id">
+    insert into goods_distribution
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userID != null" >
+        userID,
+      </if>
+      <if test="goodsID != null" >
+        goodsID,
+      </if>
+      <if test="thirdGoodsID != null" >
+        thirdGoodsID,
+      </if>
+      <if test="thirdSellerID != null" >
+        thirdSellerID,
+      </if>
+      <if test="thirdSellerNick != null" >
+        thirdSellerNick,
+      </if>
+      <if test="thirdPlatType != null" >
+        thirdPlatType,
+      </if>
+        createTime,
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="platPrice != null" >
+        platPrice,
+      </if>
+      <if test="commission != null" >
+        commission,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userID != null" >
+        #{userID,jdbcType=INTEGER},
+      </if>
+      <if test="goodsID != null" >
+        #{goodsID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdGoodsID != null" >
+        #{thirdGoodsID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdSellerID != null" >
+        #{thirdSellerID,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdSellerNick != null" >
+        #{thirdSellerNick,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdPlatType != null" >
+        #{thirdPlatType,jdbcType=BIT},
+      </if>
+       now(),
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platPrice != null" >
+        #{platPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="commission != null" >
+        #{commission,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.GoodsDistribution" >
+    update goods_distribution
+    <set >
+      <if test="userID != null" >
+        userID = #{userID,jdbcType=INTEGER},
+      </if>
+      <if test="goodsID != null" >
+        goodsID = #{goodsID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdGoodsID != null" >
+        thirdGoodsID = #{thirdGoodsID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdSellerID != null" >
+        thirdSellerID = #{thirdSellerID,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdSellerNick != null" >
+        thirdSellerNick = #{thirdSellerNick,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdPlatType != null" >
+        thirdPlatType = #{thirdPlatType,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+        updateTime = now(),
+      <if test="platPrice != null" >
+        platPrice = #{platPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="commission != null" >
+        commission = #{commission,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

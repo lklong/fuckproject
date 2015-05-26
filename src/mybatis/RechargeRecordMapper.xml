@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.RechargeRecordMapper">
+	<resultMap id="BaseResultMap" type="com.zhigu.model.RechargeRecord">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="User_ID" property="userId" jdbcType="INTEGER" />
+		<result column="Payment_NO" property="paymentNo" jdbcType="VARCHAR" />
+		<result column="Recharge_Acc" property="rechargeAcc" jdbcType="VARCHAR" />
+		<result column="Recharge_Money" property="rechargeMoney" jdbcType="DECIMAL" />
+		<result column="Type" property="type" jdbcType="INTEGER" />
+		<result column="External_NO" property="externalNo" jdbcType="VARCHAR" />
+		<result column="Status" property="status" jdbcType="INTEGER" />
+		<result column="Operator" property="operator" jdbcType="INTEGER" />
+		<result column="Recharge_Time" property="rechargeTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, User_ID, Payment_NO, Recharge_Acc, Recharge_Money, Type, External_NO, Status,
+		Operator, Recharge_Time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from recharge_record
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from recharge_record
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zhigu.model.RechargeRecord">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into recharge_record (id, User_ID, Payment_NO,
+		Recharge_Acc, Recharge_Money, Type,
+		External_NO, Status, Operator,
+		Recharge_Time)
+		values
+		(#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{paymentNo,jdbcType=VARCHAR},
+		#{rechargeAcc,jdbcType=VARCHAR},
+		#{rechargeMoney,jdbcType=DECIMAL}, #{type,jdbcType=INTEGER},
+		#{externalNo,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+		#{operator,jdbcType=INTEGER},
+		#{rechargeTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhigu.model.RechargeRecord">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into recharge_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="userId != null">
+				User_ID,
+			</if>
+			<if test="paymentNo != null">
+				Payment_NO,
+			</if>
+			<if test="rechargeAcc != null">
+				Recharge_Acc,
+			</if>
+			<if test="rechargeMoney != null">
+				Recharge_Money,
+			</if>
+			<if test="type != null">
+				Type,
+			</if>
+			<if test="externalNo != null">
+				External_NO,
+			</if>
+			<if test="status != null">
+				Status,
+			</if>
+			<if test="operator != null">
+				Operator,
+			</if>
+			<if test="rechargeTime != null">
+				Recharge_Time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=INTEGER},
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="paymentNo != null">
+				#{paymentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="rechargeAcc != null">
+				#{rechargeAcc,jdbcType=VARCHAR},
+			</if>
+			<if test="rechargeMoney != null">
+				#{rechargeMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="externalNo != null">
+				#{externalNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="operator != null">
+				#{operator,jdbcType=INTEGER},
+			</if>
+			<if test="rechargeTime != null">
+				#{rechargeTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.RechargeRecord">
+		update recharge_record
+		<set>
+			<if test="userId != null">
+				User_ID = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="paymentNo != null">
+				Payment_NO = #{paymentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="rechargeAcc != null">
+				Recharge_Acc = #{rechargeAcc,jdbcType=VARCHAR},
+			</if>
+			<if test="rechargeMoney != null">
+				Recharge_Money = #{rechargeMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				Type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="externalNo != null">
+				External_NO = #{externalNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				Status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="operator != null">
+				Operator = #{operator,jdbcType=INTEGER},
+			</if>
+			<if test="rechargeTime != null">
+				Recharge_Time = #{rechargeTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhigu.model.RechargeRecord">
+		update recharge_record
+		set User_ID = #{userId,jdbcType=INTEGER},
+		Payment_NO =
+		#{paymentNo,jdbcType=VARCHAR},
+		Recharge_Acc = #{rechargeAcc,jdbcType=VARCHAR},
+		Recharge_Money = #{rechargeMoney,jdbcType=DECIMAL},
+		Type =
+		#{type,jdbcType=INTEGER},
+		External_NO = #{externalNo,jdbcType=VARCHAR},
+		Status = #{status,jdbcType=INTEGER},
+		Operator = #{operator,jdbcType=INTEGER},
+		Recharge_Time = #{rechargeTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="queryRechargeRecordByPage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from recharge_record
+		where User_ID = #{userId} order by Recharge_Time Desc
+	</select>
+	<select id="queryRechargeRecordByNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from recharge_record
+		where payment_No = #{paymentNo}
+	</select>
+	<update id="systemCancel" parameterType="java.lang.String">
+		update recharge_record set Status=9 where Status=0 and Recharge_Time &lt; #{date}
+	</update>
+</mapper>

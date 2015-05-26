@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.LogisticsMapper">
+	<resultMap id="BaseResultMap" type="com.zhigu.model.Logistics">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="fweight" property="fweight" jdbcType="DECIMAL" />
+		<result column="fmoney" property="fmoney" jdbcType="DECIMAL" />
+		<result column="cweight" property="cweight" jdbcType="DECIMAL" />
+		<result column="cmoney" property="cmoney" jdbcType="DECIMAL" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, code, fweight, fmoney, cweight, cmoney, status
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from logistics
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from logistics
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zhigu.model.Logistics">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into logistics (id, name, code,
+		fweight, fmoney, cweight,
+		cmoney, status)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
+		#{fweight,jdbcType=DECIMAL}, #{fmoney,jdbcType=DECIMAL}, #{cweight,jdbcType=DECIMAL},
+		#{cmoney,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhigu.model.Logistics">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into logistics
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="name != null">
+				name,
+			</if>
+			<if test="code != null">
+				code,
+			</if>
+			<if test="fweight != null">
+				fweight,
+			</if>
+			<if test="fmoney != null">
+				fmoney,
+			</if>
+			<if test="cweight != null">
+				cweight,
+			</if>
+			<if test="cmoney != null">
+				cmoney,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=INTEGER},
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="code != null">
+				#{code,jdbcType=VARCHAR},
+			</if>
+			<if test="fweight != null">
+				#{fweight,jdbcType=DECIMAL},
+			</if>
+			<if test="fmoney != null">
+				#{fmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="cweight != null">
+				#{cweight,jdbcType=DECIMAL},
+			</if>
+			<if test="cmoney != null">
+				#{cmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.Logistics">
+		update logistics
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="code != null">
+				code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="fweight != null">
+				fweight = #{fweight,jdbcType=DECIMAL},
+			</if>
+			<if test="fmoney != null">
+				fmoney = #{fmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="cweight != null">
+				cweight = #{cweight,jdbcType=DECIMAL},
+			</if>
+			<if test="cmoney != null">
+				cmoney = #{cmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhigu.model.Logistics">
+		update logistics
+		set name = #{name,jdbcType=VARCHAR},
+		code = #{code,jdbcType=VARCHAR},
+		fweight = #{fweight,jdbcType=DECIMAL},
+		fmoney = #{fmoney,jdbcType=DECIMAL},
+		cweight = #{cweight,jdbcType=DECIMAL},
+		cmoney = #{cmoney,jdbcType=DECIMAL},
+		status = #{status,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from logistics where status !=9
+	</select>
+</mapper>

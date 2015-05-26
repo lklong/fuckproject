@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><base href="${applicationScope.basePath}"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>消息中心</title>
+</head>
+<body>
+<div class="rightContainer" >
+	<h3 class="rc_title">我的消息</h3>
+	<div class="rc_body">
+		<table cellspacing="0" cellpadding="0" class="userCommTable">
+			<thead>
+				<tr><th>消息类别</th><th>发送人</th><th>消息内容</th><th>发送时间</th><th>状态</th><th>删除</th></tr>
+			</thead>
+			<tbody id="msgList">
+				
+			</tbody>
+		</table>
+		
+		<div id="page" class="pager"></div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	zhigu.showMessagePage(1);
+})
+// 分页加载消息列表
+zhigu.showMessagePage = function(pageNo){
+	var param = {"pageNo":pageNo};
+	zhigu.request.usermessage("m00002",{"pageNo":pageNo},function(msgBean){
+		if(msgBean.code==zhigu.code.success){
+			var pageBean = msgBean.data;
+			var tbodyContent = "";
+			for(var i=0;i<pageBean.datas.length;i++){
+				var message = pageBean.datas[i];
+				tbodyContent +="<tr><td>"+message.typeName+"</td><td>"+message.sendUserName+"</td><td style='position:relative'>"+message.content.substr(0,15)+"...  <a href='javascript:void(0)' onclick='zhigu.showMessageDetail("+message.msgId+",this);' style='color:#f86666;'> 查看 </a><div class='userMsgBox' id='m_"+message.msgId+"' style='border-color:#D8E5F8'>"+message.content+"</div></td><td>"+new Date(message.sendTime).format()+"</td><td id='status_"+message.msgId+"'>"+(message.status==0?"<span style='color:red'>未读</span>":"已读")+"</td><td><a href='javascript:void(0);' onclick='zhigu.messageDelete("+message.msgId+")'>删除</a></td></tr>";
+				//tbodyContent+="<tr class='disnone' id='m_"+message.msgId+"'><td  colspan=6><div class='userMsgBox' id='m_"+message.msgId+"' style='border-color:#D8E5F8'>"+message.content+"</div></td></tr>"
+			}
+			$("#msgList").html(tbodyContent);
+			zhigu.cmn.setPage(pageBean,zhigu.showMessagePage,"page");
+		}
+	});
+}
+zhigu.showMessageDetail = function(msgId,obj){
+	// 标记消息为已读
+	if($("#status_"+msgId).text().trim()=='未读'){
+		zhigu.request.usermessage("m00004",{"msgId":msgId},function(msgBean){
+			if(msgBean.code==zhigu.code.success){
+				$("#status_"+msgId).html("已读");
+			}
+		});
+	}
+	$("#m_"+msgId).toggle();
+	if($("#m_"+msgId).is(":hidden")){
+			$(obj).html('查看');
+	}else{
+			$(obj).html('关闭');
+	}
+}
+zhigu.messageDelete = function(msgId){
+	zhigu.request.usermessage("m00005",{"msgId":msgId},function(msgBean){
+		if(msgBean.code==zhigu.code.success){
+			zhigu.cmn.reloadPage();//删除成功，重新加载分页数据
+		}else{
+			dialog(msgBean.msg);
+		}
+	});
+}
+
+</script>
+</body>
+</html>

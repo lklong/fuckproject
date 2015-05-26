@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.AdminUserMapper">
+	
+	<!-- 根据角色ID查询资源 -->
+	<select id="queryAdminResourcesByRoleID" parameterType="int" resultType="adminResource">
+		select * from AdminResource A,AdminRoleToResource B where A.ResourceID=B.ResourceID and RoleID=#{roleID} order by ResourceTreeBM;
+	</select>
+	
+	<!-- 查询所有角色 -->
+	<select id="queryAdminRoles" resultType="adminRole">
+		select * from AdminRole
+	</select>
+	
+	<!-- 查询后台菜单 -->
+	<select id="queryAdminMenuByUserID" parameterType="int" resultType="adminResource">
+		(select * from AdminResource A where A.IsMenu=1 and A.ResourceID in (SELECT ResourceID from AdminRoleToResource B,Admin C where B.roleID=C.role_ID and C.id=#{adminId})) UNION (select * from AdminResource A where A.IsMenu=1 and A.IsCheck=0) ORDER BY ResourceTreeBM
+	</select>
+	
+	<!-- 角色可分配资源 -->
+	<select id="queryAdminResourceAll"  resultType="adminResource">
+		SELECT * from AdminResource where IsCheck=1 or ResourceTreeBM like '%0000' order by ResourceTreeBM;
+	</select>
+	
+	<!-- 资源查询by ResourceUrl -->
+	<select id="queryAdminResourceByResourceUrl" parameterType="string" resultType="adminResource">
+		SELECT * from AdminResource where ResourceUrl=#{resourceUrl} order by ResourceTreeBM DESC limit 1;
+	</select>
+	
+	<!-- 权限检查 -->
+	<select id="checkPermission" parameterType="map" resultType="adminResource">
+		SELECT A.* from AdminResource A,AdminRoletoResource B,Admin C where C.Role_ID=B.RoleID and B.ResourceID=A.ResourceID and A.ResourceUrl=#{resourceUrl} and C.id=#{userID} order by A.ResourceTreeBM DESC limit 1;
+	</select>
+	
+	<!-- 添加角色 -->
+	<insert id="addAdminRole" parameterType="adminRole">
+		INSERT into AdminRole(RoleName) values(#{roleName});
+		<selectKey keyProperty="roleID" resultType="int" order="AFTER" >
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 更新角色 --> 
+	<update id="updateAdminRole" parameterType="adminRole">
+		UPDATE AdminRole set RoleName=#{roleName} where RoleID=#{roleID}; 
+	</update>
+	
+	<insert id="addAdminRoleToResource">
+		INSERT into AdminRoleToreSource(RoleID,ResourceID) VALUES(#{roleID},#{resourceID});
+	</insert>
+	
+	<delete id="deleteAdminRoleToResource">
+		DELETE from AdminRoleToResource where RoleID=#{roleID};
+	</delete>
+
+</mapper>
+

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+	<mime-type>text/html</mime-type>
+	<!-- 普通装饰器 -->
+	
+	<mapping decorator="/decorate/main.jsp"/>
+	<mapping path="/user/cart**" decorator="/decorate/main.jsp"/>
+	<mapping path="/user/order/confirm" decorator="/decorate/main.jsp"/>
+	<mapping path="/user/order/pay" decorator="/decorate/main.jsp"/>
+	<mapping path="/user/ad/loadAdById" decorator="/decorate/main.jsp" />
+	<mapping path="/user/order/pay/submit" decorator="/decorate/main.jsp"/>
+	<mapping path="/user/file/uploadImage" exclue="true" />
+	<mapping path="/user/file/upload" exclue="true" />
+	<mapping path="/user/file/avatar" exclue="true" />
+	<mapping path="/js/3rdparty/avatar/header.jsp" exclue="true" />
+	<!-- 网商装饰器 -->
+	<mapping path="/user/**" decorator="/decorate/main_user.jsp"/>
+	<!-- 供应商装饰器 -->
+	<mapping path="/supplier/**" decorator="/decorate/main_user.jsp"/>
+	<mapping path="/supplier/space/folderFile*" exclue="true" />
+	<mapping path="/supplier/space/editorUpload" exclue="true" />
+	<mapping path="/supplier/ad/paysuccess" decorator="/decorate/main.jsp"/>
+	<!-- 供应商店铺注册普通装饰器 -->
+	 <mapping path="/supplier/store/register*" decorator="/decorate/main.jsp" />
+	<mapping path="/supplier/store/payStoreCost" decorator="/decorate/main.jsp" />
+	
+
+	 <!-- 店铺 -->
+	<mapping path="/store/*" decorator="/decorate/main.jsp" />
+	<mapping path="/store/dossier" exclue="true" />
+	<!-- 管理员装饰器 -->
+	<mapping path="/admin/**" decorator="/decorate/main_admin.jsp"/>
+	<mapping path="/admin" exclue="true" />
+	<mapping path="/admin/login" exclue="true" />
+	<mapping path="/admin/member/allot" exclue="true" />
+	<mapping path="/admin/member/detail/acc" exclue="true" />
+	<mapping path="/admin/member/detail/order" exclue="true" />
+	<mapping path="/admin/member/queryUserWriteRecommend" exclue="true" />
+	<mapping path="/admin/goods/add" decorator="/decorate/main.jsp"/>
+	
+	<mapping path="/user/address/dialog" exclue="true" />
+	<mapping path="/user/address/list" exclue="true" />
+
+	 
+	<mapping path="/tb/**" exclue="true" />
+	<mapping path="/tb/releaseConfirm" decorator="/decorate/main.jsp"/>
+	<!-- 帮助中心 -->
+	<mapping path="/help/**" decorator="/decorate/main_help.jsp"/>
+	<!-- 页面内部组件 -->
+	<mapping path="**/inner_**" exclue="true" />
+	<mapping path="/userSpace/upload" exclue="true" />
+		
+	<!-- 推广 -->
+	<mapping path="/generalize/gzob/index" exclue="true"/>
+	<mapping path="/generalize/zszj/index" exclue="true"/>
+	
+	<mapping path="/mobile/**" exclue="true"/>
+	<mapping path="/welcome" exclue="true"/>
+	<mapping path="/user/deposit/payInit" decorator="/decorate/main.jsp"/>
+	
+	<!-- 商品 -->
+	<mapping path="/goods/service/ajaxQueryGoods" exclue="true" />
+	<mapping path="/category/loadProperty" exclue="true" />
+	<mapping path="/goods/ajaxShoe" exclue="true" />
+	<mapping path="/goods/downloadHistory" exclue="true" />
+	
+	<!-- 评论 -->
+	<mapping path="/goods/ajax/comments" exclue="true" />
+	
+	<!-- 编辑器 -->
+	<mapping path="/js/3rdparty/ueditor/**" exclue="true" />
+	<!-- <mapping path="/ueditor/**" exclue="true" /> --><!--本地测试使用 -->
+	
+	<!-- 延迟加载图片 -->
+	<mapping path="/lazy/load/**" exclue="true" />
+	
+	<!-- 淘宝 -->
+	<mapping path="/user/tb/item/publish" decorator="/decorate/main.jsp" />
+   
+</sitemesh> 

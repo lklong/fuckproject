@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.ADMapper">
+
+	<select id="queryADByID" parameterType="int" resultType="AD">
+		select * from AD where ID = #{ID}
+	</select>
+	
+	<select id="queryADList" resultType="AD">
+		select * from AD
+	</select>
+	
+	<select id="queryADByGroupList" parameterType="int" resultType="AD">
+		select * from AD where `group` = #{value} Order By Sort 
+	</select>
+	
+	<update id="updateAD" parameterType="AD">
+		update AD set Image=#{image},TargetLink=#{targetLink},Title=#{title} where ID=#{ID};
+	</update>
+</mapper>
+

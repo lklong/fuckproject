@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.GoodsEvaluateMapper">
+	<resultMap id="BaseResultMap" type="com.zhigu.model.GoodsEvaluate">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="sku_id" property="skuId" jdbcType="INTEGER" />
+		<result column="score" property="score" jdbcType="INTEGER" />
+		<result column="buy_spec" property="buySpec" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="user_avatar" property="avatar" jdbcType="VARCHAR" />
+		<result column="merchant_reply" property="merchantReply" jdbcType="VARCHAR" />
+		<result column="reply_time" property="replyTime" jdbcType="TIMESTAMP" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, user_id, goods_id, sku_id, score, buy_spec, content, add_time,user_name,user_avatar,merchant_reply,reply_time
+	</sql>
+	
+	<sql id="Join_Column_List">
+		g.id, g.user_id, g.goods_id, g.sku_id, g.score, g.buy_spec, g.content, g.add_time,g.user_name,g.user_avatar,g.merchant_reply,g.reply_time,g.type
+	</sql>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from goods_evaluate
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from goods_evaluate
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insertSelective" parameterType="com.zhigu.model.GoodsEvaluate" keyProperty="id" useGeneratedKeys="true">
+		insert into goods_evaluate
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="goodsId != null">
+				goods_id,
+			</if>
+			<if test="skuId != null">
+				sku_id,
+			</if>
+			<if test="score != null">
+				score,
+			</if>
+			<if test="buySpec != null">
+				buy_spec,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="avatar != null">
+				user_avatar
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=BIGINT},
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="goodsId != null">
+				#{goodsId,jdbcType=INTEGER},
+			</if>
+			<if test="skuId != null">
+				#{skuId,jdbcType=INTEGER},
+			</if>
+			<if test="score != null">
+				#{score,jdbcType=INTEGER},
+			</if>
+			<if test="buySpec != null">
+				#{buySpec,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="addTime != null">
+				#{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userName != null">
+				#{username,jdbcType = VARCHAR},
+			</if>
+			<if test="avatar != null">
+				#{avatar,jdbcType = VARCHAR}
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 
+	<select id="queryGoodsEvaluatesByPage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		  from goods_evaluate
+		  where goods_id = #{goodsId,jdbcType=BIGINT}
+		<if test="userId != null">
+			and user_id = #{userId,jdbcType=INTEGER}
+		</if>
+		<if test="score != null">
+			and score in #{score}
+		</if>
+		  order by add_time DESC
+	</select> -->
+	
+	<!-- 评论分页查询 -->
+	<select id="queryGoodsEvaluatesByPage" resultMap="BaseResultMap">
+		SELECT 
+		    <include refid="Join_Column_List"/>
+		FROM
+		    (SELECT 
+		       <include refid="Base_Column_List" />,
+		            CASE
+		                WHEN score BETWEEN 2 AND 4 THEN 2
+		                WHEN score = 1 THEN 3
+		                WHEN score = 5 THEN 1
+		            END AS type
+		    FROM
+		        goods_evaluate) g
+		    WHERE g.goods_id = #{goodsId}
+		<if test="type != 0">
+			AND g.type = #{type}
+		</if>
+		ORDER BY  g.add_time DESC,g.type ASC 
+	</select>
+	
+	<!-- 商品评论统计 -->
+	<select id="countCommentsByScore" resultType="hashmap">
+		SELECT 
+		    CASE
+		        WHEN SUM(score BETWEEN 1 AND 5) IS NULL THEN 0
+		        ELSE SUM(score BETWEEN 1 AND 5)
+		    END AS 'all',
+		    CASE
+		        WHEN SUM(score BETWEEN 2 AND 4) IS NULL THEN 0
+		        ELSE SUM(score BETWEEN 2 AND 4)
+		    END AS 'medium',
+		    CASE
+		        WHEN SUM(score = 1) IS NULL THEN 0
+		        ELSE SUM(score = 1)
+		    END AS 'bad',
+		    CASE
+		        WHEN SUM(score = 5) IS NULL THEN 0
+		        ELSE SUM(score = 5)
+		    END AS 'good'
+		FROM
+		    goods_evaluate
+		WHERE goods_id = #{goodsId}
+	</select>
+	
+	<!-- 商家回复 -->
+	<update id="addMerchantReply" >
+		UPDATE goods_evaluate SET merchant_reply =#{reply},reply_time = now() WHERE id = #{id}
+	</update>
+</mapper>

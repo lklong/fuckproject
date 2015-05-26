@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.PropertyValueMapper" >
+  <resultMap id="BaseResultMap" type="com.zhigu.model.PropertyValue" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="propertyid" property="propertyId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, propertyid, name, sort, status
+  </sql>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from propertyvalue
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from propertyvalue
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  	
+ 
+  <insert id="insert" parameterType="com.zhigu.model.PropertyValue" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into propertyvalue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="propertyId != null" >
+        propertyid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="propertyId != null" >
+        #{propertyId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.zhigu.model.PropertyValue" >
+    update propertyvalue
+    <set >
+      <if test="propertyid != null" >
+        propertyid = #{propertyid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  	<!-- 查询属性值 -->
+	<select id="queryPropertyValue" parameterType="int" resultType="hashmap">
+		Select  <include refid="Base_Column_List" /> From PropertyValue Where PropertyId = #{value} And Status = 1 Order By Sort
+	</select>
+  	
+  		<!-- 查询属性值 -->
+	<select id="queryPropValueByName" parameterType="string" resultType="com.zhigu.model.PropertyValue">
+		Select  <include refid="Base_Column_List" /> From PropertyValue Where name = #{name} 
+	</select>
+	
+		<select id="privatePropertyValueList" resultType="hashmap" >
+		select propertyvalue.* from categoryvalue  
+				left join propertyvalue 
+				on categoryvalue.propertyvalueid = propertyvalue.id
+		  where categoryvalue.categoryid = #{categoryId} 
+		  and propertyvalue.propertyid =#{propertyId} 
+		  and propertyvalue.status = 1 
+		  order by propertyvalue.sort
+	</select>
+  	
+</mapper>

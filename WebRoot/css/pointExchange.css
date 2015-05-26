@@ -1,0 +1,38 @@
+/*-- 积分商城 --*/
+.jfTopBanner { width:100%; height:241px; background:url(../img/pointexchange/jftopbanner.jpg) repeat-x center top;}
+.jfBody { width:1188px; border:1px solid #dedede; height:140px; margin:0 auto 15px auto; padding-top:10px;}
+.jfTitle { width:1190px; height:30px; line-height:30px; font-weight:bold; color:#454545; margin:15px auto 0 auto; font-size:15px;}
+.jfBody p { padding:5px 15px;}
+.jfBody p a { display:block; float:left; margin:3px 8px 0 0; padding:5px 15px 5px 15px; color:#ffffff; font-weight:bold; font-size:14px;}
+a.abg_red { background-color:#f86666; display:block; margin:3px 7px 0 7px; padding:5px 16px 5px 16px; font-weight:bold; font-size:14px; text-align:center; color:#ffffff !important;}
+a.abg_gray{ background-color:#cdcdcd; color:#999999 !important;display:block; margin:3px 7px 0 7px; padding:5px 16px 5px 16px; font-weight:bold; font-size:14px; text-align:center;}
+a.abg_yellow { background-color:#E49D22;}
+.jfList { width:1190px; overflow:hidden; margin:10px auto;}
+.jfListInside { width:1220px;}
+.jfListBoxes { float:left; height:360px; width:220px; border:1px solid #dedede; margin-right:20px; margin-bottom:20px;}
+.jfListBoxes p,h3{ padding:5px !important;}
+.jfListBoxes p span { float:right;}
+.userJiFen { width:1190px; margin:0 auto; height:70px; position:relative;}
+.ujfInside { position:absolute; z-index:13; top:-75px; }
+.ujfInside img { border:3px solid #ffffff;}
+.ujfImg { border:1px solid #dedede; height:146px; width:146px; float:left}
+.ujfInfo { float:right; padding-top:85px;}
+.ujfInfo p { padding:0 !important;}
+.duihuanbox p { padding:8px 0 0 0; width:290px; margin:2px auto; height:26px; line-height:26px;}
+.duihuanbox p span { float:left; width:100px; display:block;}
+.duihuanbox p input { border:1px solid #a0a0a0; height:24px; width:170px;}
+.duihuanbtn { height:26px; border:1px solid #f86666 !important; background-color:#F86666; text-align:center; margin-left:100px; width:80px !important; font-wight:bold; color:#ffffff;}
+
+/* 通用按钮 */
+/* 红-深红 */
+.comBtn_red em { position:absolute; height:38px; width:16px; left:-16px; display:block; float:left; background:url(../img/combtn_red1.png) no-repeat left top;}
+a.comBtn_red:hover em { position:absolute; height:38px; width:16px; left:-16px; display:block; float:left; background:url(../img/combtn_red2.png) no-repeat left top;}
+a.comBtn_red:link { display:block; float:left; height:38px; background:url(../img/combtn_red1.png) no-repeat right top; line-height:37px; font-size:15px; font-weight:bold; color:#ffffff; padding:0 16px 0 0; position:relative; margin-left:16px;}
+a.comBtn_red:visited { display:block; float:left; height:38px; background:url(../img/combtn_red1.png) no-repeat right top; line-height:37px; font-size:15px; font-weight:bold; color:#ffffff; padding:0 16px 0 0; position:relative; margin-left:16px;}
+a.comBtn_red:hover { display:block; float:left; height:38px; background:url(../img/combtn_red2.png) no-repeat right top; line-height:37px; font-size:15px; font-weight:bold; color:#ffffff; padding:0 16px 0 0; position:relative; margin-left:16px;}
+/* 灰-红 */
+.comBtn_gray em { position:absolute; height:38px; width:16px; left:-16px; display:block; float:left; background:url(../img/combtn_gray1.png) no-repeat left top;}
+a.comBtn_gray:hover em { position:absolute; height:38px; width:16px; left:-16px; display:block; float:left; background:url(../img/combtn_gray1.png) no-repeat left top;}
+a.comBtn_gray:link { display:block; float:left; height:38px; background:url(../img/combtn_gray1.png) no-repeat right top; line-height:37px; font-size:15px; font-weight:bold; color:#999999; padding:0 16px 0 0; position:relative; margin-left:16px;}
+a.comBtn_gray:visited { display:block; float:left; height:38px; background:url(../img/combtn_gray1.png) no-repeat right top; line-height:37px; font-size:15px; font-weight:bold; color:#999999; padding:0 16px 0 0; position:relative; margin-left:16px;}
+a.comBtn_gray:hover { display:block; float:left; height:38px; background:url(../img/combtn_gray1.png) no-repeat right top; line-height:37px; font-size:15px; font-weight:bold; color:#999999; padding:0 16px 0 0; position:relative; margin-left:16px;}

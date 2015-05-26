@@ -1,0 +1,9 @@
+input.error { border: 1px solid red; }
+label.error {
+  padding-left: 10px;
+  padding-bottom: 2px;
+  color: #F00;
+}
+label.checked {
+  /**background:url("/img/GG.jpg") no-repeat 0px 0px;*/
+}

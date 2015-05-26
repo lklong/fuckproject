@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.AddressMapper">
+
+	<!-- 根据userID查询 -->
+	<select id="queryAddressByUserID" parameterType="int" resultType="address">
+		Select * from Address where UserID = #{userID} and Status = 1 Order By IsDefault Desc,ID Desc;
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="queryAddressByID" parameterType="int" resultType="address">
+		Select * from Address where UserID = #{userID} And ID = #{id} And Status = 1;
+	</select>
+	<!-- 根据默认收货地址 -->
+	<select id="queryDefaultAddress" parameterType="int" resultType="com.zhigu.model.Address">
+		Select * from Address where UserID = #{userID} And IsDefault = 1 And Status = 1 limit 1;
+	</select>
+
+	<!-- 保存认证信息 -->
+	<insert id="saveAddress" parameterType="address">
+		Insert Into Address(UserID,Name,Phone,Tel,Province,City,District,Street,PostCode,IsDefault,Status) Value(#{userID},#{name},#{phone},#{tel},#{province},#{city},#{district},#{street},#{postcode},#{isDefault},1);
+		<selectKey resultType="int" keyProperty="ID" order="AFTER" >  
+		  SELECT LAST_INSERT_ID()  
+		</selectKey>
+	</insert>
+
+	<!-- 修改地址-->
+	<update id="updateAddress" parameterType="address">
+		Update Address Set Name=#{name},Phone=#{phone},Tel=#{tel},Province=#{province},City=#{city},District=#{district},Street=#{street},PostCode=#{postcode},IsDefault=#{isDefault}  Where UserID = #{userID} And ID = #{ID};
+	</update>
+	
+	<!-- 修改默认地址 -->
+	<update id="updateDefaultAddress" >
+		Update Address Set IsDefault = IF(ID = #{id},1,0) Where UserID = #{userID} And Status = 1;
+	</update>
+	
+	<!-- 删除地址 -->
+	<update id="deleteAddress" >
+		Update Address Set Status = 0 Where ID = #{id} And UserID = #{userID};
+	</update>
+</mapper>
+

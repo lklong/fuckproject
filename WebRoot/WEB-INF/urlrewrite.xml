@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+	"http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
+<urlrewrite>
+	<rule>
+		<!-- 所有配置如下正则表达式的请求 -->
+		<from>^/([_a-zA-Z]+[_0-9a-zA-Z-/]*[_0-9a-zA-Z]+)$</from>
+		<!-- 将被forward到如下JSP页面，其中$1代表上面第一个正则表达式所匹配的字符串 -->
+		<to type="forward">/$1.do</to>
+	</rule>
+</urlrewrite>
+

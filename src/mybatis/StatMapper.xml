@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.StatMapper">
+	<!-- 统计充值 -->
+	<select id="statRecharge" resultType="java.util.HashMap">
+		Select Sum(Recharge_Money) sumMoney,Sum(IF(Recharge_Time >= DATE_FORMAT(NOW(),'%Y-%m-%d'),Recharge_Money,0)) todaySumMoney From Recharge_Record Where Status = 1;
+	</select>
+	<!-- 统计订单 -->
+	<select id="statOrder" resultType="java.util.HashMap">
+		Select 
+			Sum(1) sum,
+			Sum(IF(Status = 1,1,0)) sum1,
+			Sum(IF(Status = 2,1,0)) sum2,
+			Sum(IF(Status = 3,1,0)) sum3,
+			Sum(IF(Status = 4,1,0)) sum4,
+			Sum(IF(Status = 9,1,0)) sum9,
+			Sum(IF(OrderTime >= DATE_FORMAT(NOW(),'%Y-%m-%d'),1,0)) todaySum,
+			Sum(payableMenoy) sumMoney,
+			Sum(IF(OrderTime >= DATE_FORMAT(NOW(),'%Y-%m-%d'),payableMenoy,0)) todaySumMoney
+		 From Orders;
+	</select>
+	<!-- 统计会员 -->
+	<select id="statMember" resultType="java.util.HashMap">
+		Select 
+			Count(1) sum,
+			Sum(IF(B.RegisterTime >= DATE_FORMAT(NOW(),'%Y-%m-%d'),1,0)) todayRegSum,
+			Sum(IF(A.LatestLoginTime >= DATE_FORMAT(NOW(),'%Y-%m-%d'),1,0)) todayLoginSum,
+			Sum(IF(ISNULL(C.recharge),0,1)) rechargeSum
+			From UserAuth A,UserInfo B Left Join (Select 1 recharge,User_ID userId From recharge_record Where `Status` = 1 GROUP BY UserID) C On B.UserID = C.UserID 
+			Where A.UserID = B.UserID;
+	</select>
+	<select id="statCommodity" resultType="java.util.HashMap">
+		Select 
+			Sum(1) sum,
+			Sum(IF(A.time >= DATE_FORMAT(NOW(),'%Y-%m-%d'),1,0)) todayAdd,
+			Sum(IF(A.`Status` = 1,1,0)) upSum,
+			Sum(IF(A.`Status` = 1 And A.time >= DATE_FORMAT(NOW(),'%Y-%m-%d'),1,0)) todayUpSum,
+			Sum(IF(A.`Status` = 2,1,0)) downSum,
+			Sum(IF(A.`Status` = 2 And A.time >= DATE_FORMAT(NOW(),'%Y-%m-%d'),1,0)) todayDownSum,
+			Sum(IF(ISNULL(A.File) OR A.File = '',0,1)) fileSum,
+			Sum(1) downLoadSum
+			From Goods A;
+	</select>
+</mapper>

@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.AdminMemberMapper">
+
+    <!-- 查询普通会员列表 -->
+	<select id="queryCommonMemberListByPage"  resultType="hashmap">
+		<![CDATA[
+	   	Select R.*,H.RealName,H.ApproveState realUserStatus From (
+			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,G.name staffName From 
+				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status` From UserAuth A,UserInfo B Where A.UserID = B.UserID ) L 
+			Left Join 
+				(Select A.UserID,Sum(B.Quantity) BuyCount From Orders A,OrderDetail B Where A.ID = B.OrderID And A.`Status` = 4 Group By A.UserID) D
+					On L.UserID = D.UserID
+			Left Join 
+				(Select E.UserID,Sum(Quantity) DownLoadCount From (Select UserID,Count(1) Quantity From downloadhistory Group By UserID,GoodsID) E Group By E.UserID) E
+					On L.UserID = E.UserID
+			Left Join 
+				Account F On L.UserID = F.User_ID
+			Left Join 
+				(Select A.UserID,A.StaffID,B.name From StaffMember A,Admin B Where A.Status = 0 And A.StaffID = B.ID Group By UserID) G
+					On L.UserID = G.UserID
+		) R Left Join  realuserauth H On R.UserID = H.UserID 
+		]]>
+		Where R.Status = 0
+		<if test="mc.staffID != null">
+			And StaffID = #{mc.staffID} 
+		</if>
+		<if test="mc.realUserStatus>0">
+			And H.approveState = #{mc.realUserStatus} 
+		</if>
+		<!-- 用户名 -->
+		<if test="mc.username != null and mc.username != ''">
+			And R.Username like "%"#{mc.username}"%" 
+		</if>
+		<!-- 电话 -->
+		<if test="mc.phone != null and mc.phone != ''">
+			And R.Phone = #{mc.phone} 
+		</if>
+		<!-- 邮箱 -->
+		<if test="mc.email != null and mc.email != ''">
+			And R.EMail like "%"#{mc.email}"%"
+		</if>
+		<!-- 注册时间 -->
+		<if test="mc.startDate != null">
+			And R.RegisterTime >= #{mc.startDate} 
+		</if>
+		<if test="mc.endDate != null">
+			<![CDATA[
+				And R.RegisterTime < #{mc.endDate}
+			]]> 
+		</if>
+		<!-- 手机绑定 -->
+		<if test="mc.isPhoneBound != null">
+			And R.isPhoneBound = #{mc.isPhoneBound} 
+		</if>
+		<!-- 邮箱绑定 -->
+		<if test="mc.isEmailBound != null">
+			And R.isEmailBound = #{mc.isEmailBound} 
+		</if>
+		<!-- 分配 -->
+		<if test="mc.isAllot != null">
+			And R.isAllot = #{mc.isAllot} 
+		</if>
+		<!-- 排序 order 奇数升，偶数降-->
+		Order By 
+		<choose>
+			<!-- 注册时间 -->
+			<when test="mc.order == 1">R.RegisterTime ASC</when>
+			<when test="mc.order == 2">R.RegisterTime DESC</when>
+			<!-- 登录次数 -->
+			<when test="mc.order == 3">R.LoginCount ASC</when>
+			<when test="mc.order == 4">R.LoginCount DESC</when>
+			<!-- 已买商品 -->
+			<when test="mc.order == 5">R.BuyCount ASC</when>
+			<when test="mc.order == 6">R.BuyCount DESC</when>
+			<!-- 下载商品 -->
+			<when test="mc.order == 7">R.DownLoadCount ASC</when>
+			<when test="mc.order == 8">R.DownLoadCount DESC</when>
+			<!-- 金额 -->
+			<when test="mc.order == 9">R.accountMoney ASC</when>
+			<when test="mc.order == 10">R.accountMoney DESC</when>
+		</choose>
+	</select>
+	
+	<!-- 公司员工会员 -->
+	<select id="queryInnerEmployeeMemberByPage"  resultType="hashmap">
+		<![CDATA[
+	   	Select R.*,H.RealName,H.ApproveState realUserStatus From (
+			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,G.name staffName From 
+				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status` From UserAuth A,UserInfo B Where A.UserID = B.ID and B.IsInnerEmployee=1) L 
+			Left Join 
+				(Select A.UserID,Sum(B.Quantity) BuyCount From Orders A,OrderDetail B Where A.ID = B.OrderID And A.`Status` = 4 Group By A.UserID) D
+					On L.UserID = D.UserID
+			Left Join 
+				(Select E.UserID,Sum(Quantity) DownLoadCount From (Select UserID,Count(1) Quantity From downloadhistory Group By UserID,GoodsID) E Group By E.UserID) E
+					On L.UserID = E.UserID
+			Left Join 
+				Account F On L.UserID = F.User_ID
+			Left Join 
+				(Select A.UserID,A.StaffID,B.Username From StaffMember A,Admin B Where A.Status = 0 And A.StaffID = B.ID Group By UserID) G
+					On L.UserID = G.UserID
+		) R Left Join  realuserauth H On R.UserID = H.UserID 
+		]]>
+		Where 1=1
+		<if test="mc.staffID != null">
+			And StaffID = #{mc.staffID} 
+		</if>
+		<if test="mc.realUserStatus>0">
+			And H.approveState = #{mc.realUserStatus} 
+		</if>
+		<!-- 用户名 -->
+		<if test="mc.username != null and mc.username != ''">
+			And R.Username like "%"#{mc.username}"%" 
+		</if>
+		<!-- 电话 -->
+		<if test="mc.phone != null and mc.phone != ''">
+			And R.Phone = #{mc.phone} 
+		</if>
+		<!-- 邮箱 -->
+		<if test="mc.email != null and mc.email != ''">
+			And R.EMail = #{mc.email} 
+		</if>
+		<!-- 注册时间 -->
+		<if test="mc.startDate != null">
+			And R.RegisterTime >= #{mc.startDate} 
+		</if>
+		<if test="mc.endDate != null">
+			<![CDATA[
+				And R.RegisterTime < #{mc.endDate}
+			]]> 
+		</if>
+		<!-- 手机绑定 -->
+		<if test="mc.isPhoneBound != null">
+			And R.isPhoneBound = #{mc.isPhoneBound} 
+		</if>
+		<!-- 邮箱绑定 -->
+		<if test="mc.isEmailBound != null">
+			And R.isEmailBound = #{mc.isEmailBound} 
+		</if>
+		<!-- 分配 -->
+		<if test="mc.isAllot != null">
+			And R.isAllot = #{mc.isAllot} 
+		</if>
+		<!-- 排序 order 奇数升，偶数降-->
+		Order By 
+		<choose>
+			<!-- 注册时间 -->
+			<when test="mc.order == 1">R.RegisterTime ASC</when>
+			<when test="mc.order == 2">R.RegisterTime DESC</when>
+			<!-- 登录次数 -->
+			<when test="mc.order == 3">R.LoginCount ASC</when>
+			<when test="mc.order == 4">R.LoginCount DESC</when>
+			<!-- 已买商品 -->
+			<when test="mc.order == 5">R.BuyCount ASC</when>
+			<when test="mc.order == 6">R.BuyCount DESC</when>
+			<!-- 下载商品 -->
+			<when test="mc.order == 7">R.DownLoadCount ASC</when>
+			<when test="mc.order == 8">R.DownLoadCount DESC</when>
+			<!-- 金额 -->
+			<when test="mc.order == 9">R.accountMoney ASC</when>
+			<when test="mc.order == 10">R.accountMoney DESC</when>
+		</choose>
+	</select>
+	<!-- 禁用用户 -->
+	<select id="queryUnableMemberListByPage"  resultType="hashmap">
+		<![CDATA[
+	   	Select R.*,H.RealName,H.ApproveState realUserStatus From (
+			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,G.name staffName From 
+				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status` From UserAuth A,UserInfo B Where A.UserID = B.UserID and A.Status = 9) L 
+			Left Join 
+				(Select A.UserID,Sum(B.Quantity) BuyCount From Orders A,OrderDetail B Where A.ID = B.OrderID And A.`Status` = 4 Group By A.UserID) D
+					On L.UserID = D.UserID
+			Left Join 
+				(Select E.UserID,Sum(Quantity) DownLoadCount From (Select UserID,Count(1) Quantity From downloadhistory Group By UserID,GoodsID) E Group By E.UserID) E
+					On L.UserID = E.UserID
+			Left Join 
+				Account F On L.UserID = F.User_ID
+			Left Join 
+				(Select A.UserID,A.StaffID,B.name From StaffMember A,Admin B Where A.Status = 0 And A.StaffID = B.ID Group By UserID) G
+					On L.UserID = G.UserID
+		) R Left Join  realuserauth H On R.UserID = H.UserID 
+		]]>
+		Where 1=1
+		<if test="mc.staffID != null">
+			And StaffID = #{mc.staffID} 
+		</if>
+		<if test="mc.realUserStatus>0">
+			And H.approveState = #{mc.realUserStatus} 
+		</if>
+		<!-- 用户名 -->
+		<if test="mc.username != null and mc.username != ''">
+			And R.Username like "%"#{mc.username}"%" 
+		</if>
+		<!-- 电话 -->
+		<if test="mc.phone != null and mc.phone != ''">
+			And R.Phone = #{mc.phone} 
+		</if>
+		<!-- 邮箱 -->
+		<if test="mc.email != null and mc.email != ''">
+			And R.EMail = #{mc.email} 
+		</if>
+		<!-- 注册时间 -->
+		<if test="mc.startDate != null">
+			And R.RegisterTime >= #{mc.startDate} 
+		</if>
+		<if test="mc.endDate != null">
+			<![CDATA[
+				And R.RegisterTime < #{mc.endDate}
+			]]> 
+		</if>
+		<!-- 手机绑定 -->
+		<if test="mc.isPhoneBound != null">
+			And R.isPhoneBound = #{mc.isPhoneBound} 
+		</if>
+		<!-- 邮箱绑定 -->
+		<if test="mc.isEmailBound != null">
+			And R.isEmailBound = #{mc.isEmailBound} 
+		</if>
+		<!-- 分配 -->
+		<if test="mc.isAllot != null">
+			And R.isAllot = #{mc.isAllot} 
+		</if>
+		<!-- 排序 order 奇数升，偶数降-->
+		Order By 
+		<choose>
+			<!-- 注册时间 -->
+			<when test="mc.order == 1">R.RegisterTime ASC</when>
+			<when test="mc.order == 2">R.RegisterTime DESC</when>
+			<!-- 登录次数 -->
+			<when test="mc.order == 3">R.LoginCount ASC</when>
+			<when test="mc.order == 4">R.LoginCount DESC</when>
+			<!-- 已买商品 -->
+			<when test="mc.order == 5">R.BuyCount ASC</when>
+			<when test="mc.order == 6">R.BuyCount DESC</when>
+			<!-- 下载商品 -->
+			<when test="mc.order == 7">R.DownLoadCount ASC</when>
+			<when test="mc.order == 8">R.DownLoadCount DESC</when>
+			<!-- 金额 -->
+			<when test="mc.order == 9">R.accountMoney ASC</when>
+			<when test="mc.order == 10">R.accountMoney DESC</when>
+		</choose>
+	</select>
+	<!-- 查询供应商列表 -->
+	<select id="querySupplieMemberByPage"  resultType="hashmap">
+		<![CDATA[
+	   	Select R.*,H.RealName,H.ApproveState realUserStatus,I.ApproveState companyStatus,J.approve_state realStoreStatus From (
+			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(C.UploadCount),0,C.UploadCount) UploadCount,IF(ISNULL(C.PubCount),0,C.PubCount) PubCount,IF(ISNULL(C.PurchaseCount),0,C.PurchaseCount) PurchaseCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,C.StoreName,G.name staffName From 
+				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status` From UserAuth A,UserInfo B Where A.UserID = B.UserID and B.UserType>1) L 
+			Left Join 
+				(Select A.UserID,1 Store,A.StoreName,Sum(1) UploadCount,Sum(IF(B.`Status` = 1,1,0)) PubCount,Sum(C.Purchasecount) PurchaseCount,Sum(IF(B.File IS NOT NULL AND B.File <> '',1,0)) Upload From Store A,Goods B,Goodsaux C Where A.ID = B.StoreID and B.id=C.goodsid Group By A.ID) C
+					On L.UserID = C.UserID
+			Left Join 
+				(Select A.UserID,Sum(B.Quantity) BuyCount From Orders A,OrderDetail B Where A.ID = B.OrderID And A.`Status` = 4 Group By A.UserID) D
+					On L.UserID = D.UserID
+			Left Join 
+				(Select E.UserID,Sum(Quantity) DownLoadCount From (Select UserID,Count(1) Quantity From downloadhistory Group By UserID,GoodsID) E Group By E.UserID) E
+					On L.UserID = E.UserID
+			Left Join 
+				Account F On L.UserID = F.User_ID
+			Left Join 
+				(Select A.UserID,A.StaffID,B.name From StaffMember A,Admin B Where A.Status = 0 And A.StaffID =B.ID  Group By UserID) G
+					On L.UserID = G.UserID
+		) R Left Join  realuserauth H On R.UserID = H.UserID 
+			Left Join CompanyAuth I On R.UserID = I.UserID 
+			Left Join real_store_auth J On R.UserID = J.user_id
+		]]>
+		Where R.Status = 0
+		<if test="mc.staffID != null">
+			And StaffID = #{mc.staffID} 
+		</if>
+		<if test="mc.realUserStatus>0">
+			And H.approveState = #{mc.realUserStatus} 
+		</if>
+		<if test="mc.companyStatus>0">
+			And I.approveState = #{mc.companyStatus} 
+		</if>
+		<if test="mc.realStoreStatus>0">
+			And J.approve_state = #{mc.realStoreStatus} 
+		</if>
+		<!-- 用户名 -->
+		<if test="mc.username != null and mc.username != ''">
+			And R.Username like "%"#{mc.username}"%" 
+		</if>
+		<!-- 电话 -->
+		<if test="mc.phone != null and mc.phone != ''">
+			And R.Phone = #{mc.phone} 
+		</if>
+		<!-- 邮箱 -->
+		<if test="mc.email != null and mc.email != ''">
+			And R.EMail = #{mc.email} 
+		</if>
+		<!-- 店铺名 -->
+		<if test="mc.storeName != null and mc.storeName != ''">
+			And R.storeName like "%"#{mc.storeName}"%" 
+		</if>
+		<!-- 注册时间 -->
+		<if test="mc.startDate != null">
+			And R.RegisterTime >= #{mc.startDate} 
+		</if>
+		<if test="mc.endDate != null">
+			<![CDATA[
+				And R.RegisterTime < #{mc.endDate}
+			]]> 
+		</if>
+		<!-- 手机绑定 -->
+		<if test="mc.isPhoneBound != null">
+			And R.isPhoneBound = #{mc.isPhoneBound} 
+		</if>
+		<!-- 邮箱绑定 -->
+		<if test="mc.isEmailBound != null">
+			And R.isEmailBound = #{mc.isEmailBound} 
+		</if>
+		<!-- 分配 -->
+		<if test="mc.isAllot != null">
+			And R.isAllot = #{mc.isAllot} 
+		</if>
+		<!-- 排序 order 奇数升，偶数降-->
+		Order By 
+		<choose>
+			<!-- 注册时间 -->
+			<when test="mc.order == 1">R.RegisterTime ASC</when>
+			<when test="mc.order == 2">R.RegisterTime DESC</when>
+			<!-- 登录次数 -->
+			<when test="mc.order == 3">R.LoginCount ASC</when>
+			<when test="mc.order == 4">R.LoginCount DESC</when>
+			<!-- 已买商品 -->
+			<when test="mc.order == 5">R.BuyCount ASC</when>
+			<when test="mc.order == 6">R.BuyCount DESC</when>
+			<!-- 下载商品 -->
+			<when test="mc.order == 7">R.DownLoadCount ASC</when>
+			<when test="mc.order == 8">R.DownLoadCount DESC</when>
+			<!-- 发布商品 -->
+			<when test="mc.order == 9">R.PubCount ASC</when>
+			<when test="mc.order == 10">R.PubCount DESC</when>
+			<!-- 上传商品 -->
+			<when test="mc.order == 11">R.UploadCount ASC</when>
+			<when test="mc.order == 12">R.UploadCount DESC</when>
+			<!-- 金额 -->
+			<when test="mc.order == 13">R.accountMoney ASC</when>
+			<when test="mc.order == 14">R.accountMoney DESC</when>
+		</choose>
+	</select>
+	<!-- 分配 -->
+	<insert id="saveAllotMember" parameterType="staffMember">
+		Insert Into StaffMember(StaffID,UserID,Status,AllotTime) Values(#{staffID},#{userID},0,Now())
+	</insert>
+	<!-- 废弃分配记录，存在分配修改，记录保存 -->
+	<update id="updateAllotMember" parameterType="list">
+		Update StaffMember Set Status = 9 Where Status = 0 And UserID In
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</update>
+	<!-- 修改用户状态 -->
+	<update id="updateMemStatus" parameterType="map">
+		Update UserAuth Set Status = #{status} Where UserID IN
+		<foreach collection="mems" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</update>
+	<!-- 用户是否是公司员工 -->
+	<update id="updateIsInnerEmployee" parameterType="map">
+		update UserInfo Set IsInnerEmployee=#{isInnerEmployee} where UserID=#{userID};
+	</update>
+	<!-- 取消会员分配 -->
+	<delete id="deleteStaffMemberByStaffID" parameterType="int">
+		DELETE from staffmember where staffID=#{staffID};
+	</delete>
+	<!-- 查询会员，通过推荐人  -->
+	<select id="queryMemberByRecommendUser" parameterType="int" resultType="userInfo">
+		select A.userID,A.UserName  from userauth A,userinfo B where A.UserID=B.UserID and B.RecommendUserID=#{recommendUserID};
+	</select>
+</mapper>
+

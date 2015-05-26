@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.CategoryMapper">
+	<!-- 查询所有类别 -->
+	<select id="queryCategoryList" resultType="category">
+		Select * From Category Where  Order By parentId,sort
+	</select>
+	
+	<!-- 查询指定类别 --> 
+	<select id="queryCategoryById" resultType="category" parameterType="int">
+		Select * From Category Where ID = #{ID} Order By sort
+	</select>
+	
+	  <sql id="Base_Column_List" >
+    id, name, parentId, isParent, sort, code
+  </sql>
+	
+	  <select id="getCategoryByPid"  resultType="hashmap" parameterType="int">
+  	  select 
+	    <include refid="Base_Column_List" />
+	   from category
+	   where parentId = #{pid} order by sort desc
+  </select>
+  
+	<!-- 查询指定类别 --> 
+	<select id="queryCategoryByCode" resultType="category" parameterType="String">
+		Select * From Category Where code like #{code}"%" Order By sort
+	</select>
+	<!-- 查询指定类别子集 -->
+	<select id="queryCategoryByParent" resultType="category" parameterType="int">
+		Select * From Category Where parentId = #{parentId} Order By sort
+	</select>
+	
+	<!-- 查询类型属性 -->
+	<select id="queryPropertyByCategory" resultMap="propertyMap" parameterType="int">
+		Select A.* From Property A,Categoryproperty B,category C Where A.id=B.propertyid and B.categoryid=C.id and C.id = #{value} And A.status = 1 Order By A.Sort
+	</select>
+	
+	<!-- 查询属性值 -->
+	<select id="queryPropertyValue" parameterType="int" resultType="propertyValue">
+		Select * From PropertyValue Where PropertyId = #{value} And Status = 1 Order By Sort
+	</select>
+	
+	<!-- 级联关系映射 -->
+	<resultMap type="property" id="propertyMap" autoMapping="true">
+		<id property="id" column="id"/>
+		<collection property="values" ofType="propertyValue"  select="queryPropertyValue" column="id"></collection>
+	</resultMap>
+	
+	
+	<select id="privatePropertyValueList" resultType="propertyValue">
+		select * from categoryvalue  
+				left join propertyvalue 
+				on categoryvalue.propertyvalueid = propertyvalue.id
+		  where categoryvalue.categoryid = #{categoryId} 
+		  and propertyvalue.propertyid =#{propertyId} 
+		  and propertyvalue.status = 1 
+		  order by propertyvalue.sort
+	</select>
+	
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <select id="queryAll" resultType="hashmap">
+  	select <include refid="Base_Column_List"/> from category order by id desc
+  </select>
+  
+  <insert id="insert" parameterType="com.zhigu.model.Category" useGeneratedKeys="true" keyProperty="id" >
+    insert into category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parentId != null" >
+        parentId,
+      </if>
+      <if test="isParent != null" >
+        isParent,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="isParent != null" >
+        #{isParent,jdbcType=BIT},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.zhigu.model.Category" >
+    update category
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parentId = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="isParent != null" >
+        isParent = #{isParent,jdbcType=BIT},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+	
+</mapper>
+

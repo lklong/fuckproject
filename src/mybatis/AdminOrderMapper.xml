@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.AdminOrderMapper">
+
+    <select id="memberOrderStatByMemberID" parameterType="int" resultType="map">
+    	Select 
+			Sum(IF(R.ut = 1 AND R.Status in (2,3,4),R.Quantity,0)) 'yetBuy',
+			Sum(IF(R.ut = 1 AND R.Status in (2,3,4),(R.AgentMoney + R.LogisticsMoney + R.Money),0)) 'yetBuyMoney',
+			Sum(IF(R.ut = 2 AND R.Status in (2,3,4),R.Quantity,0)) 'yetSale',
+			Sum(IF(R.ut = 2 AND R.Status = 4,(R.AgentMoney + R.LogisticsMoney + R.Money),0)) 'yetSaleMoney',
+			Sum(IF(R.ut = 1 AND R.Status = 2,R.Quantity,0)) 'waitSend',
+			Sum(IF(R.ut = 1 AND R.Status = 2,(R.AgentMoney + R.LogisticsMoney + R.Money),0)) 'waitSendMoney'
+		 From 
+		 (
+			Select A.*,B.Quantity,1 ut From Orders A,OrderDetail B Where A.ID = B.OrderID And A.UserID = #{memberID}
+			UNION ALL
+			Select A.*,B.Quantity,2 ut From Orders A,OrderDetail B,Store C Where A.ID = B.OrderID And A.StoreID = C.ID And C.UserID = #{memberID}
+		 ) R
+    </select>
+    
+</mapper>
+

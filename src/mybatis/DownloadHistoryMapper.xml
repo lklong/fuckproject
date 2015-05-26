@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.DownloadHistoryMapper">
+
+	<insert id="addDownloadHistory" parameterType="downloadHistory">
+		insert into DownloadHistory(UserID,GoodsID,ImagePath,GoodsName,StoreID,StoreName,MinPrice,MaxPrice,DownloadTime) 
+							value(#{userID},#{goodsID},#{imagePath},#{goodsName},#{storeID},#{storeName},#{minPrice},#{maxPrice},#{downloadTime});
+		<selectKey resultType="int" keyProperty="ID" order="AFTER" >
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<select id="queryDownloadHistoryByPage" parameterType="page" resultType="downloadHistory">
+		select A.*,B.QQ,B.AliWangWang,C.status from DownloadHistory A,Store B, goods C where A.DeleteFlg=0 and A.UserID=#{paras.userID} and A.storeID=B.ID  and  A.GoodsID=C.id
+		<if test="paras.goodsName!=null  and paras.goodsName!=''">
+			and A.goodsName like CONCAT(CONCAT('%',#{paras.goodsName}),'%')
+		</if>
+		<if test="paras.storeName!=null  and paras.storeName!=''">
+			and A.storeName  like CONCAT(CONCAT('%',#{paras.storeName}),'%')
+		</if>
+		<if test="paras.startDate!=null  and paras.startDate!=''">
+			and DATE_FORMAT(A.DownloadTime,"%Y-%m-%d")&gt;=STR_TO_DATE(#{paras.startDate},"%Y-%m-%d")
+		</if>
+		<if test="paras.endDate!=null  and paras.endDate!=''">
+			and DATE_FORMAT(A.DownloadTime,"%Y-%m-%d")&lt;=STR_TO_DATE(#{paras.endDate},"%Y-%m-%d")
+		</if>
+		order by A.DownloadTime DESC
+	</select>
+	
+	<select id="queryDownloadhistory" parameterType="downloadHistory" resultType="downloadHistory">
+		select * from DownloadHistory where DeleteFlg=0
+		<if test="userID>0">
+			and UserID=#{userID}
+		</if>
+		<if test="goodsID>0">
+			and GoodsID=#{goodsID}
+		</if>
+	</select>
+	
+	
+	<!-- 批量删除 -->
+	<update id="deleteDownloadHistoryByIDs" parameterType="java.util.Map">
+		update DownloadHistory set DeleteFlg=1 where  ID in
+		<foreach item="idItem" collection="IDs" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</update>
+</mapper>
+

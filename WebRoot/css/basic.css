@@ -1,0 +1,168 @@
+@charset "utf-8";
+/* CSS Document */
+html, body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4,h5,h6 pre, form, p, blockquote,fieldset,input,button,textarea,img{margin:0;padding:0;}
+body{background:#fffffff;}
+input{border: 1px solid #CCC;}
+ul, ol, li{list-style:none;}
+body{font-size:12px; font-family:"微软雅黑";}
+img{border:none;}
+table{border-collapse:collapse;border-spacing:0}
+a:link{text-decoration:none; color:#333333;}
+a:visited{text-decoration:none; color:#000000;}
+a:hover{text-decoration:none; color:#c21902;}
+a:active{text-decoration:none; color:#ff4362;}
+.fl{float:left !important;}
+.fr{float:right !important;}
+.clear{ clear:both;}
+.w{width:100%;}
+.over_hid{overflow:hidden;}
+.ver_ali{vertical-align:middle;}
+a{cursor:pointer;}
+a{blr:expression(this.onFocus=this.close());}
+a{blr:expression(this.onFocus=this.blur());}
+a{outline:none}
+.curso{cursor:pointer;}
+.webpage{
+	width:1190px;
+	margin:0 auto;
+	position:relative;
+}
+.zhiding{ position:absolute; z-index:99999; right:-50px;}
+/*居中*/
+.wauto{position:relative; width:1190px; margin:0 auto; }
+.mauto{margin:0 auto;}
+/*圆角*/
+.radiu{border-bottom-left-radius:5px;border-bottom-right-radius:5px;border-top-left-radius:5px;border-top-right-radius:5px;}
+.cricleLT{width:5px;height:5px; position:absolute;line-height:0;font-size:0; background:url(../img/circle-x.gif) no-repeat left top;left:0;top:0;}
+.cricleRT{width:5px;height:5px; position:absolute;line-height:0;font-size:0; background:url(../img/circle-x.gif) no-repeat right top;right:0;top:0;}
+.cricleLB{width:5px;height:5px; position:absolute;line-height:0;font-size:0; background:url(../img/circle-x.gif) no-repeat left bottom;left:0;bottom:0;}
+.cricleRB{width:5px;height:5px; position:absolute;line-height:0;font-size:0; background:url(../img/circle-x.gif) no-repeat right bottom;right:0;bottom:0;}
+
+/*控制换行*/
+.noWrap{display:inline;white-space:nowrap;}
+.yesWrap{word-break:break-all;word-wrap:break-word; white-space:normal;overflow:hidden;}
+/*隐藏展开*/
+.disnone{display:none;}
+.disblock{display:block;}
+/*颜色*/
+.c000{ color:#000;}
+.c333{color:#333;}
+.c666{color:#666;}
+.c999{color:#999;}
+.cf86666{color:#ff2d2d}
+.c4db671{color:#4db671}
+.c7f7f7f{ color:#7f7f7f;}
+.c65c020{ color:#65c020;}
+.cb5b5b5{ color:#b5b5b5}
+.ff3300 { color:#ff3300}
+.red{color:#C21902}
+/*距离*/
+.ml5{margin-left:5px;}
+.ml10{margin-left:10px;}
+.ml15{margin-left:15px;}
+.ml20{margin-left:20px;}
+.ml30{margin-left:30px;}
+.ml40{ margin-left:40px;}
+.ml50{margin-left:50px;}
+.mr5{margin-right:5px;}
+.mr10{margin-right:10px;}
+.mr15{margin-right:15px;}
+.mr20{margin-right:20px;}
+.mr30{ margin-right:30px;}
+.mt5{margin-top:5px;}
+.mt8{margin-top:8px;}
+.mt3{margin-top:3px;}
+.mt10{margin-top:10px;}
+.mt13{margin-top:13px;}
+.mt15{margin-top:15px;}
+.mt20{margin-top:20px;}
+.mt30{margin-top:30px;}
+.mt40{margin-top:40px;}
+.mb10{margin-bottom:10px;}
+.mb20{margin-bottom:20px;}
+.mb30{margin-bottom:30px;}
+
+.pl10{padding-left:10px;}
+.pl20{padding-left:20px;}
+.pr10{padding-right:10px;}
+.pr20{padding-right:20px;}
+.pr30{padding-right:30px;}
+.pt10{padding-top:10px;}
+.pt20{padding-top:20px;}
+.pt30{padding-top:30px;}
+.p10{padding:10px;}
+.p20{padding:20px;}
+.p30{padding:30px;}
+/*宽度、高度*/
+.w40{width:40px;}
+.w50{width:50px;}
+.w60{width:60px;}
+.w80{width:80px;}
+.w100{width:100px;}
+.w120{width:120px;}
+.w160{width:160px;}
+.w180{width:180px;}
+.w200{width:200px;}
+.w220{width:220px;}
+.w240{width:240px;}
+.h60{height:60px;}
+.h120{height:120px;}
+/*行高*/
+.lh16{line-height:16px;}
+.lh20{line-height:20px;}
+.lh22{line-height:22px;}
+.lh25{line-height:25px;}
+.lh30{line-height:30px;}
+.lh35{line-height:35px;}
+.lh40{line-height:40px;}
+.lh50{line-height:50px;}
+.lh60{line-height:60px;}
+/*字体*/
+.fwryh{font-family:'微软雅黑'}
+.fgeorgia{ font-family:Georgia, "Times New Roman", Times, serif}
+.f12{ font-size:12px;}
+.f14{font-size:14px;}
+.f16{font-size:16px;}
+.f18{font-size:18px;}
+.f24{ font-size:24px;}
+.fwbold{ font-weight:bold;}
+.fwnormal{ font-weight:normal;}
+
+/*文本*/
+.tc{text-align:center;}
+.tl{text-align:left;}
+.tr{text-align:right;}
+
+.select {
+    height: 30px;
+    border: 1px solid #CCC;
+    line-height: 30px;
+    padding-left: 10px;
+    display: inline-block;
+    margin-left: 10px;
+}
+/*超出部分省略号显示*/
+.ellipsis{display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.red{color: #E81268}
+input.error {
+    border-color: #F20266;
+}
+input.verified {
+    background: url("../img/input_verified.png") no-repeat scroll right center #FFF;
+}
+/*按钮*/
+.button{display: inline-block;vertical-align: baseline;margin: 0px 2px;outline: medium none;cursor: pointer;text-align: center;text-decoration: none;font: 14px/100% Arial,Helvetica,sans-serif;padding: 0.5em 2em 0.55em;text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);border-radius:3px;box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);}
+.button.white{color: #484848;border: 1px solid #B7B7B7;background: -moz-linear-gradient(center top , #FFF, #EDEDED) repeat scroll 0% 0% transparent;}
+.button:hover {text-decoration: none;background: -moz-linear-gradient(center top , #FFF, #D6D6D6) repeat scroll 0% 0% transparent;}
+.button:active {	position: relative;top: 1px;}
+.btn2{
+	height: 30px;
+	background: none repeat scroll 0% 0% #C80000;
+	color: #FFF;
+	border: 1px solid #E70101;
+	padding:5px 10px 5px 10px;
+	font-weight: bold;
+}
+.btn2:hover {
+    background: none repeat scroll 0% 0% #fe0101;
+}

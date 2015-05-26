@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.AccountDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.zhigu.model.AccountDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sno" property="sno" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="income_flag" property="incomeFlag" jdbcType="BIT" />
+    <result column="original_money" property="originalMoney" jdbcType="DECIMAL" />
+    <result column="deal_money" property="dealMoney" jdbcType="DECIMAL" />
+    <result column="deal_matter" property="dealMatter" jdbcType="VARCHAR" />
+    <result column="deal_time" property="dealTime" jdbcType="TIMESTAMP" />
+    <result column="deal_type" property="dealType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sno, user_id, income_flag, original_money, deal_money, deal_matter, deal_time, 
+    deal_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from accountdetail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from accountdetail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhigu.model.AccountDetail" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into accountdetail (id, sno, user_id, 
+      income_flag, original_money, deal_money, 
+      deal_matter, deal_time, deal_type
+      )
+    values (#{id,jdbcType=INTEGER}, #{sno,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{incomeFlag,jdbcType=BIT}, #{originalMoney,jdbcType=DECIMAL}, #{dealMoney,jdbcType=DECIMAL}, 
+      #{dealMatter,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP}, #{dealType,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhigu.model.AccountDetail" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into accountdetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="sno != null" >
+        sno,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="incomeFlag != null" >
+        income_flag,
+      </if>
+      <if test="originalMoney != null" >
+        original_money,
+      </if>
+      <if test="dealMoney != null" >
+        deal_money,
+      </if>
+      <if test="dealMatter != null" >
+        deal_matter,
+      </if>
+      <if test="dealTime != null" >
+        deal_time,
+      </if>
+      <if test="dealType != null" >
+        deal_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="sno != null" >
+        #{sno,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="incomeFlag != null" >
+        #{incomeFlag,jdbcType=BIT},
+      </if>
+      <if test="originalMoney != null" >
+        #{originalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="dealMoney != null" >
+        #{dealMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="dealMatter != null" >
+        #{dealMatter,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealType != null" >
+        #{dealType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.AccountDetail" >
+    update accountdetail
+    <set >
+      <if test="sno != null" >
+        sno = #{sno,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="incomeFlag != null" >
+        income_flag = #{incomeFlag,jdbcType=BIT},
+      </if>
+      <if test="originalMoney != null" >
+        original_money = #{originalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="dealMoney != null" >
+        deal_money = #{dealMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="dealMatter != null" >
+        deal_matter = #{dealMatter,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealType != null" >
+        deal_type = #{dealType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhigu.model.AccountDetail" >
+    update accountdetail
+    set sno = #{sno,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      income_flag = #{incomeFlag,jdbcType=BIT},
+      original_money = #{originalMoney,jdbcType=DECIMAL},
+      deal_money = #{dealMoney,jdbcType=DECIMAL},
+      deal_matter = #{dealMatter,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      deal_type = #{dealType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!--根据流水号 查询用户的收支详细的订单 -->
+	<select id="queryAccountDetailBySno" parameterType="java.lang.String" resultMap="BaseResultMap">
+		Select <include refid="Base_Column_List" /> From AccountDetail Where sno = #{sno}
+	</select> 
+	<!--根据日期查询用户的收支详细的订单 -->
+	<select id="queryAccountDetailListByPage" resultMap="BaseResultMap">
+		Select <include refid="Base_Column_List" /> From AccountDetail 
+		<where>
+			<if test="userId != null">
+				User_id=#{userId} 
+			</if>
+			<if test="startDate != null">
+				<![CDATA[And Deal_Time >= #{startDate} ]]>
+			</if>	
+			<if test="endDate != null">
+				<![CDATA[and Deal_Time <= #{endDate} ]]>
+			</if>
+		</where>
+			order by Deal_Time DESC
+	</select>
+</mapper>

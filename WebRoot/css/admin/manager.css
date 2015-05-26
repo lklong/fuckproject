@@ -1,0 +1,169 @@
+@charset "utf-8";
+/* CSS Document */
+
+body { font-family:"微软雅黑"; font-size:12px; color:#333333; margin:0; padding:0; background-color:#ffffff;}
+p,h1,h2,h3,h4,h5,h6,ul,li,dl,em,input,button,img,textarea,form { margin:0; padding:0;}
+a { text-decoration:none; outline:none; display:block; float:left; color:#333333;}
+.ztree a{float:none;}
+.window a{float:none;}
+ul,ol,li{list-style:none;}
+img {border:none;}
+.disnone { display:none;}
+
+.sysTopBox { width:100%; height:145px; background-color:#046DAE;}
+.sysCenterBox { width:100%; height:auto;}
+.sysFootBox {width:100%; height:70px; background-color:#f0f0f0; border-top:1px solid #dedede; clear:both; text-align:center; line-height:30px;}
+
+.sysTopLogo { width:100%; height:105px;}
+.sysNavBar { width:100%; height:40px; background-color:#004672;}
+.sysNavInside{ height:40px; width:90%; padding-left:10%; overflow:hidden;}
+.sysTopNav li { width:7%; height:40px; line-height:40px; float:left; text-align:center;}
+.sysTopNav li a { font-size:14px; color:#ffffff; text-align:center; width:100%; height:100%; border-left:1px solid #333333;}
+.sysTopNav li a:hover { font-size:14px; color:#ffffff; text-align:center; width:100%; height:100%; border-left:1px solid #333333; background-color:#333333; border-top:2px solid #2d8cd2;}
+
+.sysCenterLeft { width:10%; float:left; background-color:#f0f0f0; border-right:1px solid #cecece; height:100%; height:auto;}
+.sysCenterRight { width:88%; float:right; padding:16px 0 20px 0; margin-right:16px; height:auto;}
+
+.sysMenuTitle { font-size:16px; text-indent:60px; background:url(../../img/admin/titleicon.png) no-repeat 23% center #dedede; padding:7px 0;}
+.sysMenuUl {}
+.sysMenuUl li { height:34px; line-height:34px; text-align:left; text-indent:60px;}
+.sysMenuUl li a { width:100%; background:url(../../img/admin/navdot1.png) no-repeat 25% center; border-bottom:1px solid #DBDBDB; border-top:1px solid #fafafa;}
+.sysMenuUl li a:hover { width:100%; background:url(../../img/admin/navdot1.png) no-repeat 25% center #ffffff; border-bottom:1px solid #DBDBDB; border-top:1px solid #fafafa;}
+.sysMenuSelected { width:100%; background:url(../../img/admin/navdot2.png) no-repeat 25% center #046dae !important; border-bottom:1px solid #075b8f !important; border-top:1px solid #075b8f !important; color:#ffffff; font-weight:bold;}
+
+.sysCommonTable { width:100%; height:100%; text-align:left; border-left:1px solid #DAEDED; border-top:1px solid #DAEDED;}
+.sysCommonTable tr { height:30px; width:auto}
+.sysCommonTable th { padding:8px 10px 8px 10px; background-color:#D8EBEB; border-bottom:1px solid #C8E3E3; border-top:1px solid #DAEDED; font-weight:bold; border-right:1px solid #C8E3E3;}
+.sysCommonTable td { padding:3px 10px 3px 10px; border-bottom:1px solid #DAEDED; border-right:1px solid #DAEDED;}
+tr:hover { background-color:#F3FAFA;}
+
+.sysCommonInput { height:22px; border:1px solid #999999; width:110px; line-height:24px; padding:1px;}
+.sysCommonInput:focus { height:22px; border:1px solid #565656; width:110px; line-height:24px; padding:1px;}
+.sysLogo { float:left; padding:23px;}
+.sysAdminInfo { float:right; height:30px; padding-top:40px; padding-right:30px; width:500px;}
+.sysAdminName { font-size:20px; color:#ffffff; display:block; float:left;}
+.sysAdminUl li { height:30px; line-height:30px; float:left; width:70px; margin-right:7px;}
+.sysAdminUl li a { width:100%; text-align:center; color:#ffffff; border-radius:7px; background-color:#0479BF; border:1px solid #0467A2; -moz-border-radius: 7px;-webkit-border-radius: 7px;}
+.sysAdminUl li a:hover { width:100%; text-align:center; color:#ffffff; border-radius:7px; background-color:#0593E7; border:1px solid #0467A2; -moz-border-radius: 7px;-webkit-border-radius: 7px;}
+.sysCommonButon { height:24px; border:1px solid #999999; width:70px; background-color:#a0a0a0; color:#ffffff; text-align:center; border-radius:3px; cursor:pointer;}
+.sysCommonButon:hover { height:24px; border:1px solid #f86666; width:70px; background-color:#f86666; color:#ffffff; text-align:center; border-radius:3px; cursor:pointer;}
+.sysSubmit { height:28px; width:69px; background:url(../../img/admin/butonCCC.png) no-repeat left top; color:#ffffff; text-align:center; line-height:26px; border:none; cursor:pointer;}
+.sysContBar { background-color:#E8F0F4; min-height:60px; width:100%; margin:0 0 5px 0; padding-top:10px; overflow:visible;}
+.sysCBBox { padding:10px; clear:both; height:24px; line-height:24px;}
+.sysCBBox div { padding:0 10px; float:left;}
+.sysInfoBar { background-color:#fcf7e9; min-height:60px; width:100%; margin:0 0 5px 0; padding-top:10px; overflow:visible; text-indent:20px;}
+.sysInfoBar p { padding:0 10px; line-height:26px;}
+
+.sysIndH3{ height:30px; line-height:30px; font-size:16px;}
+.sysLine { height:30px;}
+.tableActBar { width:100%; height:38px; padding:5px 0 3px 5px; line-height:24px;}
+.tableActBar div { float:left; padding:0 5px; line-height:24px;}
+.t_em { font-style:normal; float:left; margin:0 5px 0 20px;}
+
+
+
+
+
+
+/* 按钮一般状态 */
+/* 灰-蓝 */
+a.sysButonA1 em { display:block; float:left; height:31px; width:6px; background:url(../../img/admin/butonL.png) no-repeat left top; position:absolute; z-index:17; left:-6px;}
+a.sysButonA1:link { height:28px; background:url(../../img/admin/butonL.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#258ebc;}
+a.sysButonA1:visited { height:28px; background:url(../../img/admin/butonL.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#787878;}
+a.sysButonA1:hover { height:28px; background:url(../../img/admin/butonR.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#333333;}
+a.sysButonA1:active { height:28px; background:url(../../img/admin/butonR.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#333333;}
+a.sysButonA1:hover em { display:block; float:left; height:28px; width:6px; background:url(../../img/admin/butonR.png) no-repeat left top; position:absolute; z-index:17; left:-6px;}
+/* 灰-红 */
+a.sysButonA2 em { display:block; float:left; height:31px; width:6px; background:url(../../img/admin/butonL.png) no-repeat left top; position:absolute; z-index:17; left:-6px;}
+a.sysButonA2:link { height:28px; background:url(../../img/admin/butonL.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#fb0000;}
+a.sysButonA2:visited { height:28px; background:url(../../img/admin/butonL.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#787878;}
+a.sysButonA2:hover { height:28px; background:url(../../img/admin/butonC.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#ffffff;}
+a.sysButonA2:active { height:28px; background:url(../../img/admin/butonC.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#ffffff;}
+a.sysButonA2:hover em { display:block; float:left; height:28px; width:6px; background:url(../../img/admin/butonC.png) no-repeat left top; position:absolute; z-index:17; left:-6px;}
+/* 灰-绿 */
+a.sysButonA3 em { display:block; float:left; height:31px; width:6px; background:url(../../img/admin/butonL.png) no-repeat left top; position:absolute; z-index:17; left:-6px;}
+a.sysButonA3:link { height:28px; background:url(../../img/admin/butonL.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#0f9924;}
+a.sysButonA3:visited { height:28px; background:url(../../img/admin/butonL.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#787878;}
+a.sysButonA3:hover { height:28px; background:url(../../img/admin/butonG.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#ffffff;}
+a.sysButonA3:active { height:28px; background:url(../../img/admin/butonG.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#ffffff;}
+a.sysButonA3:hover em { display:block; float:left; height:28px; width:6px; background:url(../../img/admin/butonG.png) no-repeat left top; position:absolute; z-index:17; left:-6px;}
+/* 灰-黑 */
+a.sysButonA4 em { display:block; float:left; height:31px; width:6px; background:url(../../img/admin/butonL.png) no-repeat left top; position:absolute; z-index:17; left:-6px;}
+a.sysButonA4:link { height:28px; background:url(../../img/admin/butonL.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#333333;}
+a.sysButonA4:visited { height:28px; background:url(../../img/admin/butonL.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#787878;}
+a.sysButonA4:hover { height:28px; background:url(../../img/admin/butonK.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#ffffff;}
+a.sysButonA4:active { height:28px; background:url(../../img/admin/butonK.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#ffffff;}
+a.sysButonA4:hover em { display:block; float:left; height:28px; width:6px; background:url(../../img/admin/butonK.png) no-repeat left top; position:absolute; z-index:17; left:-6px;}
+/* 灰-深蓝 */
+a.sysButonA5 em { display:block; float:left; height:31px; width:6px; background:url(../../img/admin/butonL.png) no-repeat left top; position:absolute; z-index:17; left:-6px;}
+a.sysButonA5:link { height:28px; background:url(../../img/admin/butonL.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#106baf;}
+a.sysButonA5:visited { height:28px; background:url(../../img/admin/butonL.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#787878;}
+a.sysButonA5:hover { height:28px; background:url(../../img/admin/butonU.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#ffffff;}
+a.sysButonA5:active { height:28px; background:url(../../img/admin/butonU.png) no-repeat right top; position:relative; margin-left:16px; line-height:28px; padding-right:10px; color:#ffffff;}
+a.sysButonA5:hover em { display:block; float:left; height:28px; width:6px; background:url(../../img/admin/butonU.png) no-repeat left top; position:absolute; z-index:17; left:-6px;}
+
+/* 分页样式 */
+.dataPager { height:30px; width:100%; clear:both; margin:10px 0;}
+.ddpage{font-size: 12px !important; margin:0 auto; clear:both;}
+.ddpage a{border:1px solid #dcdcdc;color:#444444;background:#ffffff; padding:0 15px;}
+.ddpage a:hover{color:#ff4400;border-color:#ff4400;}
+.ddpage .pageselect:hover{background:#ff4400;color:#fff;font-weight:bold;border-color:#ff4400;}
+.ddpage .pageselect{background:#ff4400;color:#fff;font-weight:bold;border-color:#ff4400;}
+
+.sysInfoTextTable { border:1px solid #ffffff; width:100%; height:auto; background-color:#EEF2F2}
+.sysInfoTextTable td { padding:10px;}
+.bft { font-weight:bold;}
+.sysTotalBar { height:auto; line-height:30px; text-align:right;}
+.sysTotalBar strong { font-size:16px;}
+.sysMsgTextTable { border:1px solid #ffffff; width:100%; height:auto; background-color:#fffae6;}
+.sysMsgTextTable td { padding:10px;}
+.sysComSelect { height:26px; padding:4px;}
+
+/* 登录样式 */
+.loginPanelBox { width:485px; height:523px; background:url(../../img/admin/loginbg.png) no-repeat center center; overflow:hidden; position:absolute; top:0; z-index:7; display:none;}
+.loginInsideBox { width:485px; height:173px; position:relative; padding-top:140px;}
+.loginLine { height:31px; width:310px; margin:30px auto; line-height:31px;}
+.loginLine div { float:left; margin:0 8px;}
+.loginLine h3 { font-size:14px; font-weight:normal; color:#0065A3}
+.sysloginInput1 { width:229px; height:31px; border:1px solid #77D1B8; background:url(../../img/admin/login_a.png) no-repeat 3px center #ffffff; text-indent:23px; font-size:14px;}
+.sysloginInput2 { width:229px; height:31px; border:1px solid #77D1B8; background:url(../../img/admin/login_b.png) no-repeat 3px center #ffffff; text-indent:23px; font-size:14px;}
+a.loginButton { display:block; height:41px; width:134px; background:url(../../img/admin/loginbtn.png) no-repeat left top; margin:0 auto;text-align:center; vertical-align:middle; float:left;}
+a.loginButton:hover { display:block; height:41px; width:134px; background:url(../../img/admin/loginbtn.png) no-repeat left -41px; margin:0 auto; text-align:center; vertical-align:middle; float:left;}
+.loginLine_c { text-align:center; height:41px; width:134px; clear:both; margin:50px auto 0 auto;}
+
+/* 对话框通用 */
+.maskBox { background-color:#000000; position:absolute; top:0; left:0;z-index:9111;filter:alpha(Opacity=20);-moz-opacity:0.2;opacity:0.2; }
+.parentBox { background-color:#ffffff; position:absolute; top:0; left:0; z-index:9113; border:1px solid #cee0e7;border-radius:6px;-moz-border-radius:6px;-webkit-border-radius:6px;box-shadow:1px 1px 6px #aaccc8;filter:progid:DXImageTransform.Microsoft.Shadow(color=#aaccc8,direction=120,strength=4);}
+.boxTitle { height:38px; line-height:38px; font-size:14px; font-weight:bold; text-indent:10px; width:100%; clear:both;background-color:#dedede; background:url(../../img/admin/winbg.png) repeat-x; border-top-left-radius:6px;border-top-right-radius:6px;}
+.winCloseBtn { position:absolute; right:7px; top:7px; background:url(../../img/admin/winbtn.png) no-repeat right top; height:21px; width:21px; cursor:pointer;}
+.winCloseBtn:hover { position:absolute; right:7px; top:7px; background:url(../../img/admin/winbtn.png) no-repeat left top; height:21px; width:21px; cursor:pointer;}
+.contentBox { padding:20px; overflow-y:auto; overflow-x:hidden;}
+.buttonBox { width:100%; height:40px; padding-top:15px; padding-bottom:10px; background-color:#fafafa; border-top:1px solid #cee0e7; position:absolute; bottom:0;border-bottom-left-radius:6px;border-bottom-right-radius:6px; vertical-align:middle; text-align:center; overflow:hidden;}
+a.doneBtn { display:block; float:left; height:32px; width:91px; background:url(../../img/admin/donebtn.png) no-repeat left top; text-align:center; font-size:14px; line-height:32px; margin:0 15px;}
+a.doneBtn:hover { display:block; float:left; height:32px; width:91px; background:url(../../img/admin/donebtn.png) no-repeat -91px top; text-align:center; font-size:14px; line-height:32px; color:#ffffff}
+a.cancelBtn { display:block; float:left; height:32px; width:91px; background:url(../../img/admin/donebtn.png) no-repeat left top; text-align:center; font-size:14px; line-height:32px; margin:0 15px;}
+a.cancelBtn:hover { display:block; float:left; height:32px; width:91px; background:url(../../img/admin/donebtn.png) no-repeat -182px top; text-align:center; font-size:14px; line-height:32px;}
+a.quitBtn { display:inline-block; float:left; height:32px; width:91px; background:url(../../img/admin/donebtn.png) no-repeat left top; text-align:center; font-size:14px; line-height:32px; margin:0 15px;}
+a.quitBtn:hover { display:inline-block; float:left; height:32px; width:91px; background:url(../../img/admin/donebtn.png) no-repeat -182px top; text-align:center; font-size:14px; line-height:32px;}
+.btnInsideBox { margin:0 auto; height:40px; text-align:center; vertical-align:middle; width:200px; overflow:visible;}
+
+/* 对话框内元素样式 */
+.fenpei { width:600px;margin:0 20px;}
+.fenpei li { height:26px; line-height:26px;}
+.fenpei li:hover { background-color:#f0f0f0;}
+.fenpei li input { margin:4px;}
+
+.ellipsis{display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+
+/* 排序图标 */
+.hyglboticon { display:block; height:17px; width:20px; float:left; cursor:pointer; margin-top:3px;}
+.huis { background:url(../../img/admin/sorticon.png) no-repeat left top; }
+.huixia { background:url(../../img/admin/sorticon.png) no-repeat right top; }
+.hongx { background:url(../../img/admin/sorticon.png) no-repeat right bottom;}
+.hongs {background:url(../../img/admin/sorticon.png) no-repeat left bottom;}
+
+/* 详情订单 */
+.xiangqing_ul {}
+.xiangqing_ul li { float:left; height:70px; border-right:1px solid #bcd3de; margin-top:-10px; width:100px; text-align:center; line-height:70px; font-size:14px; font-weight:bold; cursor:pointer;}
+.xiangqing_ul li:hover { background-color:#d6e4eb;}
+.xiangqing_seclted { background-color:#bcd3de;}

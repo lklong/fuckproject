@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.LogisticsSpecialMapper">
+	<resultMap id="BaseResultMap" type="com.zhigu.model.LogisticsSpecial">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="logistics_id" property="logisticsId" jdbcType="INTEGER" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="fweight" property="fweight" jdbcType="DECIMAL" />
+		<result column="fmoney" property="fmoney" jdbcType="DECIMAL" />
+		<result column="cweight" property="cweight" jdbcType="DECIMAL" />
+		<result column="cmoney" property="cmoney" jdbcType="DECIMAL" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, logistics_id, province, city, fweight, fmoney, cweight, cmoney
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from logistics_special
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from logistics_special
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zhigu.model.LogisticsSpecial">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into logistics_special (id, logistics_id, province,
+		city, fweight, fmoney,
+		cweight, cmoney)
+		values (#{id,jdbcType=INTEGER}, #{logisticsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR}, #{fweight,jdbcType=DECIMAL}, #{fmoney,jdbcType=DECIMAL},
+		#{cweight,jdbcType=DECIMAL}, #{cmoney,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhigu.model.LogisticsSpecial">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into logistics_special
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="logisticsId != null">
+				logistics_id,
+			</if>
+			<if test="province != null">
+				province,
+			</if>
+			<if test="city != null">
+				city,
+			</if>
+			<if test="fweight != null">
+				fweight,
+			</if>
+			<if test="fmoney != null">
+				fmoney,
+			</if>
+			<if test="cweight != null">
+				cweight,
+			</if>
+			<if test="cmoney != null">
+				cmoney,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=INTEGER},
+			<if test="logisticsId != null">
+				#{logisticsId,jdbcType=INTEGER},
+			</if>
+			<if test="province != null">
+				#{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				#{city,jdbcType=VARCHAR},
+			</if>
+			<if test="fweight != null">
+				#{fweight,jdbcType=DECIMAL},
+			</if>
+			<if test="fmoney != null">
+				#{fmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="cweight != null">
+				#{cweight,jdbcType=DECIMAL},
+			</if>
+			<if test="cmoney != null">
+				#{cmoney,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.LogisticsSpecial">
+		update logistics_special
+		<set>
+			<if test="logisticsId != null">
+				logistics_id = #{logisticsId,jdbcType=INTEGER},
+			</if>
+			<if test="province != null">
+				province = #{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				city = #{city,jdbcType=VARCHAR},
+			</if>
+			<if test="fweight != null">
+				fweight = #{fweight,jdbcType=DECIMAL},
+			</if>
+			<if test="fmoney != null">
+				fmoney = #{fmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="cweight != null">
+				cweight = #{cweight,jdbcType=DECIMAL},
+			</if>
+			<if test="cmoney != null">
+				cmoney = #{cmoney,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhigu.model.LogisticsSpecial">
+		update logistics_special
+		set logistics_id = #{logisticsId,jdbcType=INTEGER},
+		province = #{province,jdbcType=VARCHAR},
+		city = #{city,jdbcType=VARCHAR},
+		fweight = #{fweight,jdbcType=DECIMAL},
+		fmoney = #{fmoney,jdbcType=DECIMAL},
+		cweight = #{cweight,jdbcType=DECIMAL},
+		cmoney = #{cmoney,jdbcType=DECIMAL}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="selectByLogisticsId" resultMap="BaseResultMap" >
+		select
+		<include refid="Base_Column_List" />
+		from logistics_special
+		where logistics_id = #{logisticsId} 
+		<if test="province!=null">
+			and province=#{province}
+		</if>
+		<if test="city!=null">
+			and city=#{city}
+		</if>
+	</select>
+</mapper>

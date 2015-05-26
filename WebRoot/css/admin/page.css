@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* CSS Document  不用此css ，需要剔除 */
+.feiyea{ text-align:right; line-height:30px; padding-right:30px; margin-top:20px;}
+.feiyea .selected{ background:#F00;width:30px; height:30px; line-height:30px; text-align:center; color:#fff; border:1px solid #f00;}
+.feiyea a{ color:#666; border:1px solid #EEE; width:30px; height:30px; line-height:30px; text-align:center; display:inline-block;}
+.feiyea a:hover{ border:1px solid #F00;width:30px; height:30px; }
+.feiyeleft{width:30px; height:30px; line-height:30px; text-align:center;display:inline-block;border:1px solid #EEE; cursor:pointer;}
+.feiyeleft:{border:1px solid #F00;}
+
+/*dialog*/
+.popBox { background: #FFF; position: absolute; z-index: 999; top: 0px; display: none; }
+    .popBox .bg1 { background: #FFF; width:350px; height: 210px;}
+    .popBox h1 { padding: 0px 10px; height: 38px; font: 16px Microsoft YaHei; line-height: 38px; background: #1a7cc7; color: #FFF; }
+    .popBox h1 span { float: left;  }
+    .popBox h1 .close { color: #FFF; font-size: 12px; float: right; font-family: Verdana;}
+    .popBox h1 .close:hover { color: #333; }
+
+.mask { width: 100%; opacity:0.5; filter:alpha(opacity=50); background: #000; position: absolute; left: 0px; top: 0px; z-index: 998; }
+
+
+

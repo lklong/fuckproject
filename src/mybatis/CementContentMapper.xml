@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.CementContentMapper">
+  <resultMap id="BaseResultMap" type="com.zhigu.model.CementContent" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cementid" property="cementId" jdbcType="INTEGER" />
+    <result column="cementname" property="cementName" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="addtime" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="cementimg" property="cementImg" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+     <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, cementid, cementname, title, addtime, sort, cementimg, content
+  </sql>
+  
+   <sql id="Join_Column_List" >
+    ct.id, ct.cementid, ct.cementname, ct.title, ct.addtime, ct.sort, ct.cementimg, ct.content
+   </sql>
+
+	<select id="queryAllCementContent" resultType="com.zhigu.model.CementContent">
+	    SELECT 
+		    <include refid="Join_Column_List" />,c.type
+		FROM
+		    cement c
+		        LEFT JOIN
+		    cementcontent ct ON c.id = ct.cementid
+		ORDER BY ct.sort IS NULL , ct.sort DESC;
+	</select>
+	
+	  <select id="queryCementContentByPage" parameterType="com.zhigu.model.PageBean" resultType="com.zhigu.model.CementContent">
+       select <include refid="Base_Column_List"/> from CementContent  Order By sort is null , sort desc
+	  </select>	
+	
+	 <select id="queryById" resultType="com.zhigu.model.CementContent">
+       select  <include refid="Base_Column_List"/>  from cementcontent where id=#{id}
+	 </select>
+	 
+    <delete id="deleteCementContentById" parameterType="com.zhigu.model.CementContent">
+		DELETE from cementcontent where id=#{id};
+	</delete>
+	
+	<select id="queryPageHomeCementContent" resultType="com.zhigu.model.CementContent">
+     	SELECT 
+		   <include refid="Join_Column_List" />
+		FROM
+		    cement c
+		        LEFT JOIN
+		    cementcontent ct ON c.id = ct.cementid
+		WHERE
+		    c.type=#{type} 
+		ORDER BY ct.sort IS NULL , ct.sort DESC;
+	</select>
+	
+	 <insert id="saveCementContent" parameterType="com.zhigu.model.CementContent" useGeneratedKeys="true" keyProperty="id">
+    insert into cementcontent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cementId != null" >
+        cementid,
+      </if>
+      <if test="cementName != null" >
+        cementname,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="addTime != null" >
+        addtime,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="cementImg != null" >
+        cementimg,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cementId != null" >
+        #{cementId,jdbcType=INTEGER},
+      </if>
+      <if test="cementName != null" >
+        #{cementName,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cementImg != null" >
+        #{cementImg,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateCementContent" parameterType="com.zhigu.model.CementContent" >
+    update cementcontent
+    <set >
+      <if test="cementId != null" >
+        cementid = #{cementId,jdbcType=INTEGER},
+      </if>
+      <if test="cementname != null" >
+        cementname = #{cementName,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cementimg != null" >
+        cementimg = #{cementImg,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+	
+</mapper>

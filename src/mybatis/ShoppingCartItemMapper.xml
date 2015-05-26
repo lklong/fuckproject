@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.ShoppingCartItemMapper">
+	<resultMap id="BaseResultMap" type="com.zhigu.model.ShoppingCartItem">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="sku_id" property="skuId" jdbcType="INTEGER" />
+		<result column="quantity" property="quantity" jdbcType="INTEGER" />
+		<result column="put_time" property="putTime" jdbcType="TIMESTAMP" />
+		<result column="checked" property="checked" jdbcType="BIT" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_id, sku_id, quantity, put_time, checked, status
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_cart_item
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from shopping_cart_item
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zhigu.model.ShoppingCartItem">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into shopping_cart_item (id, user_id, sku_id,
+		quantity, put_time, checked,
+		status)
+		values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+		#{skuId,jdbcType=INTEGER},
+		#{quantity,jdbcType=INTEGER}, #{putTime,jdbcType=TIMESTAMP}, #{checked,jdbcType=BIT},
+		#{status,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhigu.model.ShoppingCartItem">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into shopping_cart_item
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="skuId != null">
+				sku_id,
+			</if>
+			<if test="quantity != null">
+				quantity,
+			</if>
+			<if test="putTime != null">
+				put_time,
+			</if>
+			<if test="checked != null">
+				checked,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=INTEGER},
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="skuId != null">
+				#{skuId,jdbcType=INTEGER},
+			</if>
+			<if test="quantity != null">
+				#{quantity,jdbcType=INTEGER},
+			</if>
+			<if test="putTime != null">
+				#{putTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="checked != null">
+				#{checked,jdbcType=BIT},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.ShoppingCartItem">
+		update shopping_cart_item
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="skuId != null">
+				sku_id = #{skuId,jdbcType=INTEGER},
+			</if>
+			<if test="quantity != null">
+				quantity = #{quantity,jdbcType=INTEGER},
+			</if>
+			<if test="putTime != null">
+				put_time = #{putTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="checked != null">
+				checked = #{checked,jdbcType=BIT},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhigu.model.ShoppingCartItem">
+		update shopping_cart_item
+		set user_id = #{userId,jdbcType=INTEGER},
+		sku_id =
+		#{skuId,jdbcType=INTEGER},
+		quantity = #{quantity,jdbcType=INTEGER},
+		put_time = #{putTime,jdbcType=TIMESTAMP},
+		checked = #{checked,jdbcType=BIT},
+		status
+		= #{status,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="countNumByUserId" resultType="int">
+		select count(1) from shopping_cart_item where user_id = #{userId,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_cart_item
+		where user_id = #{userId,jdbcType=INTEGER}
+		and sku_Id = #{skuId,jdbcType=INTEGER}
+	</select>
+	<select id="selectByUserId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_cart_item
+		where user_id = #{userId,jdbcType=INTEGER}
+		<if test="checked != null">
+			and checked = #{checked,jdbcType=BIT}
+		</if>
+	</select>
+	<delete id="systemDeleteBeforeByDate" parameterType="java.lang.String">
+		DELETE FROM shopping_cart_item WHERE put_time &lt; #{date};
+	</delete>
+</mapper>

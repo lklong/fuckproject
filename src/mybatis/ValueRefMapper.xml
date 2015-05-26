@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.ValueRefMapper" >
+  <resultMap id="BaseResultMap" type="com.zhigu.model.ValueRef" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="propRefID" property="propRefID" jdbcType="BIGINT" />
+    <result column="propVID" property="propVID" jdbcType="BIGINT" />
+    <result column="thirdPropVID" property="thirdPropVID" jdbcType="BIGINT" />
+    <result column="thirdPlatType" property="thirdPlatType" jdbcType="BIT" />
+    <result column="deleteFlag" property="deleteFlag" jdbcType="BIT" />
+    <result column="valueName" property="valueName" jdbcType="VARCHAR" />
+    <result column="thirdValueName" property="thirdValueName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, propRefID, propVID, thirdPropVID, thirdPlatType, deleteFlag, valueName, thirdValueName
+  </sql>
+  <select id="selectByPId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from value_ref
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectTBValueByPlat" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from value_ref
+    where deleteFlag = 0 and propRefID = #{refId} and propVID = #{valueId}
+  </select>
+  
+  <select id="selectValueRefs" resultType="hashmap" parameterType="int"> 
+  	select 
+    <include refid="Base_Column_List" />
+    from value_ref
+  	where propRefID = #{refId} and deleteFlag = 0 order by id desc
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from value_ref
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhigu.model.ValueRef" keyProperty="id" useGeneratedKeys="true">
+    insert into value_ref
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="propRefID != null" >
+        propRefID,
+      </if>
+      <if test="propVID != null" >
+        propVID,
+      </if>
+      <if test="thirdPropVID != null" >
+        thirdPropVID,
+      </if>
+      <if test="thirdPlatType != null" >
+        thirdPlatType,
+      </if>
+      <if test="deleteFlag != null" >
+        deleteFlag,
+      </if>
+      <if test="valueName != null" >
+        valueName,
+      </if>
+      <if test="thirdValueName != null" >
+        thirdValueName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="propRefID != null" >
+        #{propRefID,jdbcType=BIGINT},
+      </if>
+      <if test="propVID != null" >
+        #{propVID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdPropVID != null" >
+        #{thirdPropVID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdPlatType != null" >
+        #{thirdPlatType,jdbcType=BIT},
+      </if>
+      <if test="deleteFlag != null" >
+        #{deleteFlag,jdbcType=BIT},
+      </if>
+      <if test="valueName != null" >
+        #{valueName,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdValueName != null" >
+        #{thirdValueName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.zhigu.model.ValueRef" >
+    update value_ref
+    <set >
+      <if test="propRefID != null" >
+        propRefID = #{propRefID,jdbcType=BIGINT},
+      </if>
+      <if test="propVID != null" >
+        propVID = #{propVID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdPropVID != null" >
+        thirdPropVID = #{thirdPropVID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdPlatType != null" >
+        thirdPlatType = #{thirdPlatType,jdbcType=BIT},
+      </if>
+      <if test="deleteFlag != null" >
+        deleteFlag = #{deleteFlag,jdbcType=BIT},
+      </if>
+      <if test="valueName != null" >
+        valueName = #{valueName,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdValueName != null" >
+        thirdValueName = #{thirdValueName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

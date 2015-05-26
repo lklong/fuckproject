@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+       	http://www.springframework.org/schema/context
+    	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- 全局异常配置 -->
+	<!-- <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> -->
+	<bean id="exceptionResolver" class="com.zhigu.common.exception.CustomExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="ServiceException">/error/error-service</prop>
+				<prop key="java.lang.Throwable">/error/error-500</prop>
+			</props>
+		</property>
+		<property name="statusCodes">
+			<props>
+				<prop key="/error/error-500">500</prop>
+				<prop key="/error/error-404">404</prop>
+				<prop key="/error/error-403">403</prop>
+			</props>
+		</property>
+		<!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
+		<property name="warnLogCategory" value="WARN"></property>
+		<!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->
+		<property name="defaultErrorView" value="/error/error"></property>
+		<!-- 默认HTTP状态码 -->
+		<property name="defaultStatusCode" value="500"></property>
+	</bean>
+	
+	<!-- json返回 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+	<context:annotation-config />
+	<!-- 自动扫描bean，把作了注解的类转换为bean -->
+	<context:component-scan base-package="com.zhigu.controllers" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<!-- 排除service，service在application.xml中扫描，保证事务的有效 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	<!-- 保证XML配置仍然有效 -->
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+	<bean id="httpRequestHandlerAdapter" class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter" />
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<!-- 文件上传支持 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<!-- 指定所上传文件的总大小不能超过200M。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
+		<property name="maxUploadSize" value="209715200" />
+		<!-- 内存缓存1M -->
+		<property name="maxInMemorySize" value="1000000"></property>
+	</bean>
+	<!-- URL映射 -->
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<value>
+				/login=UrlFilenameController
+				/error/error-403=UrlFilenameController
+				/error/error-404=UrlFilenameController
+				/error/error-500=UrlFilenameController
+				/error/error=UrlFilenameController
+				/error/timeout=UrlFilenameController
+				/error/error-file-exceeds-limit=UrlFilenameController
+			</value>
+		</property>
+		<property name="order" value="1" />
+	</bean>
+	<!-- 方法名解析器 -->
+	<bean id="InternalPathMethodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver" />
+	<bean id="UrlFilenameController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+
+	<bean id="FileExceedsLimitExceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">error-file-exceeds-limit</prop>
+			</props>
+		</property>
+	</bean>
+
+	
+	
+<!-- 	<mvc:view-controller path="/" view-name="forward:/welcome"/> -->
+	<mvc:interceptors>
+		<bean class="com.zhigu.common.interceptor.SessionInterceptor" />
+		<!-- <bean class="com.zhigu.common.interceptor.SellerHostInterceptor" /> -->
+		<!-- 手机端请求拦截 -->
+		<mvc:interceptor>
+				<mvc:mapping path="/mobile/**"/>
+				<bean class="com.zhigu.common.interceptor.MobileSessionInterceptor" />
+		</mvc:interceptor>
+		<!-- 后台请求拦截 -->
+		<mvc:interceptor> 
+			<mvc:mapping path="/admin/**"/>
+			<bean class="com.zhigu.common.interceptor.AdminAuthorizationInterceptor" /> 
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>

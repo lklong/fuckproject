@@ -1,0 +1,95 @@
+apply plugin: 'java'
+apply plugin: 'jetty'
+apply plugin: 'war'
+  
+webAppDirName = 'WebRoot'  
+version = '1.0'  
+buildDir = 'target'  
+sourceCompatibility='1.7'  
+war{  
+	baseName ="zhiguweb"  
+}  
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+//定义目录结构  
+sourceSets {  
+	main {	
+		java.srcDirs = ["src"]
+		output.classesDir = 'WebRoot/WEB-INF/classes'
+    }
+} 
+repositories {  
+    mavenCentral() // 中央库
+    // maven { url 'http://maven.oschina.net/content/groups/public/' } // 自定义库地址
+}
+//加载本地依赖  
+dependencies {  
+  //  providedCompile fileTree(dir: System.getenv("CATALINA_HOME")+'/lib', include: '*.jar')  
+    providedCompile 'javax.servlet:servlet-api:2.5' // 编译期
+	//compile fileTree(dir: 'D:/Java/jdk1.7.0_75/jre/lib/', include: '*.jar')
+	 providedCompile files("${System.env['JAVA_HOME']}/jre/lib/rt.jar")
+	 providedCompile files("${System.env['JAVA_HOME']}/jre/lib/jce.jar")
+    providedCompile fileTree(dir: 'WebRoot/WEB-INF/lib', include: '*.jar')  
+} 
+ 
+tasks.withType(JavaCompile) {  
+    options.encoding = "UTF-8"  
+}
+
+task copyFiles(type: Copy) {
+	from 'src'
+	into 'WebRoot/WEB-INF/classes'
+	include '**/*.xml', '**/*.txt', '**/*.properties'
+}
+
+task copyWebAPP(type:Copy){
+	from 'WebRoot'
+	into 'D:/servers/test-tomcat/webapps/ROOT'
+}
+
+
+ext{
+	tomcat_home='D:/servers/test-tomcat'
+	tomcat_bin=tomcat_home + '/bin'
+	tomcat_start=tomcat_bin + '/catalina.bat run'
+	tomcat_stop=tomcat_bin + '/shutdown.bat'
+	tomcat_webapps = tomcat_home + '/webapps/ROOT'
+}
+
+task server << {
+    if (project.hasProperty('start')) {
+        startServer()
+    } else if (project.hasProperty('stop')) {
+        stopServer()
+    } else if (project.hasProperty('deployNstart')) {
+        stopServer()
+        webappsCopy()
+        startServer()
+    } else {
+        throw new RuntimeException('unrecognized option')
+    }
+}
+
+def stopServer() {
+    executeCmd(tomcat_stop)
+}
+
+def startServer() {
+    executeCmd('D:/servers/test-tomcat/startup.bat')
+}
+
+
+def executeCmd(command) {
+    command.execute()
+    //proc.waitFor()
+}
+
+def webappsCopy() {
+    copy {
+        from 'WebRoot' 
+        into tomcat_webapps
+    }
+}
+
+task testBat << {
+	('D:/servers/test.bat').execute()
+}

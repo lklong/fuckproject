@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.CategoryRefMapper" >
+  <resultMap id="BaseResultMap" type="com.zhigu.model.CategoryRef" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="categoryID" property="categoryID" jdbcType="BIGINT" />
+    <result column="categoryName" property="categoryName" jdbcType="VARCHAR" />
+    <result column="thirdCatID" property="thirdCatID" jdbcType="BIGINT" />
+    <result column="thirdCatName" property="thirdCatName" jdbcType="VARCHAR" />
+    <result column="thirdPlatType" property="thirdPlatType" jdbcType="INTEGER" />
+    <result column="deleteFlag" property="deleteFlag" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, categoryID, categoryName, thirdCatID, thirdCatName, thirdPlatType, deleteFlag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from category_ref
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAll" resultType="hashmap">
+  	 select 
+    <include refid="Base_Column_List" />
+    from category_ref where deleteFlag = 0 order by id desc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from category_ref
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+     <select id="selectTBCatByPlat" resultMap="BaseResultMap" parameterType="int">
+  	select 
+    <include refid="Base_Column_List" />
+    from category_ref where deleteFlag = 0 and categoryID = #{catId}
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.zhigu.model.CategoryRef" useGeneratedKeys="true" keyProperty="id">
+    insert into category_ref
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="categoryID != null" >
+        categoryID,
+      </if>
+      <if test="categoryName != null" >
+        categoryName,
+      </if>
+      <if test="thirdCatID != null" >
+        thirdCatID,
+      </if>
+      <if test="thirdCatName != null" >
+        thirdCatName,
+      </if>
+      <if test="thirdPlatType != null" >
+        thirdPlatType,
+      </if>
+      <if test="deleteFlag != null" >
+        deleteFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="categoryID != null" >
+        #{categoryID,jdbcType=BIGINT},
+      </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdCatID != null" >
+        #{thirdCatID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdCatName != null" >
+        #{thirdCatName,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdPlatType != null" >
+        #{thirdPlatType,jdbcType=INTEGER},
+      </if>
+      <if test="deleteFlag != null" >
+        #{deleteFlag,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.CategoryRef" >
+    update category_ref
+    <set >
+      <if test="categoryID != null" >
+        categoryID = #{categoryID,jdbcType=BIGINT},
+      </if>
+      <if test="categoryName != null" >
+        categoryName = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdCatID != null" >
+        thirdCatID = #{thirdCatID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdCatName != null" >
+        thirdCatName = #{thirdCatName,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdPlatType != null" >
+        thirdPlatType = #{thirdPlatType,jdbcType=INTEGER},
+      </if>
+      <if test="deleteFlag != null" >
+        deleteFlag = #{deleteFlag,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

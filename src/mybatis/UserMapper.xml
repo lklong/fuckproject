@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.UserMapper">
+	<!-- 手机查询用户认证信息 -->
+	<select id="queryUserAuthByPhone" parameterType="java.lang.String" resultType="com.zhigu.model.UserAuth">
+		Select * from userauth where Phone = #{phone} limit 1;
+	</select>
+	<!-- 根据ip查询有几条相同的 -->
+	<select id="queryUserAuthByIp" parameterType="java.lang.String" resultType="int">
+	SELECT  COUNT(*)  FROM userauth u, userinfo i where u.registerIP=#{registerIP} and u.UserID=i.UserID AND i.RegisterTime &gt;= date_format(date_sub(date_sub(now(), INTERVAL WEEKDAY(NOW()) DAY), INTERVAL 1 WEEK), '%Y-%m-%d')
+	</select>
+	<!-- email查询用户认证信息 -->
+	<select id="queryUserAuthByEmail" parameterType="java.lang.String" resultType="userAuth">
+		Select * from userauth where Email = #{email} limit 1;
+	</select>
+	
+	<!-- 用户名查询用户认证信息 -->
+	<select id="queryUserAuthByUsername" parameterType="java.lang.String" resultType="userAuth">
+		Select * from userauth where Username = #{username} limit 1;
+	</select>
+	
+	<!-- 保存认证信息 -->
+	<insert id="saveUserAuth" parameterType="userAuth">
+		Insert Into UserAuth(Username,Email,Phone,Password,Salt,Status,registerIP) Value(#{username},#{email},#{phone},#{password},#{salt},0,#{registerIP});
+		<selectKey resultType="int" keyProperty="userID" order="AFTER" >  
+		  SELECT LAST_INSERT_ID()  
+		</selectKey>
+	</insert>
+	<!-- 保存用户基本信息 -->
+	<insert id="saveUserInfo" parameterType="userInfo">
+		Insert Into UserInfo(userID,nickName,gender,birthDay,avatar,phone,tel,email,QQ,aliWangWang,province,city,district,street,postCode,usernameModify,registerTime,RecommendUserID) 
+			Values(#{userID},#{nickName},#{gender},#{birthDay},#{avatar},#{phone},#{tel},#{email},#{QQ},#{aliWangWang},#{province},#{city},#{district},#{street},#{postCode},0,Now(),#{recommendUserID});
+	</insert>
+	<select id="queryUserAuthByUserID" parameterType="int" resultType="userAuth">
+		Select * from UserAuth where UserID = #{userID};
+	</select>
+	
+	<select id="queryUserInfoById" parameterType="int" resultType="userInfo">
+		Select * from UserInfo where UserID = #{userID};
+	</select>
+	
+	<!-- 修改电话 -->
+	<update id="updateUserAuthPhone" >
+		Update UserAuth Set Phone = #{phone} Where UserID = #{userID};
+	</update>
+	<update id="updateUserInfoPhone" >
+		Update UserInfo Set Phone = #{phone} Where UserID = #{userID};
+	</update>
+	<!-- 修改邮箱 -->
+	<update id="updateUserAuthEmail" >
+		Update UserAuth Set Email = #{email} Where UserID = #{userID};
+	</update>
+	<update id="updateUserInfoEmail" >
+		Update UserInfo Set email = #{email} Where UserID = #{userID};
+	</update>
+	
+	
+	<update id="updateUserInfoRealUserFlg" parameterType="map">
+		Update UserInfo Set RealUserAuthFlg = #{realUserFlg} Where UserID = #{userID};
+	</update>
+	<!-- 修改用户类型 -->
+	<update id="updateUserType" parameterType="map">
+		Update UserInfo Set UserType = #{userType} Where UserID = #{userID};
+	</update>
+	<!-- 修改登录密码 -->
+	<update id="updateLoginPwd" >
+		Update UserAuth Set Password = #{pwd},salt = #{salt} Where UserID = #{userID};
+	</update>
+	<!-- 修改用户基本信息 -->
+	<update id="updateUserInfo" parameterType="userInfo">
+		Update UserInfo Set realName = #{realName},gender = #{gender},birthDay = #{birthDay},tel = #{tel},QQ = #{QQ},aliWangWang = #{aliWangWang},province = #{province},city = #{city},district = #{district},street = #{street},postCode = #{postCode} Where UserID = #{userID};
+	</update>
+	<!-- 修改头像 -->
+	<update id="updateAvatar" parameterType="map">
+		Update UserInfo Set avatar = #{path} Where UserID = #{userID};
+	</update>
+	<!-- 修改等级点数 -->
+	<update id="updateLevelPoint" parameterType="map">
+		Update UserInfo Set LevelPoint=LevelPoint+#{levelPoint} Where UserID = #{userID};
+	</update>
+	<!-- 修改用户名 -->
+	<update id="updateUsername" parameterType="map">
+		Update UserAuth A,UserInfo B Set A.Username = #{username},B.UsernameModify = 1 Where A.UserID = B.UserID And A.UserID = #{userID}
+	</update>
+	<update id="updateUserauthInfoLoginData" parameterType="int">
+		Update Userauth Set LoginCount=LoginCount+1,LatestLoginTime=CURRENT_TIMESTAMP() where UserID=#{userID};
+	</update>
+	<!--实名认证查询-->
+	<select id="queryRealUserAuth" parameterType="int" resultType="realUserAuth">
+		Select * from RealUserAuth where UserID = #{userID};
+	</select>
+	<!--实名认证查询-->
+	<select id="queryRealUserAuthByIdcard" parameterType="String" resultType="realUserAuth">
+		Select * from RealUserAuth where idcard = #{idcard};
+	</select>
+	<!-- 实名认证修改 -->
+	<update id="updateRealUserAuth" parameterType="realUserAuth">
+		Update RealUserAuth Set realName = #{realName},idCard = #{idCard}, cardValidity = #{cardValidity},
+		 perpetual = #{perpetual}, cardFrontImg = #{cardFrontImg}, cardBackImg = #{cardBackImg},
+		  alipay = #{alipay}, applyTime = #{applyTime},approveState = #{approveState},RejectReason=#{rejectReason} Where UserID = #{userID}
+	</update>
+	<!-- 实名认证保存 -->
+	<insert id="saveRealUserAuth" parameterType="realUserAuth">
+		Insert Into RealUserAuth(userID,realName,idCard,cardValidity,perpetual,cardFrontImg,cardBackImg,alipay,applyTime,approveState,approveUser,rejectReason) 
+			Values(#{userID},#{realName},#{idCard},#{cardValidity},#{perpetual},#{cardFrontImg},#{cardBackImg},#{alipay},#{applyTime},#{approveState},#{approveUser},#{rejectReason});
+	</insert>
+	<!-- 用户淘宝 -->
+	<insert id="addUserTaobao" parameterType="userTaobao">
+		insert into UserTaobao(UserID,Access_token,expires_in,Refresh_token,Taobao_user_nick,Taobao_user_id,refreshDate,addDate) value(#{userID},#{access_token},#{expires_in},#{refresh_token},#{taobao_user_nick},#{taobao_user_id},#{refreshDate},#{addDate});
+	</insert>
+	<select id="queryUserTaobaoByUserID" parameterType="int" resultType="userTaobao">
+		select * from UserTaobao where UserID=#{userID} order by addDate DESC limit 1;
+	</select>
+	
+	<!-- 用户积分相关 -->
+	<insert id="saveUserPoint" parameterType="userPoint">
+		insert into UserPoint(userID,Name,phone,address,comment,addDate) values(#{userID},#{name},#{phone},#{address},#{comment},#{addDate});
+	</insert>
+	<update id="updateUserPoint" parameterType="userPoint">
+		update UserPoint set phone=#{phone},Name=#{name},address=#{address},RechargePoint=#{rechargePoint},comment=#{comment},servicePoint=#{servicePoint},goodsPoint=#{goodsPoint} where UserID=#{userID};
+	</update>
+	<select id="queryUserPoint" parameterType="int" resultType="userPoint">
+		select A.*,B.userName from UserPoint A,UserAuth B where A.UserID=#{userID} and A.userID=B.userID;
+	</select>
+	<select id="queryUserPointByPage" parameterType="page" resultType="userPoint">
+		select A.*,B.userName from UserPoint A,UserAuth B where A.userID=B.userID order by rechargePoint DESC
+	</select>
+	<insert id="saveUserPointExchange" parameterType="userPointExchange">
+		insert into UserPointExchange(userid,name,address,phone,postcode,orignalpoint,usepoint,pointtype,exchangeName,adminid,status,comment,addTime) values(#{userId},#{name},#{address},#{phone},#{postCode},#{orignalPoint},#{usePoint},#{pointType},#{exchangeName},#{adminId},#{status},#{comment},now());
+	</insert>
+	<update id="updateUserPointExchange" parameterType="userPointExchange">
+		update UserPointExchange set adminid=#{adminId},status=#{status},comment=#{comment} where id=#{id};
+	</update>
+	<select id="queryUserPointExchange" parameterType="page" resultType="userPointExchange">
+		select A.userName,B.* from userAuth A,UserPointExchange B where A.userID=B.UserID
+		<if test="paras.status != null">
+			and B.status=#{paras.status}
+		</if>
+	</select>
+	<insert id="saveSendAward" parameterType="sendAward">
+		insert into SendAward(UserID,AdminID,OrignalPoint,UsePoint,Comment) values(#{userID},#{adminID},#{orignalPoint},#{usePoint},#{comment});
+	</insert>
+	<select id="querySendAwardByUserID" parameterType="int" resultType="sendAward">
+		select * from SendAward where UserID=#{userID}
+	</select>
+	<!-- 查询用户的已注册被推荐人 -->
+	<select id="queryRecommended" parameterType="int" resultType="userInfo">
+		select A.UserName,A.EMail,A.Phone from UserAuth A,UserInfo B where A.UserID=B.UserID and B.RecommendUserID=#{userID};
+	</select>
+	<!-- 添加用户推荐人,推荐人主动记录-->
+	<insert id="saveUserRecommend" parameterType="userRecommend">
+		insert into UserRecommend(userid,recommendname,recommendphone,addtime) values(#{userId},#{recommendName},#{recommendPhone},NOW());
+	</insert>
+	<!-- 查询用户填写的推荐人-->
+	<select id="queryUserRecommendById" parameterType="int" resultType="userRecommend">
+		select * from userrecommend where id=#{id};
+	</select>
+	<!-- 删除用户填写的推荐人-->
+	<insert id="deleteUserRecommend" parameterType="int">
+		delete from userrecommend where id=#{id};
+	</insert>
+	<!-- 查询用户填写的推荐 -->
+	<select id="queryUserRecommendByUserIDByPage" resultType="userRecommend">
+		select A.*,IF(B.userid IS NOT NULL AND B.userid!= '',1,0) as isRegister  from UserRecommend A LEFT JOIN userInfo B ON (A.userid=B.recommenduserid And A.recommendphone=B.phone) where A.userid=#{userID} order by A.addtime DESC
+	</select>
+	<!-- 查询用户推荐by 被推荐手机号 -->
+	<select id="queryUserRecommend" parameterType="String" resultType="userRecommend">
+		select * from UserRecommend where recommendphone=#{recommendPhone};
+	</select>
+	<!-- 用户诚信保证金等级 -->
+	<update id="updateDepositLevel" parameterType="userInfo">
+		update userInfo set DepositLevel=#{depositLevel} where UserID=#{userID};
+	</update>
+	<!-- 更新打折信息 -->
+	<update id="updateDiscount" parameterType="map">
+		Update UserInfo set rechargediscount = #{rechargeDiscount} where userID=#{userID};
+	</update>
+</mapper>
+

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.OrderMapper">
+	<!-- ================================================================订单=================================================== -->
+	<select id="queryOrderByID" parameterType="int" resultType="order">
+		select * from orders where id=#{id} and delete_flag=0;
+	</select>
+	<!-- 修改订单金额，限定订单为待付款状态 -->
+	<update id="updateOrderMoney" parameterType="order">
+		update orders set payableMenoy=#{payableMenoy},version=version+1 where id=#{ID} and status=1 and version=#{version};
+	</update>
+	<!-- 保存订单 -->
+<!-- 	<select id="saveOrders" parameterType="map" resultType="java.util.HashMap" statementType="CALLABLE"> -->
+<!-- 		{call OrderSubmit(#{pUserID},#{pAddressID},#{pOrderStr},#{pCouponID})} -->
+<!-- 	</select> -->
+	<insert id="saveOrder" parameterType="order" >
+		<selectKey resultType="java.lang.Integer" keyProperty="ID" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into orders (UserID, OrderNO, 
+      Money, Status, Type, 
+      AgentSellerID, AgentMoney, Logistics, 
+      LogisticsMoney, LogisticsNO, StoreID, 
+      LeavelMessage, Consignee, 
+      Phone, Postcode, Address, 
+      OrderTime, FinishTime,
+      comment, payableMenoy, 
+      actuallyPayMenyoy, LogisticsProgress,delete_flag
+      )
+    values (#{userID,jdbcType=INTEGER}, #{orderNO,jdbcType=VARCHAR}, 
+      #{money,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{agentSellerID,jdbcType=INTEGER}, #{agentMoney,jdbcType=DECIMAL}, #{logistics,jdbcType=INTEGER}, 
+      #{logisticsMoney,jdbcType=DECIMAL}, #{logisticsNO,jdbcType=VARCHAR}, #{storeID,jdbcType=INTEGER}, 
+      #{leavelMessage,jdbcType=VARCHAR}, #{consignee,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{postCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{orderTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, 
+      #{comment,jdbcType=VARCHAR}, #{payableMenoy,jdbcType=DECIMAL}, 
+      #{actuallyPayMenyoy,jdbcType=DECIMAL}, #{logisticsProgress,jdbcType=LONGVARCHAR},
+      #{deleteFlag,jdbcType=TINYINT}
+      )
+	</insert>
+	<!-- 支付订单 -->
+	<select id="paymentOrder"  resultType="java.util.HashMap" statementType="CALLABLE">
+		{call OrderPayment(#{pUserID},#{pOrderNo})}
+	</select>
+	<!-- 取消订单 -->
+	<select id="cancelOrder" parameterType="map" resultType="java.util.HashMap" statementType="CALLABLE">
+		{call OrderCancel(#{pUserID},#{pOrderIDs})}
+	</select>
+	<!-- 订单列表 -->
+	<select id="queryOrderByOrderNo" parameterType="String" resultType="order">
+		Select A.*,E.StoreName,E.AliWangWang,E.QQ,E.UserID StoreUserID,F.Username,K.`Name` LogisticsName,K.Code LogisticsCode,E.supplierType 
+			From Orders A  
+				Left Join Logistics K On A.Logistics = K.ID
+				, Store E, UserAuth F 
+			Where A.StoreID = E.ID And A.UserID = F.UserID and A.OrderNO = #{orderNO}  and A.delete_flag=0
+	</select>
+	<select id="queryOrdersByPage" parameterType="com.zhigu.model.PageBean" resultType="order">
+		Select A.*,E.StoreName,E.AliWangWang,E.QQ,E.UserID StoreUserID,F.Username,K.`Name` LogisticsName,K.Code LogisticsCode,E.supplierType
+			From Orders A 
+			<if test="paras.oc.staffID != null">
+				Left Join StaffMember S On A.UserID = S.UserID 
+			</if>
+			Left Join Logistics K On A.Logistics = K.ID,
+					OrderDetail B,
+					Store E,
+					UserAuth F 
+			Where A.ID = B.OrderID And A.StoreID = E.ID And A.UserID = F.UserId and delete_flag=0
+				<if test="paras.oc != null">
+					<if test="paras.oc.userType != null">
+						<choose>
+							<when test="paras.oc.userType == 1">
+								And A.UserID = #{paras.oc.userID}	
+							</when>
+							<when test="paras.oc.userType == 2">
+								And E.UserID = #{paras.oc.userID}	
+							</when>
+						</choose>
+					</if>
+				</if>
+				<if test="paras.oc.staffID != null">
+					And S.StaffID = #{paras.oc.staffID} 
+				</if>
+				<if test="paras.oc.orderNO != null and paras.oc.orderNO != ''">
+					And A.OrderNO = #{paras.oc.orderNO} 
+				</if>
+				<if test="paras.oc.goodsName != null and paras.oc.goodsName != ''">
+					And B.GoodsName like "%"#{paras.oc.goodsName}"%" 
+				</if>
+				<if test="paras.oc.storeName != null and paras.oc.storeName != ''">
+					And E.StoreName like "%"#{paras.oc.storeName}"%" 
+				</if>
+				<if test="paras.oc.status > 0">
+					And A.`Status` = #{paras.oc.status}
+				</if>
+				<if test="paras.oc.username != null">
+					And F.Username like "%"#{paras.oc.username}"%" 
+				</if>
+				<if test="paras.oc.startDate != null">
+					<![CDATA[
+						And A.OrderTime >= #{paras.oc.startDate}
+					]]>
+				</if>
+				<if test="paras.oc.endDate != null">
+					<![CDATA[
+						And A.OrderTime <= #{paras.oc.endDate}
+					]]>
+				</if>
+				<!-- ID查询 -->
+				<if test="paras.oc.ids != null">
+					And A.ID In
+					<foreach collection="paras.oc.ids" item="id" open="(" close=")" separator=",">
+						#{id}
+					</foreach>
+				</if>
+				Group By A.OrderNO 
+				Order By A.OrderTime DESC 
+	</select>
+	<!-- 订单详情 -->
+	<select id="queryOrderDetailByOrderId" parameterType="int" resultType="orderDetail">
+		Select B.*,F.Image300 GoodsPic,F.Intro Introduce From Orders A,OrderDetail B,Goods F 
+			Where A.ID = #{orderID} And A.ID = B.OrderID And B.GoodsID = F.id 
+	</select>
+	
+	<!-- 更新订单状态 -->
+	<update id="updateOrderStatus" parameterType="order">
+		Update Orders Set status = #{status},version=version+1
+		<if test="logisticsNO != null">
+			,logisticsNO = #{logisticsNO}
+		</if>
+		<if test="comment != null">
+			,comment = #{comment}
+		</if>
+		 Where ID = #{ID} and version=#{version}
+	</update>
+	<update id="updateOrderPaySuccess" parameterType="order">
+		UPDATE Orders 
+		SET  actuallyPayMenyoy= #{actuallyPayMenyoy},status = #{status},version=version+1
+		 WHERE ID = #{ID} and version=#{version}
+	</update>
+	<!-- 序号生成 -->
+	<select id="sequence"  resultType="string">
+		Select sequence(#{type},#{length});
+	</select>
+	<!-- 订单状态统计 -->
+	<select id="queryStatusCount"  resultType="java.util.HashMap">
+		Select 
+			Sum(1) sum,
+			Sum(IF(A.`Status` = 1,1,0)) waitPay,
+			Sum(IF(A.`Status` = 2,1,0)) waitSend,
+			Sum(IF(A.`Status` = 3,1,0)) waitConfirm, 
+			Sum(IF(A.`Status` = 4,1,0)) success, 
+			Sum(IF(A.`Status` = 9,1,0)) cancel,
+			Sum(A.Money) money,
+			Sum(A.AgentMoney) agentMoney,
+			Sum(A.LogisticsMoney) logisticsMoney,
+			Sum(IF(A.`Status` = 1,A.Money,0)) money1,
+			Sum(IF(A.`Status` = 1,A.AgentMoney,0))agentMoney1,
+			Sum(IF(A.`Status` = 1,A.LogisticsMoney,0)) logisticsMoney1,
+			Sum(IF(A.`Status` = 4,A.Money,0)) money4,
+			Sum(IF(A.`Status` = 4,A.AgentMoney,0))agentMoney4,
+			Sum(IF(A.`Status` = 4,A.LogisticsMoney,0)) logisticsMoney4
+			From Orders A<if test="userType == 2">,Store B</if>
+			
+		<choose>
+			<when test="userType == 1">
+				Where A.UserID = #{userID} 
+			</when>
+			<when test="userType == 2">
+				Where B.UserID = #{userID} And A.StoreID = B.ID
+			</when>
+		</choose>
+	</select>
+	<select id="isBuyGoods" resultType="boolean">
+		Select Count(1) From Orders A,OrderDetail B Where A.ID = B.OrderID And A.UserID = #{userId} And B.GoodsID = #{goodsId} And A.`Status` = 4 And delete_flag=0 Limit 1
+	</select>
+	
+	<select id="queryOrderCountByUserID" resultType="Integer">
+		Select Count(1) From Orders Where UserID = #{userID} and `status` =1 
+	</select>
+	
+	<!-- 修改订单信息 -->
+	<update id="updateOrder" parameterType="order">
+		Update Orders Set Money = #{money},Status = #{status},AgentMoney = #{agentMoney},Logistics = #{logistics},LogisticsMoney=#{logisticsMoney},LogisticsNO = #{logisticsNO},LogisticsProgress=#{logisticsProgress},delete_flag=#{deleteFlag} Where ID = #{ID}
+	</update>
+	<!-- 修改订单删除标示  -->
+	<update id="updateOrderDelFlagByOrderID" >
+		Update Orders Set delete_flag=#{deleteFlag} Where ID = #{orderID}
+	</update>
+	
+	<insert id="saveOrderDetail" parameterType="orderDetail" >
+		insert into orderdetail (ID, OrderID, GoodsID, 
+      GoodsName, SkuID, UnitPrice, 
+      Quantity, IsEvaluate, 
+      propertyStrName)
+    values (#{ID,jdbcType=INTEGER}, #{orderID,jdbcType=INTEGER}, #{goodsID,jdbcType=INTEGER}, 
+      #{goodsName,jdbcType=VARCHAR}, #{skuID,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, 
+      #{quantity,jdbcType=INTEGER},  #{isEvaluate,jdbcType=TINYINT}, 
+      #{propertystrname,jdbcType=LONGVARCHAR})
+	</insert>
+	<select id="queryOrderDetail" parameterType="map" resultType="orderDetail">
+		Select B.* From Orders A,OrderDetail B Where A.ID = B.OrderID And A.UserID = #{userId} And B.ID = #{odId}
+	</select>
+	
+	<update id="updateOrderDetailEval" parameterType="int">
+		Update OrderDetail Set IsEvaluate = 1 Where ID = #{oid}
+	</update>
+	
+	<update id="updateOrderDetailByGoodsIdAndOrderId">
+		Update OrderDetail Set IsEvaluate = 1 Where orderID = #{orderId} and goodsID = #{goodsId}
+	</update>
+	
+</mapper>
+

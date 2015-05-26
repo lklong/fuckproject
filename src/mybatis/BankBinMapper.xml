@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.BankBinMapper">
+	<resultMap id="BaseResultMap" type="com.zhigu.model.BankBin">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+		<result column="bank_code" property="bankCode" jdbcType="VARCHAR" />
+		<result column="card_name" property="cardName" jdbcType="VARCHAR" />
+		<result column="card_type" property="cardType" jdbcType="VARCHAR" />
+		<result column="length" property="length" jdbcType="INTEGER" />
+		<result column="bin" property="bin" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, bank_name, bank_code, card_name, card_type, length, bin
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from bank_bin
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from bank_bin
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zhigu.model.BankBin">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into bank_bin (id, bank_name, bank_code,
+		card_name, card_type, length,
+		bin)
+		values (#{id,jdbcType=INTEGER}, #{bankName,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR},
+		#{cardName,jdbcType=VARCHAR}, #{cardType,jdbcType=VARCHAR}, #{length,jdbcType=INTEGER},
+		#{bin,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhigu.model.BankBin">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into bank_bin
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="bankName != null">
+				bank_name,
+			</if>
+			<if test="bankCode != null">
+				bank_code,
+			</if>
+			<if test="cardName != null">
+				card_name,
+			</if>
+			<if test="cardType != null">
+				card_type,
+			</if>
+			<if test="length != null">
+				length,
+			</if>
+			<if test="bin != null">
+				bin,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=INTEGER},
+			<if test="bankName != null">
+				#{bankName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankCode != null">
+				#{bankCode,jdbcType=VARCHAR},
+			</if>
+			<if test="cardName != null">
+				#{cardName,jdbcType=VARCHAR},
+			</if>
+			<if test="cardType != null">
+				#{cardType,jdbcType=VARCHAR},
+			</if>
+			<if test="length != null">
+				#{length,jdbcType=INTEGER},
+			</if>
+			<if test="bin != null">
+				#{bin,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.BankBin">
+		update bank_bin
+		<set>
+			<if test="bankName != null">
+				bank_name = #{bankName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankCode != null">
+				bank_code = #{bankCode,jdbcType=VARCHAR},
+			</if>
+			<if test="cardName != null">
+				card_name = #{cardName,jdbcType=VARCHAR},
+			</if>
+			<if test="cardType != null">
+				card_type = #{cardType,jdbcType=VARCHAR},
+			</if>
+			<if test="length != null">
+				length = #{length,jdbcType=INTEGER},
+			</if>
+			<if test="bin != null">
+				bin = #{bin,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhigu.model.BankBin">
+		update bank_bin
+		set bank_name = #{bankName,jdbcType=VARCHAR},
+		bank_code = #{bankCode,jdbcType=VARCHAR},
+		card_name = #{cardName,jdbcType=VARCHAR},
+		card_type = #{cardType,jdbcType=VARCHAR},
+		length = #{length,jdbcType=INTEGER},
+		bin = #{bin,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	
+	<select id="selectByBin" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from bank_bin
+		where bin = #{bin,jdbcType=VARCHAR}
+	</select>
+</mapper>

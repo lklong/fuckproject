@@ -1,0 +1,177 @@
+.overf #joinus_tab_ts {
+overflow: hidden;
+zoom: 1;
+height: auto;
+    }
+        .overf #joinus_tab_ts2 {
+overflow: hidden;
+zoom: 1;
+height: auto;
+    }
+            .overf #joinus_tab_ts3 {
+overflow: hidden;
+zoom: 1;
+height: auto;
+    }
+                .overf #joinus_tab_ts4 {
+overflow: hidden;
+zoom: 1;
+height: auto;
+    }
+
+    #joinus_tab_ts {
+width: 570px;
+height: 35px;
+}
+    #joinus_tab_ts2 {
+width: 570px;
+height: 35px;
+}
+    #joinus_tab_ts3 {
+width: 570px;
+height: 35px;
+}
+    #joinus_tab_ts4 {
+width: 570px;
+height: 35px;
+}
+#joinus_tab_ts li {
+/* width: 81px; */
+padding: 0 13px;
+height: 31px;
+border: 2px solid #ccc;
+float: left;
+margin-right: 8px;
+line-height: 31px;
+text-align: center;
+color: #333;
+cursor: pointer;
+margin-bottom: 8px;
+}
+#joinus_tab_ts2 li {
+/* width: 81px; */
+padding: 0 13px;
+height: 31px;
+border: 2px solid #ccc;
+float: left;
+margin-right: 8px;
+line-height: 31px;
+text-align: center;
+color: #333;
+cursor: pointer;
+margin-bottom: 8px;
+}
+#joinus_tab_ts3 li {
+/* width: 81px; */
+padding: 0 13px;
+height: 31px;
+border: 2px solid #ccc;
+float: left;
+margin-right: 8px;
+line-height: 31px;
+text-align: center;
+color: #333;
+cursor: pointer;
+margin-bottom: 8px;
+}
+#joinus_tab_ts4 li {
+/* width: 81px; */
+padding: 0 13px;
+height: 31px;
+border: 2px solid #ccc;
+float: left;
+margin-right: 8px;
+line-height: 31px;
+text-align: center;
+color: #333;
+cursor: pointer;
+margin-bottom: 8px;
+}
+ul, ol, li {
+list-style: none;
+}
+
+#joinus_tab_ts .active {
+    background: url("../img/active_ts.png") no-repeat scroll right bottom #f2fbe8;
+    border: 2px solid #98ca3f;
+}
+#joinus_tab_ts2 .active {
+    background: url("../img/active_ts.png") no-repeat scroll right bottom #f2fbe8;
+    border: 2px solid #98ca3f;
+}
+#joinus_tab_ts3 .active {
+    background: url("../img/active_ts.png") no-repeat scroll right bottom #f2fbe8;
+    border: 2px solid #98ca3f;
+}
+#joinus_tab_ts4 .active {
+    background: url("../img/active_ts.png") no-repeat scroll right bottom #f2fbe8;
+    border: 2px solid #98ca3f;
+}
+/*文件上传按钮样式*/
+* {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+.btn_addPic {
+	display: block;
+	position: relative;
+	width: 140px;
+	height: 39px;
+	overflow: hidden;
+	border: 1px solid #EBEBEB;
+	background: none repeat scroll 0 0 #F3F3F3;
+	color: #999999;
+	cursor: pointer;
+	text-align: center;
+}
+
+.btn_addPic span {
+	display: block;
+	line-height: 39px;
+}
+
+.btn_addPic em {
+	background: url(../img/but.png) 0 0;
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	overflow: hidden;
+	margin: 10px 5px 10px 0;
+	line-height: 20em;
+	vertical-align: middle;
+}
+
+.btn_addPic:hover em {
+	background-position: -19px 0;
+}
+
+.filePrew {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 140px;
+	height: 39px;
+	font-size: 100px; /* 增大不同浏览器的可点击区域 */
+	opacity: 0; /* 实现的关键点 */
+	filter: alpha(opacity =     0); /* 兼容IE */
+	outline: none; /*ff*/
+	hide-focus: expression(this.hideFocus =     true); /*ie*/
+}
+
+#mapInfo{
+	width:100%;
+	height:100%;
+}
+.BMap_cpyCtrl
+{
+display:none; 
+}
+.anchorBL{
+display:none;
+}

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.WithdrawMapper">
+	<resultMap id="BaseResultMap" type="com.zhigu.model.Withdraw">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="money" property="money" jdbcType="DECIMAL" />
+		<result column="to_account_master" property="toAccountMaster" jdbcType="VARCHAR" />
+		<result column="to_account" property="toAccount" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="handler_admin_id" property="handlerAdminId" jdbcType="INTEGER" />
+		<result column="accept_time" property="acceptTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+
+		<!-- 关联信息 -->
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="userPhone" property="userPhone" jdbcType="VARCHAR" />
+		<result column="adminName" property="adminName" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_id, money, to_account_master, to_account, status, handler_admin_id, accept_time,
+		end_time, create_time, bank_name
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from withdraw
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from withdraw
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.zhigu.model.Withdraw">
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into withdraw (id, user_id, money,
+		to_account_master, to_account, status,
+		handler_admin_id, accept_time, end_time,
+		create_time, bank_name)
+		values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}, #{money,jdbcType=DECIMAL},
+		#{toAccountMaster,jdbcType=VARCHAR},
+		#{toAccount,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+		#{handlerAdminId,jdbcType=INTEGER}, #{acceptTime,jdbcType=TIMESTAMP},
+		#{endTime,jdbcType=TIMESTAMP},
+		#{createTime,jdbcType=TIMESTAMP}, #{bankName,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhigu.model.Withdraw">
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into withdraw
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="money != null">
+				money,
+			</if>
+			<if test="toAccountMaster != null">
+				to_account_master,
+			</if>
+			<if test="toAccount != null">
+				to_account,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="handlerAdminId != null">
+				handler_admin_id,
+			</if>
+			<if test="acceptTime != null">
+				accept_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="bankName != null">
+				bank_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=BIGINT},
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="money != null">
+				#{money,jdbcType=DECIMAL},
+			</if>
+			<if test="toAccountMaster != null">
+				#{toAccountMaster,jdbcType=VARCHAR},
+			</if>
+			<if test="toAccount != null">
+				#{toAccount,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="handlerAdminId != null">
+				#{handlerAdminId,jdbcType=INTEGER},
+			</if>
+			<if test="acceptTime != null">
+				#{acceptTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endTime != null">
+				#{endTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="bankName != null">
+				#{bankName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.Withdraw">
+		update withdraw
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="money != null">
+				money = #{money,jdbcType=DECIMAL},
+			</if>
+			<if test="toAccountMaster != null">
+				to_account_master = #{toAccountMaster,jdbcType=VARCHAR},
+			</if>
+			<if test="toAccount != null">
+				to_account = #{toAccount,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="handlerAdminId != null">
+				handler_admin_id = #{handlerAdminId,jdbcType=INTEGER},
+			</if>
+			<if test="acceptTime != null">
+				accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="bankName != null">
+				bank_name = #{bankName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhigu.model.Withdraw">
+		update withdraw
+		set user_id = #{userId,jdbcType=INTEGER},
+		money = #{money,jdbcType=DECIMAL},
+		to_account_master = #{toAccountMaster,jdbcType=VARCHAR},
+		to_account = #{toAccount,jdbcType=VARCHAR},
+		status = #{status,jdbcType=INTEGER},
+		handler_admin_id = #{handlerAdminId,jdbcType=INTEGER},
+		accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+		end_time = #{endTime,jdbcType=TIMESTAMP},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		bank_name = #{bankName,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="queryWithdrawByPage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from withdraw
+		<where>
+			<if test="userId != null">
+				user_id=#{userId}
+			</if>
+			<if test="status != null">
+				and status=#{status}
+			</if>
+		</where>
+		order by create_time desc
+	</select>
+	<select id="adminQueryWithdrawByPage" resultMap="BaseResultMap">
+		select
+		w.*,u.userName,u.phone as userPhone,au.userName as adminName
+		from withdraw w LEFT JOIN Admin au ON w.handler_admin_id=au.userId,userAuth u
+		where w.user_id=u.userId
+		<if test="userId != null">
+			and w.user_id=#{userId}
+		</if>
+		<if test="status != null">
+			and w.status=#{status}
+		</if>
+		<if test="userPhone != null and userPhone !=''">
+			and u.user_Phone like CONCAT('%',#{userPhone},'%')
+		</if>
+		<if test="bankNo != null and  bankNo!=''">
+			and w.to_account like CONCAT('%',#{bankNo},'%')
+		</if>
+		<if test="bankCardMaster != null and bankCardMaster!=''">
+			and w.to_account_Master like CONCAT('%',#{bankCardMaster},'%')
+		</if>
+		order by create_time desc
+	</select>
+</mapper>

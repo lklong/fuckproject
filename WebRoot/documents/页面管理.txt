@@ -1,0 +1,4 @@
+||页面名---------------------------|| jsp名----------------------------------|| 文件地址--------------------------------
+
+收藏的商品.html								favoritecommodity.jsp							/zhiguweb/WebRoot/WEB-INF/views/user/favoritecommodity.jsp
+货源商品详情.html								detail.jsp												/zhiguweb/WebRoot/WEB-INF/views/commodity/detail.jsp

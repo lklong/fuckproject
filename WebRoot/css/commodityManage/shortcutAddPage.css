@@ -1,0 +1,4 @@
+/*-- 快速发布 --*/
+.titleDiv { font-size:16px; color:#333333; font-weight:bold; padding:5px 0 2px 0; border-bottom:1px solid #dedede;}
+.contentDiv { padding-bottom:8px; padding-top:8px; font-size:14px; line-height:26px;}
+.contentDiv p { padding:5px 0 !important;}

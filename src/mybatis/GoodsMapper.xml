@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.GoodsMapper">
+	<!-- 保存商品信息 -->
+	<insert id="saveGoods" parameterType="com.zhigu.model.Goods">
+		Insert Into Goods(storeId,name,categoryId,minPrice,maxPrice,itemNo,weight,image300,file,intro,description,status,time,refreshDate,delete_flag) 
+			values(#{storeId},#{name},#{categoryId},#{minPrice},#{maxPrice},#{itemNo},#{weight},#{image300},#{file},#{intro},#{description},#{status},now(),now(),#{deleteFlag});
+		<selectKey keyProperty="id" resultType="int" order="AFTER" >
+        	SELECT LAST_INSERT_ID()
+	    </selectKey>
+	</insert>
+	
+	<!-- 保存商品附属信息 -->
+	<insert id="saveGoodsAux" parameterType="goodsAux">
+		Insert Into GoodsAux(goodsId,amount,downloadCount,evaluateCount,purchaseCount,favouriteCount,browseCount,score) 
+			values(#{goodsId},#{amount},#{downloadCount},#{evaluateCount},#{purchaseCount},#{favouriteCount},#{browseCount},#{score})
+	</insert>
+	
+	<!-- 保存商品属性 -->
+	<insert id="saveGoodsProperty" parameterType="list">
+		Insert Into GoodsProperty(goodsId,propertyId,propertyName,propertyValueId,propertyValueName,isSku,skuId) values
+		<foreach collection="list" separator="," item="p">
+			(#{p.goodsId},#{p.propertyId},#{p.propertyName},#{p.propertyValueId},#{p.propertyValueName},#{p.isSku},#{p.skuId})
+		</foreach>
+	</insert>
+	
+	<!-- 保存商品SKu -->
+	<insert id="saveGoodsSku" parameterType="list">
+		Insert Into GoodsSku(goodsId,amount,price,propertyStr,propertyStrName,status,time) values
+		<foreach collection="list" separator="," item="s">
+			(#{s.goodsId},#{s.amount},#{s.price},#{s.propertyStr},#{s.propertyStrName},#{s.status},now())
+		</foreach>
+	</insert>
+	
+	<!-- 保存商品图片 -->
+	<insert id="saveGoodsImage" parameterType="list">
+		Insert Into GoodsImage(goodsId,image,image300,isMain,position,time) values
+		<foreach collection="list" separator="," item="i">
+			(#{i.goodsId},#{i.image},#{i.image300},#{i.main},#{i.position},now())
+		</foreach>
+	</insert>
+	
+	
+	<!-- query -->
+	<!-- 查询商品SKU -->
+	<select id="queryGoodsSkus" parameterType="int" resultMap="goodsSkuMap">
+		Select * From GoodsSku Where goodsId = #{goodsId}
+	</select>
+	<select id="queryGoodsSkuByID" parameterType="int" resultType="goodsSku">
+		Select * From GoodsSku Where id = #{id}
+	</select>
+	<!-- SkuMap -->
+	<resultMap type="goodsSku" id="goodsSkuMap">
+		<id column="id" property="id"/>
+		<collection property="skupros" ofType="goodsProperty"  select="queryGoodsSkusProperty" column="id"></collection>
+	</resultMap>
+	<select id="queryGoodsSkusProperty" resultType="goodsProperty" parameterType="int">
+		Select * From GoodsProperty Where skuid = #{value}
+	</select>
+	
+	<!-- 商品列表 -->
+	<select id="queryGoodsByPage" resultMap="goodsListMap">
+		Select G.* From Goods G
+		join goodsaux GA
+			on G.id = GA.goodsid
+		join Category C 
+			on C.id = G.categoryid
+		<if test="gc.categoryId != null">
+		join Category D 
+			on D.id = C.parentid 
+		</if>
+		Where G.delete_flag = 0  
+			<!-- 商品名 -->
+			<if test="gc.goodsName != null">
+				And G.name like CONCAT('%',#{gc.goodsName},'%') 
+			</if>
+			<!-- 类别 -->
+			<if test="gc.categoryId != null">
+				And (D.id = #{gc.categoryId}  or C.id = #{gc.categoryId})
+			</if> 
+			<!-- 状态 -->
+			<if test="gc.status != null">
+				And G.status = #{gc.status} 
+			</if>
+			<!-- 店铺 -->
+			<if test="gc.storeId != null">
+				And G.storeId = #{gc.storeId} 
+			</if>
+			<!-- 属性查询 -->
+			<if test="gc.gps != null">
+				<foreach collection="gc.gps" item="p" >
+					And EXISTS (
+							Select A.goodsId From GoodsProperty A Where A.goodsId=G.ID And A.propertyid = #{p.propertyId} And propertyvalueid = #{p.propertyValueId} 
+						)
+				</foreach>
+			</if>
+			
+			<!-- 排序 -->
+			Order By 
+			<if test="gc.sort != null">
+				<!-- 销量 -->
+				<if test="gc.sort == 1">
+					GA.purchasecount ASC
+				</if>
+				<if test="gc.sort == 2">
+					GA.purchasecount DESC
+				</if>
+				<!-- 浏览 -->
+				<if test="gc.sort == 3">
+					GA.browseCount ASC
+				</if>
+				<if test="gc.sort == 4">
+					GA.browseCount DESC
+				</if>
+				<!-- 下载 -->
+				<if test="gc.sort == 5">
+					GA.downloadCount ASC
+				</if>
+				<if test="gc.sort == 6">
+					GA.downloadCount DESC
+				</if>
+				<!-- 价格 -->
+				<if test="gc.sort == 7">
+					G.minPrice ASC
+				</if>
+				<if test="gc.sort == 8">
+					G.maxPrice DESC
+				</if>
+				<!-- 时间 -->
+				<if test="gc.sort == 9">
+					G.time ASC
+				</if>
+				<if test="gc.sort == 10">
+					G.time DESC
+				</if>
+				<!-- 收藏 -->
+				<if test="gc.sort == 11">
+					GA.favouriteCount ASC
+				</if>
+				<if test="gc.sort == 12">
+					GA.favouriteCount DESC
+				</if>
+				<!-- 综合-->
+				<if test="gc.sort == 13">
+					GA.overallScore ASC
+				</if>
+				<if test="gc.sort == 14">
+					GA.overallScore DESC
+				</if>
+				
+			</if>
+			<if test="gc.sort == null">
+				G.refreshDate DESC
+			</if>
+	</select>
+<!-- 	<select id="selectStoreGoodsLimit" resultType="goods" parameterType="int">
+		Select * From Goods Where storeId = #{value} and status = 1 Order By time limit 3;
+	</select> -->
+	<!-- 商品列表映射 -->
+	<resultMap type="goods" id="goodsListMap" autoMapping="true">
+		<id column="id" property="id"/>
+		<association property="aux" column="id" javaType="goodsAux" select="queryGoodsAux"></association>
+	</resultMap>
+	
+	<!-- sku分组 -->
+	<select id="queryGoodsSkuFromProperty" parameterType="int" resultType="goodsProperty">
+		select distinct  propertyid,propertyvalueid,propertyname,propertyvaluename  from goodsproperty where goodsid = #{id} and issku = 1 order by propertyid ;
+	</select>
+	<!-- sku组合查询 -->
+	<select id="queryGoodsSkuByPropStr"  resultType="goodsSku">
+		select * from goodssku s where  GoodsID = #{goodsId} and s.propertystr regexp #{sku} 
+	</select>
+	
+	
+	<!-- 查询商品 -->
+	<select id="queryGoodsById" parameterType="int" resultMap="goodsMap">
+		Select * From Goods Where id = #{goodsId} and delete_flag=0 
+	</select>
+	<!-- 商品映射Map -->
+	<resultMap type="goods" id="goodsMap" autoMapping="true">
+		<id column="id" property="id"/>
+		<association property="aux" column="id" javaType="goodsAux" select="queryGoodsAux"></association>
+		<collection property="properties" ofType="goodsProperty"  select="queryGoodsProperty" column="id"></collection>
+		<collection property="images" ofType="goodsImage"  select="queryGoodsImage" column="id"></collection>
+		<collection property="skus" ofType="goodsSku"  select="queryGoodsSkus" column="id"></collection>
+	</resultMap>
+	<!-- 商品属性 -->
+	<select id="queryGoodsProperty" parameterType="int" resultType="goodsProperty">
+		Select * From GoodsProperty Where goodsId = #{value} Order By propertyid
+	</select>
+	<!-- 商品图片 -->
+	<select id="queryGoodsImage" parameterType="int" resultType="goodsImage">
+		Select * From GoodsImage Where goodsId = #{value} Order By ismain desc,position
+	</select>
+	<!-- 商品附属 -->
+	<select id="queryGoodsAux" parameterType="int" resultType="goodsAux">
+		Select * From GoodsAux Where goodsId = #{value}
+	</select>
+	<!-- 查询店铺商品数量 -->
+	<select id="queryStoreGoodsNum" parameterType="goodsCondition" resultType="int">
+		Select Count(*) From Goods Where StoreId = #{storeId}
+	</select>
+	
+	<!-- 商品下载历史 -->
+	<select id="queryDownloadHistoryByPage"  resultType="com.zhigu.model.DownloadHistory">
+		Select A.*,B.username From downloadHistory A,UserAuth B Where goodsId = #{goodsId} And A.userID = B.userID Order By DownloadTime Desc
+	</select>
+	
+	
+	<!-- update -->
+	<!-- 修改商品信息 -->
+	<update id="updateGoods" parameterType="goods">
+		Update Goods Set Name = #{name},minPrice = #{minPrice},maxPrice = #{maxPrice},itemno = #{itemNo},weight = #{weight},image300 = #{image300},file = #{file},intro = #{intro},description = #{description},status = #{status} Where id = #{id} 
+	</update>
+	<!-- 修改商品附属信息 -->
+	<update id="updateGoodsAux" parameterType="goodsAux">
+		Update GoodsAux Set amount = #{amount},downloadcount = #{downloadCount},evaluatecount = #{evaluateCount},purchasecount = #{purchaseCount},favouritecount = #{favouriteCount},browseCount = #{browseCount},score = #{score},overallScore = #{overallScore} Where goodsId = #{goodsId}
+	</update>
+	<update id="updateGoodsSku" parameterType="goodsSku">
+		Update GoodsSku Set amount = #{amount},price = #{price},version = version+1 Where id = #{id} and version = #{version}
+	</update>
+	<!-- 修改商品刷新时间 -->
+	<update id="updateGoodsRefreshDate" parameterType="goods">
+		Update Goods Set refreshDate = #{refreshDate} Where id = #{goodsID} 
+	</update>
+	<!-- 修改商品删除标示 -->
+	<update id="updateGoodsDeleteFlagByGoodsID">
+		Update Goods Set delete_flag = #{deleteFlag} Where id = #{goodsID} 
+	</update>
+	
+	
+	
+	<!-- delete -->
+	<!-- 删除商品图片 -->
+	<delete id="deleteGoodsImage" parameterType="int">
+		Delete From GoodsImage Where goodsId = #{goodsId}
+	</delete>
+	<!-- 删除商品属性 -->
+	<delete id="deleteGoodsProperty" parameterType="int">
+		Delete From GoodsProperty Where goodsId = #{goodsId}
+	</delete>
+	<!-- 删除商品Sku -->
+	<delete id="deleteGoodsSku" parameterType="int">
+		Delete From GoodsSku Where goodsId = #{goodsId}
+	</delete>
+	
+	
+	<!-- 快速发布商品 -->
+	<insert id="saveShortcutGoods" parameterType="shortcutGoods" >
+		insert into shortcutgoods(userId,status,createDate,filePath,realFileName) values(#{userId},#{status},now(),#{filePath},#{realFileName})
+	</insert>
+	<select id="queryShortcutGoodsByID" parameterType="int" resultType="shortcutGoods">
+		select * from shortcutGoods where id = #{id}
+	</select>
+	<select id="queryshortcutgoods" parameterType="int" resultType="shortcutGoods">
+		select * from shortcutgoods where userId = #{userId}
+	</select>
+	<select id="queryshortcutgoodsByStatus"  resultType="shortcutGoods">
+		select * from shortcutgoods where userId = #{userId} and status = #{status}
+	</select>
+	<delete id="deleteShortcut" parameterType="int">
+		delete from shortcutgoods where id = #{id}
+	</delete>
+	
+	<select id="queryshortcutgoodsByManagerListByPage"  resultMap="shortcutGoodsResultMap">
+		select * from shortcutgoods order by status,createDate
+	</select>
+	
+	<resultMap type="shortcutGoods" id="shortcutGoodsResultMap">
+		<association property="user" column="userId" select="queryUser" ></association>
+	</resultMap>
+	<select id="queryUser" resultType="userAuth" parameterType="int">
+		select * from userauth where UserID = #{UserID}
+	</select>
+	
+	
+	<update id="changeShortcutGoodsStatus" parameterType="shortcutGoods">
+		update shortcutgoods set status = #{status},handlerId = #{handlerId},handleDate = #{handleDate} where id = #{id}
+	</update>
+	
+	<select id="queryGoodsNames" resultType="string" parameterType="string">
+		SELECT 
+		    name
+		FROM
+		    goods
+		WHERE
+		    CASE FC_IS_HANZI(#{name})
+		        WHEN 1 THEN name REGEXP #{name}
+		        WHEN
+		            0
+		        THEN
+		            AFC_PINYIN(name) REGEXP AFC_PINYIN(#{name})
+		                OR AC_PINYIN(name) REGEXP AC_PINYIN(#{name})
+		                OR name REGEXP #{name}
+		    END
+		ORDER BY time DESC
+		LIMIT 10
+	</select>
+	
+	<!-- 首页搜索 -->
+	<select id="queryForHomeByPage" resultType="goods">
+		SELECT 
+		    g.*
+		FROM
+		    goods g
+		    	LEFT JOIN goodsaux a on g.id = a.goodsid
+		    	<if test="propName!=null">
+		        	LEFT JOIN goodsproperty p ON g.id = p.goodsid  AND p.propertyvalueid = -1
+		        </if>
+		        <if test="storeName!=null">
+		        	LEFT JOIN store s ON s.id = g.storeid
+		        </if>
+		WHERE g.status = 1
+			<if test="propName!=null">
+		    	AND ( p.propertyvaluename REGEXP #{propName} OR #{propName} REGEXP p.propertyvaluename )
+		    </if>
+		    <if test="storeName!=null">
+		        AND ( s.storename REGEXP #{storeName} OR #{storeName} REGEXP s.StoreName )
+		    </if>
+		    <if test="goodsName!=null">
+		        AND ( g.name REGEXP #{goodsName} OR #{goodsName} REGEXP g.name )
+		    </if>
+		     <!-- 排序 -->
+				<!-- 销量 -->
+				<if test="page.orderBy == 1">
+					order by a.purchasecount ASC
+				</if>
+				<if test="page.orderBy == 2">
+					order by a.purchasecount DESC
+				</if>
+				<!-- 浏览 -->
+				<if test="page.orderBy == 3">
+					order by a.browseCount ASC
+				</if>
+				<if test="page.orderBy == 4">
+					order by a.browseCount DESC
+				</if>
+				<!-- 下载 -->
+				<if test="page.orderBy == 5">
+					order by a.downloadCount ASC
+				</if>
+				<if test="page.orderBy == 6">
+					order by a.downloadCount DESC
+				</if>
+				<!-- 价格 -->
+				<if test="page.orderBy == 7">
+					order by g.minPrice ASC
+				</if>
+				<if test="page.orderBy == 8">
+					order by g.maxPrice DESC
+				</if>
+				<!-- 时间 -->
+				<if test="page.orderBy == 9">
+					order by g.time ASC
+				</if>
+				<if test="page.orderBy == 10">
+					order by g.time DESC
+				</if>
+				<!-- 收藏 -->
+				<if test="page.orderBy == 11">
+					order by a.favouriteCount ASC
+				</if>
+				<if test="page.orderBy == 12">
+					order by a.favouriteCount DESC
+				</if>
+				<!-- 综合-->
+				<if test="page.orderBy == 13">
+					order by a.overallScore ASC
+				</if>
+				<if test="page.orderBy == 14">
+					order by a.overallScore DESC
+				</if>
+				<if test="page.orderBy == 15">
+					order by g.refreshDate DESC
+				</if>
+	</select>
+	
+	<!-- 查询货号 -->
+	<select id="queryItemNoInGoodsProperty" parameterType="int" resultType="string">
+		select propertyvaluename from goodsproperty where goodsid = #{goodsId} and propertyId = 135;
+	</select>
+	
+</mapper>
+

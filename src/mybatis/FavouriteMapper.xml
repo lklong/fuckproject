@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.FavouriteMapper">
+	<!-- 添加收藏信息 -->
+	<insert id="addFavourite" parameterType="favourite">
+		insert into Favourite(UserID,FavouriteID,type,addDate)
+		values(#{userID},#{favouriteID},#{type},#{addDate});
+		<selectKey resultType="int" keyProperty="ID" order="AFTER" >
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<!-- 批量删除 -->
+	<delete id="delFavourite" >
+		delete from Favourite where UserID=#{userID} and type=#{type} and FavouriteID in
+		<foreach item="idItem" collection="favouriteIDs"   open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</delete>
+	<!-- 查询收藏（用户ID,收藏ID,类型） -->
+	<select id="queryFavourite" parameterType="favourite" resultType="favourite">
+		select * from Favourite where UserID=#{userID} and FavouriteID=#{favouriteID} and type=#{type};
+	</select>
+	
+	<!-- 查询用户收藏商品 -->
+	<select id="queryFavouriteGoodsByUserID" parameterType="favourite" resultType="goods">
+		SELECT A.*
+		FROM  Goods  A,Favourite B
+		where  A.ID=B.FavouriteID And B.UserID=#{userID} And B.Type=2 And A.delete_flag=0 order by B.addDate DESC ;
+	</select>
+	<!-- 分页查询用户收藏商品() -->
+	<select id="queryFavouriteGoodsByPage" resultType="goods">
+		SELECT A.*
+		FROM  Goods  A,Favourite B
+		where  A.ID=B.FavouriteID And B.UserID=#{userID} And B.Type=2 And A.delete_flag=0 order by B.addDate DESC
+	</select>
+	
+	<!-- 查询用户收藏店铺 -->
+	<select id="queryFavouriteStoreByUserID" parameterType="favourite" resultType="store">
+		SELECT A.*
+		FROM Store A,Favourite B
+		where B.type=1 and B.userID=#{userID} and B.FavouriteID=A.ID;
+	</select>
+	<!-- 分页查询用户收藏店铺 -->
+	<select id="queryFavouriteStoreByPage" resultType="store">
+		SELECT A.*
+		FROM Store A,Favourite B
+		where B.type=1 and B.userID=#{userID} and B.FavouriteID=A.ID  order by addDate DESC 
+	</select>
+</mapper>
+

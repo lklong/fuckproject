@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.StoreMapper">
+	<!-- 添加店铺基本信息 -->
+	<insert id="addStore" parameterType="com.zhigu.model.Store">
+		Insert Into
+		Store(UserID,Domain,storeName,Province,City,District,Street,BusinessArea,ContactName,Phone,QQ,AliWangWang,StoreNameModify,DomainModify,LevelPoint,LogoPath,SignagePath,IntegrityAuth,CompanyAuth,RealStoreAuth,Introduction,OpenStoreDate,FullMemberFlg,ApplyTime,ApplyType,ApproveState,RejectReason,SupplierType,refresh_date)
+		Values(#{userID},#{domain},#{storeName},#{province},#{city},#{district},#{street},#{businessArea},#{contactName},#{phone},#{QQ},#{aliWangWang},#{storeNameModify},#{domainModify},#{levelPoint},#{logoPath},#{signagePath},#{integrityAuth},#{companyAuth},#{realStoreAuth},#{introduction},#{openStoreDate},#{fullMemberFlg},#{applyTime}
+		,#{applyType},#{approveState},#{rejectReason},#{supplierType},#{refreshDate});
+		<selectKey resultType="int" keyProperty="ID" order="AFTER" >
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	<!-- 修改店铺基本信息 -->
+	<update id="updateStore" parameterType="store">
+		Update Store set
+		Domain=#{domain},DomainModify=#{domainModify},StoreName=#{storeName},StoreNameModify=#{storeNameModify},Province=#{province},City=#{city},District=#{district},Street=#{street},BusinessArea=#{businessArea},ContactName=#{contactName},
+		Phone=#{phone},QQ=#{QQ},AliWangWang=#{aliWangWang},LogoPath=#{logoPath},SignagePath=#{signagePath},Introduction=#{introduction},CompanyAuth=#{companyAuth},IntegrityAuth=#{integrityAuth},RealStoreAuth=#{realStoreAuth}
+		where ID=#{ID};
+	</update>
+	<update id="updateLevelPoint" >
+		Update Store set LevelPoint=LevelPoint+#{levelPoint} where ID=#{ID}
+	</update>
+	<!-- 修改店铺正式会员flg -->
+	<update id="updateFullMemberFlg">
+		Update Store set FullMemberFlg=#{fullMemberFlg} where ID=#{ID};
+	</update>
+	<!-- 修改店铺刷新时间 -->
+	<update id="updateStoreRefreshDateByStoreId">
+		Update Store set refresh_date=#{refreshDate} where ID=#{storeId};
+	</update>
+	
+	<!-- 修改店铺审核状态 -->
+	<insert id="updateApproveState"  >Update Store set ApproveState=#{status} where ID=#{id};</insert>
+	<!-- 修改店铺公司认证状态 -->
+	<insert id="updateCompanyAuthState" >Update Store set CompanyAuth=#{status} where ID=#{id};</insert>
+	<!-- 修改店铺公司实地认证状态 -->
+	<insert id="updateRealStoreAuthState" >Update Store set RealStoreAuth=#{status} where ID=#{id};</insert>
+	<!-- 分页查询店铺 orderBy: 1*下载量 2*销售量 3*信誉等级 41:商品数量-->
+	<select id="queryStoreByPage"  resultMap="storeMap">
+		Select * From Store A Left Join (Select B.storeid,Sum(C.downloadcount) DownloadTotal,Sum(C.PurchaseCount) PurchaseTotal,Sum(IF(B.status = 1 AND B.time > DATE_SUB(NOW(),INTERVAL 1 MONTH),1,0)) NewPurchaseTotal,Sum(IF(B.status = 1,1,0)) commodityOnSaleTotal From Goods B,GoodsAux C Where B.id = C.goodsid Group By B.StoreId) R On A.ID = R.storeid Where 1 = 1 
+		<if test="businessArea != null">
+			and BusinessArea=#{businessArea}
+		</if>
+		<if test="storeName!=null and storeName!=''">
+			and A.StoreName like CONCAT('%',#{storeName},'%')
+		</if>
+		GROUP BY A.ID
+		<choose>
+			<when test="page.orderBy==10">
+				order by DownloadTotal 
+			</when>
+			<when test="page.orderBy==10">
+				order by DownloadTotal 
+			</when>
+			<when test="page.orderBy==11">
+				order by DownloadTotal DESC
+			</when>
+			<when test="page.orderBy==20">
+				order by PurchaseTotal
+			</when>
+			<when test="page.orderBy==21">
+				order by PurchaseTotal DESC
+			</when>
+			<when test="page.orderBy==30">
+				order by LevelPoint 
+			</when>
+			<when test="page.orderBy==31">
+				order by LevelPoint DESC
+			</when>
+			<when test="page.orderBy==40">
+				order by commodityOnSaleTotal
+			</when>
+			<when test="page.orderBy==41">
+				order by commodityOnSaleTotal DESC
+			</when>
+			<otherwise>
+				order by refresh_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectStoreGoodsLimit" resultType="goods" parameterType="int">
+		Select * From Goods Where storeId = #{value} and status = 1 Order By time limit 5;
+	</select>
+	
+	<resultMap type="store" id="storeMap" autoMapping="true">
+		<id column="ID" property="ID"/>
+		<collection property="goods" column="ID" ofType="goods" select="selectStoreGoodsLimit"></collection>
+	</resultMap>
+	
+	
+	<!-- userID查询店铺信息 -->
+	<select id="queryStoreByID" parameterType="int" resultType="store">Select * from Store where ID = #{ID}</select>
+	<!-- userID查询店铺信息 -->
+	<select id="queryStoreByUserID" parameterType="int" resultType="store">Select * from Store where UserID = #{userID}</select>
+	<!-- domain查询店铺信息 -->
+	<select id="queryStoreByDomain" parameterType="java.lang.String" resultType="store">Select * from Store where Domain = #{domain}</select>
+	<!-- 商店名查询店铺信息 -->
+	<select id="queryStoreByStoreName" parameterType="java.lang.String" resultType="store">Select * from Store where storeName = #{storeName}</select>
+	<!-- 查询店铺商品 （by店铺ID） -->
+	<select id="queryStoreGoodsByPage" resultType="goods" >
+		SELECT *
+		FROM Goods A
+		where A.StoreID=#{storeID} and A.Status=1 
+		<choose>
+			<when test="page.orderBy==11">
+				order by A.Time DESC
+			</when>
+			<when test="page.orderBy==21">
+				<!-- order by A.PurchaseCount DESC -->
+			</when>
+			<when test="page.orderBy==31">
+				<!-- order by favouriteCount DESC -->
+			</when>
+			<otherwise>
+				order by A.Time DESC
+			</otherwise>
+		</choose>
+	</select>
+	<!-- 店铺商品 -->
+	<select id="queryStoreGoods" parameterType="map" resultType="goods">
+		select * from Goods where StoreID = #{storeID} order by Time DESC
+		<if test="rows>0">limit #{rows}</if>
+	</select>
+	
+	  <sql id="Base_Column_List" >
+    ID, UserID, Domain, StoreName, Province, City, District, Street, BusinessArea, ContactName, 
+    Phone, QQ, AliWangWang, StoreNameModify, DomainModify, LevelPoint, Score, LogoPath, 
+    SignagePath, IntegrityAuth, companyAuth, RealStoreAuth, OpenStoreDate, ApplyType, 
+    ApplyTime, ApproveState, RejectReason, FullMemberFlg, SupplierType
+  </sql>
+  <sql id="Blob_Column_List" >
+    Introduction
+  </sql>
+  <!-- 根据查询条件获取店铺列表  （用于后台） -->
+	  <select id="queryStoreListByPage"  parameterType="com.zhigu.model.PageBean" resultType="com.zhigu.model.Store">
+			select 
+		    <include refid="Base_Column_List" />
+		    from store where 1=1
+	      <if test="paras.store.approveState!=null">
+	    	and approveState = #{paras.store.approveState} 
+	      </if>
+		   <if test="paras.store.storeName!=null">
+             and storeName like CONCAT(CONCAT( '%',#{paras.store.storeName}),'%' ) 
+		 </if> 
+		  <if test="paras.store.businessArea != null" >
+	         and BusinessArea = #{paras.store.businessArea} 
+	      </if>
+	      <if test="paras.store.phone != null" >
+	         and phone like CONCAT(CONCAT( '%',#{paras.store.phone}),'%' )  
+	      </if>
+	      <if test="paras.startDate !=null and paras.startDate != ''" >
+	      	<![CDATA[
+	         	and DATE_FORMAT(applyTime, '%Y-%m-%d')  >= #{paras.startDate} 
+	         ]]>
+	      </if>
+	      <if test=" paras.endDate !=null and paras.endDate !=''" >
+	      	<![CDATA[
+	         	and DATE_FORMAT(applyTime, '%Y-%m-%d') <= #{paras.endDate }
+	         ]]>
+	      </if>
+		    Order By ApplyTime  desc
+	</select>
+	
+	<!-- 获取店铺ID列表 （用于后台）-->
+	<select id="queryStoreIDList"  resultType="hashmap">
+		select id,storeName from store 
+	</select>
+</mapper>
+

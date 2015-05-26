@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<properties>
+<!-- Oracle || Mysql support only -->
+    <property name="dialect" value="mysql"/>
+</properties>
+ <settings>
+  <setting name="lazyLoadingEnabled" value="false" />
+ </settings>
+ <typeAliases>
+	<!-- 自动扫描，设置别名（首字母小写，可在javabean 加上注解@Alias 来自定义别名， 例如： @Alias(user) ） -->
+	<package  name="com.zhigu.model"/>
+</typeAliases>
+<plugins>    
+    <plugin interceptor="com.zhigu.common.interceptor.PaginationInterceptor"/>
+</plugins>
+
+</configuration>

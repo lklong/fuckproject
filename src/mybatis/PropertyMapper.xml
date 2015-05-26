@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.PropertyMapper" >
+  <resultMap id="BaseResultMap" type="com.zhigu.model.Property" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="categoryid" property="categoryID" jdbcType="INTEGER" />
+    <result column="isalias" property="isAlias" jdbcType="TINYINT" />
+    <result column="isnunm" property="isNunm" jdbcType="TINYINT" />
+    <result column="iscolor" property="isColor" jdbcType="TINYINT" />
+    <result column="iskey" property="isKey" jdbcType="TINYINT" />
+    <result column="issell" property="isSell" jdbcType="TINYINT" />
+    <result column="issearch" property="isSearch" jdbcType="TINYINT" />
+    <result column="isinput" property="isInput" jdbcType="TINYINT" />
+    <result column="isrequired" property="isRequired" jdbcType="TINYINT" />
+    <result column="ismult" property="isMult" jdbcType="TINYINT" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, categoryid, isalias, isnunm, iscolor, iskey, issell, issearch, isinput, 
+    isrequired, ismult, sort, status
+  </sql>
+  
+   <sql id="Base_Join_Column_List" >
+    p.id, p.name, p.categoryid, p.isalias, p.isnunm, p.iscolor, p.iskey, p.issell, p.issearch, p.isinput, 
+    isrequired, p.ismult, p.sort, p.status
+  </sql>
+  
+  <select id="queryPropByName" parameterType="string" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" />
+    from property
+    where name = #{name,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="saveCatProp" parameterType="com.zhigu.model.CategoryProperty">
+  	insert into categoryproperty (categoryID,propertyID)values(#{categoryId},#{propertyId})
+  </insert>
+  
+  <select id="queryPropsByCatId" resultType="hashmap" parameterType="int">
+  	  	SELECT 
+	     <include refid="Base_Join_Column_List" />
+	FROM
+	    category c
+	         JOIN
+	    categoryproperty cp ON c.id = cp.categoryid
+	         JOIN
+	    property p ON p.id = cp.propertyid
+	where c.id=#{categoryId}  and status = 1 order by id desc
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from property
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectPropByCatId" resultType="hashmap" parameterType="int">
+  	SELECT 
+	     <include refid="Base_Join_Column_List" />
+	FROM
+	    category c
+	        LEFT JOIN
+	    categoryproperty cp ON c.id = cp.categoryid
+	        LEFT JOIN
+	    property p ON p.id = cp.propertyid
+	where c.id=#{id,jdbcType=INTEGER};
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from property
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhigu.model.Property" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into property
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="categoryID != null" >
+        categoryid,
+      </if>
+      <if test="isAlias != null" >
+        isalias,
+      </if>
+      <if test="isNunm != null" >
+        isnunm,
+      </if>
+      <if test="isColor != null" >
+        iscolor,
+      </if>
+      <if test="isKey != null" >
+        iskey,
+      </if>
+      <if test="isSell != null" >
+        issell,
+      </if>
+      <if test="isSearch != null" >
+        issearch,
+      </if>
+      <if test="isInput != null" >
+        isinput,
+      </if>
+      <if test="isRequired != null" >
+        isrequired,
+      </if>
+      <if test="isMult != null" >
+        ismult,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryID != null" >
+        #{categoryID,jdbcType=INTEGER},
+      </if>
+      <if test="isAlias != null" >
+        #{isAlias,jdbcType=TINYINT},
+      </if>
+      <if test="isNunm != null" >
+        #{isNunm,jdbcType=TINYINT},
+      </if>
+      <if test="isColor != null" >
+        #{isColor,jdbcType=TINYINT},
+      </if>
+      <if test="isKey != null" >
+        #{isKey,jdbcType=TINYINT},
+      </if>
+      <if test="isSell != null" >
+        #{isSell,jdbcType=TINYINT},
+      </if>
+      <if test="isSearch != null" >
+        #{isSearch,jdbcType=TINYINT},
+      </if>
+      <if test="isInput != null" >
+        #{isInput,jdbcType=TINYINT},
+      </if>
+      <if test="isRequired != null" >
+        #{isRequired,jdbcType=TINYINT},
+      </if>
+      <if test="isMult != null" >
+        #{isMult,jdbcType=TINYINT},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.zhigu.model.Property" >
+    update property
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryID != null" >
+        categoryid = #{categoryID,jdbcType=INTEGER},
+      </if>
+      <if test="isAlias != null" >
+        isalias = #{isAlias,jdbcType=TINYINT},
+      </if>
+      <if test="isNunm != null" >
+        isnunm = #{isNunm,jdbcType=TINYINT},
+      </if>
+      <if test="isColor != null" >
+        iscolor = #{isColor,jdbcType=TINYINT},
+      </if>
+      <if test="isKey != null" >
+        iskey = #{isKey,jdbcType=TINYINT},
+      </if>
+      <if test="isSell != null" >
+        issell = #{isSell,jdbcType=TINYINT},
+      </if>
+      <if test="isSearch != null" >
+        issearch = #{isSearch,jdbcType=TINYINT},
+      </if>
+      <if test="isInput != null" >
+        isinput = #{isInput,jdbcType=TINYINT},
+      </if>
+      <if test="isRequired != null" >
+        isrequired = #{isRequired,jdbcType=TINYINT},
+      </if>
+      <if test="isMult != null" >
+        ismult = #{isMult,jdbcType=TINYINT},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

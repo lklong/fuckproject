@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.LoginLogMapper">
+	<insert id="addLoginLog" parameterType="loginLog">
+		insert into LoginLog(ID,UserID,IP,LoginDate,LoginStatus,Browser) value(#{ID},#{userID},#{IP},#{loginDate},#{loginStatus},#{browser});
+		<selectKey resultType="int" keyProperty="ID" order="AFTER" >
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	<select id="queryLoginLog" parameterType="com.zhigu.model.PageBean" resultType="loginLog">
+		select * from LoginLog where 1=1 
+		<if test="paras.userID!=null and paras.userID!=''">
+			and UserID = #{paras.userID}
+		</if>
+			<if test="paras.startDate!=null  and paras.startDate!=''">
+			and DATE_FORMAT(LoginDate,"%Y-%m-%d")&gt;=STR_TO_DATE(#{paras.startDate},"%Y-%m-%d")
+		</if>
+		<if test="paras.endDate!=null  and paras.endDate!=''">
+			and DATE_FORMAT(LoginDate,"%Y-%m-%d")&lt;=STR_TO_DATE(#{paras.endDate},"%Y-%m-%d")
+		</if>
+		order by LoginDate DESC
+	</select>
+	<select id="queryPreviousLoginLogByUserID" parameterType="int" resultType="loginLog">
+		select * from LoginLog where  UserID = #{paras.userID} order by LoginDate DESC limit 1,1;
+	</select>
+</mapper>
+

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.PropertyRefMapper" >
+  <resultMap id="BaseResultMap" type="com.zhigu.model.PropertyRef" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="categoryID" property="categoryID" jdbcType="BIGINT" />
+    <result column="categoryPropID" property="categoryPropID" jdbcType="BIGINT" />
+    <result column="thirdCatID" property="thirdCatID" jdbcType="BIGINT" />
+    <result column="thirdCatPropID" property="thirdCatPropID" jdbcType="BIGINT" />
+    <result column="thirdPlatType" property="thirdPlatType" jdbcType="INTEGER" />
+    <result column="deleteFlag" property="deleteFlag" jdbcType="BIT" />
+    <result column="catPropName" property="catPropName" jdbcType="VARCHAR" />
+    <result column="thirdCatPropName" property="thirdCatPropName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, categoryID, categoryPropID, thirdCatID, thirdCatPropID, thirdPlatType, deleteFlag, catPropName, thirdCatPropName
+  </sql>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from property_ref
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAll" resultType="hashmap">
+  	 select 
+	    <include refid="Base_Column_List" />
+	 from property_ref where deleteFlag = 0 order by id desc
+  </select>
+  
+   <select id="selectByCatId" resultType="hashmap" >
+  	 select 
+	    <include refid="Base_Column_List" />
+	 from property_ref where deleteFlag = 0 and categoryID = #{catId} and thirdCatID = #{cid} order by id desc
+  </select>
+  
+	   <select id="queryCategoryRefByCidAndPropID" resultType="com.zhigu.model.PropertyRef">
+	  	 select 
+	    <include refid="Base_Column_List" />
+	     from property_ref where categoryPropID=#{propID} and categoryID =#{cid} order by id desc
+	  </select>
+  
+     <select id="selectTBPropByPlat" resultMap="BaseResultMap"  >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from property_ref
+	    where deleteFlag = 0 and categoryID = #{catId} and categoryPropID = #{propId}
+	 </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from property_ref
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhigu.model.PropertyRef"  useGeneratedKeys="true" keyProperty="id">
+    insert into property_ref
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="categoryID != null" >
+        categoryID,
+      </if>
+      <if test="categoryPropID != null" >
+        categoryPropID,
+      </if>
+      <if test="thirdCatID != null" >
+        thirdCatID,
+      </if>
+      <if test="thirdCatPropID != null" >
+        thirdCatPropID,
+      </if>
+      <if test="thirdPlatType != null" >
+        thirdPlatType,
+      </if>
+      <if test="deleteFlag != null" >
+        deleteFlag,
+      </if>
+      <if test="catPropName != null" >
+        catPropName,
+      </if>
+      <if test="thirdCatPropName != null" >
+        thirdCatPropName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="categoryID != null" >
+        #{categoryID,jdbcType=BIGINT},
+      </if>
+      <if test="categoryPropID != null" >
+        #{categoryPropID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdCatID != null" >
+        #{thirdCatID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdCatPropID != null" >
+        #{thirdCatPropID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdPlatType != null" >
+        #{thirdPlatType,jdbcType=INTEGER},
+      </if>
+      <if test="deleteFlag != null" >
+        #{deleteFlag,jdbcType=BIT},
+      </if>
+      <if test="catPropName != null" >
+        #{catPropName,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdCatPropName != null" >
+        #{thirdCatPropName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.zhigu.model.PropertyRef" >
+    update property_ref
+    <set >
+      <if test="categoryID != null" >
+        categoryID = #{categoryID,jdbcType=BIGINT},
+      </if>
+      <if test="categoryPropID != null" >
+        categoryPropID = #{categoryPropID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdCatID != null" >
+        thirdCatID = #{thirdCatID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdCatPropID != null" >
+        thirdCatPropID = #{thirdCatPropID,jdbcType=BIGINT},
+      </if>
+      <if test="thirdPlatType != null" >
+        thirdPlatType = #{thirdPlatType,jdbcType=INTEGER},
+      </if>
+      <if test="deleteFlag != null" >
+        deleteFlag = #{deleteFlag,jdbcType=BIT},
+      </if>
+      <if test="catPropName != null" >
+        catPropName = #{catPropName,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdCatPropName != null" >
+        thirdCatPropName = #{thirdCatPropName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

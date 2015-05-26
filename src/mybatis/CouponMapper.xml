@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.CouponMapper">
+	<select id="queryCouponByID" parameterType="int" resultType="coupon">
+		select * from Coupon where ID = #{ID};
+	</select>
+	<select id="queryCouponByUserID" parameterType="int" resultType="coupon">
+		select * from Coupon where userID = #{userID};
+	</select>
+	<select id="queryCouponByPage" parameterType="page" resultType="coupon">
+		select * from Coupon where 1=1
+		<if test="paras.userID != null">
+			and userID = #{paras.userID}
+		</if>
+	</select>
+	<insert id="saveCoupon" parameterType="coupon">
+		insert into Coupon(name,userID,type,discount,offsetMoney,status,addTime,endTime,source) values(#{name},#{userID},#{type},#{discount},#{offsetMoney},#{status},now(),#{endTime},#{source});
+	</insert>
+	<update id="updateCoupon" parameterType="coupon">
+		update Coupon set  status = #{status},version = version+1 where version = #{version};
+	</update>
+</mapper>
+

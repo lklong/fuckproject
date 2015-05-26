@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>APP下载</title>
+<script type="text/javascript" language="javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" language="javascript" src="/js/global.js"></script>
+</head>
+
+<body>
+<table width="1190" border="0" cellspacing="0" cellpadding="0" style="margin:0 auto;">
+  <tr>
+    <td><img src="images/app/app_gai_1.jpg" width="1190" height="140" /></td>
+  </tr>
+  <tr>
+    <td><img src="images/app/app_gai_2.jpg" width="1190" height="137" /></td>
+  </tr>
+  <tr>
+    <td style="width:1190px;height:152px; background:url(images/app/app_gai_3.jpg);" >
+    	<div style="padding:10px 0 0 131px;"><div style="float:left"><input style="height:42px;width:285px;background:url(images/app/phonebg.jpg);border:0; text-indent:5px;line-height:42px; font-size:18px; font-weight:bold;" type="text" id="sendPhone"/></div><div style="float:left"><input style="border:0; height:42px; width:66px;background:url(images/app/phonebg.jpg) no-repeat right top;" type="button" value="" onclick="zhigu.sendAppToPhone();" id="sendAppToPhone" /></div></div>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="images/app/app_gai_4.jpg" width="1190" height="183" /></td>
+  </tr>
+  <tr>
+    <td><a href="http://www.zhiguw.com/app/zhiguw.apk"><img src="images/app/app_gai_5.jpg" width="1190" height="180" /></a></td>
+  </tr>
+</table>
+<script type="text/javascript">
+if (typeof zhigu == "undefined" || !zhigu) {
+    var zhigu = {};
+}
+zhigu.sendAppToPhone = function(){
+	var phone = $("#sendPhone").val();
+	if(!phone){
+		dialog("请输入手机号码！");
+		return ;
+	}
+	ajaxSubmit("phoneSMS/sendAppAndrodLink",{'phone':phone},function(data){
+		dialog(data.msg);
+		if(data.code==1){
+			$("#sendAppToPhone").val("已发送");
+			$("#sendAppToPhone").prop("disabled",true);
+		}
+	})
+}
+</script>
+</body>
+</html>
