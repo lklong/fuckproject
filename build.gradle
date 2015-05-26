@@ -35,23 +35,31 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"  
 }
 
+// ext{
+// 	tomcat_home='D:/servers/test-tomcat'
+// 	tomcat_bin=tomcat_home + '/bin'
+// 	tomcat_start=tomcat_bin + '/catalina.bat run'
+// 	tomcat_stop=tomcat_bin + '/catalina.bat stop'
+// 	tomcat_webapps = tomcat_home + '/webapps/ROOT'
+// }
+
+ext{
+	tomcat_home='/home/zhigu/tomcat'
+	tomcat_bin=tomcat_home + '/bin'
+	tomcat_start=tomcat_bin + '/catalina.sh run'
+	tomcat_stop=tomcat_bin + '/catalina.sh stop'
+	tomcat_webapps = tomcat_home + '/webapps/ROOT'
+}
+
 task copyFiles(type: Copy) {
 	from 'src'
 	into 'WebRoot/WEB-INF/classes'
 	include '**/*.xml', '**/*.txt', '**/*.properties'
 }
 
-ext{
-	tomcat_home='D:/servers/test-tomcat'
-	tomcat_bin=tomcat_home + '/bin'
-	tomcat_start=tomcat_bin + '/catalina.bat run'
-	tomcat_stop=tomcat_bin + '/shutdown.bat'
-	tomcat_webapps = tomcat_home + '/webapps/ROOT'
-}
-
 task copyWebAPP(type:Copy){
 	from 'WebRoot'
-	into 'D:/servers/test-tomcat/webapps/ROOT'
+	into tomcat_webapps
 }
 
 task server << {
@@ -73,13 +81,13 @@ def stopServer() {
 }
 
 def startServer() {
-    executeCmd('D:/servers/test-tomcat/startup.bat')
+    executeCmd('tomcat_start')
 }
 
 
 def executeCmd(command) {
     command.execute()
-    //proc.waitFor()
+    proc.waitFor()
 }
 
 def webappsCopy() {
