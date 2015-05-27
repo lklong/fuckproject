@@ -3,6 +3,7 @@
  */
 package com.zhigu.service.taobao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -18,8 +19,12 @@ import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.Picture;
 import com.taobao.api.request.ItemAddRequest;
 import com.taobao.api.response.ItemAddResponse;
+import com.zhigu.common.constant.enumconst.PlatType;
 import com.zhigu.common.taobao.TaobaoConfig;
+import com.zhigu.mapper.GoodsDistributionMapper;
 import com.zhigu.mapper.GoodsMapper;
+import com.zhigu.model.Goods;
+import com.zhigu.model.GoodsDistribution;
 import com.zhigu.service.taobao.ITaobaoImageService;
 import com.zhigu.service.taobao.ITaobaoItemService;
 
@@ -35,10 +40,13 @@ public class TaobaoItemServiceImpl implements ITaobaoItemService {
 	private static final TaobaoClient client = new DefaultTaobaoClient(TaobaoConfig.API_URL, TaobaoConfig.APP_KEY, TaobaoConfig.APP_SECRET);
 
 	@Autowired
-	private GoodsMapper goodsDao;
+	private GoodsMapper goodsMapper;
 
 	@Autowired
 	private ITaobaoImageService imageService;
+
+	@Autowired
+	private GoodsDistributionMapper goodsDistributionMapper;
 
 	@Override
 	public ItemAddResponse itemAdd(String access_token, int goodsId, ItemAddRequest req) throws ApiException {
@@ -105,6 +113,29 @@ public class TaobaoItemServiceImpl implements ITaobaoItemService {
 
 		return response;
 
+	}
+
+	/**
+	 * 组合分销商品
+	 * 
+	 * @param goodsId
+	 * @param tuser
+	 * @return
+	 */
+	public void saveGoodsDistribution(Long goodsId, String price, Integer userId, Long thirdGoodsID) {
+		Goods goods = goodsMapper.queryGoodsById(Integer.valueOf(goodsId.toString()));
+		GoodsDistribution distribution = new GoodsDistribution();
+		distribution.setGoodsID(goodsId);
+		distribution.setCreateTime(new Date());
+		distribution.setThirdPlatType(PlatType.Taobao.getType());
+		// distribution.setThirdSellerID(tuser.getUserId());
+		// distribution.setThirdSellerNick(tuser.getNick());
+		distribution.setPlatPrice(goods.getMaxPrice().toString());
+		distribution.setThirdGoodsID(thirdGoodsID);
+		distribution.setCommission(price.toString());
+		distribution.setUserID(userId);
+
+		goodsDistributionMapper.insertSelective(distribution);
 	}
 
 	/**

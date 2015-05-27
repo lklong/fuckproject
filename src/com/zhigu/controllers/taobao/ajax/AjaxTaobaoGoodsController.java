@@ -22,6 +22,8 @@ import com.taobao.api.domain.ItemProp;
 import com.taobao.api.domain.Picture;
 import com.taobao.api.request.ItemAddRequest;
 import com.taobao.api.response.ItemAddResponse;
+import com.zhigu.common.SessionHelper;
+import com.zhigu.common.SessionUser;
 import com.zhigu.common.constant.enumconst.ApproveStatus;
 import com.zhigu.common.taobao.JSONObject;
 import com.zhigu.model.ConvertSkuModel;
@@ -63,6 +65,8 @@ public class AjaxTaobaoGoodsController {
 	@ResponseBody
 	public JSONObject editTaobaoItem(ConvertSkuModel skuModel, Integer goodsId, String key, String saleProps, String images, String upDate, String upHour, String upMinute, ItemAddRequest itemRequest)
 			throws ParseException {
+
+		SessionUser user = SessionHelper.getSessionUser();
 
 		String approveStatus = itemRequest.getApproveStatus();
 
@@ -115,6 +119,9 @@ public class AjaxTaobaoGoodsController {
 				skuService.addItemSku(skuModel, numIid, key);
 
 			}
+
+			// 插入商品分销表
+			taobaoItemService.saveGoodsDistribution(Long.valueOf(goodsId), itemRequest.getPrice().toString(), user.getUserID(), response.getItem().getNumIid());
 
 		} catch (ApiException e) {
 

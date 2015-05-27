@@ -16,4 +16,12 @@ public interface ITaobaoItemService {
 	 */
 	ItemAddResponse itemAdd(String assess_token, int goodsId, ItemAddRequest req) throws ApiException;
 
+	/**
+	 * 组合分销商品
+	 * 
+	 * @param goodsId
+	 * @return
+	 */
+	void saveGoodsDistribution(Long goodsId, String price, Integer userId, Long thirdGoodsID);
+
 }

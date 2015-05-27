@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.TaobaoUserMapper" >
+  <resultMap id="BaseResultMap" type="com.zhigu.model.TaobaoUser" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="alipay_bind" property="alipayBind" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="buyer_credit" property="buyerCredit" jdbcType="VARCHAR" />
+    <result column="consumer_protection" property="consumerProtection" jdbcType="CHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="is_golden_seller" property="isGoldenSeller" jdbcType="CHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="nick" property="nick" jdbcType="VARCHAR" />
+    <result column="promoted_type" property="promotedType" jdbcType="CHAR" />
+    <result column="sex" property="sex" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="vip_info" property="vipInfo" jdbcType="VARCHAR" />
+    <result column="auto_repost" property="autoRepost" jdbcType="VARCHAR" />
+    <result column="has_shop" property="hasShop" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uid, alipay_bind, user_id, avatar, birthday, buyer_credit, consumer_protection, email, 
+    is_golden_seller, location, nick, promoted_type, sex, status, type, vip_info, auto_repost, 
+    has_shop
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from taobao_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from taobao_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.zhigu.model.TaobaoUser" >
+    insert into taobao_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="alipayBind != null" >
+        alipay_bind,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="buyerCredit != null" >
+        buyer_credit,
+      </if>
+      <if test="consumerProtection != null" >
+        consumer_protection,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="isGoldenSeller != null" >
+        is_golden_seller,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="nick != null" >
+        nick,
+      </if>
+      <if test="promotedType != null" >
+        promoted_type,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="vipInfo != null" >
+        vip_info,
+      </if>
+      <if test="autoRepost != null" >
+        auto_repost,
+      </if>
+      <if test="hasShop != null" >
+        has_shop,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="alipayBind != null" >
+        #{alipayBind,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyerCredit != null" >
+        #{buyerCredit,jdbcType=VARCHAR},
+      </if>
+      <if test="consumerProtection != null" >
+        #{consumerProtection,jdbcType=CHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="isGoldenSeller != null" >
+        #{isGoldenSeller,jdbcType=CHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="nick != null" >
+        #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="promotedType != null" >
+        #{promotedType,jdbcType=CHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="vipInfo != null" >
+        #{vipInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="autoRepost != null" >
+        #{autoRepost,jdbcType=VARCHAR},
+      </if>
+      <if test="hasShop != null" >
+        #{hasShop,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.TaobaoUser" >
+    update taobao_user
+    <set >
+      <if test="alipayBind != null" >
+        alipay_bind = #{alipayBind,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyerCredit != null" >
+        buyer_credit = #{buyerCredit,jdbcType=VARCHAR},
+      </if>
+      <if test="consumerProtection != null" >
+        consumer_protection = #{consumerProtection,jdbcType=CHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="isGoldenSeller != null" >
+        is_golden_seller = #{isGoldenSeller,jdbcType=CHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="nick != null" >
+        nick = #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="promotedType != null" >
+        promoted_type = #{promotedType,jdbcType=CHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="vipInfo != null" >
+        vip_info = #{vipInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="autoRepost != null" >
+        auto_repost = #{autoRepost,jdbcType=VARCHAR},
+      </if>
+      <if test="hasShop != null" >
+        has_shop = #{hasShop,jdbcType=CHAR},
+      </if>
+    </set>
+    where userId = #{userId,jdbcType=VARCHAR}
+  </update>
+</mapper>

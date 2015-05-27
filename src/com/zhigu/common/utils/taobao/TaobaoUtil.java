@@ -49,6 +49,8 @@ public class TaobaoUtil {
 
 		Map<String, String> tokenMap = (Map<String, String>) JSONUtils.parse(responseJson);
 
+		// TODO 存入数据库
+
 		return tokenMap;
 	}
 
@@ -85,6 +87,8 @@ public class TaobaoUtil {
 
 		Map<String, String> tokenMap = (Map<String, String>) JSONUtils.parse(responseJson);
 
+		// TODO 存入数据库
+
 		return tokenMap;
 
 	}
@@ -93,6 +97,8 @@ public class TaobaoUtil {
 	private static Map<String, String> tokenMap = new HashMap<String, String>();
 
 	public static String getToken(String code, Integer goodsId) throws IOException {
+
+		// TODO 从数据库里获取token
 
 		String token = tokenMap.get(code);
 

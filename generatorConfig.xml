@@ -3,6 +3,9 @@
 <generatorConfiguration >
 	<classPathEntry	location="E:\workspace\zhiguweb\WebRoot\WEB-INF\lib\mysql-connector-java-5.1.21.jar"/> 
 	<context id="DB2Tables"	targetRuntime="MyBatis3">
+		<!-- <property name="mergeable" value="false"></property> -->
+		<property name="overwrite" value="true"></property>
+		<property name="override" value="true"></property>
 		<commentGenerator>
 			<property name="suppressDate" value="true"/>
 			<property name="suppressAllComments" value="true"/>
@@ -23,9 +26,15 @@
 			<property name="enableSubPackages" value="true"/>
 		</javaClientGenerator> 
 		
-	<table tableName="realStoreAuth" domainObjectName="RealStoreAuth2" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-		<property name="useActualColumnNames" value="true"/>
+	<table tableName="taobao_user" domainObjectName="TaobaoUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+		<property name="useActualColumnNames" value="false"/>
+		<columnRenamingRule searchString="_" replaceString="" />
+	</table> 
+	
+	<table  tableName="taobao_token" domainObjectName="TaobaoToken" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" >
+		<property name="useActualColumnNames" value="false"/>
 		<generatedKey column="id" sqlStatement="mysql" identity="true" />
+		<columnRenamingRule searchString="_" replaceString="" />
 	</table>
 	
   </context>

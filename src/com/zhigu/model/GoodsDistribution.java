@@ -14,11 +14,11 @@ public class GoodsDistribution {
 
 	private Long thirdGoodsID;
 
-	private String thirdSellerID;
+	private Long thirdSellerID;
 
 	private String thirdSellerNick;
 
-	private Boolean thirdPlatType;
+	private Integer thirdPlatType;
 
 	private Date createTime;
 
@@ -27,6 +27,8 @@ public class GoodsDistribution {
 	private String platPrice;
 
 	private String commission;
+
+	private Integer count;
 
 	public Integer getId() {
 		return id;
@@ -60,12 +62,12 @@ public class GoodsDistribution {
 		this.thirdGoodsID = thirdGoodsID;
 	}
 
-	public String getThirdSellerID() {
+	public Long getThirdSellerID() {
 		return thirdSellerID;
 	}
 
-	public void setThirdSellerID(String thirdSellerID) {
-		this.thirdSellerID = thirdSellerID == null ? null : thirdSellerID.trim();
+	public void setThirdSellerID(Long thirdSellerID) {
+		this.thirdSellerID = thirdSellerID == null ? null : thirdSellerID;
 	}
 
 	public String getThirdSellerNick() {
@@ -76,11 +78,11 @@ public class GoodsDistribution {
 		this.thirdSellerNick = thirdSellerNick == null ? null : thirdSellerNick.trim();
 	}
 
-	public Boolean getThirdPlatType() {
+	public Integer getThirdPlatType() {
 		return thirdPlatType;
 	}
 
-	public void setThirdPlatType(Boolean thirdPlatType) {
+	public void setThirdPlatType(Integer thirdPlatType) {
 		this.thirdPlatType = thirdPlatType;
 	}
 
@@ -115,4 +117,13 @@ public class GoodsDistribution {
 	public void setCommission(String commission) {
 		this.commission = commission == null ? null : commission.trim();
 	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
 }
