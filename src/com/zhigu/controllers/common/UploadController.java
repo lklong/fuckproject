@@ -31,6 +31,7 @@ import com.zhigu.common.utils.DateUtil;
 import com.zhigu.common.utils.ImageUtil;
 import com.zhigu.common.utils.UploadFileUtil;
 import com.zhigu.common.utils.ZhiguConfig;
+import com.zhigu.controllers.test.UeditorImage;
 import com.zhigu.model.ZhiguFile;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.user.IUserService;
@@ -168,13 +169,32 @@ public class UploadController {
 	 */
 	@RequestMapping(value = "/img/goods/detail", method = RequestMethod.POST)
 	@ResponseBody
-	public MsgBean goodsDetail(MultipartFile file) throws IOException {
+	public UeditorImage goodsDetail(MultipartFile upfile) throws IOException {
 		// 富文本框上传图片
+		UeditorImage ueditorImage = new UeditorImage();
 		try {
-			return zhiguFileService.saveImage(file, null, "1", null, 975, "goodsd_");
+
+			MsgBean msgBean = zhiguFileService.saveImage(upfile, null, "1", null, 975, "goodsd_");
+
+			if (msgBean.getCode() == Code.SUCCESS) {
+
+				ueditorImage.setState("SUCCESS");
+				ueditorImage.setUrl(ZhiguConfig.getHost() + ((ZhiguFile) msgBean.getData()).getUri());
+				ueditorImage.setOriginal(upfile.getOriginalFilename());
+				ueditorImage.setTitle(upfile.getName());
+
+			} else {
+
+				ueditorImage.setState("error");
+
+			}
+
 		} catch (IOException e) {
-			return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
+			// return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
+			ueditorImage.setState("error");
 		}
+
+		return ueditorImage;
 	}
 
 	/**

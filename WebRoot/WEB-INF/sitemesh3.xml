@@ -68,7 +68,7 @@
 	
 	<!-- 编辑器 -->
 	<mapping path="/js/3rdparty/ueditor/**" exclue="true" />
-	<!-- <mapping path="/ueditor/**" exclue="true" /> --><!--本地测试使用 -->
+	 <mapping path="/ueditor/**" exclue="true" /><!--本地测试使用 -->
 	
 	<!-- 延迟加载图片 -->
 	<mapping path="/lazy/load/**" exclue="true" />

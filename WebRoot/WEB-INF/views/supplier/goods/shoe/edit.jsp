@@ -1,56 +1,80 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-<title>发布商品</title>
-<link href="/js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" media="all" />
-<link rel="stylesheet" type="text/css" href="/js/3rdparty/webuploader/webuploader.css">
+<title>编辑商品</title>
+<link href="/js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+<link rel="stylesheet" href="/js/3rdparty/webuploader/webuploader.css">
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
 </head>
 <body>
 <script type="text/javascript" language="javascript" src="js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
  <form method="post" action="#">
     <div class="rightContainer fr">
-    	<div class="wdddbj over_hid">
-            <ul class="allqunbudd over_hid">
+    	<!-- 标题 -->
+    	<h4 class="ddtitle">编辑商品</h4>
+    	<!-- 商品操作选项 -->
+    	<div class="fun-bar">
+    		<ul class="fun-tabs">
                <li><a href="supplier/goods/add" >商品发布</a></li>
                 <li><a href="javascript:void(0)" class="sected">编辑商品</a></li>
                 <li><a href="supplier/goods/list?status=1">出售中的商品</a></li>
                 <li><a href="supplier/goods/list?status=2">下架的商品</a></li>
-            </ul>          	
-        </div>
+            </ul>    
+    	</div>
+		<!-- 填写基本信息开始 -->
+    	<h4 class="ddtitle">1.商品基本信息</h4>
+    	<br>
+    	<div class="msg-alert"><span class="gantanhao"></span>带<span color="color-red"> * </span>号项为必填项目，敬请知悉。</div>
+		<table cellpadding="0" cellspacing="0" class="user-form-table">
+			<tr>
+				<td style="width:10%"><strong class="color-red"> * </strong>商品标题：</td>
+				<td>
+					<input type="text" value="${goods.name }" style="width:550px;" class="input-txt" id="name" onkeyup="zhigu.goods.checkTitleLen(this)"/>
+               		<span class="color-gray">还能输入<strong class="color-red" id="titleCount"> 30 </strong>字</span>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;&nbsp;&nbsp;商品属性：</td>
+				<td>
+				<div id="attributes_sku"><jsp:include page="include.jsp"></jsp:include></div>
+				<!-- 商品规格信息列表 -->
+				<div class="shuxingtable2 mt10" id="scletabletbody"></div>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+		
+		
         <div class="jibenxinxi ml20 mt10">
-           <h4 class="jbxxtitle pl10">1.商品基本信息</h4>
+
            
-           <div class="jibenform">
-           	   <div class="title">
-                   <strong>*</strong><label for="baobeititle0">商品标题：</label>
-               </div>
-               <input type="text" value="${goods.name }" class="biaobeititle fl" id="name" onkeyup="zhigu.goods.checkTitleLen(this)"/>
-               <span class="baobeititle_1 ml10">还能输入<strong id="titleCount">30</strong>字</span>
-               
-           </div>
-           
-           <div id="attributes_sku">
-	           <jsp:include page="include.jsp"></jsp:include>
-	       </div>
-           <div class="shuxingtable2 mt10" id="scletabletbody">
-           </div>
            <div class="jibenform">
            		<div class="title">
                     <p>商品总数：</p>
-                    
+                    <div class="clear"></div>
                </div>
                <span class="jian fl ml10"><font color="red" size="5" id="sumAmount">0</font>&nbsp;&nbsp;件</span>
-               
+               <div class="clear"></div>
            </div>
            <div class="jibenform">
            	   <div class="title">
                    <strong>*</strong><label for="baobeititle0">商品重量：</label>
                </div>
                <input type="text" class="biaobeititle fl" id="weight" value="${goods.weight }" style="width: 100px" onkeyup='zhigu.goods.priceInputCheck(this);' onafterpaste='zhigu.goods.priceInputCheck(this);' maxlength='11'/> 千克 （邮费计算用）
-               
+               <div class="clear"></div>
            </div>
            <div class="tupian mt20">
 	        	<div class="title">
@@ -62,13 +86,13 @@
 	                       	<li class="shangchuanselect" id="shangchuan1" onclick="com_img_upload();">本地上传</li>
 	                       	<li  id="shangchuan2">图片空间</li>
 	                    </ul>
-	                    
+	                    <div class="clear"></div>
 	                </div>
                     <!--本地上传-->
                     <div class="shangchuanbox" id="localUpload">
                     	<div class="xuanzebox mt20">
                             <div id="chooseUploadImg" style="float: left;margin-left: 25px;">选择本地图片</div>
-                            
+                            <div class="clear"></div>
                         </div>
                         <div class="shangchuantishi mt20">
                             <p>提示：</p>
@@ -86,7 +110,7 @@
 									加载用户文件夹...
 								</div>
 							</div>
-							
+							<div class="clear"></div>
 						</div>
 						<div id="com_shangchuanbox" class="fl" style="width: 640px;"></div>
                     </div>
@@ -112,12 +136,21 @@
                             	</li>
                             </c:forEach>
                         </ul>
-                        
+                        <div class="clear"></div>
                      </div> 
                 </div>
-                
+                <div class="clear"></div>
          </div>
-
+    <%--        <div class="jibenform">
+       	<div class="title">
+                 <p>商品详情：</p>
+                 <div class="clear"></div>
+             </div><br/>
+             <textarea id="introduce" name="introduce" style="width:850px;height:360px;">
+				${goods.description }
+			 </textarea>
+             <div class="clear"></div> 
+         </div>--%>
              
               <div class="jibenform">
 		 		<div class="title" style="clear:both;height:30px;">
@@ -125,7 +158,7 @@
 			 	</div>
 		 	  </div>
              
-          
+          <div class="clear"></div>
           
             <div class="jibenform">
 			 	<div class="tupianright fl" style="border:none;margin-left: -20px;">
@@ -135,18 +168,22 @@
 			 	</div>
 		 	  </div>
              
-          
+          <div class="clear"></div>
          <h4 class="jbxxtitle pl10">2.上传数据包</h4>
          <div class="jibenform">
              <div id="chooseDataFile" style="float: left;margin-left: 25px;">上传数据包</div>
              <div id="dataFileProgress" style="margin:10px 20px ; float: left"><c:if test="${empty goods.file }">无数据包</c:if><c:if test="${!empty goods.file }"><a href="${goods.file }" target="_blank">原数据包：下载</a></c:if></div>
              <input type="hidden" id="dataFilePath" value="${goods.file }"/>
-             
+             <div class="clear"></div>
          </div>
          </div>
          <div class="tc fabusubdiv mt20 mb20 "><input class="fabusub f14 fwbold  cp" type="button" value="保存" onclick="save()" id="saveGoods"/></div>
    </div>
 </form>
+<div class="clear"></div>
+
+<!-- <script charset="utf-8" src="js/3rdparty/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="js/3rdparty/kindeditor/lang/zh_CN.js"></script> -->
 <script charset="utf-8" src="js/goods.js"></script>
 <script>
 if (typeof zhigu == "undefined" || !zhigu) {
@@ -635,21 +672,19 @@ $(function() {
 	});
 });
 </script>
-<div id='divbox' class='hidden'>
+<div id='divbox' class='piliansz tl disnone'>
 	<ul class=''>
 		<li>价格：</li>
-		<li><input id="rprice_01" name="rprice" value="1" type='radio' class='ver_ali'/><label for="rprice_01">同颜色分类价格相同</label></li>
-		<li><input id="rprice_02" name="rprice" value="2" type='radio' class='ver_ali'/><label for="rprice_02">同规格价格相同</label></li>
+		<li><input name="rprice" value="1" type='radio' class='ver_ali mr5'/>同颜色分类价格相同</li>
+		<li><input name="rprice" value="2" type='radio' class='ver_ali mr5'/>同规格价格相同</li>
 	</ul>
 	<ul class=''>
 		<li>数量：</li>
-		<li><input id="rquantity_01" name="rquantity" value="1" type='radio' class='ver_ali'/><label for="rquantity_01">同颜色分类数量相同</label></li>
-		<li><input id="rquantity_02" name="rquantity" value="2" type='radio' class='ver_ali'/><label for="rquantity_02">同规格数量相同</label></li>
+		<li><input name="rquantity" value="1" type='radio' class='ver_ali mr5'/>同颜色分类数量相同</li>
+		<li><input name="rquantity" value="2" type='radio' class='ver_ali mr5'/>同规格数量相同</li>
 	</ul>
-	<div class='mt10'>
-	<input type='button' value='确定' onclick="confirmbatch()" class='mini-btn' />
-	<input type='button' onclick="javascript:$('#divbox').hide()" value='取消' class='mini-btn'/>
-	</div>
+	<div class='clear'></div>
+	<div class='mt10'><input type='button' value='确定' onclick="confirmbatch()" class='w80' /><input   type='button' onclick="$('#divbox').hide()" value='取消' class='ml10 w80'/></div>
 </div>
 </body>
 </html>
