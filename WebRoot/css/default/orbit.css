@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* flash-scroll 滚动相册的JS */
+div.orbit-wrapper { position: relative; overflow: visible; width: 711px;height:500px; left:25px;}
+div.orbit { position: relative; overflow: hidden;}
+div.orbit span { display:none;}
+div.orbit a img{ position: absolute; display:block;width:711px; padding:16px;background:#ffffff;}
+div.orbit-wrapper h4{ display: none; }
+div.timer {display: none;}
+div.slider-nav { display: block; }
+div.slider-nav span { width: 40px; height: 120px;  color: #fff; text-align: center; position: absolute; z-index: 100; top: 150px; cursor: pointer; text-indent:-9999px;}
+div.slider-nav span.right { right: 15px; background:url(../../img/default/slider_right.jpg); }
+div.slider-nav span.left { left:-50px;background:url(../../img/default/slider_left.jpg); }
+div.slider-nav span.right:hover {background:url(../../img/default/slider_right.jpg) bottom; }
+div.slider-nav span.left:hover {background:url(../../img/default/slider_left.jpg) bottom; }

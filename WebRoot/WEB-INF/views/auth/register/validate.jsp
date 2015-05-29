@@ -1,10 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!doctype html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+<link href="/css/default/user.css" rel="stylesheet"/>
 <title>用户注册</title>
 </head>
 <body>
@@ -13,7 +12,6 @@
 	<!--** Step.2 去邮箱点击连接进行验证 **-->
 	<div class="userRegPanel disnonex">
 		<div class="urpInside">
-			<div class="urpTopBox"></div>
 			<div class="urpMiddleBox">
 				<div class="urpTopTip">
 					<div id="step1">
@@ -52,7 +50,6 @@
 					<br />
 				</div>
 			</div>
-			<div class="urpFootBox"></div>
 		</div>
 	</div>
 <script type="text/javascript">

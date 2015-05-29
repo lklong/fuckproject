@@ -31,8 +31,8 @@ public class TaobaoUserServiceImpl implements ITaobaoUserService {
 	}
 
 	@Override
-	public TaobaoUser selectByUid(String uid) {
-		return taobaoUserMapper.selectByPrimaryKey(uid);
+	public TaobaoUser selectByUserId(Long userId) {
+		return taobaoUserMapper.selectByPrimaryKey(userId);
 	}
 
 }

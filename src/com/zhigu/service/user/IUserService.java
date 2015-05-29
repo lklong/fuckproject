@@ -24,8 +24,6 @@ import com.zhigu.model.dto.MsgBean;
  */
 public interface IUserService {
 
-	public int queryUserAuthByIp(String ip);
-
 	/**
 	 * 用户登陆
 	 * 

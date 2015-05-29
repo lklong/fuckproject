@@ -13,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import com.zhigu.common.constant.UserType;
 import com.zhigu.common.constant.enumconst.AuthStatus;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.exception.ServiceException;
+import com.zhigu.common.utils.DateUtil;
 import com.zhigu.common.utils.IDCardUtil;
 import com.zhigu.common.utils.Md5;
 import com.zhigu.common.utils.NetUtil;
@@ -83,11 +85,6 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserAuth queryUserAuthByPhone(String phone) {
 		return userDao.queryUserAuthByPhone(phone);
-	}
-
-	@Override
-	public int queryUserAuthByIp(String ip) {
-		return userDao.queryUserAuthByIp(ip);
 	}
 
 	@Override
@@ -194,8 +191,9 @@ public class UserServiceImpl implements IUserService {
 	public MsgBean saveUserAuth(String username, String password) {
 		String ip = NetUtil.getIpAddr(SessionHelper.getRequest());
 
-		if (userDao.queryUserAuthByIp(ip) >= 5) {
-			return new MsgBean(Code.FAIL, "同一IP在一周之内只能注册5个账号！", MsgLevel.ERROR);
+		Date countIpTime = DateUtils.addHours(new Date(), 24);
+		if (userDao.countUserAuthByIp(ip, DateUtil.format(countIpTime, DateUtil.yyyy_MM_dd_HH_mm_ss)) > 15) {
+			return new MsgBean(Code.FAIL, "同一IP在天之内只能注册15个账号！", MsgLevel.ERROR);
 		}
 		if (!VerifyUtil.phoneVerify(username)) {
 			return new MsgBean(Code.FAIL, "手机号码错误！", MsgLevel.ERROR);

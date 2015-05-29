@@ -84,7 +84,7 @@ public class TaobaoUserRelateServiceImpl implements ITaobaoUserRelateService {
 
 			User user = response.getUser();
 
-			TaobaoUser taobaoUser = taobaoUserService.selectByUid(user.getUid());
+			TaobaoUser taobaoUser = taobaoUserService.selectByUserId(user.getUserId());
 
 			if (taobaoUser == null) {
 

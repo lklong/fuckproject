@@ -1,229 +1,166 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="css/jcDate.css" rel="stylesheet" type="text/css" media="all" />
-<link href="js/3rdparty/raty-2.7.0/jquery.raty.css" rel="stylesheet" type="text/css" >
+<head>
+<link href="css/default/jcDate.css" rel="stylesheet">
+<link href="js/3rdparty/raty-2.7.0/jquery.raty.css" rel="stylesheet">
 <title>买家订单</title>
 </head>
 <body>
-<div class="rightContainer">
-		<!--// 标题 //-->
-		<h3 class="rc_title">
-			买家订单<a href="user/home">我的主页</a>
-		</h3>
-		<!--// 内容框 //-->
-		<div class="rc_body">
-			<!--// tab切换条 //-->
-			<div id="userCommTab" class="userCommTab">
-				<ul>
-					<li><a href="javascript:void(0);" class="uctSelected">买家订单</a></li>
-				</ul>
-			</div>
-			<div id="userContents" class="userContents">
-				<!--// 内容1 //-->
-				<div class="body_center2" id="alldd">
-		<!-----------------------------------------------订单时间---------------------------------------------------->
-		<!-- <div class="jinsan f12 lh25 pl20">
-			<ul>
-				<li class="dingdanselect fl mr5"><a href="#">近三个月订单</a></li>
-				<li class="fl"><a href="#">三个月前订单</a></li>
-			</ul>
-			<div class="clear"></div>
-		</div> -->
-		<div class="dingdanxinxi mt10 f12 pt10">
-			<form action="/user/order"  id="orderSearchForm">
-				<div class="dingdanxinxi1">
-					<div class="dingdanhao fl ml30">
-						<p class="fl">订单号：</p>
-						<input class="fl" type="text" name="orderNO" value="${oc.orderNO }"/>
-						<div class="clear"></div>
-					</div>
-					<div class="dingdanhao fl">
-						<p class="fl">货品名称：</p>
-						<input class="fl" type="text" name="goodsName" value="${oc.goodsName }"/>
-						<div class="clear"></div>
-					</div>
-					<div class="dingdanhao fl">
-						<p class="fl">店铺名：</p>
-						<input class="fl" type="text" name="storeName" value="${oc.storeName }"/>
-						<div class="clear"></div>
-					</div>
-					<div class="dingdanhao fl">
-						<p class="fl">交易状态：</p>
-						<select class="fl" name="status" id="status">
-							<option value="0">全部</option>
-							<option value="1">待付款</option>
-							<option value="2">待发货</option>
-							<option value="3">待确认收货</option>
-							<option value="4">交易成功</option>
-							<option value="9">交易关闭</option>
-						</select>
-						<div class="clear"></div>
-					</div>
-					<div class="clear"></div>
-				</div>
-				<div class="dingdanxinxi2 mt10 pl20 lh30">
-					<div class="dingdanhao fl">
-						<p class="fl">成交时间：</p>
-						<input class="jcDate fl mr10" type="text" id="date1" name="startDateStr" value="<fmt:formatDate value="${oc.startDate }" pattern="yyyy-M-d"/>"/>
-						<div class="guodu fl fwryh">~</div>
-						<input class="jcDate fl ml10" type="text" id="date2" name="endDateStr" value="<fmt:formatDate value="${oc.endDate }" pattern="yyyy-M-d"/>"/>
-						<div class="clear"></div>
-					</div>
-					<div class="clear"></div>
-				</div>
-				<div class="dingdansearch mt10">
-					<input type="hidden"  id="pageNo" name="pageNo"/>
-					<input type="button" value="搜索"  onclick="zhigu.orderSearch();"/>
-				</div>
-			</form>
-		</div>
-		<!-----------------------------------------------订单状态---------------------------------------------------->
-		<div class="zhuangtai1 pl20 mt10">
-			<ul>
-				<li class="c999 mt10">订单状态：</li>
-				<li <c:if test="${empty oc.status || oc.status == 0 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(0)">全部</a></li>
-				<li <c:if test="${oc.status == 1 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(1)">待付款</a></li>
-				<li <c:if test="${oc.status == 2 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(2)">待发货</a></li>
-				<li <c:if test="${oc.status == 3 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(3)">待确认收货</a></li>
-<!-- 				<li><a href="javascript:status(1)">等待评价</a></li> -->
-				<li <c:if test="${oc.status == 4 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(4)">交易完成</a></li>
-				<li <c:if test="${oc.status == 9 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(9)">交易关闭</a></li>
-			</ul>
-			<div class="clear"></div>
-		</div>
-		<div class="zhuantaitable">
-			<!-----------------------------------------------table标题---------------------------------------------------->
-			<table class="ddtableth c999">
-				<tr>
-					<th width="400">货品</th>
-					<th width="100">单价(元)</th>
-					<th width="60">数量</th>
-					<th width="40">评价</th>
-					<th width="100">总金额(元)</th>
-					<th width="100">订单状态</th>
-					<th width="200">交易操作</th>
-				</tr>
-			</table>
-			<div class="clear"></div>
-		</div>
-		<!-----------------------------------------------订单---------------------------------------------------->
-		<c:set var="countDownIndex" value="0"/>
-		<c:forEach items="${orders }" var="o">
-			<table class="ddtable0 lh20">
-				<tr class="ddtabletop lh35">
-					<td colspan="7">
-						<div class="dingdantopl fl ml10 c999">
-							<input type="checkbox" class="_cbox" value="${o.ID }" data-orderno="${o.orderNO }" status="${o.status }"/> <span>订单号：${o.orderNO }</span> <span>|</span>
-							<span>店铺：</span> 
-									<a href="store/index?storeId=${o.storeID}" target="_blank">${o.storeName }</a> 
-							<span>|</span>
-							 <c:if test="${not empty o.QQ }">
-							  	<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=${o.QQ }&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:${o.QQ}:52" alt="点这里给我发消息" /></a>
-							 </c:if>
-							 <c:if test="${not empty o.aliWangWang }">
-							  	<a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&uid=${o.aliWangWang}&site=cntaobao&s=2&charset=utf-8" ><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid=${o.aliWangWang }&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" /></a>
-							 </c:if>
-						</div>
-						<div class="dingdantopr fr mr10 c999">
-							<span>下单时间：</span> <span><fmt:formatDate value="${o.orderTime }" pattern="yyyy-MM-dd HH:mm:ss"/></span>
-						</div>
-						<div class="clear"></div>
-					</td>
-				</tr>
-				<tr class="ddcenter">
-					<td>
-						<table class="duotable" style="border-right: 1px solid #DDDDDD;">
-							<c:forEach items="${o.details }" var="od">
-								<tr>
-									<td width="400">
-										<div class="ddcenterimg fl ml10 mt10">
-												<a href="goods/detail?goodsId=${od.goodsID}" target="_blank"><img src="${od.goodsPic}" /></a>
-										</div>
-										<div class="ddimgmiaoshu fl ml10 mt10 lh20">
-											<a href="goods/detail?goodsId=${od.goodsID}" target="_blank">${od.goodsName }</a>
-										</div>
-										<div class="clear"></div>
-									</td>
-									<td width="100" class="tc fwbold c999"><fmt:formatNumber value="${od.unitPrice }" pattern="#0.00"/> </td>
-									<td width="60" class="tc">
-										<p class="c999">${od.quantity }</p>
-									</td>
-								</tr>
-							</c:forEach>
-						</table>
-					</td>
-					<%-- <td width="40"><c:if test="${o.status ==4 }"><a class="add_comment" href="/goods/comment/${o.ID}">添加评论</a></c:if></td> --%>
-					<td width="60" class="tc_padding"><c:if test="${o.status ==4 }"><a class="add_comment" href="/user/order/goods/comment/${o.ID}">添加评论</a></c:if></td>
-					<td width="100" class="tc">
-						<strong class="cff5200">
-							<fmt:formatNumber value="${o.payableMenoy}" pattern="#0.00"/>
-						</strong>
-						
-						<c:if test="${o.agentMoney>0}"><p class="c999">(代发：<fmt:formatNumber value="${o.agentMoney + 0}" pattern="#0.00"/>)</p></c:if>
-						<c:if test="${o.logisticsMoney>0}"><p class="c999">(运费：<fmt:formatNumber value="${o.logisticsMoney + 0}" pattern="#0.00"/>)</p></c:if>
-						<!-- <p class="c999">
-							共<span>1</span>款<span>1</span>件
-						</p> -->
-					</td>
-					<td width="100" class="tc">
-						<p class="c333 fwbold">${o.statusLabel }</p>
-						<c:if test="${o.status ==3 }">
-							<div id="ckwl" oid="${o.ID }" load="false" >
-								<div><a href="javascript:void(0);" >查看物流</a></div>
-								 <div class="wldt f12 c333 disnone" id="ckwlnr">
-									<div class="clear"></div>  
-									<div class="wldtl lh30  pr10 pl10">
-										<ul>
-											<li class="fl"><span>物流公司：${o.logisticsName }</span></li>
-											<li class="fl ml10"><span>运单号码：${o.logisticsNO }</span></li>
-										</ul>
-										<div class="clear"></div>
-									</div>
-									<div class="wldtr">
-									  
-										<div class="wldttalbe  pl10">
-											<img alt="" src="img/loading.gif">
-										</div>
-									</div>
-									<div class="clear"></div>
-								</div>	
-								</div>
-						</c:if>
-					</td>
-					<td width="180" class="caozuol tc c999">
-						<c:choose>
-							<c:when test="${o.status == 1 }">
-								<p>离订单失效还有:</p>
-								<p data-orderno="${o.orderNO }" class='countDown countDown${countDownIndex }' time="<fmt:formatDate value='${o.orderTime }' pattern='yyyy,MM,dd,HH,mm,ss'/>"></p>
-								<c:set var="countDownIndex" value="${countDownIndex + 1 }"></c:set>
-								
-								<p><a href="javascript:void(0)" onclick="orderPayment('${o.orderNO}')">立即付款</a></p>	
-								<p><a href="javascript:void(0)" onclick="cancel('${o.orderNO}')">取消订单</a></p>	
-							</c:when>
-							<c:when test="${o.status == 2 }">
-								<p><a href="javascript:void(0)" onclick="cancel('${o.orderNO}')">取消订单</a></p>	
-							</c:when>
-							<c:when test="${o.status == 3 }">
-								<p><a href="javascript:void(0)" onclick="confirmReceipt(${o.ID})">确认收货</a></p>	
-							</c:when>
-						</c:choose>
-						<p><a href="user/order/detail?orderID=${o.ID}" target="_blank">订单详情</a></p>	
-						<c:if test="${o.status == 9 }">
-							<p><a href="javascript:void();" onclick="deleteOrder(${o.ID});">删除订单</a></p>	
-						</c:if>
-					</td>
-					
-				</tr>
-			</table>
-		</c:forEach>
-		<div class="ddtablefooter mt10">
-			<!-- <div class="ddcaozuo">
+<div class="rightContainer fr">
+  <h4 class="ddtitle">买家订单</h4>
+  <div class="rc_body">
+    <div id="userContents" class="userContents"> 
+      <!--// 内容1 //-->
+      <div class="body_center2" id="alldd">
+        <div class="fun-bar">
+          <form action="/user/order"  id="orderSearchForm">
+            <div class="dingdanxinxi">
+              <div class="dingdanhao fl">
+                <p class="fl">订单编号：</p>
+                <input class="input-txt" type="text" name="orderNO" value="${oc.orderNO }"/>
+                <div class="clear"></div>
+              </div>
+              <div class="dingdanhao fl">
+                <p class="fl">货品名称：</p>
+                <input class="input-txt" type="text" name="goodsName" value="${oc.goodsName }"/>
+                <div class="clear"></div>
+              </div>
+              <div class="dingdanhao fl">
+                <p class="fl">店铺名：</p>
+                <input class="input-txt" type="text" name="storeName" value="${oc.storeName }"/>
+                <div class="clear"></div>
+              </div>
+              <div class="dingdanhao fl">
+                <p class="fl">交易状态：</p>
+                <select class="select-txt " name="status" id="status">
+                  <option value="0">全部</option>
+                  <option value="1">待付款</option>
+                  <option value="2">待发货</option>
+                  <option value="3">待确认收货</option>
+                  <option value="4">交易成功</option>
+                  <option value="9">交易关闭</option>
+                </select>
+                <div class="clear"></div>
+              </div>
+              <div class="clear"></div>
+            </div>
+            <div class="dingdanxinxi">
+              <div class="dingdanhao fl">
+                <p class="fl">成交时间：</p>
+                <input class="jcDate input-txt fl" type="text" id="date1" name="startDateStr" value="<fmt:formatDate value="${oc.startDate }" pattern="yyyy-M-d"/>"/>
+                <p class="fl">到</p>
+                <input class="jcDate input-txt fl" type="text" id="date2" name="endDateStr" value="<fmt:formatDate value="${oc.endDate }" pattern="yyyy-M-d"/>"/>
+                <input type="hidden"  id="pageNo" name="pageNo"/>
+              <input type="button" value="搜索"  onclick="zhigu.orderSearch();" class="input-button fl ml10"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-----------------------------------------------订单状态---------------------------------------------------->
+        <div class="fun-bar">
+          <ul class="fun-tabs">
+            <li>订单状态：</li>
+            <li <c:if test="${empty oc.status || oc.status == 0 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(0)">全部</a></li>
+            <li <c:if test="${oc.status == 1 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(1)">待付款</a></li>
+            <li <c:if test="${oc.status == 2 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(2)">待发货</a></li>
+            <li <c:if test="${oc.status == 3 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(3)">待确认收货</a></li>
+            <li <c:if test="${oc.status == 4 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(4)">交易完成</a></li>
+            <li <c:if test="${oc.status == 9 }">class="zhuangtaiselect"</c:if>><a href="javascript:status(9)">交易关闭</a></li>
+          </ul>
+        </div>
+        <div class="zhuantaitable"> 
+          <!-----------------------------------------------table标题---------------------------------------------------->
+          <table cellpadding="0" cellspacing="0" class="user-list-table">
+            <tr>
+              <th>货品</th>
+              <th>单价(元)</th>
+              <th>数量</th>
+              <th>总金额(元)</th>
+              <th>订单状态</th>
+              <th style="border-right:none;">交易操作</th>
+            </tr>
+          </table>
+        </div>
+        <!-----------------------------------------------订单---------------------------------------------------->
+        <c:set var="countDownIndex" value="0"/>
+        <c:forEach items="${orders }" var="o">
+          <table cellpadding="0" cellspacing="0" class="user-list-table">
+          	<tr>
+          		<th colspan="6" style="border-right:none;text-align:left;line-height:60px;">
+          		<span class="ml10"><input type="checkbox" class="_cbox" value="${o.ID }" data-orderno="${o.orderNO }" status="${o.status }"/></span>
+          		<span class="ml10">订单号：${o.orderNO }</span>
+          		<span class="ml30">店铺：<a href="store/index?storeId=${o.storeID}" target="_blank">${o.storeName }</a></span>
+          		<span class="ml30"><c:if test="${not empty o.QQ }"> <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=${o.QQ }&site=qq&menu=yes"><img style="margin-bottom:-6px;" border="0" src="http://wpa.qq.com/pa?p=2:${o.QQ}:52" alt="点这里给我发消息" /></a> </c:if>
+                  <c:if test="${not empty o.aliWangWang }"> <a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&uid=${o.aliWangWang}&site=cntaobao&s=2&charset=utf-8" ><img style="margin-bottom:-1px;" border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid=${o.aliWangWang }&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" /></a> </c:if></span>
+          		<span class="fr">下单时间：<fmt:formatDate value="${o.orderTime }" pattern="yyyy-MM-dd HH:mm:ss"/></span></th>
+          	</tr>
+          	<tr>
+          		<td><c:forEach items="${o.details }" var="od">
+          			<span><a href="goods/detail?goodsId=${od.goodsID}" target="_blank"><img style="margin-bottom:-20px;" height="50" width="50" src="${od.goodsPic}" /></a></span>
+          			<span><a href="goods/detail?goodsId=${od.goodsID}" target="_blank">${od.goodsName }</a></span>
+          			<span class="ml10 fwb color-red"><fmt:formatNumber value="${od.unitPrice }" pattern="#0.00"/></span>
+          			<span class="ml10">${od.quantity }</span></c:forEach>
+          		</td>
+          		<td><c:if test="${o.status ==4 }"><a class="add_comment" href="/user/order/goods/comment/${o.ID}">添加评论</a></c:if></td>
+          		<td><span class="fwb color-red"><fmt:formatNumber value="${o.payableMenoy}" pattern="#0.00"/></span><c:if test="${o.agentMoney>0}">
+                  <p class="c999">(代发：
+                    <fmt:formatNumber value="${o.agentMoney + 0}" pattern="#0.00"/>
+                    )</p>
+                </c:if>
+                <c:if test="${o.logisticsMoney>0}">
+                  <p class="c999">(运费：
+                    <fmt:formatNumber value="${o.logisticsMoney + 0}" pattern="#0.00"/>
+                    )</p>
+                </c:if></td>
+          		<td>${o.statusLabel }</td>
+          		<td><c:if test="${o.status ==3 }">
+                  <div id="ckwl" oid="${o.ID }" load="false" >
+                    <div><a href="javascript:void(0);" >查看物流</a></div>
+                    <div class="wldt f12 c333 disnone" id="ckwlnr">
+                      <div class="clear"></div>
+                      <div class="wldtl lh30  pr10 pl10">
+                        <ul>
+                          <li class="fl"><span>物流公司：${o.logisticsName }</span></li>
+                          <li class="fl ml10"><span>运单号码：${o.logisticsNO }</span></li>
+                        </ul>
+                        <div class="clear"></div>
+                      </div>
+                      <div class="wldtr">
+                        <div class="wldttalbe  pl10"> <img alt="" src="img/loading.gif"> </div>
+                      </div>
+                      <div class="clear"></div>
+                    </div>
+                  </div>
+                </c:if></td>
+          		<td><c:choose>
+                  <c:when test="${o.status == 1 }">
+                    <p>离订单失效还有:</p>
+                    <p data-orderno="${o.orderNO }" class='countDown countDown${countDownIndex }' time="<fmt:formatDate value='${o.orderTime }' pattern='yyyy,MM,dd,HH,mm,ss'/>"></p>
+                    <c:set var="countDownIndex" value="${countDownIndex + 1 }">
+                    </c:set>
+                    <p><a href="javascript:void(0)" onclick="orderPayment('${o.orderNO}')" class="default-a">立即付款</a></p>
+                    <p><a href="javascript:void(0)" onclick="cancel('${o.orderNO}')" class="default-a">取消订单</a></p>
+                  </c:when>
+                  <c:when test="${o.status == 2 }">
+                    <p><a href="javascript:void(0)" onclick="cancel('${o.orderNO}')" class="default-a">取消订单</a></p>
+                  </c:when>
+                  <c:when test="${o.status == 3 }">
+                    <p><a href="javascript:void(0)" onclick="confirmReceipt(${o.ID})" class="default-a">确认收货</a></p>
+                  </c:when>
+                </c:choose>
+                <p><a href="user/order/detail?orderID=${o.ID}" target="_blank" class="default-a">订单详情</a></p>
+                <c:if test="${o.status == 9 }">
+                  <p><a href="javascript:void();" onclick="deleteOrder(${o.ID});" class="default-a">删除订单</a></p>
+                </c:if></td>
+          	</tr>
+          </table>
+        </c:forEach>
+        <div class="ddtablefooter mt10"> 
+          <!-- <div class="ddcaozuo">
 				<input class="fl ml10 mr5" type="checkbox" id="selectall2" /> <label
 					class="fl mr10" for="selectall2">全选</label> <span
 					class="fl c999 mr10">|</span> 
@@ -231,35 +168,29 @@
 					<option>导出所选订单</option>
 				</select>
 			</div> -->
-
-			<div class="ddpage fr mr20">
-				<jsp:include page="../../include/page.jsp">
-					<jsp:param name="request" value="function"/>
-					<jsp:param name="functionName" value="zhigu.orderSearch"/>
-				</jsp:include>
-			</div>
-			<div class="clear"></div> 
-		</div>
-	</div>
-				
-	 </div>
-			<br style="clear:both;" />
-		</div>
-	</div>
-
-
-
-
-	
-	<div class="clear"></div>
+          
+          <div class="ddpage fr mr20">
+            <jsp:include page="../../include/page.jsp">
+            <jsp:param name="request" value="function"/>
+            <jsp:param name="functionName" value="zhigu.orderSearch"/>
+            </jsp:include>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </div>
+    </div>
+    <br style="clear:both;" />
+  </div>
+</div>
+<div class="clear"></div>
 <form id="evaluateForm">
-	<input type="hidden" name="goodsId" id="evaluateForm_goodsId">
-	<input type="hidden" name="orderDetailId" id="evaluateForm_orderDetailId">
-	<input type="hidden" name="score" id="evaluateForm_score">
-	<input type="hidden" name="content" id="evaluateForm_content">
+  <input type="hidden" name="goodsId" id="evaluateForm_goodsId">
+  <input type="hidden" name="orderDetailId" id="evaluateForm_orderDetailId">
+  <input type="hidden" name="score" id="evaluateForm_score">
+  <input type="hidden" name="content" id="evaluateForm_content">
 </form>
-<script type="text/javascript" src="js/jQuery-jcDate.js"></script>
-<script type="text/javascript" language="javascript" src="js/3rdparty/raty-2.7.0/jquery.raty.js"></script>
+<script type="text/javascript" src="js/jQuery-jcDate.js"></script> 
+<script type="text/javascript" language="javascript" src="js/3rdparty/raty-2.7.0/jquery.raty.js"></script> 
 <script type="text/javascript">
 zhigu.orderSearch = function(pageNo){
 	if(pageNo){

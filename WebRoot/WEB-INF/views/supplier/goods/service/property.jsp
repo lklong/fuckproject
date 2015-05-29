@@ -1,6 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <c:forEach items="${properties }" var="p" varStatus="pv">
 	<c:if test="${!p.sell }">
 		<div class="jibenform servicePropertity">
@@ -29,8 +28,7 @@
 					</div>
 					<div class="clear"></div>
 				</c:when>
-				<c:when test="${!p.mult && !p.input}">
-				 <div class="select_prop">
+				<c:when test="${!p.mult }">
 					<select index="${pv.index }" pid="${p.id }" pname="${p.name }" style="width: 180px;">
 						<option value="">请选择</option>
 						<c:forEach items="${p.values }" var="v">
@@ -46,16 +44,7 @@
 							</c:if>
 						</c:forEach>
 					</select>
-					</div>
-					<div class="clear"></div>
 				</c:when>
-				<div id="input_prop_attr">
-				<c:when test="${p.input}">
-						<input index="${pv.index }" class="can_input" pid="${p.id }" pname="${p.name }"/><em>提示：系统默认为货号加上您的店铺名称，提高检索效率</em>
-				</c:when>
-				</div>
-				<div class="clear"></div>
-				
 			</c:choose>
 		</div>
 	</c:if>

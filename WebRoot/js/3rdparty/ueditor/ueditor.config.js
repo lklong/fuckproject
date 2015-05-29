@@ -162,7 +162,7 @@
         //如果自定义，最好给p标签如下的行高，要不输入中文时，会有跳动感
         //,initialStyle:'p{line-height:1em}'//编辑器层级的基数,可以用来改变字体等
 
-        //,iframeCssUrl: URL + '/themes/iframe.css' //给编辑器内部引入一个css文件
+        ,iframeCssUrl: URL + '/themes/iframe.css' //给编辑器内部引入一个css文件
 
         //indentValue
         //首行缩进距离,默认是2em
@@ -329,12 +329,12 @@
         //,elementPathEnabled : true
 
         //wordCount
-        //,wordCount:true          //是否开启字数统计
-        //,maximumWords:10000       //允许的最大字符数
+        ,wordCount:true          //是否开启字数统计
+        ,maximumWords:1000       //允许的最大字符数
         //字数统计提示，{#count}代表当前字数，{#leave}代表还可以输入多少字符数,留空支持多语言自动切换，否则按此配置显示
-        //,wordCountMsg:''   //当前已输入 {#count} 个字符，您还可以输入{#leave} 个字符
+        ,wordCountMsg:'当前已输入 {#count} 个字符，您还可以输入{#leave} 个字符'   //当前已输入 {#count} 个字符，您还可以输入{#leave} 个字符
         //超出字数限制提示  留空支持多语言自动切换，否则按此配置显示
-        //,wordOverFlowMsg:''    //<span style="color:red;">你输入的字符个数已经超出最大允许值，服务器可能会拒绝保存！</span>
+        ,wordOverFlowMsg:'<span style="color:red;">你输入的字符个数已经超出最大允许值，服务器可能会拒绝保存！</span>'    //<span style="color:red;">你输入的字符个数已经超出最大允许值，服务器可能会拒绝保存！</span>
 
         //tab
         //点击tab键时移动的距离,tabSize倍数，tabNode什么字符做为单位
@@ -356,17 +356,17 @@
 
         //autoHeightEnabled
         // 是否自动长高,默认true
-        //,autoHeightEnabled:true
+        ,autoHeightEnabled:true
 
         //scaleEnabled
         //是否可以拉伸长高,默认true(当开启时，自动长高失效)
-        //,scaleEnabled:false
+        ,scaleEnabled:false
         //,minFrameWidth:800    //编辑器拖动时最小宽度,默认800
         //,minFrameHeight:220  //编辑器拖动时最小高度,默认220
 
         //autoFloatEnabled
-        //是否保持toolbar的位置不动,默认true
-        //,autoFloatEnabled:true
+//        是否保持toolbar的位置不动,默认true
+//        ,autoFloatEnabled:true
         //浮动时工具栏距离浏览器顶部的高度，用于某些具有固定头部的页面
         //,topOffset:30
         //编辑器底部距离工具栏高度(如果参数大于等于编辑器高度，则设置无效)
@@ -378,27 +378,27 @@
 
         //autotypeset
         //自动排版参数
-        //,autotypeset: {
+        ,autotypeset: {
         //    mergeEmptyline: true,           //合并空行
         //    removeClass: true,              //去掉冗余的class
-        //    removeEmptyline: false,         //去掉空行
-        //    textAlign:"left",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
-        //    imageBlockLine: 'center',       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+            removeEmptyline: false,         //去掉空行
+            textAlign:"center",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
+//            imageBlockLine: 'center',       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
         //    pasteFilter: false,             //根据规则过滤没事粘贴进来的内容
         //    clearFontSize: false,           //去掉所有的内嵌字号，使用编辑器默认的字号
         //    clearFontFamily: false,         //去掉所有的内嵌字体，使用编辑器默认的字体
-        //    removeEmptyNode: false,         // 去掉空节点
+            removeEmptyNode: false,         // 去掉空节点
         //    //可以去掉的标签
         //    removeTagNames: {标签名字:1},
         //    indent: false,                  // 行首缩进
         //    indentValue : '2em',            //行首缩进的大小
         //    bdc2sb: false,
         //    tobdc: false
-        //}
+        }
 
         //tableDragable
         //表格是否可以拖拽
-        //,tableDragable: true
+        ,tableDragable: true
 
         //,disabledTableInTable:true  //禁止表格嵌套
 

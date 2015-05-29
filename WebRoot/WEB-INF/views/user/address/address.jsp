@@ -1,80 +1,55 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<base href="${applicationScope.basePath}" />
 <script type="text/javascript" src="js/pca.js"></script>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>收货地址</title>
 </head>
 <body>
-
-	<div class="rightContainer">
-		<!--// 标题 //-->
-		<h3 class="rc_title">
-			收货地址<a href="user/home">我的主页</a>
-		</h3>
-		<!--// 内容框 //-->
-		<div class="rc_body">
-			<!--// tab切换条 //-->
-			<div id="userCommTab" class="userCommTab">
-				<ul>
-					<li><a href="javascript:void(0);" class="uctSelected">收货地址</a></li>
-				</ul>
-			</div>
-			<div id="userContents" class="userContents">
-				<!--// 内容1 //-->
-				<div class="dengjibox pt10">
-					<div class="dizhibox2 mt20 pt20">
-						<div style="padding: 10px 50px;">
-							<input value="添加收货地址" onclick="window.location.href='/user/address/set';" type="button" class="liinput"/><br/><br/>
-						</div>
-						<table>
-							<tr>
-								<th width="100px">收货人</th>
-								<th width="150px">所在地区</th>
-								<th width="200px">具体收货地址</th>
-								<th width="50px">邮编</th>
-								<th>电话/手机</th>
-								<th></th>
-								<th>操作</th>
-							</tr>
-							<c:forEach var="ad" items="${list}">
-								<tr>
-									<td>${ad.name}</td>
-									<td>${ad.province}${ad.city}${ad.district}</td>
-									<td align="left">${ad.street}</td>
-									<td>${ad.postcode}</td>
-									<td><c:choose>
-											<c:when test="${ad.phone!='' && ad.phone!=null}">
-                        			${ad.phone}
-                        		</c:when>
-											<c:otherwise>
-                        			${ad.tel}
-                        		</c:otherwise>
-										</c:choose></td>
-									<td><c:choose>
-											<c:when test="${ad.isDefault==1}">
-                        			默认地址
-                        		</c:when>
-											<c:when test="${ad.isDefault!=1}">
-												<a href="javascript:void(0)" onclick="setDefault(${ad.ID})">设为默认</a>
-											</c:when>
-										</c:choose></td>
-									<td><a href="/user/address/set?addressId=${ad.ID}">修改</a><a onclick="del(${ad.ID})">删除</a></td>
-								</tr>
-							</c:forEach>
-						</table>
-						<p>最多保存10个有效地址</p>
-					</div>
-				</div>
-
-			</div>
-			<br style="clear: both;" />
-		</div>
-	</div>
-	<script type="text/javascript">
+<div class="rightContainer fr">
+  <h4 class="ddtitle"><span class="">收货地址</span>&nbsp;&nbsp;&nbsp;<a class="default-a" href="javascript:void(0);" onclick="window.location.href='/user/address/set';"> + 添加收货地址</a></h4>
+  <!--// 内容框 //-->
+  <div class="">
+    <div id="userContents" class="userContents"> 
+      <!--// 内容1 //-->
+      <div class="dengjibox">
+        <div class="dizhibox2">
+          <table cellpadding="0" cellspacing="0" class="user-list-table">
+            <tr>
+              <th>收货人</th>
+              <th>所在地区</th>
+              <th>具体收货地址</th>
+              <th>邮编</th>
+              <th>电话/手机</th>
+              <th>是否默认</th>
+              <th style="border-right:none;">操作</th>
+            </tr>
+            <c:forEach var="ad" items="${list}">
+              <tr>
+                <td>${ad.name}</td>
+                <td>${ad.province}${ad.city}${ad.district}</td>
+                <td align="left">${ad.street}</td>
+                <td>${ad.postcode}</td>
+                <td><c:choose>
+                    <c:when test="${ad.phone!='' && ad.phone!=null}"> ${ad.phone} </c:when>
+                    <c:otherwise> ${ad.tel} </c:otherwise>
+                  </c:choose></td>
+                <td><c:choose>
+                    <c:when test="${ad.isDefault==1}"> 默认地址 </c:when>
+                    <c:when test="${ad.isDefault!=1}"> <a href="javascript:void(0)" onclick="setDefault(${ad.ID})">设为默认</a> </c:when>
+                  </c:choose></td>
+                <td><a href="/user/address/set?addressId=${ad.ID}" class="edit-user-photo">修改</a><a class="edit-user-photo" onclick="del(${ad.ID})">删除</a></td>
+              </tr>
+            </c:forEach>
+          </table>
+          <div class="msg-alert"><span class="gantanhao"></span>最多保存10个有效地址</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
 $().ready(function(){
 	var addressID = "${ad.ID}";
 	$("#addForm").validate({

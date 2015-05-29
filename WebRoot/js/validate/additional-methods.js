@@ -10,7 +10,7 @@ jQuery.validator.addMethod("strNumMix", function(value, element) {
 });
 // 座机电话
 jQuery.validator.addMethod("tel", function(value, element) {
-	var tel = /^(0[1-9]{2})-\d{8}$|^(0[1-9]{3}-(\d{7,8}))$/;
+	var tel = /^1[3|4|5|7|8]{1,1}[0-9]{9}$|^(0[1-9]{3}-(\d{6}))$|^(0[1-9]{2}-(\d{7}))$/;
 	return this.optional(element) || (tel.test(value));
 });
 // 密码

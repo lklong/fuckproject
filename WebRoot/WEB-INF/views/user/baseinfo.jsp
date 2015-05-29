@@ -1,111 +1,92 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<!DOCTYPE html>
+<html>
+<head>
 <title>基本信息</title>
+<link rel="stylesheet" type="text/css" href="js/validate/validate.css" />
 <script type="text/javascript" src="js/pca.js"></script>
+<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
+<script type="text/javascript" src="js/validate/jquery.validate.js"></script>
+<script type="text/javascript" src="js/validate/message_cn.js"></script>
+<script type="text/javascript" src="js/validate/additional-methods.js"></script>
 </head>
 <body>
-<div class="rightContainer">
-		<!--// 标题 //-->
-		<h3 class="rc_title">
-			基本资料<a href="user/home">我的主页</a>
-		</h3>
-		<!--// 内容框 //-->
-		<div class="rc_body">
-			<!--// tab切换条 //-->
-			<div id="userCommTab" class="userCommTab">
-				<ul>
-					<li><a href="javascript:void(0);" class="uctSelected">基本资料</a></li>
-				</ul>
-			</div>
-			<div id="userContents" class="userContents">
-				<!--// 内容1 //-->
-				<div class="body_center2">
-			<div class="jbzl">
-				<div class="jbzltouxiang">
-					<img src="${info.avatar}" id="avatarpic" style="width: 120px;height: 120px;"/>
-					<div><a href="javascript:void(0)" onclick="avatar()">编辑头像</a></div> 
-				</div>
-				<div class="jbzlbox">
-					<div class="jbzlr">
-						<span class="gantanhao ml10 mr10"></span>用户名可用于登录同城货源网，只能修改一次。
-					</div>
-					<div class="jbzlformbox mt20">
-						<form action="user/info/modify" id="infoForm" method="post">
-							<div class="jbzil1">
-								<p class="zititle">用户名：</p>
-								<c:choose>
-									<c:when test="${info.usernameModify == 0}">
-										<input type="text" name="username" value="${auth.username }" maxlength="25" class="dpname"/>
-									</c:when>
-									<c:otherwise>
-										${auth.username }
-									</c:otherwise>
-								</c:choose>
-								
-							</div>
-							<div class="jbzil1">
-								<p class="zititle">性别：</p>
-								<span class="fl"><input checked="checked" type="radio" name="gender" value="1"/>&nbsp;男</span> <span class="fl ml20"><input <c:if test="${info.gender == 2 }">checked="checked"</c:if> type="radio" name="gender" value="2"/>&nbsp;女</span>
-								
-							</div>
-							<div class="jbzil1">
-								<p class="zititle">所在地区：</p>
-								<select name="province" id="province" style="width: 130px;" class="dpname">
-								</select>
-								<select name="city" id="city" style="width: 130px;" class="dpname">
-								</select>
-								<select name="district" id="district" style="width: 130px;" class="dpname">
-								</select>
-								
-							</div>
-							<div class="jbzil1">
-								<p class="zititle">街道：</p>
-								<input name="street" id="street" maxlength="200" value="${info.street }" style="width: 320px;" class="dpname"/>
-								
-							</div>
-							<div class="jbzil1">
-								<p class="zititle">邮编：</p>
-								<input type="text" name="postCode" value="${info.postCode }" class="dpname"/>
-								
-							</div>
-							<div class="jbzil1">
-								<p class="zititle">固定电话：</p>
-								<input type="text" id="tel" name="tel" value="${info.tel }" placeholder="格式：区号-座机号"  class="dpname"/>
-							</div>
-							<div class="jbzil1">
-								<p class="zititle">QQ号码：</p>
-								<input type="text" name="QQ" value="${info.QQ }"  class="dpname"/>
-								
-							</div>
-							<div class="jbzil1">
-								<p class="zititle">阿里旺旺：</p>
-								<input type="text" name="aliWangWang" value="${info.aliWangWang }" class="dpname"/>
-								
-							</div>
-							<input class="baocun mt10 submit cp" type="button" value="保存" id="saveBaseInfo"/>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-				
-	 </div>
-			<br style="clear:both;" />
-		</div>
-	</div>
-
-
-
-
-		<div class="clear"></div>
-		<div id="avatarDiv" style="display: none;">
-			<iframe src="js/3rdparty/avatar/header.jsp" id="headFram" style="border: 1px;" scrolling="no" width="650" height="450"></iframe>
-		</div>
-	<script type="text/javascript">
+<div class="rightContainer fr">
+  <h4 class="ddtitle">基本资料</h4>
+  <!--// 内容框 //-->
+  <div class="rc_body">
+    <div id="userContents" class="userContents">
+      <div class="user-photo fl">
+        <div><img src="${info.avatar}" id="avatarpic" style="width: 120px;height: 120px;"/></div>
+        <p><a href="javascript:void(0)" onclick="avatar()" class="edit-user-photo">编辑头像</a></p>
+      </div>
+      <div class="user-info fr">
+        <div class="msg-alert"><span class="gantanhao"></span>用户名可用于登录同城货源网，只能修改一次。 </div>
+        <div>
+          <form action="user/info/modify" id="infoForm" method="post">
+            <table cellpadding="0" cellspacing="0" class="user-form-table">
+              <tr>
+                <td>用户名：</td>
+                <td><c:choose>
+                    <c:when test="${info.usernameModify == 0}">
+                      <input type="text" name="username" value="${auth.username }" maxlength="25" class="input-txt"/>
+                    </c:when>
+                    <c:otherwise> ${auth.username } </c:otherwise>
+                  </c:choose></td>
+              </tr>
+              <tr>
+                <td>性别：</td>
+                <td><input id="nan" checked="checked" type="radio" name="gender" value="1"/>
+                  <label for="nan">男</label>
+                  <input id="nv" <c:if test="${info.gender == 2 }">checked="checked"</c:if> type="radio" name="gender" value="2"/>
+                  <label for="nv">女</label></td>
+              </tr>
+              <tr>
+                <td>所在地区：</td>
+                <td><select name="province" id="province" class="select-txt">
+                  </select>
+                  <select name="city" id="city" class="select-txt">
+                  </select>
+                  <select name="district" id="district" class="select-txt">
+                  </select></td>
+              </tr>
+              <tr>
+                <td>街道：</td>
+                <td><input name="street" id="street" maxlength="200" value="${info.street }" class="input-txt"/></td>
+              </tr>
+              <tr>
+                <td>邮编：</td>
+                <td><input type="text" name="postCode" value="${info.postCode }" class="input-txt"/></td>
+              </tr>
+              <tr>
+                <td>固定电话：</td>
+                <td><input type="text" id="tel" name="tel" value="${info.tel }" placeholder="格式：区号-座机号"  class="input-txt"/></td>
+              </tr>
+              <tr>
+                <td>QQ号码：</td>
+                <td><input type="text" name="QQ" value="${info.QQ }"  class="input-txt"/></td>
+              </tr>
+              <tr>
+                <td>阿里旺旺：</td>
+                <td><input type="text" name="aliWangWang" value="${info.aliWangWang }" class="input-txt"/></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input class="input-button" type="button" value="保存" id="saveBaseInfo"/></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <br style="clear:both;" />
+  </div>
+</div>
+<div id="avatarDiv" style="display: none;">
+  <iframe src="js/3rdparty/avatar/header.jsp" id="headFram" style="border: 1px;" scrolling="no" width="650" height="450"></iframe>
+</div>
+<script type="text/javascript">
 		$().ready(function() {
 			//初始化
 			var pca = new PCAS("province", "city", "district","${info.province}","${info.city}","${info.district}");
@@ -123,17 +104,25 @@
 				},
 				submitHandler:function(form){
 					ajaxSubmit($(form).attr("action"), $(form).serialize(), function(data){
-						dialog(data.msg);
+						layer.alert(data.msg);
 					},"json");
 				}
 			});
 			$("#saveBaseInfo").click(function(){
 				ajaxSubmit("/user/info/modify",$("#infoForm").serialize(),function(data){
-					dialog(data.msg,function(){
-						if(data.code==zhigu.code.success){
-							f5();
-						}
-					})
+					$.layer({
+					    shade: [0],
+					    area: ['auto','auto'],
+					    dialog: {
+					    	msg: data.msg,
+					    	btns: 1,
+					    	type: 0,
+					    	btn: ['确定'],
+					    	yes: function(){
+					    		f5();
+					        }
+					    }
+					});
 				});
 			});
 		});

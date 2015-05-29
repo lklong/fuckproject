@@ -28,7 +28,6 @@ import com.zhigu.common.utils.StringUtil;
 import com.zhigu.common.utils.UploadFileUtil;
 import com.zhigu.common.utils.VerifyUtil;
 import com.zhigu.common.utils.ZhiguConfig;
-import com.zhigu.common.utils.sms.SMSUtil;
 import com.zhigu.model.Account;
 import com.zhigu.model.Goods;
 import com.zhigu.model.Message;
@@ -327,26 +326,6 @@ public class UserController {
 		userRecommend.setUserId(SessionHelper.getSessionUser().getUserID());
 		userService.saveUserRecommend(userRecommend);
 		return ServiceMsg.getMsgBean();
-	}
-
-	/**
-	 * 发送推荐短信
-	 * 
-	 * @param phone
-	 * @return
-	 */
-	@RequestMapping("/sendRecommendSMS")
-	@ResponseBody
-	public MsgBean sendRecommendSMS(String phone) {
-		if (!VerifyUtil.phoneVerify(phone)) {
-			return new MsgBean(Code.FAIL, "手机号码错误！", MsgLevel.ERROR);
-		}
-		if (!SMSUtil.isSend(phone)) {
-			return new MsgBean(Code.FAIL, "短信发送太频繁，请稍后再发！", MsgLevel.ERROR);
-		}
-		SMSUtil.sendMsg("用户：" + SessionHelper.getSessionUser().getUsername() + "，邀请你加入智谷同城货源网。" + ZhiguConfig.getValue(ZhiguConfig.HOST) + "register?recommendUserID="
-				+ SessionHelper.getSessionUser().getUserID(), phone);
-		return new MsgBean(Code.SUCCESS, "短信发送成功！", MsgLevel.NORMAL);
 	}
 
 	@RequestMapping("getSendingMessage")

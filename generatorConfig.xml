@@ -26,16 +26,11 @@
 			<property name="enableSubPackages" value="true"/>
 		</javaClientGenerator> 
 		
-	<table tableName="taobao_user" domainObjectName="TaobaoUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+	<table tableName="taobao_user" domainObjectName="TaobaoUser2" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
 		<property name="useActualColumnNames" value="false"/>
 		<columnRenamingRule searchString="_" replaceString="" />
 	</table> 
 	
-	<table  tableName="taobao_token" domainObjectName="TaobaoToken" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" >
-		<property name="useActualColumnNames" value="false"/>
-		<generatedKey column="id" sqlStatement="mysql" identity="true" />
-		<columnRenamingRule searchString="_" replaceString="" />
-	</table>
 	
   </context>
 </generatorConfiguration>

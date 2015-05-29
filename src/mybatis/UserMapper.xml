@@ -6,8 +6,8 @@
 		Select * from userauth where Phone = #{phone} limit 1;
 	</select>
 	<!-- 根据ip查询有几条相同的 -->
-	<select id="queryUserAuthByIp" parameterType="java.lang.String" resultType="int">
-	SELECT  COUNT(*)  FROM userauth u, userinfo i where u.registerIP=#{registerIP} and u.UserID=i.UserID AND i.RegisterTime &gt;= date_format(date_sub(date_sub(now(), INTERVAL WEEKDAY(NOW()) DAY), INTERVAL 1 WEEK), '%Y-%m-%d')
+	<select id="countUserAuthByIp"  resultType="int">
+	SELECT  COUNT(1)  FROM userauth u, userinfo i where u.registerIP=#{registerIP} and u.UserID=i.UserID AND i.RegisterTime &gt;= #{startTime}
 	</select>
 	<!-- email查询用户认证信息 -->
 	<select id="queryUserAuthByEmail" parameterType="java.lang.String" resultType="userAuth">

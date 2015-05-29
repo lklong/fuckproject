@@ -16,7 +16,7 @@ zhigu.goods.appendToUpimgul = function(showsrc,savesrc){
 		li += 	"<div class='imgbox' id='imgbox1'>";
 		li +=		"<img class='upimg' imgId='0' src='" + showsrc.uri + "' savesrc='" + savesrc.uri + "' width='102px' height='102px'/>";
 		li +=	"</div>";
-		li +=	"<div class='fabubgtian disnone'><span class='ml5 cp' onclick='zhigu.goods.mleft(this)'>左移</span><span class='ml10 cp' onclick='zhigu.goods.mright(this)'>右移</span> <span class='ml10 cp' onclick='zhigu.goods.delimg(this)' >×</span></div>";
+		li +=	"<div class='fabubgtian hidden'><span class='ml5 cp' onclick='zhigu.goods.mleft(this)'>左移</span><span class='ml10 cp' onclick='zhigu.goods.mright(this)'>右移</span> <span class='ml10 cp' onclick='zhigu.goods.delimg(this)' >×</span></div>";
 		li += "</li>";
 	$("#upimgul").append(li);
 }
@@ -45,10 +45,10 @@ zhigu.goods.amountOnblur = function(obj){
 	//$("#sumAmount").html(statAmount());
 }
 zhigu.goods.mouseover = function(obj){
-	$(obj).find(".fabubgtian").removeClass("disnone");
+	$(obj).find(".fabubgtian").removeClass("hidden");
 }
 zhigu.goods.mouseout = function(obj){
-	$(obj).find(".fabubgtian").addClass("disnone");
+	$(obj).find(".fabubgtian").addClass("hidden");
 }
 // 图片左移
 zhigu.goods.mleft = function(obj){
@@ -119,7 +119,7 @@ zhigu.goods.loadCategory = function(obj,index){
 	var category = $(obj).val();
 	$(obj).nextAll("select").remove();
 	// 清除旧数据
-	$("#attributes_sku").html("<p class='title fl'>商品属性：</p><h1 class='red'>* 请先选择商品类别</h1>");
+	$("#attributes_sku").html("<p class='sku-title'>请先选择商品类别</p>");
 	try{
 		skuArr = [];
 		zhigu.goods.showArr();
@@ -131,7 +131,7 @@ zhigu.goods.loadCategory = function(obj,index){
 	var isparent = $(obj).find("option:selected").attr("isparent");
 	if(isparent == "true"){
 		ajaxSubmit("category/getCategory", {catagoryId:category}, function(data){
-			var html = " <select onchange='zhigu.goods.loadCategory(this);' style='width: 120px;'><option value=''>请选择</option>";
+			var html = " <select onchange='zhigu.goods.loadCategory(this);' class='select-txt ml20'><option value=''>请选择</option>";
 			for(var i = 0 ; i < data.length ;i++){
 				html += "<option isparent='" + data[i].isParent + "' value='" + data[i].id + "'>" + data[i].name + "</option>";
 			}
@@ -150,7 +150,7 @@ zhigu.goods.loadPropertyInit = function(){
 	zhigu.goods.skuColumnLabel = new Array();
 	zhigu.goods.skuArr =[];
 	
-	$(".skudiv").each(function(index){
+	$(".yanse-sku-div").each(function(index){
 		// sku列标题
 		zhigu.goods.skuColumnLabel[index] = $(this).attr("label");
 	});
@@ -170,10 +170,10 @@ zhigu.goods.loadPropertyInit = function(){
 		});	
 	}
 	//点击事件
-	$(".skudiv").each(function(index){
+	$(".yanse-sku-div").each(function(index){
 		$(this).find("input:checkbox").click(function(){
 			if($(this).attr("checked") == "checked"){//show
-				$(this).parent().addClass("edit");
+				$(this).parent('li').addClass("edit");
 				zhigu.goods.setShow(index,$(this).attr("vid"),1);
 			}else{
 				zhigu.goods.setShow(index,$(this).attr("vid"),0);
@@ -219,13 +219,13 @@ zhigu.goods.showArr = function() {
 					if (skuArr[i].rele[j].isshow == 1) {
 						td_2 = "<td>" + skuArr[i].rele[j].usename + "</td>";
 						var tprice = skuArr[i].rele[j].price>0?skuArr[i].rele[j].price:"";
-						td_3 = "<td><input name='price' value='" + tprice + "' colorIndex='" + i + "' sizeIndex='" + j
+						td_3 = "<td><input class='sku-input' name='price' value='" + tprice + "' colorIndex='" + i + "' sizeIndex='" + j
 								+ "' onkeyup='zhigu.goods.priceInputCheck(this);' onafterpaste='zhigu.goods.priceInputCheck(this);' maxlength='11' onblur='zhigu.goods.priceOnblur(this);'/></td>";
 						var tamount = skuArr[i].rele[j].amount>0?skuArr[i].rele[j].amount:"";
-						td_4 = "<td><input name='amount' value='" + tamount + "' colorIndex='" + i + "' sizeIndex='" + j
+						td_4 = "<td><input class='sku-input' name='amount' value='" + tamount + "' colorIndex='" + i + "' sizeIndex='" + j
 								+ "' onkeyup=\"this.value=this.value.replace(/\\D/g,'')\" onafterpaste=\"this.value=this.value.replace(/\\D/g,'')\" maxlength='6' onblur='zhigu.goods.amountOnblur(this);'/></td>";
 						td_5 = "<td style='position:relative;'><a cindex='" + i + "' size='" + skuArr[i].rele[j].usename + "' sindex='" + j
-								+ "' href='javascript:void(0)' onclick='batchset(this)' class='piliansezhijia'>批量设置</a></td>";
+								+ "' href='javascript:void(0)' onclick='batchset(this)' class='default-a'>批量设置</a></td>";
 						if (rowspan == 0) {
 							tr += td_2 + td_3 + td_4 + td_5 + tr_e;
 						} else {
@@ -251,14 +251,14 @@ zhigu.goods.showArr = function() {
 		}
 	}
 	// 构建sku 的 table
-	var table = "<table><thead><tr class='st2title'>";
+	var table = "<table cellpadding='0' cellspacing='0' class='user-list-table txt-center'><thead><tr>";
 	for(var i=0;i<zhigu.goods.skuColumnLabel.length;i++){
-		table += "<th width='200'>"+zhigu.goods.skuColumnLabel[i]+"</th>";
+		table += "<th>"+zhigu.goods.skuColumnLabel[i]+"</th>";
 	}
 	if(html==""){//规格信息不完整
 		html = "<tr><td colspan='"+(zhigu.goods.skuColumnLabel.length+3)+"'><h3 class='red'>请选择商品规格组成完整的商品规格信息！</h3></td></tr>";
 	}
-	table += "<th width='200'>价格<strong>*</strong></th><th width='200'>数量<strong>*</strong></th>"+(zhigu.goods.skuColumnLabel.length==1?"":"<th width='200'>操作</th>")+"</tr></thead><tbody >"
+	table += "<th>价格</th><th>数量</th>"+(zhigu.goods.skuColumnLabel.length==1?"":"<th>操作</th>")+"</tr></thead><tbody >"
 				+ html +"</tbody></table>";
 	$("#scletabletbody").html(table);
 	zhigu.goods.statAmount();

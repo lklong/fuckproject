@@ -6,11 +6,6 @@ $(function(){
 	if("${companyAuth.approveState!=null&&(companyAuth.approveState==1||companyAuth.approveState==2)}"=="true"){
 		$("#alldd input,#alldd select,#alldd textarea").attr("disabled","disabled");
 	}
-	// 图片上传预览 --营业执照
-	$("#uploadImageFileForm").click(function(){
-		$("#preImageFile").click();
-		$("#callBackFun").val("callbackImagePre");
-	});
 })
 function callbackImagePre(json){
 	$("#preImage").attr("src","/"+json.url);
@@ -231,23 +226,11 @@ function saveRealStoreAuth(){
 	}else{
 		$(".msg_realStoreAddress").html("");
 	}
-	if($("#preImage1").attr("src") == ""){
-		$(".msg_image1").html("请上传实体店图片！");
+	if($("#preImage1").attr("src") == "" || $("#preImage2").attr("src") == ""|| $("#preImage3").attr("src") == ""){
+		$(".msg_image").html("请上传至少一张实体店图片！");
 		return;
 	}else{
-		$(".preImage1").html("");
-	}
-	if( $("#preImage2").attr("src") == ""){
-		$(".msg_image2").html("请上传实体店图片！");
-		return;
-	}else{
-		$(".preImage2").html("");
-	}
-	if($("#preImage3").attr("src") == ""){
-		$(".msg_image3").html("请上传实体店图片！");
-		return;
-	}else{
-		$(".preImage3").html("");
+		$(".msg_image").html("");
 	}
 	$("#realStoreAuthForm").ajaxSubmit({
 		type: 'post',

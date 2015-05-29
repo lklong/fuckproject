@@ -1,72 +1,39 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<base href="${applicationScope.basePath}" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>设置登录密码</title>
+<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
 </head>
 <body>
-
-	<div class="rightContainer">
-		<!--// 标题 //-->
-		<h3 class="rc_title">
-			修改登录密码<a href="user/home">我的主页</a>
-		</h3>
-		<!--// 内容框 //-->
-		<div class="rc_body">
-			<!--// tab切换条 //-->
-			<div id="userCommTab" class="userCommTab">
-				<ul>
-					<li><a href="javascript:void(0);" class="uctSelected">设置登录密码</a></li>
-				</ul>
-			</div>
-			<div id="userContents" class="userContents">
-				<!--// 内容1 //-->
-				<div class="body_center2">
-					<div class="dengluform">
-						<c:if test="${hasPwd == 1 }">
-							<div class="dlform1">
-								<p class="fl">旧密码：</p>
-								<input class="dlformtxt fl" type="password" name="opwd" id="opwd" autocomplete="off" /> <span class="mimahelp" id="e_opwd">${e_opwd }</span>
-								<div class="dldj">
-									<div class="dldj0"></div>
-									<div class="dldj0"></div>
-									<div class="dldj0"></div>
-								</div>
-								<div class="clear"></div>
-							</div>
-						</c:if>
-						<div class="dlform1">
-							<p class="fl">新密码：</p>
-							<input class="dlformtxt fl" type="password" name="npwd" id="npwd" /> <span class="mimahelp" id="e_npwd">${e_npwd }</span>
-							<div class="dldj">
-								<div class="dldj0"></div>
-								<div class="dldj0"></div>
-								<div class="dldj0"></div>
-							</div>
-							<div class="clear"></div>
-						</div>
-						<div class="dlform1">
-							<p class="fl">确认密码：</p>
-							<input class="dlformtxt fl" type="password" id="rnpwd" /> <span class="mimahelp" id="e_rnpwd"></span>
-							<div class="dldj">
-								<div class="dldj0"></div>
-								<div class="dldj0"></div>
-								<div class="dldj0"></div>
-							</div>
-							<div class="clear"></div>
-						</div>
-						<input class="dlsub" type="submit" onclick="return _submit()" value="设置密码" />
-					</div>
-				</div>
-			</div>
-			<br style="clear: both;" />
-		</div>
-	</div>
-	<div class="clear"></div>
-	<script type="text/javascript">
+<div class="rightContainer fr">
+  <h4 class="ddtitle">修改登录密码</h4>
+  <table cellpadding="0" cellspacing="0" class="user-form-table">
+    <c:if test="${hasPwd == 1 }">
+      <tr>
+        <td style="width:10%">旧密码：</td>
+        <td style="width:90%"><input class="input-txt fl" type="password" name="opwd" id="opwd" autocomplete="off" />
+          <span id="e_opwd">${e_opwd }</span></td>
+      </tr>
+    </c:if>
+    <tr>
+      <td>新密码：</td>
+      <td><input class="input-txt fl" type="password" name="npwd" id="npwd" />
+        <span id="e_npwd">${e_npwd }</span></td>
+    </tr>
+    <tr>
+      <td>确认密码：</td>
+      <td><input class="input-txt fl" type="password" id="rnpwd" />
+        <span id="e_rnpwd"></span></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><input class="input-button" type="submit" onclick="return _submit()" value="保存设置" /></td>
+    </tr>
+  </table>
+</div>
+<script type="text/javascript">
 		function _submit(){
 			$("#e_opwd").html("");
 			$("#e_npwd").html("");

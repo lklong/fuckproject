@@ -10,8 +10,3 @@ zhigu.request.usermessage = function(opcode,paramObj,callFunction){// 操作码�
 		}
 	});
 }
-//$(function(){
-//	zhigu.request.usermessage("m00003",{"content":"消息发送测试","receiveUserId":2999},function(msgBean){
-//		alert(msgBean.msg);
-//	});
-//})

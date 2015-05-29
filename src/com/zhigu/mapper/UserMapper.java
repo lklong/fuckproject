@@ -22,7 +22,14 @@ import com.zhigu.model.UserTaobao;
  * @Description:
  */
 public interface UserMapper {
-	public int queryUserAuthByIp(String ip);
+	/**
+	 * ip注册数统计
+	 * 
+	 * @param ip
+	 * @param startTime
+	 * @return
+	 */
+	public int countUserAuthByIp(@Param("ip") String ip, @Param("startTime") String startTime);
 
 	/**
 	 * 电话查询认证信息

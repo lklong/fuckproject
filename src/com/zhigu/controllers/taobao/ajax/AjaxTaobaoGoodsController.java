@@ -32,6 +32,7 @@ import com.zhigu.service.taobao.ITaobaoImageService;
 import com.zhigu.service.taobao.ITaobaoItemPropService;
 import com.zhigu.service.taobao.ITaobaoItemService;
 import com.zhigu.service.taobao.ITaobaoSKUService;
+import com.zhigu.service.taobao.ITaobaoTokenService;
 
 /**
  * 
@@ -59,14 +60,19 @@ public class AjaxTaobaoGoodsController {
 	private ITaobaoItemPropService taobaoItemPropService;
 
 	@Autowired
+	private ITaobaoTokenService taobaoTokenService;
+
+	@Autowired
 	private ITaobaoSKUService skuService;
 
 	@RequestMapping(value = "/item/save", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
-	public JSONObject editTaobaoItem(ConvertSkuModel skuModel, Integer goodsId, String key, String saleProps, String images, String upDate, String upHour, String upMinute, ItemAddRequest itemRequest)
+	public JSONObject editTaobaoItem(ConvertSkuModel skuModel, Integer goodsId, String saleProps, String images, String upDate, String upHour, String upMinute, ItemAddRequest itemRequest)
 			throws ParseException {
 
 		SessionUser user = SessionHelper.getSessionUser();
+
+		String access_token = taobaoTokenService.getTaobaoTokenByUserId(user.getUserID()).getAccessToken();
 
 		String approveStatus = itemRequest.getApproveStatus();
 
@@ -97,7 +103,7 @@ public class AjaxTaobaoGoodsController {
 
 			itemRequest.setPicPath(imageUrls[0]);
 
-			ItemAddResponse response = taobaoItemService.itemAdd(key, goodsId, itemRequest);
+			ItemAddResponse response = taobaoItemService.itemAdd(access_token, goodsId, itemRequest);
 
 			if (StringUtils.isNotBlank(response.getErrorCode())) {
 
@@ -113,10 +119,10 @@ public class AjaxTaobaoGoodsController {
 
 				Long numIid = item.getNumIid();
 
-				imageService.uploadItemImg(key, numIid, images);
+				imageService.uploadItemImg(access_token, numIid, images);
 
 				// 销售sku
-				skuService.addItemSku(skuModel, numIid, key);
+				skuService.addItemSku(skuModel, numIid, access_token);
 
 			}
 

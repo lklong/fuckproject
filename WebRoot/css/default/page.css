@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+.ddpage { font-size: 12px !important;margin: 15px auto;clear: both;}
+.ddpage a { padding: 5px 10px;border: 1px solid #dcdcdc;color: #444444;background: #ffffff;}
+.ddpage a:hover{color:#FC2407;border-color:#FC2407;}
+.ddpage .pageselect:hover{background:#FC2407;color:#fff;font-weight:bold;border-color:#FC2407;}
+.ddpage .pageselect{background:#FC2407;color:#fff;font-weight:bold;border-color:#FC2407;}

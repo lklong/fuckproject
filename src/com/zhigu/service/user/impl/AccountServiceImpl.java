@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.Flg;
+import com.zhigu.common.constant.PhoneSendType;
 import com.zhigu.common.constant.SequenceConstant;
 import com.zhigu.common.constant.SystemConstants;
 import com.zhigu.common.constant.enumconst.MsgLevel;
@@ -20,7 +21,6 @@ import com.zhigu.common.utils.Sequence;
 import com.zhigu.common.utils.StringUtil;
 import com.zhigu.common.utils.StringUtil.RandomType;
 import com.zhigu.common.utils.VerifyUtil;
-import com.zhigu.common.utils.captcha.CaptchaUtil;
 import com.zhigu.mapper.AccountDetailMapper;
 import com.zhigu.mapper.AccountMapper;
 import com.zhigu.mapper.BankBinMapper;
@@ -32,6 +32,7 @@ import com.zhigu.model.PageBean;
 import com.zhigu.model.RechargeRecord;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.dto.MsgBean;
+import com.zhigu.service.common.IPhoneSendService;
 import com.zhigu.service.user.IAccountService;
 
 /**
@@ -50,6 +51,8 @@ public class AccountServiceImpl implements IAccountService {
 	private UserMapper userDao;
 	@Autowired
 	private BankBinMapper bankBinMapper;
+	@Autowired
+	private IPhoneSendService phoneSendService;
 
 	@Override
 	public Account queryAccountByUserID(int userID) {
@@ -165,8 +168,9 @@ public class AccountServiceImpl implements IAccountService {
 		if (Md5.convert(paymentPwd, auth.getSalt()).equals(auth.getPassword())) {
 			return new MsgBean(Code.FAIL, "支付密码不能与登录密码一样", MsgLevel.ERROR);
 		}
-		if (!CaptchaUtil.verifyAndRemove(auth.getPhone(), captcha)) {
-			return new MsgBean(Code.FAIL, "验证码输入错误", MsgLevel.ERROR);
+		MsgBean captchamsg = phoneSendService.verify(auth.getPhone(), PhoneSendType.PAY_PASSWORD, captcha);
+		if (captchamsg.getCode() != Code.SUCCESS) {
+			return captchamsg;
 		}
 		String salt = StringUtil.randomStr(RandomType.MIXTURE, 6);
 		// int row = accountDao.updatePaymentPwd(userID,
@@ -183,8 +187,10 @@ public class AccountServiceImpl implements IAccountService {
 	public MsgBean updateBankNo(String bankNo, String bankCardMaster, String captcha, String bankName) {
 		int userId = SessionHelper.getSessionUser().getUserID();
 		UserAuth userAuth = userDao.queryUserAuthByUserID(userId);
-		if (!CaptchaUtil.verify(userAuth.getPhone(), captcha)) {
-			return new MsgBean(Code.FAIL, "验证码错误", MsgLevel.ERROR);
+
+		MsgBean captchaMsg = phoneSendService.verify(userAuth.getPhone(), PhoneSendType.BANK_BIND, captcha);
+		if (captchaMsg.getCode() != Code.SUCCESS) {
+			return captchaMsg;
 		}
 
 		if (StringUtil.isEmpty(bankNo) || bankNo.length() > 20) {
@@ -210,7 +216,6 @@ public class AccountServiceImpl implements IAccountService {
 		if (row != 1) {
 			throw new ServiceException(SystemConstants.DB_UPDATE_FAILED_MSG);
 		}
-		CaptchaUtil.remove(userAuth.getPhone());
 		return new MsgBean(Code.SUCCESS, "绑定银行卡账号成功", MsgLevel.NORMAL);
 	}
 }

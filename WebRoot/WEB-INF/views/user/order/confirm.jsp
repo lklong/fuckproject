@@ -1,170 +1,102 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="css/jinhuoche.css" rel="stylesheet" type="text/css" />
+<head>
+<link href="css/default/user.css" rel="stylesheet">
+<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
 <title>订单确认</title>
 </head>
 <body>
-<div style="height:54px;"></div>
-<div class="webpage">
-		<div class="shouhuoxinxi mt10" id="address">
-			<jsp:include page="address.jsp"></jsp:include>
-		</div>
-		<div class="shouhuoxinxi mt10">
-			<div class="xinxileft fl c666 fwbold f14 pt20 pl20">
-				货品信息
-				<span></span>
-			</div>
-			<div class="xinxiright fl mt10 c666">
-				<form action="user/order/submit" method="post" id="orderSubmitForm">
-					<table class="ml20" >
-						<tr class="xinxirightth">
-							<th width="500">货品</th>
-							<th width="200">规格</th>
-							<th width="120">价格(元)</th>
-							<th width="100">数量</th>
-							<th width="120">小计 </th>
-						</tr>
-						<!-- 购物车（每个商家一条） -->
-						<c:forEach items="${shoppingCarts }" var="sc" varStatus="scStatus">
-							<tr  class="orderNum" data-storeID="${sc.storeId }" data-weight="${sc.weight }" data-goodsmoney="${sc.storeTotal }">
-								<td class="xinxiname pt10" colspan="5">
-									<div class="fl pl20">
-										<div class="c666 fl">店铺：<a class="c666" href="store/index?storeId=${sc.storeId }">${sc.storeName }</a></div>
-										<div class="qqicons fl ml10">
-											  <c:if test="${not empty sc.QQ }">
-											  	<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=${sc.QQ }&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:${sc.QQ}:52" alt="点这里给我发消息" /></a>
-											  </c:if>
-											 	<c:if test="${not empty sc.aliWangWang }">
-											  	<a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&uid=${sc.aliWangWang}&site=cntaobao&s=2&charset=utf-8" ><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid=${sc.aliWangWang }&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" /></a>
-											 	</c:if>
-										</div>
-										<div class="clear"></div>
-									</div>
-									<div class="clear"></div>
-								</td>
-							</tr>
-							<c:forEach items="${sc.item }" var="item" varStatus="itemStatus">
-								<tr class="dingdan1box">
-									<td class="dingdan1">
-										<div class="dingdanimg ml20 mr20 fl">
-											<img src="${item.goods.image300}" />
-										</div>
-										<div class="dingdanmiaoshu fl">
-											<a class="c666" title="${item.goods.name }" href="goods/detail?goodsId=${item.goods.id }" target="_blank">${item.goods.name }</a>
-										</div>
-										<div class="clear"></div>
-									</td>
-									<td>${empty item.goodsSku.propertyStrName?'-':item.goodsSku.propertyStrName }</td>
-									<td class="cff5200">
-										<fmt:formatNumber pattern="#0.00" value="${item.goodsSku.price }" />
-									</td>
-									<td class="quantity-${sc.storeId }">${item.quantity }</td>
-									<td class="cff5200">
-										¥ <fmt:formatNumber pattern="#0.00" value="${item.subTotal }" />
-									</td>
-								</tr>
-							</c:forEach>
-							<tr class="tablefooter">
-								<td colspan="6">
-									<div class="xline">
-										<span>给卖家留言：</span>
-										<input type="text" placeholder="可以告诉卖家您的特殊要求" name="orders[${scStatus.index }].leavelMessage" maxlength="200"/>
-									</div>
-										<div class="xline">
-											<span>代发商：</span>
-											<select name="orders[${scStatus.index }].agentSellerID" onchange="countMoney()" id="oagent${scStatus.index }" style="min-width: 80px;">
-												<c:forEach items="${agentUsers}" var="agentUser">
-													<option value="${agentUser.userId}" data-agentmoney="${agentUser.agentMoney}">${agentUser.agentName}</option>
-												</c:forEach>
-											</select>
-										</div>
-										<div class="xline" >
-											<span>配送方式：</span>
-											<select name="orders[${scStatus.index }].logistics" id="logistics${scStatus.index }" onchange="countMoney()" class="js-logistics">
-												<option value=''>-请选择-</option>
-												<c:forEach items="${logistics }" var="l" >
-													  <option value="${l.id }" data-fweight="${l.fweight }" data-fmoney="${l.fmoney }" data-cmoney="${l.cmoney }">${l.name }</option>
-												</c:forEach>
-											</select>
-											<input type="hidden" name="orders[${scStatus.index }].storeID" value="${sc.storeId }">
-										</div>
-										<div  class="xline fr"><font class="fr" >￥<fmt:formatNumber pattern="#0.00" value="${sc.storeTotal }" /></font></div>
-										<div class="yunfei fr mr20">
-											<ul>
-												<li class="fl dafali">
-													<div>待发详情</div>
-													<div class="xiangqingbox1 p10">
-														代发费:<span class="cff5200">￥</span><span class="cff5200 waitSendMoney${scStatus.index }"></span>
-													</div>
-												</li>
-												<li class="yunfeixiangqing fl">
-													<div>运费详情<span></span></div>
-													<div class="xiangqingbox p10" id="logisticsDiv${scStatus.index }">
-														
-													</div>
-												</li>
-											</ul>
-											<div class="clear"></div>
-										</div>
-									<div class="clear"></div>
-									<div class="dingdanjine">
-										<div class="fr">
-											<span>订单金额：</span>
-											<strong>¥</strong>
-											<strong class="mr20 ordermoney ordermoney${scStatus.index }" style="color:#ff4400">0.00</strong>
-										</div>
-										<div class="clear"></div>
-									</div>
-								</td>
-							</tr>
-						</c:forEach>
-					</table>
-					<div class="dingdanfooter fr pr10 mt20">
-						<div class="dingdanfooter1 fr mt10">
-								<h4 class="fl c999">应付总计：</h4>
-								<strong >¥</strong>
-								<strong  id="totalMoney" style="color:#ff4400">${totalMoney }</strong> ( 元 )
-							<div class="clear"></div>
-						</div>
-						<div class="clear"></div>
-						<div>
-						
-						</div>
-						<div class="fr">
-							<p class="fl c999">配送至：</p>
-							<p class="fl">
-								<span id="addressLabel"></span>
-							</p>
-							<div class="clear"></div>
-						</div>
-						<div class="clear"></div>
-						<div class="fr">
-							<p class="fl c999">收货人：</p>
-							<p class="fl">
-								<span id="consigneeLabel"></span>
-							</p>
-							<div class="clear"></div>
-						</div>
-						<div class="clear"></div>
-					</div>
-					<div class="clear"></div>
-					<div class="dingdansub fr mr20 mt10">
-						<p class="fl"><a href="user/cart">返回进货车</a></p>
-						<input class="fl ml10 cp" type="button" onclick="return _submit()" value="提交订单" />
-						<div class="clear"></div>
-					</div>
-					<input type="hidden" name="addressID" id="addressID">
-				</form>
-			</div>
-			<div class="clear"></div>
-		</div>
-		<div class="xintiandizhibg" id="xinaddr"></div>
-	</div>
+<div class="shopping-cart-body">
+  <jsp:include page="address.jsp"></jsp:include>
+  <h4 class="ddtitle">商品清单</h4>
+  <form action="user/order/submit" method="post" id="orderSubmitForm">
+    <table cellpadding="0" cellspacing="0" class="shopping-cart-table">
+      <tr>
+        <th style="width:50%">商品</th>
+        <th style="width:15%">规格</th>
+        <th style="width:15%">价格(元)</th>
+        <th style="width:10%">数量</th>
+        <th style="width:10%">小计 </th>
+      </tr>
+      
+      <!-- 购物车（每个商家一条） -->
+      <c:forEach items="${shoppingCarts }" var="sc" varStatus="scStatus">
+        <tr data-storeID="${sc.storeId }" data-weight="${sc.weight }" data-goodsmoney="${sc.storeTotal }">
+          <td colspan="5"><div class="shop-list-head"> <span class="fl">店铺：<a class="c666" href="store/index?storeId=${sc.storeId }">${sc.storeName }</a></span> <span class="fl ml30">
+              <c:if test="${not empty sc.QQ }"> <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=${sc.QQ }&site=qq&menu=yes"> <img style="margin-bottom:-6px;margin-left:5px;" border="0" src="http://wpa.qq.com/pa?p=2:${sc.QQ}:52" alt="点这里给我发消息" /></a> </c:if>
+              <c:if test="${not empty sc.aliWangWang }"> <a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&uid=${sc.aliWangWang}&site=cntaobao&s=2&charset=utf-8" > <img style="margin-bottom:-2px;margin-left:5px;" border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid=${sc.aliWangWang }&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" /></a> </c:if>
+              </span> </div>
+            <c:forEach items="${sc.item }" var="item" varStatus="itemStatus">
+              <table cellpadding="0" cellspacing="0" class="shopping-list-table">
+                <tr>
+                  <td style="width:50%"><span class="fl ml20"> <img height="50" height="50" src="${item.goods.image300}" /> </span> <span class="fl ml10 mt15"> <a class="c666" title="${item.goods.name }" href="goods/detail?goodsId=${item.goods.id }" target="_blank">${item.goods.name }</a> </span></td>
+                  <td style="width:15%">${empty item.goodsSku.propertyStrName?'-':item.goodsSku.propertyStrName }</td>
+                  <td style="width:15%"><fmt:formatNumber pattern="#0.00" value="${item.goodsSku.price }" /></td>
+                  <td style="width:10%" class="quantity-${sc.storeId }">${item.quantity }</td>
+                  <td style="width:10%"> ¥
+                    <fmt:formatNumber pattern="#0.00" value="${item.subTotal }" /></td>
+                </tr>
+              </table>
+            </c:forEach></td>
+        </tr>
+        <tr class="tablefooter">
+          <td colspan="6"><div class="xline"> <span>给卖家留言：</span>
+              <input class="input-txt" type="text" placeholder="可以告诉卖家您的特殊要求" name="orders[${scStatus.index }].leavelMessage" maxlength="200"/>
+            </div>
+            <div class="xline"> <span>代发商：</span>
+              <select name="orders[${scStatus.index }].agentSellerID" onchange="countMoney()" id="oagent${scStatus.index }" class="select-txt">
+                <c:forEach items="${agentUsers}" var="agentUser">
+                  <option value="${agentUser.userId}" data-agentmoney="${agentUser.agentMoney}">${agentUser.agentName}</option>
+                </c:forEach>
+              </select>
+            </div>
+            <div class="xline" > <span>配送方式：</span>
+              <select name="orders[${scStatus.index }].logistics" id="logistics${scStatus.index }" onchange="countMoney()" class="select-txt">
+                <option value=''>-请选择-</option>
+                <c:forEach items="${logistics }" var="l" >
+                  <option value="${l.id }" data-fweight="${l.fweight }" data-fmoney="${l.fmoney }" data-cmoney="${l.cmoney }">${l.name }</option>
+                </c:forEach>
+              </select>
+              <input type="hidden" name="orders[${scStatus.index }].storeID" value="${sc.storeId }">
+            </div>
+            <div  class="xline fr ml30"><font class="fr" >￥
+              <fmt:formatNumber pattern="#0.00" value="${sc.storeTotal }" />
+              </font></div>
+            <div class="xline fr ml30">
+              <ul>
+                <li class="fl dafali">
+                  <div>待发详情</div>
+                  <div class="xiangqingbox1 p10"> 代发费:<span class="cff5200">￥</span><span class="cff5200 waitSendMoney${scStatus.index }"></span> </div>
+                </li>
+                <li class="yunfeixiangqing fl">
+                  <div>运费详情<span></span></div>
+                  <div class="xiangqingbox p10" id="logisticsDiv${scStatus.index }"> </div>
+                </li>
+              </ul>
+            </div>
+            <div class="xline fr ml30">
+              <div class="fr"> <span>订单金额：</span> <strong>¥</strong> <strong class="mr20 ordermoney ordermoney${scStatus.index }" style="color:#ff4400">0.00</strong> </div>
+            </div></td>
+        </tr>
+      </c:forEach>
+    </table>
+    <div class="msg-alert" style="padding:30px 0;"><span class="gantanhao"></span>
+      <div class="fr ml30"> <span>应付总计：</span> <strong>¥</strong> <strong id="totalMoney" class="color-red fz16">${totalMoney }</strong> ( 元 ) </div>
+      <div class="fr ml30"> <span>配送至：</span> <span id="addressLabel"></span> </div>
+      <div class="fr ml30"> <span>收货人：</span> <span id="consigneeLabel"></span> </div>
+    </div>
+    <div class="shop-list-head">
+      <div class="fr ml30"> <a href="user/cart" class="default-a">返回进货车</a>
+        <input class="input-button" type="button" onclick="return _submit()" value="提交订单" />
+      </div>
+    </div>
+    <input type="hidden" name="addressID" id="addressID" />
+  </form>
+</div>
+<div class="xintiandizhibg" id="xinaddr"></div>
 <script type="text/javascript">
 	$().ready(function(){
 		countMoney();
@@ -225,9 +157,12 @@
 			//首重价格
 			var $logistics = $("#logistics" + index + " option:selected");
 			var logisticsShowHtml ='<font color="red">请选择配送方式</font>';
-			
+			var addressId = $("#addressID").val();
+			if(!addressId){
+				logisticsShowHtml = '<font color="red">请选择收货地址</font>';
+			}
 			var logisticsId = $logistics.val();
-			if(logisticsId){
+			if(logisticsId && addressId){
 				if(logisticsId==1){
 					logisticsShowHtml = '<font color="red">物流运输费拿货时支付</font>';
 				}else{

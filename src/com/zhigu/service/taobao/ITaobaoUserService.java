@@ -19,6 +19,10 @@ public interface ITaobaoUserService {
 
 	int insertSelective(TaobaoUser user);
 
-	TaobaoUser selectByUid(String uid);
+	/**
+	 * @param userId
+	 * @return
+	 */
+	TaobaoUser selectByUserId(Long userId);
 
 }

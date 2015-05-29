@@ -1,111 +1,86 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<base href="${applicationScope.basePath}" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="css/jcDate.css" media="all" />
+<link rel="stylesheet" href="css/default/jcDate.css">
 <script type="text/javascript" src="js/jQuery-jcDate.js"></script>
-
 <link rel="stylesheet" type="text/css" href="/js/3rdparty/webuploader/webuploader.css"/>
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
 <title>实名认证</title>
 </head>
 <body>
-	<div class="rightContainer">
-		<!--// 标题 //-->
-		<h3 class="rc_title">
-			个人/个体户认证<a href="user/home">我的主页</a>
-		</h3>
-		<!--// 内容框 //-->
-		<div class="rc_body">
-			<!--// tab切换条 //-->
-			<div id="userCommTab" class="userCommTab">
-				<ul>
-					<li><a href="javascript:void(0);" class="uctSelected">个人/个体户认证</a></li>
-				</ul>
-			</div>
-			<div id="userContents" class="userContents">
-				<!--// 内容1 //-->
-				<div class="body_center2">
-					<c:if test="${realUserAuth.approveState==3}">
-						<span class="red">* ${realUserAuth.rejectReason}</span>
-					</c:if>
-					<form method="post" action="user/addrealauth" id="authForm" enctype="multipart/form-data">
-						<input name="codeimg1" id="codeimg1"  type="hidden" value="${companyAuth.image }"/>
-							<c:if test="${realUserAuth!=null&&realUserAuth.approveState==2}">
-								<div class="shimingbox">
-									<strong class="red" style="position: relative; left: 80px;">* 未通过审核，请修改后重新提交。</strong>
-								</div>
-								<div class="shimingbox">
-									<p style="position: relative; left: 60px;">未通过原因：${realUserAuth.rejectReason}</p>
-								</div>
-							</c:if>
-							<div class="shimingbox">
-								<p class="smtitle">账户名：</p>
-								<p class="smneirong">${userAuth.username}</p>
-							</div>
-							<div class="shimingbox">
-								<p class="smtitle">
-									<span class="smxing">*</span>真实姓名：
-								</p>
-								<input class="smtext fl" type="text" name="realName" placeholder="请输入真实姓名" value="${realUserAuth.realName }" maxlength="8" /><span class="red checkMsg" id="msgRealName"></span>
-							</div>
-							<div class="shimingbox">
-								<p class="smtitle">
-									<span class="smxing">*</span>身份证号码：
-								</p>
-								<input class="smtext fl" type="text" name="cardId"  placeholder="请输入你的身份证号码" value="${realUserAuth.idCard }" maxlength="18" /><span class="red checkMsg" id="msgCardId"></span>
-							</div>
-							<div class="shimingbox">
-								<p class="smtitle">
-									<span class="smxing">*</span>身份证到期时间：
-								</p>
-								<p>
-									<input class="jcDate c666" type="text" readonly="readonly" id="datec" name="datec" value="${realUserAuth.cardValidity }" maxlength="10" style="border: 1px solid #ABADB3; height: 30px;" />
-								</p>
-								<p>
-									<input class="changqi fl" type="checkbox" name="codechk" value="1" onchange="if($(this).is(':checked')){$('#datec').hide();}else{$('#datec').show();};"
-										<c:if test="${realUserAuth.perpetual==1 }">checked="true"</c:if> />长期
-								</p>
-								<span class="red checkMsg" id="msgCardValidity"></span>
-							</div>
-							<span class="red checkMsg" id="msgCodeimg1" style="padding-left: 200px;"></span>
-					</form>
-					<div class="shimingbox" id="shimingbox1">
-						<p class="smtitle">
-							<span class="smxing">*</span>身份证正面：
-						</p>
-						<div class="sfzbox fl" id="bimg1">
-							<img height="165px;" width="244px;" id="IDCard1" src="${realUserAuth.cardFrontImg}"> <span class="sfzscbg"></span>
-							<div  id="chooseUploadImg" style="height: 30px;text-align: center;line-height:30px;">选择上传</div>
-						</div>
-						<div class="shili fl">
-							示例：<span class="shili1"></span>
-						</div>
-					</div>
-						<div class="clear"></div><br><br>
-					<div class="shimingbox" id="shimingbox1">
-					<c:choose>
-						<c:when test="${realUserAuth!=null&&realUserAuth.approveState==0}">
-							<input value="审核中" class="shimingsub" style="text-align: center;" />
-						</c:when>
-						<c:otherwise>
-							<input type="button" value="提交" class="shimingsub" onclick="authSubmit();"/>
-						</c:otherwise>
-					</c:choose>
-					</div>
-					</div>
-				</div>
-
-			</div>
-			<br style="clear: both;" />
-		</div>
-	<div class="clear"></div>
-	<iframe name="imgUpload_hidden_frame" id="imgUpload_hidden_frame" style="display: none"></iframe>
-	
-	<script type="text/javascript">
+<div class="rightContainer fr">
+  <h4 class="ddtitle">个人/个体户认证</h4>
+  <div id="userContents" class="userContents"> 
+    <!--// 内容1 //-->
+    <div class="body_center2">
+      <c:if test="${realUserAuth.approveState==3}"> <span class="red">* ${realUserAuth.rejectReason}</span> </c:if>
+      <form method="post" action="user/addrealauth" id="authForm" enctype="multipart/form-data">
+        <input name="codeimg1" id="codeimg1"  type="hidden" value="${companyAuth.image }"/>
+        <c:if test="${realUserAuth!=null&&realUserAuth.approveState==2}">
+          <div class="shimingbox"> <strong class="red" style="position: relative; left: 80px;">* 未通过审核，请修改后重新提交。</strong> </div>
+          <div class="shimingbox">
+            <p style="position: relative; left: 60px;">未通过原因：${realUserAuth.rejectReason}</p>
+          </div>
+        </c:if>
+        <table cellpadding="0" cellspacing="0" class="user-form-table">
+        	<tr>
+        		<td>账户名：</td>
+        		<td>${userAuth.username}</td>
+        	</tr>
+        	<tr>
+        		<td><span class="smxing">*</span>真实姓名：</td>
+        		<td><input class="input-txt" type="text" name="realName" placeholder="请输入真实姓名" value="${realUserAuth.realName }" maxlength="8" />
+        		<span class="checkMsg" id="msgRealName"></span>
+        		</td>
+        	</tr>
+        	<tr>
+        		<td><span class="smxing">*</span>身份证号码：</td>
+        		<td><input class="input-txt" type="text" name="cardId"  placeholder="请输入你的身份证号码" value="${realUserAuth.idCard }" maxlength="18" />
+        		<span class="checkMsg" id="msgCardId"></span>
+        		</td>
+        	</tr>
+        	<tr>
+        		<td><span class="smxing">*</span>身份证到期时间：</td>
+        		<td>
+        		<input class="jcDate input-txt" type="text" readonly id="datec" name="datec" value="${realUserAuth.cardValidity }" maxlength="10" style="border: 1px solid #ABADB3; height: 30px;" />
+        		<input class=" " type="checkbox" name="codechk" value="1" onchange="if($(this).is(':checked')){$('#datec').hide();}else{$('#datec').show();};" <c:if test="${realUserAuth.perpetual==1 }">checked="true"</c:if> />
+        		<label>长期</label>
+        		<span class="checkMsg" id="msgCardValidity"></span>
+        		</td>
+        	</tr>
+        	<tr>
+        		<td><span class="smxing">*</span>身份证正面：</td>
+        		<td><div class="shimingbox" id="shimingbox1">
+		        <div class="sfzbox fl" id="bimg1"> <img height="176" width="253" id="IDCard1" src="${realUserAuth.cardFrontImg}"> <span class="sfzscbg"></span>
+		          <div id="chooseUploadImg" style="height:20px;text-align: center;line-height:30px;">选择上传</div>
+		        </div>
+		        <div class="shili fl">&nbsp;&nbsp;&nbsp;<span class="fl ml10 mr10">示例：</span>&nbsp;&nbsp;&nbsp;<span class="shili1"></span> <span class="checkMsg" id="msgCodeimg1"></span></div>
+		      	</div>
+      		</td>
+        	</tr>
+        	<tr>
+        		<td></td>
+        		<td><div class="" id="shimingbox1">
+        <c:choose>
+          <c:when test="${realUserAuth!=null&&realUserAuth.approveState==0}">
+            <input value="审核中" class="shimingsub" style="text-align: center;" />
+          </c:when>
+          <c:otherwise>
+            <input type="button" value="提交" class="input-button" onclick="authSubmit();"/>
+          </c:otherwise>
+        </c:choose>
+      </div></td>
+        	</tr>
+        </table>
+      </form>
+      
+    </div>
+  </div>
+</div>
+<iframe name="imgUpload_hidden_frame" id="imgUpload_hidden_frame" style="display: none"></iframe>
+<script type="text/javascript">
 		$(document).ready(function() {
 			$("input.jcDate").jcDate({
 				IcoClass : "jcDateIco",
@@ -213,6 +188,5 @@
 		return userCode.test(cardId);
 	}
 	</script>
-	
 </body>
 </html>

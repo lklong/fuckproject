@@ -11,12 +11,20 @@
 <link rel="stylesheet" href="css/taobao/default.css">
 <script type="text/javascript" src="/js/3rdparty/jquery1.9.1.js"></script>
 <script type="text/javascript" src="/js/taobao/taobao.js"></script>
+<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
+<style type="text/css">
+	input{
+	border: medium none;
+	}
+</style>
 <script type="text/javascript">
 
 var host = '${host}';
 var hmelists = new Array("","","","","");
 //数据返显
 $(function(){
+	
+	$('.search').hide();
 	var converts = $.parseJSON('${converts}');
 	for(var i=0;i<converts.length;i++){
 		
@@ -103,7 +111,7 @@ $(function(){
 	$('.taobaocsv').click(function() {
 		
 		var that = $(this);
-		that.hide();
+		var index = layer.msg('正在发布中...', {icon: 16});
 		
 		var url = host+"/taobao/ajax/item/save";
 		var form = $("#taobaocsv").serialize();
@@ -111,12 +119,12 @@ $(function(){
 	    desc = UE.getEditor('editor').getPlainTxt();
 		var param = $.param({desc:desc})+"&"+form;
         $.post(url,param,function(data){
+        	layer.close(index);
         	if(data.status){
         		layer.msg(data.msg,2,function(){
         			window.location.href= "http://www.zhiguw.com"
         		});
         	}else{
-        		that.show();
         		layer.msg(data.msg,1);
         	}
         });
@@ -152,17 +160,16 @@ $(function(){
 				
 				<em>淘宝帐号：<span>${user.nick }</span>
 				<a href="/goods/detail?goodsId=${goods.id}">退出</a>
-				<a href="/user/tb/auth?goodsId=${goods.id}">切换淘宝帐号</a>
+				<a href="/user/tb/auth/change?goodsId=${goods.id}">切换淘宝帐号</a>
 				<a href="http://www.zhiguw.com">返回首页</a>
 				</em>
 			</h1>
 			<form method="post" name="taobaocsv" id="taobaocsv" action="/taobao/ajax/item/save">
-			<input id="key" name="key"  value="${key }" type="hidden">
 			<input name="goodsId"  value="${goods.id}" type="hidden">
 			<input name="num"  value="${goods.aux.amount}" type="hidden">
 			<input name="seller_id" value="63572" type="hidden">
             <input name="images" id="images" type="hidden">
-            	<ul id="shoesform">    
+            	<ul id="shoesform">
 					<li hidden_attr="1">
 						<label>产品类型：</label>
 							<span>${catRef.thirdCatName}</span>

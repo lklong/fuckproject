@@ -3,11 +3,9 @@ package com.zhigu.model;
 import java.util.Date;
 
 public class TaobaoUser {
-	private String uid;
+	private Long userId;
 
 	private String alipayBind;
-
-	private Long userId;
 
 	private String avatar;
 
@@ -15,13 +13,11 @@ public class TaobaoUser {
 
 	private String buyerCredit;
 
-	private String consumerProtection;
+	private Boolean consumerProtection;
 
 	private String email;
 
-	private String isGoldenSeller;
-
-	private String location;
+	private Boolean isGoldenSeller;
 
 	private String nick;
 
@@ -33,18 +29,32 @@ public class TaobaoUser {
 
 	private String type;
 
+	private String uid;
+
 	private String vipInfo;
 
 	private String autoRepost;
 
-	private String hasShop;
+	private Boolean hasShop;
 
-	public String getUid() {
-		return uid;
+	private String address;
+
+	private String city;
+
+	private String country;
+
+	private String district;
+
+	private String state;
+
+	private Long zip;
+
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid == null ? null : uid.trim();
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getAlipayBind() {
@@ -53,14 +63,6 @@ public class TaobaoUser {
 
 	public void setAlipayBind(String alipayBind) {
 		this.alipayBind = alipayBind;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
 	}
 
 	public String getAvatar() {
@@ -87,11 +89,11 @@ public class TaobaoUser {
 		this.buyerCredit = buyerCredit;
 	}
 
-	public String getConsumerProtection() {
+	public Boolean getConsumerProtection() {
 		return consumerProtection;
 	}
 
-	public void setConsumerProtection(String consumerProtection) {
+	public void setConsumerProtection(Boolean consumerProtection) {
 		this.consumerProtection = consumerProtection;
 	}
 
@@ -103,20 +105,12 @@ public class TaobaoUser {
 		this.email = email;
 	}
 
-	public String getIsGoldenSeller() {
+	public Boolean getIsGoldenSeller() {
 		return isGoldenSeller;
 	}
 
-	public void setIsGoldenSeller(String isGoldenSeller) {
+	public void setIsGoldenSeller(Boolean isGoldenSeller) {
 		this.isGoldenSeller = isGoldenSeller;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public String getNick() {
@@ -159,6 +153,14 @@ public class TaobaoUser {
 		this.type = type;
 	}
 
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
 	public String getVipInfo() {
 		return vipInfo;
 	}
@@ -175,12 +177,60 @@ public class TaobaoUser {
 		this.autoRepost = autoRepost;
 	}
 
-	public String getHasShop() {
+	public Boolean getHasShop() {
 		return hasShop;
 	}
 
-	public void setHasShop(String hasShop) {
+	public void setHasShop(Boolean hasShop) {
 		this.hasShop = hasShop;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public Long getZip() {
+		return zip;
+	}
+
+	public void setZip(Long zip) {
+		this.zip = zip;
 	}
 
 }

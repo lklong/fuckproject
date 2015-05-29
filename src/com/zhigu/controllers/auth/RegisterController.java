@@ -10,11 +10,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.constant.Code;
+import com.zhigu.common.constant.PhoneSendType;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.utils.StringUtil;
-import com.zhigu.common.utils.captcha.CaptchaUtil;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.dto.MsgBean;
+import com.zhigu.service.common.IPhoneSendService;
 import com.zhigu.service.user.IUserService;
 
 /**
@@ -31,6 +32,8 @@ public class RegisterController {
 
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IPhoneSendService phoneSendService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView goRegister(ModelAndView mv, @RequestParam(required = false) String recommendUserID) {
@@ -47,14 +50,11 @@ public class RegisterController {
 	@ResponseBody
 	public MsgBean goRegister(String username, String encodePwd, String captcha) {
 		String password = StringUtil.decryptBASE64(encodePwd);
-		if (!CaptchaUtil.verify(username, captcha)) {
-			return new MsgBean(Code.FAIL, "手机验证码错误！", MsgLevel.ERROR);
+		MsgBean captchaMsg = phoneSendService.verify(username, PhoneSendType.PHONE_REGISTER, captcha);
+		if (captchaMsg.getCode() != Code.SUCCESS) {
+			return captchaMsg;
 		}
-		MsgBean msg = userService.saveUserAuth(username, password);
-		if (msg.getCode() == Code.SUCCESS) {
-			CaptchaUtil.remove(username);
-		}
-		return msg;
+		return userService.saveUserAuth(username, password);
 	}
 
 	/**
@@ -71,6 +71,22 @@ public class RegisterController {
 			return new MsgBean(Code.FAIL, "手机已被注册使用！", MsgLevel.WARNING);
 		}
 		return new MsgBean(Code.SUCCESS, "ok!", MsgLevel.NORMAL);
+	}
+
+	/**
+	 * 手机注册短信
+	 * 
+	 * @param phone
+	 * @return
+	 */
+	@RequestMapping("/phone/send")
+	@ResponseBody
+	public MsgBean phoneSend(String phone) {
+		UserAuth auth = userService.queryUserAuthByPhone(phone);
+		if (auth != null) {
+			return new MsgBean(Code.FAIL, "手机已被注册使用！", MsgLevel.WARNING);
+		}
+		return phoneSendService.send(phone, PhoneSendType.PHONE_REGISTER);
 	}
 
 }

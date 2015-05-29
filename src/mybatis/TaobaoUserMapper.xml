@@ -3,50 +3,54 @@
 <mapper namespace="com.zhigu.mapper.TaobaoUserMapper" >
   <resultMap id="BaseResultMap" type="com.zhigu.model.TaobaoUser" >
     <id column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="alipay_bind" property="alipayBind" jdbcType="VARCHAR" />
     <result column="avatar" property="avatar" jdbcType="VARCHAR" />
     <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
     <result column="buyer_credit" property="buyerCredit" jdbcType="VARCHAR" />
-    <result column="consumer_protection" property="consumerProtection" jdbcType="CHAR" />
+    <result column="consumer_protection" property="consumerProtection" jdbcType="BIT" />
     <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="is_golden_seller" property="isGoldenSeller" jdbcType="CHAR" />
-    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="is_golden_seller" property="isGoldenSeller" jdbcType="BIT" />
     <result column="nick" property="nick" jdbcType="VARCHAR" />
-    <result column="promoted_type" property="promotedType" jdbcType="CHAR" />
+    <result column="promoted_type" property="promotedType" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="CHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="vip_info" property="vipInfo" jdbcType="VARCHAR" />
     <result column="auto_repost" property="autoRepost" jdbcType="VARCHAR" />
-    <result column="has_shop" property="hasShop" jdbcType="CHAR" />
+    <result column="has_shop" property="hasShop" jdbcType="BIT" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="zip" property="zip" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    uid, alipay_bind, user_id, avatar, birthday, buyer_credit, consumer_protection, email, 
-    is_golden_seller, location, nick, promoted_type, sex, status, type, vip_info, auto_repost, 
-    has_shop
+    user_id, alipay_bind, avatar, birthday, buyer_credit, consumer_protection, email, 
+    is_golden_seller, nick, promoted_type, sex, status, type, uid, vip_info, auto_repost, 
+    has_shop, address, city, country, district, state, zip
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from taobao_user
-    where user_id = #{userId,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from taobao_user
-    where user_id = #{userId,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
   </delete>
+
   <insert id="insertSelective" parameterType="com.zhigu.model.TaobaoUser" >
     insert into taobao_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="uid != null" >
-        uid,
+      <if test="userId != null" >
+        user_id,
       </if>
       <if test="alipayBind != null" >
         alipay_bind,
-      </if>
-      <if test="userId != null" >
-        user_id,
       </if>
       <if test="avatar != null" >
         avatar,
@@ -66,9 +70,6 @@
       <if test="isGoldenSeller != null" >
         is_golden_seller,
       </if>
-      <if test="location != null" >
-        location,
-      </if>
       <if test="nick != null" >
         nick,
       </if>
@@ -84,6 +85,9 @@
       <if test="type != null" >
         type,
       </if>
+      <if test="uid != null" >
+        uid,
+      </if>
       <if test="vipInfo != null" >
         vip_info,
       </if>
@@ -93,16 +97,31 @@
       <if test="hasShop != null" >
         has_shop,
       </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="country != null" >
+        country,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="zip != null" >
+        zip,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="uid != null" >
-        #{uid,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
       </if>
       <if test="alipayBind != null" >
         #{alipayBind,jdbcType=VARCHAR},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=BIGINT},
       </if>
       <if test="avatar != null" >
         #{avatar,jdbcType=VARCHAR},
@@ -114,22 +133,19 @@
         #{buyerCredit,jdbcType=VARCHAR},
       </if>
       <if test="consumerProtection != null" >
-        #{consumerProtection,jdbcType=CHAR},
+        #{consumerProtection,jdbcType=BIT},
       </if>
       <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
       <if test="isGoldenSeller != null" >
-        #{isGoldenSeller,jdbcType=CHAR},
-      </if>
-      <if test="location != null" >
-        #{location,jdbcType=VARCHAR},
+        #{isGoldenSeller,jdbcType=BIT},
       </if>
       <if test="nick != null" >
         #{nick,jdbcType=VARCHAR},
       </if>
       <if test="promotedType != null" >
-        #{promotedType,jdbcType=CHAR},
+        #{promotedType,jdbcType=VARCHAR},
       </if>
       <if test="sex != null" >
         #{sex,jdbcType=CHAR},
@@ -138,7 +154,10 @@
         #{status,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=CHAR},
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
       </if>
       <if test="vipInfo != null" >
         #{vipInfo,jdbcType=VARCHAR},
@@ -147,7 +166,25 @@
         #{autoRepost,jdbcType=VARCHAR},
       </if>
       <if test="hasShop != null" >
-        #{hasShop,jdbcType=CHAR},
+        #{hasShop,jdbcType=BIT},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="zip != null" >
+        #{zip,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -167,22 +204,19 @@
         buyer_credit = #{buyerCredit,jdbcType=VARCHAR},
       </if>
       <if test="consumerProtection != null" >
-        consumer_protection = #{consumerProtection,jdbcType=CHAR},
+        consumer_protection = #{consumerProtection,jdbcType=BIT},
       </if>
       <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="isGoldenSeller != null" >
-        is_golden_seller = #{isGoldenSeller,jdbcType=CHAR},
-      </if>
-      <if test="location != null" >
-        location = #{location,jdbcType=VARCHAR},
+        is_golden_seller = #{isGoldenSeller,jdbcType=BIT},
       </if>
       <if test="nick != null" >
         nick = #{nick,jdbcType=VARCHAR},
       </if>
       <if test="promotedType != null" >
-        promoted_type = #{promotedType,jdbcType=CHAR},
+        promoted_type = #{promotedType,jdbcType=VARCHAR},
       </if>
       <if test="sex != null" >
         sex = #{sex,jdbcType=CHAR},
@@ -191,7 +225,10 @@
         status = #{status,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=CHAR},
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
       </if>
       <if test="vipInfo != null" >
         vip_info = #{vipInfo,jdbcType=VARCHAR},
@@ -200,9 +237,28 @@
         auto_repost = #{autoRepost,jdbcType=VARCHAR},
       </if>
       <if test="hasShop != null" >
-        has_shop = #{hasShop,jdbcType=CHAR},
+        has_shop = #{hasShop,jdbcType=BIT},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="zip != null" >
+        zip = #{zip,jdbcType=BIGINT},
       </if>
     </set>
-    where userId = #{userId,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
   </update>
+  
 </mapper>

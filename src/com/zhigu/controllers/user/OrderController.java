@@ -157,7 +157,13 @@ public class OrderController {
 	 */
 	@RequestMapping("/getLogisticsMoney")
 	@ResponseBody
-	public MsgBean getLogisticsMoney(int addressId, int logisticsId, BigDecimal weight) {
+	public MsgBean getLogisticsMoney(Integer addressId, Integer logisticsId, BigDecimal weight) {
+		if (addressId == null) {
+			return new MsgBean(Code.FAIL, "请选择收货地址", MsgLevel.ERROR);
+		}
+		if (logisticsId == null) {
+			return new MsgBean(Code.FAIL, "请选择配送方式", MsgLevel.ERROR);
+		}
 		MsgBean msg = new MsgBean(Code.SUCCESS, "ok", MsgLevel.NORMAL);
 		msg.setData(orderService.getExpressMoney(addressId, logisticsId, weight));
 		return msg;

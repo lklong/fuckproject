@@ -1,27 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
 <title>发布商品</title>
 <link rel="stylesheet" type="text/css" href="/js/3rdparty/webuploader/webuploader.css">
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
-
 <link href="/js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="/js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
-<style>
-.piliansezhijia{ border:1px solid #e4e4e4; width:80px; height:20px; line-height: 20px; color:blue;  z-index:100;}
-.piliansz{  border:1px solid #e4e4e4; position: absolute; background: #fff;padding: 5px; left:0px; width:170px; top:30px; z-index:111;}
-	   
-.fabubgtian{ background:#333; width:104px; height:20px; color:#fff; position:absolute; bottom:0px; line-height:20px;}
-.edit label{display: none;}
-.edit .yansetext{display: block;width: 70px !important;}
-.webuploader-pick {
-    background-color:#C80000;
-}
-</style>
+
 </head>
 <body>
 	<!-----------------------------------------------center中间部分---------------------------------------------------->
@@ -69,7 +56,7 @@
 				   	<div class="tupianheader" id="tupianheader">
 					   	<ul>
 						   	<li class="shangchuanselect" id="shangchuan1" onclick="com_img_upload();">本地上传</li>
-						   	<li  id="shangchuan2">图片空间</li>
+						 <!--   	<li  id="shangchuan2">图片空间</li> -->
 						</ul>
 						<div class="clear"></div>
 					</div>
@@ -105,7 +92,7 @@
 								<div class="imgbox" id="imgbox1">
 									 <img src="img/upload-img-bak.jpg" width="102px" height="102px"/>
 								</div>
-								<div class="fabubgtian disnone"><span class="ml5 cp" onclick="zhigu.goods.mleft(this)">左移</span><span class="ml10 cp" onclick="zhigu.goods.mright(this)">右移</span> <span class="ml10">×</span></div>
+								<div class="fabubgtian hidden"><span class="ml5 cp" onclick="zhigu.goods.mleft(this)">左移</span><span class="ml10 cp" onclick="zhigu.goods.mright(this)">右移</span> <span class="ml10" title="删除">×</span></div>
 							</li>
 						</ul>
 						<div class="clear"></div>
@@ -129,8 +116,6 @@
 </form>
 <div class="clear"></div>
 
-<!-- <script charset="utf-8" src="js/3rdparty/kindeditor/kindeditor.js"></script>
-<script charset="utf-8" src="js/3rdparty/kindeditor/lang/zh_CN.js"></script> -->
 <script charset="utf-8" src="js/goods.js"></script>
 <script>
 if (typeof zhigu == "undefined" || !zhigu) {

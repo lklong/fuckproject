@@ -1,0 +1,85 @@
+@charset "utf-8";
+/* 类目列表页 */
+.mainbody {
+	width:1190px;
+	margin:0 auto;
+	font-size:1.2em;}
+.cur-pos { height:40px; line-height:40px; color:#787878;}
+.shopGoodsListBox { width:1300px; clear:both; padding:20px 0;}
+.souyoufeileitop{ border:1px solid #f0f0f0; width:1188px; background:#fff; color:#656565; font-family:'微软雅黑'; margin-top:10px;}
+.souyoufeileinrdi{ width:1168px; padding:0 10px; height:33px; line-height:33px; background:#f9f9f9;}
+.leimu{width:1188px; border-top:1px solid #e1e1e1; margin-top:-1px; clear:both;}
+.leimuTitle { float:left; padding:10px 16px 10px 16px;}
+.shuxin{ float:left;}
+.shuxin div{ float:left; position:relative; height:37px;}
+.shuxin ul{ position:absolute; z-index:999; background:#e8e8e8; font-size:12px}
+.shuxin ul li{ height:24px; line-height:24px; cursor:pointer; width:105px;padding-left:15px;}
+.shuxin ul li:hover{ background:#f83e77; color:#fff;}
+#categoryDiv { float:left; width:1100px;}
+#categoryDiv a { display:block; padding:10px 16px 10px 16px; float:left;}
+#categoryDiv a:hover {color:#f83e77;}
+.shuxin a { display:block; height:37px; line-height:37px; padding-left:15px; padding-right:15px; color:#585858;}
+.shuxin a:hover { background-color:#fafafa; color:#f83e77;}
+.xuanzhepaixu{border:1px solid #f0f0f0; height:35px; background:#fafafa; color:#5e5e5e;}
+.bsbSortDiv { height:16px; width:100px; float:left; margin-left:15px;}
+.sortUp { display:block; float:left; height:13px; width:13px;  border:1px solid #dedede; cursor:pointer; margin-top:1px; margin-left:-1px; background:url(../../img/default/sotrtbg.gif) no-repeat 2px 2px #f0f0f0;}
+.sortDown { display:block; float:left; height:13px; width:13px;  border:1px solid #dedede; cursor:pointer; margin-top:1px; margin-left:-1px; background:url(../../img/default/sotrtbg.gif) no-repeat -19px 2px #f0f0f0;}
+.SUP { background:url(../../img/default/sotrtbg.gif) no-repeat 2px -20px #f0f0f0;}
+.SDOWN { background:url(../../img/default/sotrtbg.gif) no-repeat -19px -20px #f0f0f0;}
+.bsbSortDiv div { float:left; padding:10px 0 10px 8px;}
+.goodsListBoxes { border:1px solid #e8e8e8; float:left; width:220px; height:310px; margin-right:20px; background: #fff;margin-top: 20px;}
+.goodsListBoxes:hover { border:1px solid #f83e77; float:left; width:220px; height:310px; margin-right:20px}
+.goodsListBoxes:hover .fengXiangDivOut { display:block;}
+#listImgBox { height:220px; width:220px; border-bottom:1px solid #dedede; position:relative;}
+.goodsListBoxes h3 {padding-top:5px; padding-left:5px; height:40px;}
+.goodsListBoxes p {color:#666666; padding:7px;}
+.goodsListBoxes p span { float:right; padding-top:5px; padding-right:7px;}
+.goods-name {height:30px;}
+a.selected_red { color:#f83e77}
+.sectednr { clear:both;}
+.sectednr li {float:left; height:20px; line-height:20px; padding:3px 7px; color:#ffffff; background:#f83e77; margin-right:10px;}
+.sectednr li div {float:left;}
+.souyouProperties { clear:both; width:1190px; margin:10px auto; height:27px;}
+
+/*-- 供应商家 --*/
+.buniesList { width:100%; clear:both; margin-top:40px; font-size:1.2em;}
+.buniesSelectBar { width:100%; height:38px; margin-top:20px;}
+.bsbInside { width:1188px; margin:0 auto; height:inherit; border:1px solid #dedede; background-color:#fafafa; position:relative;}
+.bsbBgBar { width:1188px; background-color:#F1F1F1; height:38px; border-bottom:1px solid #dedede;}
+.bsbUl { width:700px; height:38px; position:absolute; z-index:97;}
+.bsbUl li { float:left; padding:10px 20px 11px 20px; border-right:1px solid #dedede; background-color:#fafafa;}
+.bsbLiSelect { float:left; padding:10px 20px 11px 20px; border-right:1px solid #dedede; background-color:#ffffff !important; border-top:2px solid #c21902; margin-top:-1px;}
+.bsbSort { height:30px; width:1188px;}
+.bsbSortDiv { height:16px; width:100px; float:left; margin-left:15px;}
+.sortUp_1 { display:block; float:left; height:13px; width:13px; background:url(../img/sotrtbg.gif) no-repeat 2px 2px #f0f0f0; border:1px solid #dedede; cursor:pointer; margin-top:1px; margin-left:-1px;}
+.sortUp_2 { display:block; float:left; height:13px; width:13px; background:url(../img/sotrtbg.gif) no-repeat 2px -19px #f0f0f0; border:1px solid #dedede; cursor:pointer; margin-top:1px; margin-left:-1px;}
+.sortDown_1 { display:block; float:left; height:13px; width:13px; background:url(../img/sotrtbg.gif) no-repeat -19px 2px #f0f0f0; border:1px solid #dedede; cursor:pointer; margin-top:1px; margin-left:-1px;}
+.sortDown_2 { display:block; float:left; height:13px; width:13px; background:url(../img/sotrtbg.gif) no-repeat -19px -19px #f0f0f0; border:1px solid #dedede; cursor:pointer; margin-top:1px; margin-left:-1px;}
+.bsbSortDiv div { float:left; padding:10px 0 10px 8px;}
+.buniesInside { width:1190px; margin:0 auto;}
+.buniesLeft { width:1190px;}
+.buniesRight { width:275px; float:right;}
+.busBoxes { width:1190px; height:510px; background-color:#ffffff; margin-bottom:20px; overflow:hidden;}
+.bsbLeftBox { width:1193px; height:110px; position:relative;  font-size: 13px;}
+.bsbLeftBox ul { float:left; width:370px;}
+.bsbLeftBox .w200{width:200px;position: absolute;right: 0;bottom: 0;}
+.bsbLeftBox ul #buniesName{  font-size: 18px;}
+.bsbLeftBox li { color:#5f5f5f; line-height:25px;}
+.bsbLeftBox li img { margin-bottom:-7px;}
+.bsbLeftBox dl { float:left; width:120px; height:80px;}
+.bsbLeftBox dd { float:left; padding-top:7px;}
+.bsbLeftBox dt { float:left;}
+a.markShopButn:link { display:block; float:left; height:28px; width:82px; color:#343434; text-align:center; line-height:28px; margin-left:10px; background:url(../../img/default/all_bg.png) no-repeat left -708px;}
+a.markShopButn:visited { display:block; float:left; height:28px; width:82px; color:#343434; text-align:center; line-height:28px; margin-left:10px; background:url(../../img/default/all_bg.png) no-repeat left -708px;}
+a.markShopButn:hover { display:block; float:left; height:28px; width:82px; color:#ae0004; text-align:center; line-height:28px; margin-left:10px; background:url(../../img/default/all_bg.png) no-repeat left -708px;}
+.bsbRigthBox {width:1063px; height:330px; margin-top:13px; overflow:hidden; margin-left:120px; background-color:#fafafa; border:2px solid #f0f0f0;}
+.bsbbiInside { padding:10px; width:1063px;}
+.bsbImgBox { width:175px; background-color:#ffffff; float:left; margin-right:15px; padding:10px;}
+.bsbImgBox p { text-indent:10px; line-height:20px;}
+.bsbTopInfo { height:20px; margin-bottom:10px; margin:0 auto; line-height:20px; padding:10px;}
+.bsbBodyImgs { width:100%; overflow:hidden; margin:0 auto;}
+.buniesAdd { margin-bottom:15px;}
+.bsbBodyImgs .bsbbiInside .bsbImgBox p{text-align: center;font-size: 14px;font-weight: bold;text-indent: 0;}
+.bsbImgBox:hover{ width:175px; background-color:#DADADA; float:left; margin-right:15px; padding:10px;}
+
+

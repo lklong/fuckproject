@@ -1,14 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
 <title>发布商品</title>
 <link rel="stylesheet" type="text/css" href="/js/3rdparty/webuploader/webuploader.css">
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
-
 <link href="/js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="/js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
 <style>

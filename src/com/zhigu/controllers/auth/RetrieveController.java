@@ -12,15 +12,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.EmailVerifyType;
+import com.zhigu.common.constant.PhoneSendType;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.servlet.ImageRandomCode;
-import com.zhigu.common.utils.captcha.CaptchaUtil;
-import com.zhigu.common.utils.sms.SMSTemplate;
-import com.zhigu.common.utils.sms.SMSUtil;
 import com.zhigu.model.EmailVerify;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.common.IEmailService;
+import com.zhigu.service.common.IPhoneSendService;
 import com.zhigu.service.user.IUserService;
 
 /**
@@ -38,6 +37,8 @@ public class RetrieveController {
 	private IUserService userService;
 	@Autowired
 	private IEmailService emailService;
+	@Autowired
+	private IPhoneSendService phoneSendService;
 
 	/**
 	 * 选择找回方式
@@ -66,13 +67,8 @@ public class RetrieveController {
 			if (auth == null) {
 				return new MsgBean(Code.FAIL, "该手机号未绑定同城帐号！", MsgLevel.ERROR);
 			}
-			if (!SMSUtil.isSend(username)) {
-				return new MsgBean(Code.FAIL, "手机验证码发送太过频繁，请稍后再试！", MsgLevel.ERROR);
-			}
-			// 发送验证码
-			SMSUtil.sendCaptcha(username, SMSTemplate.getTemplate(5));
 			SessionHelper.setAttribute(SESSION_RETRIEVE_PHONE, username);
-			return new MsgBean(Code.SUCCESS, "手机验证码发送成功！", MsgLevel.ERROR);
+			return phoneSendService.send(username, PhoneSendType.PASSWORD_RESET);
 		} else if (type == 2) {
 			return emailService.sendPasswordResetEmail(username);
 		}
@@ -101,8 +97,9 @@ public class RetrieveController {
 	@ResponseBody
 	public MsgBean step2_phone(String newPwd, String captcha) {
 		String phone = (String) SessionHelper.getAttribute(SESSION_RETRIEVE_PHONE);
-		if (!CaptchaUtil.verifyAndRemove(phone, captcha)) {
-			return new MsgBean(Code.FAIL, "验证码输入错误！", MsgLevel.ERROR);
+		MsgBean msg = phoneSendService.verify(phone, PhoneSendType.PASSWORD_RESET, captcha);
+		if (msg.getCode() != Code.SUCCESS) {
+			return msg;
 		}
 		return userService.resetLoginPwd(phone, newPwd);
 	}

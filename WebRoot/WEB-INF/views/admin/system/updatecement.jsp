@@ -1,10 +1,10 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html >
+<html >
 <head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <title>资讯列表</title>
      <script src="js/admin/admin.js" type="text/javascript"></script>
     <script src="js/jquery.min.js" type="text/javascript"></script>
@@ -25,23 +25,6 @@
 
 <div id="adminUserDlg"  modal="true" closed="true" class=""   >
  <div class="contentbox">
- <!-- <div style="margin-left: 198px; width: 100%; float: left;">
-  <form enctype="multipart/form-data" action="/admin/system/uploadImageFile" method="post" id="uploadImageFileForm"  target="imgUpload_hidden_frame">	
-				<a class=btn_addPic style="text-decoration:none;margin-left: 6px;">
-				<SPAN><EM>+</EM>图片上传</SPAN>
-				<input class="filePrew" type="file"  name="preImageFile"  id="preImageFile" onchange="uploadImageFileForm.submit();" />
-				<input name="callBackFun"  id="callBackFun" type="hidden" value="callbackImagePre"/></a>
-		     	 </form>
- </div> -->
- <%-- <br/> <br/> <br/>
-  <div style="float: left;">
-  <c:if test="${cementContent.cementimg==null }">
-    <img style="margin-left: 204px;" id="adimg1" width="300px" height="155px" src="img/002.png"/>   
-  </c:if>
-     <c:if test="${cementContent.cementimg!=null }">
-    <img style="margin-left: 204px;" id="adimg1" width="300px" height="155px" src="${cementContent.cementimg}"/>   
-  </c:if>   	
-  </div>    --%>     
   <form method="post"  id="sellFrom" name="sellFrom" role="form">
     <input type="hidden"  name="cementImg" id="cementimg" value=""/>
     <input type="hidden"  name="id" id="id" value="${cementContent.id }"/>

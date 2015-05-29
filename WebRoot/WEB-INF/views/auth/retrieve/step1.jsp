@@ -1,52 +1,57 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" pageEncoding="utf-8"%>
+<!doctype html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+<link href="/css/default/user.css" rel="stylesheet"/>
 <title>密码找回</title>
 </head>
 <body>
-<!--** 找回密码板块 **-->
+<!--** 找回密码板块 **--> 
 <!--** Step.1 填写信息 **-->
 <form action="/security/retrieve/step1" method="post" >
-<div class="userRegPanel">
-	<div class="urpInside">
-    	<div class="urpTopBox"></div>
-        <div class="urpMiddleBox">
-        	<div class="urpTopTip"><div id="step1"><img src="img/backpass_1.jpg" /></div></div>
-        	<div class="busyInfoBox">
-            	<div class="bibTxt" style="padding:0;">
-                    <select name="type" id="getBackType">
-                    	<option value="1" >手机</option>
-                        <option value="2">邮箱</option>
-                    </select></div>
-                <div class="bibinput">
-                	<input type="text" class="busyInput" value="${username }" id="username" name="username"/>
-                </div>
-                <div class="bibAlert" id="msg_username"></div>
-            </div>
-            <div class="busyInfoBox">
-            	<div class="bibTxt">验证码</div>
-                <div class="bibinput">
-                	<input type="text" class="busyInput" style="width:160px; clear:both"  name="captcha" id="captcha"/>
-                    <img alt="验证码" title="点击换一个" src="captcha"  width="100" height="40" onclick="this.src=this.src+'?'+Math.random()" />
-                </div>
-                <div class="bibAlert" id="msg_captcha"></div>
-            </div>
-        
-            <div class="urpMiddleDiv mt30">
-            	<br /><br /><br />
-            	<input type="button" class="urpSubMit" value="下一步" title="下一步" onclick="retrieveSubmit()"/>
-                <br /><br /><br />
-                <br /><br /><br />
-            </div>
+  <div class="userRegPanel">
+    <div class="urpInside">
+      <div class="urpTopBox"></div>
+      <div class="urpMiddleBox">
+        <div class="urpTopTip">
+          <div id="step1">
+            <h1>密码找回-第一步</h1>
+          </div>
         </div>
-        <div class="urpFootBox"></div>
+        <div class="busyInfoBox">
+          <div class="bibTxt" style="padding:0;">
+            <select name="type" id="getBackType">
+              <option value="1">手机</option>
+              <option value="2">邮箱</option>
+            </select>
+          </div>
+          <div class="bibinput">
+            <input type="text" class="busyInput" value="${username }" id="username" name="username"/>
+          </div>
+          <div class="bibAlert" id="msg_username"></div>
+        </div>
+        <div class="busyInfoBox">
+          <div class="bibTxt">验证码</div>
+          <div class="bibinput">
+            <input type="text" class="busyInput" style="width:160px; clear:both"  name="captcha" id="captcha"/>
+            <img alt="验证码" title="点击换一个" src="captcha"  width="100" height="40" onclick="this.src=this.src+'?'+Math.random()" /> </div>
+          <div class="bibAlert" id="msg_captcha"></div>
+        </div>
+        <div class="urpMiddleDiv mt30"> <br />
+          <br />
+          <br />
+          <input type="button" class="urpSubMit" value="下一步" title="下一步" onclick="return _submit()"/>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 </form>
-
-
 <script type="text/javascript">
 	function retrieveSubmit(){
 		var username = $("#username").val();

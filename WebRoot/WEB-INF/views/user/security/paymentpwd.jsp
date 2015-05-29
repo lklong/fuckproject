@@ -1,63 +1,52 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
 <title>设置支付密码</title>
+<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
 </head>
 <body>
-	 <div class="body_center2 fl p10 ml10">
-    	<div class="chongzhititle">
-            <h4>设置支付密码</h4>
-        </div>
-        
-        <c:choose>
-	        <c:when test="${empty auth.phone }">
-	        	<div class="shezhimima">
-	            	<div class="shezhititle">您可以通过以下方式设置支付密码：</div>
-	                <div class="shezhitel">
-	                	<img class="shezhitelimg fl mr20 mt10" src="img/telhong.png"/>
-	                    <p class="shezhip fl mr20">用手机号码设置</p>
-	                    <a href="user/security/phone">
-		                    <input class="shezhibut fl cp" type="button" value="立即设置" />
-	                    </a>
-	                    <div class="clear"></div>
-	                </div>
-	            </div>
-	        </c:when>
-        	<c:otherwise>
-		        <div class="shezhimima2">
-		        	<div class="shemiform">
-		            	<div class=" mb10">
-		                	<p class="telTitle fl">手机号码：</p>
-		                    <strong class="ce81268">${auth.phone }</strong>
-		                </div>
-		                <div class="shoujibox">
-							<p class="telTitle fl">　验证码：</p>
-							<input id="captcha" name="captcha" class="shoujitxt fl" type="text" autocomplete="off"/>
-							<input class="shoujibut fl" style="cursor: pointer;" onclick="sendCaptcha(this)" type="button" value="发送验证码" /> 
-							<span id="captchaSpan" class="shoujihelp disblock"></span>
-							<span id="sendmsg" class="shoujihelp2"> </span>
-							<div class="clear"></div>
-						</div>
-						<div class=" mb10">
-		                	<p class="telTitle fl">支付密码：</p>
-		                    <input class="shoujitxt fl" type="password" id="paymentPwd" autocomplete="off"/>
-		                    <span></span>
-		                    <span id="captchaSpan" class="shoujihelp disblock"></span>
-		                </div>
-		                <div class="clear"></div>
-		                <input class="shemenext cp mt10" type="button"  value="设置" onclick="savePaypasspw();"/>
-		        </div>
-		        </div>
-        	</c:otherwise>
-        </c:choose>
-    </div>
-    <div class="clear"></div>
-	<script type="text/javascript">
+<div class="rightContainer fr">
+  <h4 class="ddtitle">设置支付密码</h4>
+  <div class="msg-alert"><span class="gantanhao"></span>您可以通过以下方式设置支付密码：</div>
+  
+    <table cellpadding="0" cellspacing="0" class="user-form-table">
+    <c:choose>
+      <c:when test="${empty auth.phone }">
+        <tr>
+          <td style="width:10%">用手机号码设置</td>
+          <td style="width:90%"><a href="user/security/phone" class="default-a"> 立即设置 </a></td>
+        </tr>
+      </c:when>
+      <c:otherwise>
+        <tr>
+          <td style="width:10%">手机号码：</td>
+          <td style="width:90%">${auth.phone }</td>
+        </tr>
+        <tr>
+          <td>验证码：</td>
+          <td><input id="captcha" name="captcha" class="input-txt" type="text" autocomplete="off"/>
+            <input class="input-button ml20" onclick="sendCaptcha(this)" type="button" value="发送验证码" />
+            <span id="captchaSpan" class="color-red"></span> <span id="sendmsg" class="color-red"> </span></td>
+        </tr>
+        <tr>
+          <td>支付密码：</td>
+          <td><input class="input-txt" type="password" id="paymentPwd" autocomplete="off"/>
+            <span id="captchaSpan" class="color-red"></span></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><input class="input-button" type="button"  value="设置" onclick="savePaypasspw();"/></td>
+        </tr>
+      </c:otherwise>
+      </c:choose>
+    </table>
+  
+</div>
+<script type="text/javascript">
 		function sendCaptcha(obj){
-			ajaxSubmit("captcha/phone", {t:4}, function(msgBean){
+			ajaxSubmit("/user/security/paypwd/update/phoneSend", {}, function(msgBean){
 				if(msgBean.code==zhigu.code.success){
 					$("#sendmsg").html(msgBean.msg);
 					send_captcha_waiting(obj);					

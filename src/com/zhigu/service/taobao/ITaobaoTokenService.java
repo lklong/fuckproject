@@ -7,6 +7,7 @@
  */
 package com.zhigu.service.taobao;
 
+import com.zhigu.common.exception.ServiceException;
 import com.zhigu.model.TaobaoToken;
 
 /**
@@ -31,5 +32,12 @@ public interface ITaobaoTokenService {
 	 * @param token
 	 */
 	int updateSelective(TaobaoToken token);
+
+	/**
+	 * @param code
+	 * @param userId
+	 * @return
+	 */
+	String getToken(String code, Integer userId) throws ServiceException;
 
 }

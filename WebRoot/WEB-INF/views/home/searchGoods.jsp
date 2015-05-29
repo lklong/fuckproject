@@ -1,47 +1,41 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!-- <link type="text/css" href="css/admin/manager.css" rel="stylesheet" media="all" /> -->
+<head>
 <title>全部货源</title>
-<style type="text/css">
-.selected_red{color: red !important;}
-</style>
+<link href="/css/default/list.css?v=20150505" rel="stylesheet">
 </head>
 <body>
-	<div class="mainbody">
-		<div class="mt10 ">
-			<div class="f14 fwryh cb5b5b5 dituabiao fl">
-				<img src="img/ditubiao.png" class="ver_ali mr10" /><a href="index">首页</a>
-				> 搜索 ><c:if test="${storeName != null }"> ${storeName }</c:if>
-				<c:if test="${propName != null }"> ${propName }</c:if>
-				<c:if test="${goodsName != null }"> ${goodsName }</c:if>
-				
-			</div>
-		</div>
-		<div class="clear"></div>
-		
-	<div class="shopGoodsListBox" id="goodsList">
-		<div class="shopGoodsListBox" id="goodsList">
-			<div style="display:none">
-				<form id="requestForm" action="/home/search" method="post">
-					<c:if test="${storeName != null }"><input name="storeName" value="${storeName}" type="hidden" /></c:if>
-					<c:if test="${propName != null }"><input name="propName" value="${propName}" type="hidden" /></c:if>
-					<c:if test="${goodsName != null }"><input name="goodsName" value="${goodsName}" type="hidden" /></c:if>
-				</form>
-			</div>
-		    <jsp:include page="../goods/goods/items.jsp"/>
-		</div>
-		</div>
-		<div class="ddpage fr mt20">
-			<jsp:include page="../include/page.jsp">
-				<jsp:param value="requestForm" name="requestForm"/>
-				<jsp:param value="form" name="request"/>
-			</jsp:include>
-		</div>
-	</div>
+<div class="mainbody">
+  <div class="cur-pos"> <a href="index">首页</a> > 搜索 >
+    <c:if test="${storeName != null }"> ${storeName }</c:if>
+    <c:if test="${propName != null }"> ${propName }</c:if>
+    <c:if test="${goodsName != null }"> ${goodsName }</c:if>
+  </div>
+  <div class="shopGoodsListBox" id="goodsList">
+    <div style="display:none">
+      <form id="requestForm" action="/home/search" method="post">
+        <c:if test="${storeName != null }">
+          <input name="storeName" value="${storeName}" type="hidden" />
+        </c:if>
+        <c:if test="${propName != null }">
+          <input name="propName" value="${propName}" type="hidden" />
+        </c:if>
+        <c:if test="${goodsName != null }">
+          <input name="goodsName" value="${goodsName}" type="hidden" />
+        </c:if>
+      </form>
+    </div>
+    <jsp:include page="../goods/goods/items.jsp"/>
+  </div>
+  <div class="ddpage fr mt20">
+    <jsp:include page="../include/page.jsp">
+    <jsp:param value="requestForm" name="requestForm"/>
+    <jsp:param value="form" name="request"/>
+    </jsp:include>
+  </div>
+</div>
 <script type="text/javascript">
 if (typeof zhigu == "undefined" || !zhigu) {
     var zhigu = {};
@@ -155,7 +149,7 @@ function setShare(obj){
 	shareURL =  "http://www.zhiguw.com/"+$(obj).parent().parent().parent().attr("shareurl");
     shareTitle = "【智谷同城货源网】"+ $(obj).parent().parent().parent().attr("sharetitle");
 }
-</script>
+</script> 
 <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1" charset="utf-8"></script>
 </body>
 </html>

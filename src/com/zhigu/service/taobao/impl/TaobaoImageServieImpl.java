@@ -226,7 +226,10 @@ public class TaobaoImageServieImpl implements ITaobaoImageService {
 
 				Picture pic = uploadPicture(src, access_token);
 
-				img.attr("src", pic.getPicturePath());
+				if (pic != null) {
+
+					img.attr("src", pic.getPicturePath());
+				}
 
 			}
 		}

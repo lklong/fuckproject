@@ -13,15 +13,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.constant.Code;
+import com.zhigu.common.constant.PhoneSendType;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.utils.Md5;
 import com.zhigu.common.utils.StringUtil;
-import com.zhigu.common.utils.captcha.CaptchaUtil;
 import com.zhigu.model.Account;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.UserInfo;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.common.IEmailService;
+import com.zhigu.service.common.IPhoneSendService;
 import com.zhigu.service.user.IAccountService;
 import com.zhigu.service.user.IUserService;
 
@@ -39,6 +40,8 @@ public class SecurityController {
 	private IAccountService accountService;
 	@Autowired
 	private IEmailService emailService;
+	@Autowired
+	private IPhoneSendService phoneSendService;
 
 	private static final String PHONE_VERIFY_KEY = "user_security&%67312sdfkey";
 
@@ -127,14 +130,24 @@ public class SecurityController {
 	 * 
 	 * @return
 	 */
+	@RequestMapping(value = "/verifyOldPhone/send")
+	@ResponseBody
+	public MsgBean verifyOldPhoneSend() {
+		int userId = SessionHelper.getSessionUser().getUserID();
+		UserAuth auth = userService.queryUserAuthByUserID(userId);
+		return phoneSendService.send(auth.getPhone(), PhoneSendType.PHONE_BIND_OLD_VERIFY);
+	}
+
 	@RequestMapping(value = "verifyOldPhone", method = RequestMethod.POST)
 	@ResponseBody
 	public MsgBean verifyOldPhone(String captcha) {
 		String oldPhone = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID()).getPhone();
 		// 验证码
-		if (!CaptchaUtil.verify(oldPhone, captcha)) {
-			return new MsgBean(Code.FAIL, "验证码错误", MsgLevel.ERROR);
+		MsgBean captchaMsg = phoneSendService.verify(oldPhone, PhoneSendType.PHONE_BIND_OLD_VERIFY, captcha);
+		if (captchaMsg.getCode() != Code.SUCCESS) {
+			return captchaMsg;
 		}
+
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("oldPhoneVerifyKey", Md5.convert(oldPhone + PHONE_VERIFY_KEY));
 		return new MsgBean(Code.SUCCESS, "验证成功", MsgLevel.NORMAL).setData(data);
@@ -148,9 +161,9 @@ public class SecurityController {
 	@RequestMapping("modifyPhone")
 	@ResponseBody
 	public MsgBean modifyPhone(String phone, String captcha, String oldPhoneVerifyKey) {
-		// 验证码
-		if (!CaptchaUtil.verify(phone, captcha)) {
-			return new MsgBean(Code.FAIL, "验证码错误", MsgLevel.ERROR);
+		MsgBean captchaMsg = phoneSendService.verify(phone, PhoneSendType.PHONE_BIND, captcha);
+		if (captchaMsg.getCode() != Code.SUCCESS) {
+			return captchaMsg;
 		}
 		String oldPhone = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID()).getPhone();
 		if (StringUtils.isNotBlank(oldPhone)) {
@@ -159,11 +172,13 @@ public class SecurityController {
 				return new MsgBean(Code.FAIL, "请重新进行旧手机验证", MsgLevel.ERROR);
 			}
 		}
-		MsgBean result = userService.updatePhone(SessionHelper.getSessionUser().getUserID(), phone);
-		if (result.getCode() == Code.SUCCESS) {
-			CaptchaUtil.remove(phone);
-		}
-		return result;
+		return userService.updatePhone(SessionHelper.getSessionUser().getUserID(), phone);
+	}
+
+	@RequestMapping("/newphone/send")
+	@ResponseBody
+	public MsgBean newphoneSend(String phone) {
+		return phoneSendService.send(phone, PhoneSendType.PHONE_BIND);
 	}
 
 	/**
@@ -213,6 +228,14 @@ public class SecurityController {
 		return accountService.updatePaypasswd(userID, paypasswd, captcha);
 	}
 
+	@RequestMapping("/paypwd/update/phoneSend")
+	@ResponseBody
+	public MsgBean paypwdUpdatePhoneSend() {
+		int userId = SessionHelper.getSessionUser().getUserID();
+		UserAuth auth = userService.queryUserAuthByUserID(userId);
+		return phoneSendService.send(auth.getPhone(), PhoneSendType.PAY_PASSWORD);
+	}
+
 	/**
 	 * 实名认证
 	 * 
@@ -247,5 +270,13 @@ public class SecurityController {
 	@ResponseBody
 	public MsgBean blank(String captcha, String bankNo, String bankCardMaster, String bankName) {
 		return accountService.updateBankNo(bankNo, bankCardMaster, captcha, bankName);
+	}
+
+	@RequestMapping(value = "/bank/phone/send")
+	@ResponseBody
+	public MsgBean blank() {
+		int userId = SessionHelper.getSessionUser().getUserID();
+		UserAuth auth = userService.queryUserAuthByUserID(userId);
+		return phoneSendService.send(auth.getPhone(), PhoneSendType.BANK_BIND);
 	}
 }

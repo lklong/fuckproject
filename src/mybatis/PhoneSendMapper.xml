@@ -127,4 +127,27 @@
 		ip = #{ip,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=BIGINT}
 	</update>
+	
+	<select id="countPhoneSend" resultType="int" >
+		select count(1)
+		from phone_send
+		<where>
+			<if test="phone != null">
+				phone=#{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="ip != null">
+				and ip = #{ip,jdbcType=VARCHAR}
+			</if>
+			<if test="addStartDate != null">
+				and add_time >= #{addStartDate,jdbcType=VARCHAR}
+			</if>
+		</where>	
+	</select>
+	<select id="selectByPhoneAndType" resultMap="BaseResultMap" >
+		select
+		<include refid="Base_Column_List" />
+		from phone_send
+		where phone=#{phone,jdbcType=VARCHAR} and type = #{type,jdbcType=INTEGER}
+		order by add_time DESC limit 1
+	</select>
 </mapper>

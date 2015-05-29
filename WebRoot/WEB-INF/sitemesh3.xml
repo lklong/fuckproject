@@ -55,7 +55,6 @@
 	<mapping path="/generalize/zszj/index" exclue="true"/>
 	
 	<mapping path="/mobile/**" exclue="true"/>
-	<mapping path="/welcome" exclue="true"/>
 	<mapping path="/user/deposit/payInit" decorator="/decorate/main.jsp"/>
 	
 	<!-- 商品 -->

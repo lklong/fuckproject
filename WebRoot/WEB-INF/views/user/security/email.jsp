@@ -1,49 +1,36 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" pageEncoding="utf-8"%>
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
 <title>邮箱设置</title>
+<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
 </head>
 <body>
-<div class="rightContainer">
-    	<!--// 标题 //-->
-        <h3 class="rc_title">
-        	邮箱设置<a href="user/home">我的主页</a>
-        </h3>
-        <!--// 内容框 //-->
-		<div class="rc_body">
-        	<!--// tab切换条 //-->
-            <div id="userCommTab" class="userCommTab">
-            	<ul>
-                	<li><a href="javascript:void(0);" class="uctSelected">邮箱设置</a></li>
-                </ul>
-            </div>
-            <div id="userContents" class="userContents">
-            	<!--// 内容1 //-->
-            	<div class="body_center2">
-		<div class="bangdingmail mt20">
-			<form method="post" action="#">
-				<p class="mailtitle fl">原邮箱：</p>${email }
-				<div class="clear mt10"></div>
-				<p class="mailtitle fl">　邮箱：</p>
-				<input class="mailtxt fl" name="email" id="email" type="text"  style="margin-top: 10px;"/> <span class="mailhelp" id="mailhelp"></span>
-				<div class="clear"></div>
-				<input type="button" class="shoujibut mt10 " width="100" onclick="_submit(this)" value="发送验证链接" />
-				<div class="mailmiaobox mt10">
-					<span id="sendmsg"></span>
-				</div>
-			</form>
-		</div>
-	</div>
-            	
-     </div>
-            <br style="clear:both;" />
-        </div>
-    </div>
-	<div class="clear"></div>
-	<script type="text/javascript">
+<div class="rightContainer fr">
+  <h4 class="ddtitle">邮箱设置</h4>
+  <form method="post" action="#">
+    <table cellpadding="0" cellspacing="0" class="user-form-table">
+      <tr>
+        <td style="width:10%">原邮箱：</td>
+        <td style="width:90%">${email }</td>
+      </tr>
+      <tr>
+        <td>新邮箱：</td>
+        <td><input class="input-txt" name="email" id="email" type="text"/>
+          <span class="color-red" id="mailhelp"></span></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><input type="button" class="input-button" width="100" onclick="_submit(this)" value="发送验证链接" /></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><span id="sendmsg"></span></td>
+      </tr>
+    </table>
+  </form>
+</div>
+<script type="text/javascript">
 		$().ready(function(){
 			var msg = "${msg}";
 			if(!isEmpty(msg))

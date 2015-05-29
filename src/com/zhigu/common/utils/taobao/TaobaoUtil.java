@@ -11,6 +11,7 @@ import com.taobao.api.internal.util.WebUtils;
 import com.zhigu.common.taobao.TaobaoConfig;
 import com.zhigu.common.utils.ZhiguConfig;
 
+@Deprecated
 public class TaobaoUtil {
 
 	/**

@@ -1,63 +1,44 @@
-
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="js/pca.js" ></script>
-   <div class="xinxileft fl c666 fwbold f14 pt20 pl20">
-   		收货信息
-   		<span></span>
-   </div>
-   <div class="xinxiright fl ml10" >
-		<div class="tianjiadd ml30 mt20 fl">
-			<div class="tianjiaanniu tc">
-			   	<span class="mr5 c999">+</span><a class="c999" href="javascript:void(0)" onclick="newAddress()">添加新地址</a>
-			    </div>
-			</div>
-			<c:set var="disItem" value="" />
-			<c:set var="selectedItem" value="morendizhi" />
-			
-			<c:forEach items="${addresses }" var="ad" varStatus="adStatus">
-				<div class="morenadd ml30 mt20 fl address ${disItem} ${selectedItem}" addressID="${ad.ID}" onclick="adCheck(this,${ad.ID})" style="cursor: pointer;">
-				  	<ul>
-				      	<li><span class="morenicon"></span>${ad.name }</li>
-				          <li><span class="morenicon" id="morenicon2"></span>${ad.phone }</li>
-				          <li>
-				          	<span class="morenicon" id="morenicon3"></span>
-				              <span>${ad.province }</span>
-				              <span>${ad.city }</span>
-				              <span>${ad.district }</span>
-				              <span>${ad.street }</span>
-				          </li>
-				      </ul>
-					<c:choose>
-						<c:when test="${ad.isDefault == 1 }">
-					      	<div class="morenbiaoqian tc">
-								默认地址
-							</div>
-							<div class="dizhixiugai tc"><a class="c333" href="javascript:void(0);" onclick="modify(${ad.ID})">修改 </a></div>
-					    </c:when>
-						<c:otherwise>
-							<div class="dizhixiugai2">
-								<a class="c333 ml10" href="javascript:void(0);" onclick="setDefault(${ad.ID})">设置为默认地址</a>
-						        <a class="c333" href="javascript:void(0);" onclick="modify(${ad.ID})">修改</a>
-						        <a class="c333" href="javascript:void(0);" onclick="del(${ad.ID})">删除</a>
-						    </div>
-						</c:otherwise>
-					</c:choose>
-				</div>
-				<c:if test="${adStatus.count == 1 }">
-					<c:set var="selectedItem" value="" />
-				</c:if>
-				<c:if test="${adStatus.count >= 2 }">
-					<c:set var="disItem" value="ad_dis_item disnone" />
-				</c:if>
-				<input type="hidden" id="addressLabel${ad.ID }" value="${ad.province } ${ad.city } ${ad.district } ${ad.street }">
-				<input type="hidden" id="consigneeLabel${ad.ID }" value="${ad.name } ${ad.phone }">
-			</c:forEach>
-		</div>
-   	<a style="padding-left:120px;color: blue;"  onclick="toggle(this)"  data="0">显示全部收货地址</a>
-    <div>&nbsp;</div>
-<div class="clear"></div>
-
+<h4 class="ddtitle">
+<span class="">收货信息</span>
+<a class="default-a fr" href="javascript:void(0)" onclick="newAddress()"> + 添加新地址 </a>
+<a class="default-a fr" href="javascript:void(0)" onclick="toggle(this)"  data="0">显示全部收货地址</a>
+</h4>
+<c:set var="disItem" value="" />
+<c:set var="selectedItem" value="morendizhi" />
+<c:forEach items="${addresses }" var="ad" varStatus="adStatus">
+  <table cellpadding="0" cellspacing="0" class="user-form-table ${disItem} ${selectedItem}" addressID="${ad.ID}" onclick="adCheck(this,${ad.ID})">
+    <tr>
+      <td style="width:10%"><span class="morenicon"></span>${ad.name }</td>
+      <td style="width:20%"><span class="morenicon" id="morenicon2"></span>${ad.phone }</td>
+      <td style="width:40%"><span class="morenicon" id="morenicon3"></span> <span>${ad.province }</span> <span>${ad.city }</span> <span>${ad.district }</span> <span>${ad.street }</span> </td>
+      <td style="width:30%">
+      <c:choose>
+      <c:when test="${ad.isDefault == 1 }">
+      	<span>默认地址</span>
+      	<span><a class="default-a" href="javascript:void(0);" onclick="modify(${ad.ID})">修改 </a></span>
+      </c:when>
+      <c:otherwise>
+        <div class="dizhixiugai2">
+		<a class="default-a" href="javascript:void(0);" onclick="setDefault(${ad.ID})">设置为默认地址</a>
+		<a class="default-a" href="javascript:void(0);" onclick="modify(${ad.ID})">修改</a>
+		<a class="default-a" href="javascript:void(0);" onclick="del(${ad.ID})">删除</a> </div>
+      </c:otherwise>
+      </c:choose>
+      </td>
+    </tr>
+  </table>
+  <c:if test="${adStatus.count == 1 }">
+    <c:set var="selectedItem" value="" />
+  </c:if>
+  <c:if test="${adStatus.count >= 2 }">
+    <c:set var="disItem" value="ad_dis_item disnone" />
+  </c:if>
+  <input type="hidden" id="addressLabel${ad.ID }" value="${ad.province } ${ad.city } ${ad.district } ${ad.street }">
+  <input type="hidden" id="consigneeLabel${ad.ID }" value="${ad.name } ${ad.phone }">
+</c:forEach>
 <script type="text/javascript">
 if (typeof zhigu == "undefined" || !zhigu) {
     var zhigu = {};

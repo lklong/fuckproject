@@ -1,10 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" pageEncoding="utf-8"%>
+<!doctype html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="css/reg.css" rel="stylesheet" type="text/css" />
+<head>
+<link href="/css/default/user.css" rel="stylesheet"/>
 <title>帐号绑定</title>
 <style type="text/css">
 	.bdzh2 {
@@ -21,7 +19,6 @@
 <body>
 <div class="userRegPanel">
 	<div class="urpInside">
-		<div class="urpTopBox"></div>
 		<div class="urpMiddleBox">
 			<div class="urpBound">
 				<div class="urpMethod1"><strong>绑定第三方账号：</strong><font style="font-size:12px;">(完成账号绑定后，即可直接使用您的第三方账号登录同城货源网)</font></div>
@@ -42,7 +39,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="urpFootBox"></div>
 	</div>
 </div>
 <script type="text/javascript">

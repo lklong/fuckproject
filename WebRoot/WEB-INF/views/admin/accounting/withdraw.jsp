@@ -6,7 +6,7 @@
 <html>
 <head>
 <base href="${applicationScope.basePath}" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <title>用户提现申请</title>
 <script src="js/admin/admin.js" type="text/javascript"></script>
 

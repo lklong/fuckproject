@@ -1,124 +1,96 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="css/wangshang.css" rel="stylesheet" type="text/css" />
+<head>
 <title>订单详情</title>
 </head>
 <body>
-<div class="body_center2 fl p10 ml10 f12"  id="alldd">
-<!-----------------------------------------------订单信息---------------------------------------------------->
-		<div class="jinsan f12 lh25 pl20">
-        	<ul>
-            	<li class="dingdanselect fl mr5"><a href="#">订单详情</a></li>
-            </ul>
-            <div class="clear"></div>
-        </div>
-        <div class="ddxxbox pt10 lh25 c666">
-        	<div class="ddxxboxl">
-            	<h4 class="f14">买家信息</h4>
-                <div>
-                	<p class="ddxxtt">订单号：</p>
-                    <p>${order.orderNO }</p>
-                    <div class="clear"></div>
-                </div>
-                <div>
-                	<p class="ddxxtt">收货人：</p>
-                    <p>${order.consignee }</p>
-                    <div class="clear"></div>
-                </div>
-                <div>
-                	<p class="ddxxtt">收货地址：</p>
-                    <p><span>${order.address }</span></p>
-                    <div class="clear"></div>
-                </div>
-                <div>
-                	<p class="ddxxtt">手机：</p>
-                    <p>${order.phone }</p>
-                    <div class="clear"></div>
-                </div>
-                <div>
-                	<p class="ddxxtt">备注：</p>
-                    <p>${order.comment }</p>
-                    <div class="clear"></div>
-                </div>
-            </div>
-            <div class="ddxxboxl">
-            	<h4 class="f14">卖家信息</h4>
-                <div>
-                	<p class="ddxxtt">供应商：</p>
-		                    <p><a href="store/index?storeId=${order.storeID}" target="_blank">${order.storeName }</a></p>
-                    <div class="clear"></div>
-                </div>
-            </div> 
-            <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-        <table class="ddxxtable tc lh30">
-        	<tr class="ddxxth c333">
-            	<th width="100">商品图片</th>
-            	<th width="250">商品名</th>
-            	<th width="250">规格</th>
-                <th width="150">单价(元)</th>
-                <th width="100">数量</th>
-                <th width="150">货品状态</th>
-                <th width="100">货品总价(元)</th>
-            </tr>
-            <c:forEach items="${order.details }" var="od">
-	            <tr>
-	            	<td>
-	                	<div class="ddxximg mt10">
-		                	<a href="goods/detail?goodsId=${od.goodsID}" target="_blank"><img src="${od.goodsPic}" /></a>
-	                	</div>
-	                </td>
-	                <td>
-	                	<div class="ddxximgmiao  mt10">
-		                		<a href="goods/detail?goodsId=${od.goodsID}" target="_blank">${od.goodsName }</a>
-	                    </div>
-	                </td>
-	                <td>${od.propertystrname }</td>
-	                <td>${od.unitPrice }</td>
-	                <td>${od.quantity }</td>
-	                <td>${order.statusLabel }</td>
-	                <td><fmt:formatNumber pattern="#0.00" value="${od.unitPrice * od.quantity}"/>
-	            </tr>
-<!-- 	            <div> -->
-<%-- 					<form id="${od.goodsID}From"> --%>
-<%-- 						订单详情ID：<input type ="text" name="orderDetailId" id="orderDetailId" value="${od.ID}"> --%>
-<!-- 						<input type="radio" name="score" class="score" value = "1" />1 -->
-<!-- 						<input type="radio" name="score" class="score" value = "2" />2 -->
-<!-- 						<input type="radio" name="score" class="score" value = "3" />3 -->
-<!-- 						<input type="radio" name="score" class="score" value = "4" />4 -->
-<!-- 						<input type="radio" name="score" class="score" value = "5" />5 -->
-						
-<!-- 						<textarea id='content' name="content" style='width:400px;height:110px;margin-top:10px;'maxlength='500'></textarea> -->
-						 
-<!-- 						<input type='button' onclick='addEvaluate()' value='提交评论' /> -->
-<!-- 					 </form> -->
-<!-- 				</div> -->
-            </c:forEach>
-        </table>
-        <div class="ddxxfukuan fr mt10 mr20 lh30 c666">
-        	<div>代发、物流费：<strong class="ddxxdaifafei">￥<fmt:formatNumber pattern="#0.00" value="${order.agentMoney + order.logisticsMoney}"/></strong></div>
-            <div>实付款 ：<strong class="cff5200 f16">￥<fmt:formatNumber pattern="#0.00" value="${order.actuallyPayMenyoy}"/> </strong></div>
-        </div>
-        <div class="clear"></div>
-        <div class="ddxxliuyan pl10">
-        	<h4 class="lh30 f16 c333">买家留言</h4>
-            <p class="c666">${order.leavelMessage }</p>
-        </div>
-        <div class="clear"></div>
-        <div class="ddxxliuyan pl10">
-        	<h4 class="lh30 f16 c333">物流信息</h4>
-            <p class="c666">物流公司：${order.logisticsName } &nbsp;&nbsp;&nbsp;&nbsp;运单号码：${order.logisticsNO }</p>
-            <div id="progress" class="mt20"></div>
-        </div>
-    </div>
-    <div class="clear"></div>
-    <script type="text/javascript">
+<div class="rightContainer fr"  id="alldd"> 
+  <!-----------------------------------------------订单信息---------------------------------------------------->
+  <h4 class="ddtitle">订单信息</h4>
+  <table cellpadding="0" cellspacing="0" class="user-form-table">
+    <tr>
+      <td style="width:10%">订单号：</td>
+      <td style="width:90%">${order.orderNO }</td>
+    </tr>
+    <tr>
+      <td>收货人：</td>
+      <td>${order.consignee }</td>
+    </tr>
+    <tr>
+      <td>收货地址：</td>
+      <td>${order.address }</td>
+    </tr>
+    <tr>
+      <td>手机：</td>
+      <td>${order.phone }</td>
+    </tr>
+    <tr>
+      <td>备注：</td>
+      <td>${order.comment }</td>
+    </tr>
+  </table>
+  <h4 class="ddtitle">供应商信息</h4>
+  <table cellpadding="0" cellspacing="0" class="user-form-table">
+    <tr>
+      <td style="width:10%">供应商：</td>
+      <td style="width:90%"><a href="store/index?storeId=${order.storeID}" target="_blank">${order.storeName }</a></td>
+    </tr>
+  </table>
+  <h4 class="ddtitle">订单商品列表</h4>
+  <table cellpadding="0" cellspacing="0" class="user-list-table">
+    <tr>
+      <th>商品图片</th>
+      <th>商品名</th>
+      <th>规格</th>
+      <th>单价(元)</th>
+      <th>数量</th>
+      <th>货品状态</th>
+      <th>货品总价(元)</th>
+    </tr>
+    <c:forEach items="${order.details }" var="od">
+      <tr>
+        <td><a href="goods/detail?goodsId=${od.goodsID}" target="_blank"><img height="50" width="50" src="${od.goodsPic}" /></a></td>
+        <td><a href="goods/detail?goodsId=${od.goodsID}" target="_blank">${od.goodsName }</a></td>
+        <td>${od.propertystrname }</td>
+        <td>${od.unitPrice }</td>
+        <td>${od.quantity }</td>
+        <td>${order.statusLabel }</td>
+        <td><fmt:formatNumber pattern="#0.00" value="${od.unitPrice * od.quantity}"/>
+      </tr>
+    </c:forEach>
+  </table>
+  <table cellpadding="0" cellspacing="0" class="user-list-table">
+    <tr>
+      <th>代发、物流费：</th>
+      <th>实付款 ：</th>
+    </tr>
+    <tr>
+      <td><strong class="color-red">￥
+        <fmt:formatNumber pattern="#0.00" value="${order.agentMoney + order.logisticsMoney}"/>
+        </strong></td>
+      <td><strong class="color-red">￥
+        <fmt:formatNumber pattern="#0.00" value="${order.actuallyPayMenyoy}"/>
+        </strong></td>
+    </tr>
+  </table>
+  <table cellpadding="0" cellspacing="0" class="user-form-table">
+    <tr>
+      <td>买家留言</td>
+      <td>${order.leavelMessage }</td>
+    </tr>
+  </table>
+  <table cellpadding="0" cellspacing="0" class="user-form-table">
+    <tr>
+      <td>物流信息</td>
+      <td>物流公司：${order.logisticsName } &nbsp;&nbsp;&nbsp;&nbsp;运单号码：${order.logisticsNO }
+        <div id="progress" class="mt20"></div></td>
+    </tr>
+  </table>
+</div>
+<script type="text/javascript">
     	$(function(){
     		var data = "${order.logisticsProgress}";
     		if(data.length == 0){

@@ -1,22 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<base href="${applicationScope.basePath}" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>我的收藏</title>
-<link href="/css/wangshang.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<div class="rightContainer">
-		<!--// 标题 //-->
-		<h3 class="rc_title">
-			我的收藏<a href="user/home">我的主页</a>
-		</h3>
-		<!--// 内容框 //-->
-		<div class="rc_body">
+	<div class="rightContainer fr">
+		<h4 class="ddtitle">我的收藏</h4>
+		<div class="">
 			<!--// tab切换条 //-->
 			<div id="userCommTab" class="userCommTab">
 				<ul>

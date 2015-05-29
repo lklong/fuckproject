@@ -6,7 +6,7 @@
 <html>
 <head>
 <base href="${applicationScope.basePath}" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <title>供应商会员列表</title>
 <link href="js/3rdparty/easyui/themes/bootstrap/easyui.css" rel="stylesheet" type="text/css">
 <link href="css/jcDate.css" rel="stylesheet" type="text/css" media="all" />

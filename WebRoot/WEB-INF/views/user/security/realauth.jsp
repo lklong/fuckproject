@@ -7,7 +7,7 @@
 <title>实名认证</title>
 </head>
 <body>
-<div class="rightContainer">
+<div class="rightContainer fr">
     	<!--// 标题 //-->
         <h3 class="rc_title">
         	安全设置<a href="user/home">我的主页</a>

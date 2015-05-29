@@ -187,24 +187,24 @@
 	</select>
 	<select id="adminQueryWithdrawByPage" resultMap="BaseResultMap">
 		select
-		w.*,u.userName,u.phone as userPhone,au.userName as adminName
-		from withdraw w LEFT JOIN Admin au ON w.handler_admin_id=au.userId,userAuth u
-		where w.user_id=u.userId
+		withdraw.*,userAuth.userName,userAuth.phone as userPhone,admin.name as adminName
+		from withdraw LEFT JOIN admin  ON withdraw.handler_admin_id=admin.id,userAuth
+		where withdraw.user_id=userAuth.userId
 		<if test="userId != null">
-			and w.user_id=#{userId}
+			and withdraw.user_id=#{userId}
 		</if>
 		<if test="status != null">
-			and w.status=#{status}
+			and withdraw.status=#{status}
 		</if>
 		<if test="userPhone != null and userPhone !=''">
-			and u.user_Phone like CONCAT('%',#{userPhone},'%')
+			and userAuth.user_Phone like CONCAT('%',#{userPhone},'%')
 		</if>
 		<if test="bankNo != null and  bankNo!=''">
-			and w.to_account like CONCAT('%',#{bankNo},'%')
+			and withdraw.to_account like CONCAT('%',#{bankNo},'%')
 		</if>
 		<if test="bankCardMaster != null and bankCardMaster!=''">
-			and w.to_account_Master like CONCAT('%',#{bankCardMaster},'%')
+			and withdraw.to_account_Master like CONCAT('%',#{bankCardMaster},'%')
 		</if>
-		order by create_time desc
+		order by withdraw.create_time desc
 	</select>
 </mapper>

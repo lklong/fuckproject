@@ -45,11 +45,6 @@ public class ZhiguFileServiceImpl implements ZhiguFileService {
 
 	private static final String UPLOAD_SAVE_BASE_REAL_PATH = ZhiguConfig.getSaveFileRoot() + "upload/";
 
-	@Override
-	public int insert(ZhiguFile zhiguFile) {
-		return zhiguFileDao.insert(zhiguFile);
-	}
-
 	private String processFile(MultipartFile upfile, File des) throws IOException {
 		if (!des.getParentFile().exists()) {
 			des.getParentFile().mkdirs();
@@ -110,7 +105,7 @@ public class ZhiguFileServiceImpl implements ZhiguFileService {
 		zhiguFile.setSpecs(Arrays.toString(specs));
 
 		// 存入数据库
-		insert(zhiguFile);
+		zhiguFileDao.insert(zhiguFile);
 
 		// ===========其他规格处理 start==================
 		if (specType.equals("1")) {
@@ -147,7 +142,7 @@ public class ZhiguFileServiceImpl implements ZhiguFileService {
 	 * @param fileNamePrefix
 	 * @return
 	 */
-	public File generatDesFile(MultipartFile file, String fileNamePrefix) {
+	private File generatDesFile(MultipartFile file, String fileNamePrefix) {
 		String suffix = FilenameUtils.getExtension(file.getOriginalFilename());
 		String uid = UUID.randomUUID().toString().replaceAll("-", "");
 		if (org.apache.commons.lang3.StringUtils.isBlank(fileNamePrefix)) {
@@ -188,7 +183,7 @@ public class ZhiguFileServiceImpl implements ZhiguFileService {
 		zhiguFile.setFileType(false);
 
 		// 存入数据库
-		insert(zhiguFile);
+		zhiguFileDao.insert(zhiguFile);
 
 		MsgBean msg = new MsgBean(Code.SUCCESS, "数据包保存成功", MsgLevel.NORMAL);
 		return msg.setData(zhiguFile);

@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
 <style type="text/css">
 	table{
@@ -107,7 +106,10 @@
 		// 订单商品已评论完就跳转到订单列表页
 		var len = $(".rc_pg").length;
 		if(len === 0){
-			window.location.href = "/user/order";
+			dialog("亲，您已经评价过该订单了！");
+			setTimeout(function (){
+				window.location.href = "/user/order";
+			}, 1000);
 		}
 		
 		// 移动表格

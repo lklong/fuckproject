@@ -1,0 +1,93 @@
+@charset "utf-8";
+/* CSS Document */
+html {
+	margin:0;
+	padding:0;
+	font:"Microsoft Sans Serif", "微软雅黑", "microsoft yahei";}
+body {
+	margin:0;
+	padding:0;
+	font-size:62.5%;}
+ul, ol, li, p, h1, h2, h3, h4, h5, h6, dl, dt, dd, table, img, form, input, button, textarea {
+	margin:0;
+	padding:0;}
+img, input {
+	border:none;cursor: pointer;}
+ul, ol, li {
+	list-style:none;}
+.wrapper {
+	width:1190px;
+	height:auto;
+	clear:both;
+	margin:0 auto;
+	position:relative;}
+.fl {
+	float:left;}
+.fr {
+	float:right;}
+.hidden {
+	display:none;}
+a {
+	text-decoration:none;
+	text-outline:none;
+	color:#333333;}
+a:hover {
+	color:#f83e77;}
+.color-red {
+	color:#f83e77;}
+.color-gray {
+	color:#b0b0b0;}
+.pt10 {
+	padding-top:10px;}
+.pt20 {
+	padding-top:20px;}
+.pt30 {
+	padding-top:30px;}	
+.pb20 {
+	padding-bottom:20px;}
+.pb30 {
+	padding-bottom:30px;}
+.ml10 {
+	margin-left:10px;}
+.mr10 {
+	margin-right:10px;}
+.fwb {
+	font-weight:bold;}
+.fz12 {
+	font-size:1.2em;}
+.fz14 {
+	font-size:1.4em;}
+.fz16 {
+	font-size:1.6em;}
+.ml5 {
+	margin-left:5px;}
+.ml10 {
+	margin-left:10px;}
+.ml15 {
+	margin-left:15px;}
+.ml20 {
+	margin-left:20px;}
+.ml30 {
+	margin-left:30px;}
+.mt3 {
+	margin-top:3px;}
+.mt5 {
+	margin-top:5px;}
+.mt10 {
+	margin-top:10px;}
+.mt15 {
+	margin-top:15px;}
+.mt20 {
+	margin-top:20px;}
+.mr10 {
+	margin-right:10px;}
+.txt-center {
+	text-align:center;}
+.mini-btn {
+	border:1px solid #afafaf;
+	background-color:#f0f0f0;
+	height:22px;
+	width:60px;
+	border-radius:3px;}
+.mini-btn:hover {
+	background-color:#dedede;}

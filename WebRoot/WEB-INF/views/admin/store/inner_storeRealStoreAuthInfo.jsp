@@ -46,7 +46,7 @@
 	<tr><td>实体图1：</td>
 		<td>
 			<form enctype="multipart/form-data" action="/upload/uploadImageFile" method="post" id="uploadImageFileForm1"  target="imgUpload_hidden_frame">
-				<img id="preImage1" src="${realStoreAuth.image1}"  width="160px" height="160px"/><label class="msg_image1" style="color:red;">${msg_image1}</label>
+				<img id="preImage1" src="${realStoreAuth.image1}"  width="160px" height="160px"/>
 				<div  class="file-box">上传实体图1 <input type="file"  name="preImageFile"  id="preImageFile1" onchange="uploadImageFileForm1.submit();" /></div>
 				<input name="callBackFun" type="hidden" value="callbackImagePre1"/>
 			</form>
@@ -55,7 +55,7 @@
 	<tr><td>实体图2：</td>
 		<td>
 			<form enctype="multipart/form-data" action="/upload/uploadImageFile" method="post" id="uploadImageFileForm2"  target="imgUpload_hidden_frame">
-				<img id="preImage2" src="${realStoreAuth.image2}"  width="160px" height="160px"/><label class="msg_image2" style="color:red;">${msg_image2}</label>
+				<img id="preImage2" src="${realStoreAuth.image2}"  width="160px" height="160px"/>
 				<div  class="file-box">上传实体图2 <input type="file"  name="preImageFile"  id="preImageFile2" onchange="uploadImageFileForm2.submit();" /></div>
 				<input name="callBackFun" type="hidden" value="callbackImagePre2"/>
 			</form>
@@ -64,12 +64,13 @@
 	<tr><td>实体图3：</td>
 		<td>
 			<form enctype="multipart/form-data" action="/upload/uploadImageFile" method="post" id="uploadImageFileForm3"  target="imgUpload_hidden_frame">
-				<img id="preImage3" src="${realStoreAuth.image3}"  width="160px" height="160px"/><label class="msg_image3" style="color:red;">${msg_image3}</label>
+				<img id="preImage3" src="${realStoreAuth.image3}"  width="160px" height="160px"/>
 				<div  class="file-box">上传实体图3 <input type="file"  name="preImageFile"  id="preImageFile3" onchange="uploadImageFileForm3.submit();" /></div>
 				<input name="callBackFun" type="hidden" value="callbackImagePre3"/>
 			</form>
 		</td>
 	</tr>
+	<tr><td colspan="2"><label class="msg_image" style="color:red;">${msg_image}</label></td></tr>
 </table>
 <div style="height:60px;background-color:#f0f0f0;padding-top:20px;">
 	<div style="margin:0 auto; width:180px;">

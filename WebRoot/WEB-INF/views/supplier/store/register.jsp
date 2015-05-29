@@ -1,61 +1,51 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="css/plugins/validateform.css" type="text/css"  />
+<head>
+<link rel="stylesheet" href="css/plugins/validateform.css">
+<link rel="stylesheet" href="/css/default/user.css">
 <title>供应商注册</title>
-
+<script type="text/javascript"  src="/js/validate/jquery.validate.js?v=20150505"></script>
+<script type="text/javascript" src="/js/validate/message_cn.js?v=20150505"></script>
+<script type="text/javascript" src="/js/validate/additional-methods.js?v=20150505"></script>
 <script type="text/javascript" src="js/pca.js"></script>
 </head>
 <body>
-
 <!--** 注册板块 **-->
 <!--** Step.1 填写信息 **-->
 <form action="/supplier/store/register" method="post"  id="storeRegisterForm">
 <div class="userRegPanel">
 	<div class="urpInside">
-    	<div class="urpTopBox"></div>
         <div class="urpMiddleBox">
+        <div class="urpTopTip">
+          <div id="step1">
+            <h1>开店申请</h1>
+          </div>
+        </div>
         	<div class="busyTrip">
-            	<div><strong>开店申请</strong></div>
-              <div class="tripHr"><font color="787878">申请智谷同城货源网店铺，流程如下：</font></div>
                 	<div class="tripDiv">
-                	<table width="35%" border="0" cellspacing="0" cellpadding="0">
+                	<table border="0" cellspacing="0" cellpadding="0">
                       <tr>
                         <td rowspan="2"><span class="frspan"></span></td>
-                        <td><font color="#F86666" style="font-size:16px"><strong>选择要成为的商家</strong></font></td>
+                        <td><font color="#F86666" style="font-size:16px"><strong>1. 选择要成为的商家</strong></font></td>
                       </tr>
                     </table>
-                    <table width="40%" border="0" cellspacing="0" cellpadding="0">
+                    <table border="0" cellspacing="0" cellpadding="0">
                       <tr>
                         <td rowspan="2"><span class="sespan"></span></td>
-                        <td><font color="#F86666" style="font-size:16px"><strong>需要把智谷同城需要填写的资料填写完整</strong></font></td>
+                        <td><font color="#F86666" style="font-size:16px"><strong>2. 需要把智谷同城需要填写的资料填写完整</strong></font></td>
                       </tr>
                     </table>
-                    <table width="25%" border="0" cellspacing="0" cellpadding="0">
+                    <table border="0" cellspacing="0" cellpadding="0">
                       <tr>
                         <td rowspan="2"><span class="thspan"></span></td>
-                        <td><font color="#F86666" style="font-size:16px"><strong>提交申请 </strong></font></td>
-                      </tr>
-                      <tr>
-                        <td><font color="787878" style="font-size:14px">后请等客服联系你</font></td>
+                        <td><font color="#F86666" style="font-size:16px"><strong>3. 提交申请后请等客服联系你</strong></font></td>
                       </tr>
                     </table>
                		</div>
             </div>
-            <!--** 商家类型选择条 **-->
-            <input type="hidden" name="supplierType" value="2" id="supplierType"/>
-            <div class="busyModel">
-            	<div class="modelInside" id="chooseStoreTypeDiv">
-                	<div class="model_2" value="2">申请供应商家</div>
-<!--                     <div class="model_1" value="3">注册店铺装修商家</div> -->
-<!--                     <div class="model_1" value="4">注册摄影商家</div> -->
-                </div>
-            </div>
-            
+
             <div class="busyInfoBox">
             	<div class="bibTxt"><font color="#ff3300" style="font-size:12px">* </font>网站直达域名</div>
                 <div class="bibinput">
@@ -123,19 +113,15 @@
             </div>
         
         <div class="busyInfoBox">
-            	<div class="bibTxt"></div>
-                <div class="bibinput"></div>
                 <div class="bibAlert"><input type="checkbox" checked="checked"  id="readagree" name="readagree" /><a href="help/agreement"> 我同意《智谷同城货源网用户服务协议》</a></div>
             </div>
             
-            <div class="urpMiddleDiv mt30">
-            	<br /><br /><br />
+            <div class="urpMiddleDiv mt20">
             	<input type="submit" class="urpSubMit" value="开店申请" title="开店申请" onclick="return storeRegisterSub();"/>
-                <br /><br /><br />
                 <br /><br /><br />
             </div>
         </div>
-        <div class="urpFootBox"></div>
+
     </div>
 </div>
 </form>

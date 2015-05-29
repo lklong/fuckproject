@@ -6,7 +6,7 @@
 <html>
 <head>
 <base href="${applicationScope.basePath}" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <title>智谷类目属性管理</title>
 <link href="js/3rdparty/easyui/themes/bootstrap/easyui.css" rel="stylesheet" type="text/css">
 <script src="js/admin/admin.js" type="text/javascript"></script>

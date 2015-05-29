@@ -1,16 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
 <title>订单支付</title>
-<link href="css/jinhuoche.css" rel="stylesheet" type="text/css" />
-
+<link href="css/default/user.css" rel="stylesheet">
 </head>
 <body>
-<div style="height:54px;"></div>
 <div class="webpage">
     	<div class="zfcenter0 mt10 p10">
         	<p class="zztcshouyin pl10 c666">您正在使用同城货源平台付款</p>

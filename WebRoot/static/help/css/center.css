@@ -1,0 +1,21 @@
+/*-- °ïÖúÖÐÐÄ --*/
+.articleBody { width:1190px; margin:0 auto;}
+.articleLeft { width:185px; float:left; height:auto;}
+.articleRight { width:990px; float:right; height:auto; background-color:#ffffff; border:1px solid #dedede;}
+.articleRight h3 { font-size:16px; text-align:center; height:75px; line-height:75px; border-bottom:1px dotted #dedede; margin-bottom:20px;}
+.articleInside{ width:960px; margin:0 auto;}
+.articleInside p { line-height:24px; color:#565656; padding-left:10px;}
+.articleInside h4 { background-color:#fafafa; height:30px; line-height:30px; text-indent:10px; font-size:12px; margin-bottom:10px;}
+.qqAlink { height:27px; width:134px; text-indent:35px; line-height:27px; display:block; background:url(../images/qqBarbg.gif) no-repeat;}
+.articleHead { height:28px; background-color:#958f8f; text-align:center; font-weight:bold; color:#ffffff; line-height:28px; font-size:14px; width:185px;}
+
+.artLeftInside { border:1px solid #dedede;  background-color:#ffffff; height:inherit;}
+.artLeftInside dl { width:170px; margin:10px auto 15px auto;}
+.artLeftInside dt { height:24px; line-height:24px;border-bottom:1px dotted #dedede;}
+.helpIcon_1 { display:block; height:17px; width:17px; background:url(../images/helpcenter.gif) no-repeat left top; float:left; margin-top:2px; margin-right:5px;}
+.helpIcon_2 { display:block; height:17px; width:17px; background:url(../images/helpcenter.gif) no-repeat left top; float:left; margin-top:2px; margin-right:5px;}
+.helpIcon_3 { display:block; height:17px; width:17px; background:url(../images/helpcenter.gif) no-repeat left top; float:left; margin-top:2px; margin-right:5px;}
+.helpIcon_4 { display:block; height:17px; width:17px; background:url(../images/helpcenter.gif) no-repeat left top; float:left; margin-top:2px; margin-right:5px;}
+.artLeftInside dd { height:24px; line-height:24px; text-indent:10px; background:url(../images/artLibg.gif) no-repeat 9px center; padding-left:10px;}
+.artLeftInside dd a { color:#787878;}
+.artLeftInside dd a:hover { color:#ff3300;}

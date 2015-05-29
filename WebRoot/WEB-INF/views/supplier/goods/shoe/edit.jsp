@@ -1,38 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!DOCTYPE HTML>
+<html>
+<head>
 <title>发布商品</title>
 <link href="/js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="/js/3rdparty/webuploader/webuploader.css">
-<style>
-.piliansezhijia{ border:1px solid #e4e4e4; width:80px; height:20px; line-height: 20px; color:blue;  z-index:100;}
-.piliansz{  border:1px solid #e4e4e4; position: absolute; background: #fff;padding: 5px; left:0px; width:170px; top:30px; z-index:111;}
-
-.popBox { background: #FFF; position: absolute; z-index: 999; top: 0px; display: none; }
-.popBox .bg1 { background: #FFF; width:350px; height: 210px;}
-.popBox h1 { padding: 0px 10px; height: 38px; font: 16px Microsoft YaHei; line-height: 38px; background: #1a7cc7; color: #FFF; }
-.popBox h1 span { float: left;  }
-.popBox h1 .close { color: #FFF; font-size: 12px; float: right; font-family: Verdana;}
-.popBox h1 .close:hover { color: #333; }
-
-.mask { width: 100%; opacity:0.5; filter:alpha(opacity=50); background: #000; position: absolute; left: 0px; top: 0px; z-index: 998; }
-.fabubgtian{ background:#333; width:104px; height:20px; color:#fff; position:absolute; bottom:0px; line-height:20px;}
-.edit label{display: none;}
-.edit .yansetext{display: block;width: 70px !important;}
-
-.webuploader-pick{background-color: #E81268}
-</style>
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
-
 </head>
 <body>
 <script type="text/javascript" language="javascript" src="js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
-<!-----------------------------------------------center中间部分---------------------------------------------------->
  <form method="post" action="#">
-    <div class="body_center2 fl p10 ml10"  id="alldd">
+    <div class="rightContainer fr">
     	<div class="wdddbj over_hid">
             <ul class="allqunbudd over_hid">
                <li><a href="supplier/goods/add" >商品发布</a></li>
@@ -50,7 +29,7 @@
                </div>
                <input type="text" value="${goods.name }" class="biaobeititle fl" id="name" onkeyup="zhigu.goods.checkTitleLen(this)"/>
                <span class="baobeititle_1 ml10">还能输入<strong id="titleCount">30</strong>字</span>
-               <div class="clear"></div>
+               
            </div>
            
            <div id="attributes_sku">
@@ -61,17 +40,17 @@
            <div class="jibenform">
            		<div class="title">
                     <p>商品总数：</p>
-                    <div class="clear"></div>
+                    
                </div>
                <span class="jian fl ml10"><font color="red" size="5" id="sumAmount">0</font>&nbsp;&nbsp;件</span>
-               <div class="clear"></div>
+               
            </div>
            <div class="jibenform">
            	   <div class="title">
                    <strong>*</strong><label for="baobeititle0">商品重量：</label>
                </div>
                <input type="text" class="biaobeititle fl" id="weight" value="${goods.weight }" style="width: 100px" onkeyup='zhigu.goods.priceInputCheck(this);' onafterpaste='zhigu.goods.priceInputCheck(this);' maxlength='11'/> 千克 （邮费计算用）
-               <div class="clear"></div>
+               
            </div>
            <div class="tupian mt20">
 	        	<div class="title">
@@ -83,13 +62,13 @@
 	                       	<li class="shangchuanselect" id="shangchuan1" onclick="com_img_upload();">本地上传</li>
 	                       	<li  id="shangchuan2">图片空间</li>
 	                    </ul>
-	                    <div class="clear"></div>
+	                    
 	                </div>
                     <!--本地上传-->
                     <div class="shangchuanbox" id="localUpload">
                     	<div class="xuanzebox mt20">
                             <div id="chooseUploadImg" style="float: left;margin-left: 25px;">选择本地图片</div>
-                            <div class="clear"></div>
+                            
                         </div>
                         <div class="shangchuantishi mt20">
                             <p>提示：</p>
@@ -107,7 +86,7 @@
 									加载用户文件夹...
 								</div>
 							</div>
-							<div class="clear"></div>
+							
 						</div>
 						<div id="com_shangchuanbox" class="fl" style="width: 640px;"></div>
                     </div>
@@ -133,21 +112,12 @@
                             	</li>
                             </c:forEach>
                         </ul>
-                        <div class="clear"></div>
+                        
                      </div> 
                 </div>
-                <div class="clear"></div>
+                
          </div>
-    <%--        <div class="jibenform">
-       	<div class="title">
-                 <p>商品详情：</p>
-                 <div class="clear"></div>
-             </div><br/>
-             <textarea id="introduce" name="introduce" style="width:850px;height:360px;">
-				${goods.description }
-			 </textarea>
-             <div class="clear"></div> 
-         </div>--%>
+
              
               <div class="jibenform">
 		 		<div class="title" style="clear:both;height:30px;">
@@ -155,7 +125,7 @@
 			 	</div>
 		 	  </div>
              
-          <div class="clear"></div>
+          
           
             <div class="jibenform">
 			 	<div class="tupianright fl" style="border:none;margin-left: -20px;">
@@ -165,22 +135,18 @@
 			 	</div>
 		 	  </div>
              
-          <div class="clear"></div>
+          
          <h4 class="jbxxtitle pl10">2.上传数据包</h4>
          <div class="jibenform">
              <div id="chooseDataFile" style="float: left;margin-left: 25px;">上传数据包</div>
              <div id="dataFileProgress" style="margin:10px 20px ; float: left"><c:if test="${empty goods.file }">无数据包</c:if><c:if test="${!empty goods.file }"><a href="${goods.file }" target="_blank">原数据包：下载</a></c:if></div>
              <input type="hidden" id="dataFilePath" value="${goods.file }"/>
-             <div class="clear"></div>
+             
          </div>
          </div>
          <div class="tc fabusubdiv mt20 mb20 "><input class="fabusub f14 fwbold  cp" type="button" value="保存" onclick="save()" id="saveGoods"/></div>
    </div>
 </form>
-<div class="clear"></div>
-
-<!-- <script charset="utf-8" src="js/3rdparty/kindeditor/kindeditor.js"></script>
-<script charset="utf-8" src="js/3rdparty/kindeditor/lang/zh_CN.js"></script> -->
 <script charset="utf-8" src="js/goods.js"></script>
 <script>
 if (typeof zhigu == "undefined" || !zhigu) {
@@ -669,19 +635,21 @@ $(function() {
 	});
 });
 </script>
-<div id='divbox' class='piliansz tl disnone'>
+<div id='divbox' class='hidden'>
 	<ul class=''>
 		<li>价格：</li>
-		<li><input name="rprice" value="1" type='radio' class='ver_ali mr5'/>同颜色分类价格相同</li>
-		<li><input name="rprice" value="2" type='radio' class='ver_ali mr5'/>同规格价格相同</li>
+		<li><input id="rprice_01" name="rprice" value="1" type='radio' class='ver_ali'/><label for="rprice_01">同颜色分类价格相同</label></li>
+		<li><input id="rprice_02" name="rprice" value="2" type='radio' class='ver_ali'/><label for="rprice_02">同规格价格相同</label></li>
 	</ul>
 	<ul class=''>
 		<li>数量：</li>
-		<li><input name="rquantity" value="1" type='radio' class='ver_ali mr5'/>同颜色分类数量相同</li>
-		<li><input name="rquantity" value="2" type='radio' class='ver_ali mr5'/>同规格数量相同</li>
+		<li><input id="rquantity_01" name="rquantity" value="1" type='radio' class='ver_ali'/><label for="rquantity_01">同颜色分类数量相同</label></li>
+		<li><input id="rquantity_02" name="rquantity" value="2" type='radio' class='ver_ali'/><label for="rquantity_02">同规格数量相同</label></li>
 	</ul>
-	<div class='clear'></div>
-	<div class='mt10'><input type='button' value='确定' onclick="confirmbatch()" class='w80' /><input   type='button' onclick="$('#divbox').hide()" value='取消' class='ml10 w80'/></div>
+	<div class='mt10'>
+	<input type='button' value='确定' onclick="confirmbatch()" class='mini-btn' />
+	<input type='button' onclick="javascript:$('#divbox').hide()" value='取消' class='mini-btn'/>
+	</div>
 </div>
 </body>
 </html>

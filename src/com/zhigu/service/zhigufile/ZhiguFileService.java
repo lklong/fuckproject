@@ -7,12 +7,10 @@
  */
 package com.zhigu.service.zhigufile;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.zhigu.model.ZhiguFile;
 import com.zhigu.model.dto.MsgBean;
 
 /**
@@ -20,13 +18,6 @@ import com.zhigu.model.dto.MsgBean;
  *
  */
 public interface ZhiguFileService {
-
-	/**
-	 * 保存文件
-	 * 
-	 * @param zhiguFile
-	 */
-	int insert(ZhiguFile zhiguFile);
 
 	/**
 	 * 文件处理，保存
@@ -47,14 +38,5 @@ public interface ZhiguFileService {
 	 * @throws IOException
 	 */
 	MsgBean saveData(MultipartFile file) throws IOException;
-
-	/**
-	 * 生成保存的目标文件
-	 * 
-	 * @param file
-	 * @param fileNamePrefix
-	 * @return
-	 */
-	public File generatDesFile(MultipartFile file, String fileNamePrefix);
 
 }

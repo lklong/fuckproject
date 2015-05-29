@@ -6,12 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zhigu.common.constant.Code;
-import com.zhigu.common.constant.enumconst.MsgLevel;
-import com.zhigu.common.utils.VerifyUtil;
-import com.zhigu.common.utils.sms.SMSTemplate;
-import com.zhigu.common.utils.sms.SMSUtil;
+import com.zhigu.common.constant.PhoneSendType;
 import com.zhigu.model.dto.MsgBean;
+import com.zhigu.service.common.IPhoneSendService;
 import com.zhigu.service.user.IUserService;
 
 /**
@@ -24,12 +21,11 @@ import com.zhigu.service.user.IUserService;
 @Controller
 @RequestMapping("/mobile/register")
 public class MobileRegisterController {
-	private static final String USERNAME = "username";
-	private static final String PASSWORD = "password";
-	private static final String RECOMMEND_USER_ID = "recommendUserID";
 
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IPhoneSendService phoneSendService;
 
 	@RequestMapping("/verify")
 	@ResponseBody
@@ -48,23 +44,7 @@ public class MobileRegisterController {
 	@RequestMapping("/phoneCaptcha")
 	@ResponseBody
 	public MsgBean phoneCaptcha(String phone) {
-		MsgBean msg = new MsgBean();
-		if (VerifyUtil.phoneVerify(phone)) {
-			if (userService.queryUserAuthByPhone(phone) != null) {
-				msg.setMsgBean(Code.FAIL, "手机号码已被注册使用！", MsgLevel.ERROR);
-				return msg;
-			}
-		} else {
-			msg.setMsgBean(Code.FAIL, "手机号错误！", MsgLevel.ERROR);
-			return msg;
-		}
-		if (!SMSUtil.isSend(phone)) {
-			msg.setMsgBean(Code.FAIL, "验证码发送过于频繁，请稍候再试！", MsgLevel.ERROR);
-			return msg;
-		}
-		SMSUtil.sendCaptcha(phone, SMSTemplate.getTemplate(1));
-		msg.setMsgBean(Code.SUCCESS, "手机验证码已发送！", MsgLevel.NORMAL);
-		return msg;
+		return phoneSendService.send(phone, PhoneSendType.PHONE_REGISTER);
 	}
 
 }

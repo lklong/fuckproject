@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html >
+<html >
 <head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <title>卖家入驻指南</title>
 </head>
 <body>
@@ -10,7 +10,7 @@
 	<div class="articleRight">
     	<div class="articleInside">
         	<h3>卖家入驻指南</h3>
-            <div><img src="img/maijia.jpg" /></div><br /><br />
+            <div><img src="img/default/maijia.jpg" /></div><br /><br />
             <h4>●商品发布</h4>
             <p>一.  商品发布流程:<br />
 <font color="#ff3300">（a）自助发布新品(非认证厂家使用)</font><br />

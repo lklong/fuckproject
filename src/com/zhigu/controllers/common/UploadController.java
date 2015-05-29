@@ -96,13 +96,6 @@ public class UploadController {
 		// mFileTypes.put("1F8B08", "gz");
 	}
 
-	// @RequestMapping(value = "/test", method = RequestMethod.GET)
-	// public String test() {
-	//
-	// return "upload";
-	//
-	// }
-
 	/**
 	 * 上传图片
 	 * 
@@ -182,33 +175,6 @@ public class UploadController {
 		} catch (IOException e) {
 			return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
 		}
-		// ImageIO.read不能处理CMYK的图片，使用JPEGCodec.createJPEGDecoder
-		// BufferedImage srcImg = ImageIO.read(file.getInputStream());
-
-		// 将图片按宽940缩放并保存
-
-		// ===========宽高计算 start=======
-		// int srcImgW = srcImg.getWidth();
-		// int srcImgH = srcImg.getHeight();
-		// int destImgH = -1;
-		// int destImgW = 940;
-		//
-		// // 2014-10-27 he.simin 原图小时保持原来的宽、高
-		// if (srcImgW < destImgW && destImgW > 0) {
-		// destImgW = srcImgW;
-		// }
-		// if (srcImgH < destImgH && destImgH > 0) {
-		// destImgH = srcImgH;
-		// }
-		// if (destImgH <= 0) {
-		// destImgH = Math.round((float) destImgW * srcImgH / srcImgW);
-		// } else if (destImgW <= 0) {
-		// destImgW = Math.round((float) destImgH * srcImgW / srcImgH);
-		// }
-		// // ===========宽高计算 end=======
-		// Thumbnails.of(file.getInputStream()).size(destImgH,
-		// destImgW).outputFormat("jpg").toFile(targetFile);
-
 	}
 
 	/**
@@ -244,7 +210,7 @@ public class UploadController {
 	}
 
 	/**
-	 * 上传认证图片\店铺LOGO图片\身份证
+	 * 上传认证图片\身份证，添加水印（该方法将被修改，新的代码禁止使用）
 	 * 
 	 * @param file
 	 * @param imgPreviewID
@@ -258,6 +224,14 @@ public class UploadController {
 		try {
 			MsgBean msg = zhiguFileService.saveImage(logoFile, null, "1", null, 800, null);
 			ZhiguFile zf = (ZhiguFile) msg.getData();
+			// 画水印
+			try {
+
+				ImageUtil.pressText(zf.getRealPath(), "www.zhiguw.com");
+			} catch (IOException e) {
+
+			}
+
 			json.put("code", Code.SUCCESS);
 			json.put("url", zf.getUri());
 		} catch (IOException e) {

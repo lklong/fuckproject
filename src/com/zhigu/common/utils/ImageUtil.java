@@ -46,6 +46,7 @@ public final class ImageUtil {
 	 * 
 	 * @param logoText
 	 * @param srcImgPath
+	 *            全路径
 	 * @param targerPath
 	 * @throws IOException
 	 */
@@ -113,7 +114,6 @@ public final class ImageUtil {
 	//
 	// }
 	// }
-
 	/**
 	 * 创建小图片 V1.3使用，改写算法，图片清晰度更好
 	 * 

@@ -1,78 +1,38 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<base href="${applicationScope.basePath}" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>店铺装饰</title>
-<style type="text/css">
-.file-box {
-	overflow: hidden;
-	position: relative;
-	height: 30px;
-	width: 120px;
-}
-
-.file-box input {
-	cursor: pointer;
-	z-index: 100;
-	margin-top: -15px;
-	margin-right: -25px;
-	opacity: 0;
-	filter: alpha(opacity = 0);
-	font-size: 100px;
-	position: absolute;
-	top: 0;
-	right: 0;
-}
-</style>
 <link rel="stylesheet" type="text/css" href="/js/3rdparty/webuploader/webuploader.css" />
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
 </head>
-
 <body>
-	<div class="rightContainer">
-		<!--// 标题 //-->
-		<h3 class="rc_title">
-			店铺装饰<a href="user/home">我的主页</a>
-		</h3>
-		<!--// 内容框 //-->
-		<div class="rc_body">
-			<!--// tab切换条 //-->
-			<div id="userCommTab" class="userCommTab">
-				<ul>
-					<li><a href="javascript:void(0);" class="uctSelected">店铺装饰</a></li>
-				</ul>
-			</div>
-			<div id="userContents" class="userContents">
-				<!--// 内容1 //-->
-				<div class="body_center2" id="alldd">
-					<ul class=" mt30 ml30 c666 f14 dpallzl">
-						<li class="mt20">店铺logo：</li>
-						<li class="sclogoab mt10"><img src="${store.logoPath }" style="width: 120px; height: 120px;" id="logoUploadPreview"></img></li>
-						<li class="mt10">请上传图片大小不超过80K，此图会自动生成80x80的规格</li>
-						<li class="mt10 ">
-								<a  id="logoUploadDiv">上传logo </a> 
-						</li>
-						<form enctype="multipart/form-data" action="supplier/store/updateDecorate" method="post" id="updateDecorate">
-							<li>店铺简介：</li>
-							<textArea class="dianpujianjie mt10" id="introduction" name="introduction">${store.introduction }</textArea>
-							<div class="xiaodian1 mt30"></div>
-							<div class="clear"></div>
-
-							<a onclick="updateDecorate();"><li class="baochun">保存</li></a> <input type="submit" class="baochun" value="保存" style="display: none"
-								id="subForm"></input> <input type="hidden" id="logoPath" name="logoPath" /> <input type="hidden" id="signagePath" name="signagePath" />
-						</form>
-					</ul>
-					<iframe name="imgUpload_hidden_frame" id="imgUpload_hidden_frame" style="display: none"></iframe>
-				</div>
-			</div>
-			<br style="clear: both;" />
-		</div>
-	</div>
-	<div class="clear"></div>
-	<script type="text/javascript">
+<div class="rightContainer fr">
+  <h4 class="ddtitle">店铺装饰</h4>
+  <table cellpadding="0" cellspacing="0" class="user-form-table">
+    <tr>
+      <td>店铺logo：</td>
+      <td><p><img src="${store.logoPath }" style="width: 120px; height: 120px;" id="logoUploadPreview" /></p>
+        <p>请上传图片大小不超过80K，此图会自动生成80x80的规格</p>
+        <p><a  id="logoUploadDiv">上传logo</a></p></td>
+    </tr>
+    <form enctype="multipart/form-data" action="supplier/store/updateDecorate" method="post" id="updateDecorate">
+      <tr>
+        <td>店铺简介：</td>
+        <td><textArea class="dianpujianjie mt10" id="introduction" name="introduction">${store.introduction }</textArea></td>
+      </tr>
+      <tr>
+        <td colspan="2"><a href="javascript:;" onclick="updateDecorate();" class="default-a">保存</a>
+          <input type="submit" class="baochun" value="保存" style="display: none" id="subForm" />
+          <input type="hidden" id="logoPath" name="logoPath" />
+          <input type="hidden" id="signagePath" name="signagePath" /></td>
+      </tr>
+    </form>
+  </table>
+  <iframe name="imgUpload_hidden_frame" id="imgUpload_hidden_frame" style="display: none"></iframe>
+</div>
+<script type="text/javascript">
 		// ===============图片上传初始化  start================
 		// 优化retina, 在retina下这个值是2
 		var ratio = window.devicePixelRatio || 1,
