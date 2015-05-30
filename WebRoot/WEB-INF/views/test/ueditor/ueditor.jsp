@@ -4,10 +4,7 @@
     <title>完整demo</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     
-    
-    <script type="text/javascript">
-    	/* window.UEDITOR_HOME_URL = "/js/3rdparty/ueditor/"; */
-    </script>
+    <script type="text/javascript" src="/js/3rdparty/jquery1.9.1.js"></script>
     
     <script type="text/javascript" src="/js/3rdparty/ueditor/ueditor.config.js"></script>
     <!-- 编辑器源码文件 -->
@@ -30,7 +27,7 @@
      <form action="server" method="post">
         <!-- 加载编辑器的容器 -->
         <script id="editor" name="content" type="text/plain" style="width:1024px;height:500px;">
-            	这里写你的初始化内容
+            	
         </script>
     </form>
    <!--  <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script> -->
@@ -89,17 +86,16 @@
         }
     }
 
-  
-    
-    ue.addListener( 'ready', function( editor ) {
-    	ue.execCommand( 'focus' ); //编辑器家在完成后，让编辑器拿到焦点
-        ue.execCommand( 'insertimage', {
-            src:'a/b/c.jpg',
-            width:'100',
-            height:'100'
-        } );
-    } );
+    ue.addListener('afterinserthtml', function (html) {
+        //操作, 查找 img a    ,将之删除操作
+        html=html.replace(/<img[^>]*>/i,'');
+        html=html.replace(/<a[^>]*>/i,'');
+        html=html.replace(/<\/a>/i,'');
+        // 更新编辑器内容, 把html 写进去, 替换原来的
+        ue.execCommand( 'justify', 'center' );
+    });
 
+    
     function isFocus(e){
         alert(UE.getEditor('editor').isFocus());
         UE.dom.domUtils.preventDefault(e)

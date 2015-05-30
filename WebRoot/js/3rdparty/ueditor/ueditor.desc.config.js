@@ -182,7 +182,7 @@
 
         //,fullscreen : false //是否开启初始化时即全屏，默认关闭
 
-        ,imagePopup:false      //图片操作的浮层开关，默认打开
+        // ,imagePopup:false      //图片操作的浮层开关，默认打开
 
         //,autoSyncData:true //自动同步编辑器要提交的数据
         //,emotionLocalization:false //是否开启表情本地化，默认关闭。若要开启请确保emotion文件夹下包含官网提供的images表情文件夹
@@ -307,7 +307,7 @@
         //]
 
         //打开右键菜单功能
-        ,enableContextMenu: false
+        // ,enableContextMenu: false
         //右键菜单的内容，可以参考plugins/contextmenu.js里边的默认菜单的例子，label留空支持国际化，否则以此配置为准
         //,contextMenu:[
         //    {
@@ -356,7 +356,7 @@
 
         //autoHeightEnabled
         // 是否自动长高,默认true
-        ,autoHeightEnabled:false
+        // ,autoHeightEnabled:false
 
         //scaleEnabled
         //是否可以拉伸长高,默认true(当开启时，自动长高失效)

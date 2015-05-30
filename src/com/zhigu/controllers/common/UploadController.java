@@ -161,7 +161,7 @@ public class UploadController {
 	}
 
 	/**
-	 * 暂时未用
+	 * 上传描述图片
 	 * 
 	 * @param file
 	 * @return
@@ -185,13 +185,12 @@ public class UploadController {
 
 			} else {
 
-				ueditorImage.setState("error");
+				ueditorImage.setState("ERROR");
 
 			}
 
 		} catch (IOException e) {
-			// return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
-			ueditorImage.setState("error");
+			ueditorImage.setState("ERROR");
 		}
 
 		return ueditorImage;

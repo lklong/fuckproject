@@ -162,7 +162,7 @@
         //如果自定义，最好给p标签如下的行高，要不输入中文时，会有跳动感
         //,initialStyle:'p{line-height:1em}'//编辑器层级的基数,可以用来改变字体等
 
-        ,iframeCssUrl: URL + '/themes/iframe.css' //给编辑器内部引入一个css文件
+        ,iframeCssUrl: URL + 'themes/iframe.css' //给编辑器内部引入一个css文件
 
         //indentValue
         //首行缩进距离,默认是2em
@@ -181,8 +181,6 @@
         //,saveInterval: 500
 
         //,fullscreen : false //是否开启初始化时即全屏，默认关闭
-
-        ,imagePopup:false      //图片操作的浮层开关，默认打开
 
         //,autoSyncData:true //自动同步编辑器要提交的数据
         //,emotionLocalization:false //是否开启表情本地化，默认关闭。若要开启请确保emotion文件夹下包含官网提供的images表情文件夹
@@ -356,11 +354,12 @@
 
         //autoHeightEnabled
         // 是否自动长高,默认true
-        ,autoHeightEnabled:true
-
+        // ,autoHeightEnabled:true
+        	
+//        ,imagePopup:true      //图片操作的浮层开关，默认打开
         //scaleEnabled
         //是否可以拉伸长高,默认true(当开启时，自动长高失效)
-        ,scaleEnabled:false
+        ,scaleEnabled:true
         //,minFrameWidth:800    //编辑器拖动时最小宽度,默认800
         //,minFrameHeight:220  //编辑器拖动时最小高度,默认220
 
@@ -383,7 +382,7 @@
         //    removeClass: true,              //去掉冗余的class
             removeEmptyline: false,         //去掉空行
             textAlign:"center",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
-//            imageBlockLine: 'center',       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+            imageBlockLine: 'center',       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
         //    pasteFilter: false,             //根据规则过滤没事粘贴进来的内容
         //    clearFontSize: false,           //去掉所有的内嵌字号，使用编辑器默认的字号
         //    clearFontFamily: false,         //去掉所有的内嵌字体，使用编辑器默认的字体
@@ -399,6 +398,7 @@
         //tableDragable
         //表格是否可以拖拽
         ,tableDragable: true
+        ,compressSide:1  
 
         //,disabledTableInTable:true  //禁止表格嵌套
 

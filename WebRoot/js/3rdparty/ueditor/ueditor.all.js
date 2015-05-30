@@ -17059,9 +17059,8 @@ UE.plugins['fiximgclick'] = (function () {
         var me = this,
             imageScale;
 
-        me.setOpt('imageScaleEnabled', true);
+        if ( !browser.ie && me.options.scaleEnabled) {
 
-        if ( !browser.ie && me.options.imageScaleEnabled) {
             me.addListener('click', function (type, e) {
 
                 var range = me.selection.getRange(),
