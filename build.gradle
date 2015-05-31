@@ -36,7 +36,7 @@ tasks.withType(JavaCompile) {
 }
 
 // ext{
-// 	tomcat_home='D:/servers/test-tomcat'
+// 	tomcat_home='cmd /c D:/servers/test-tomcat'
 // 	tomcat_bin=tomcat_home + '/bin'
 // 	tomcat_start=tomcat_bin + '/catalina.bat run'
 // 	tomcat_stop=tomcat_bin + '/catalina.bat stop'
@@ -44,7 +44,7 @@ tasks.withType(JavaCompile) {
 // }
 
 ext{
-	tomcat_home='/home/zhigu/tomcat'
+	tomcat_home='sh /home/zhigu/tomcat'
 	tomcat_bin=tomcat_home + '/bin'
 	tomcat_start=tomcat_bin + '/catalina.sh run'
 	tomcat_stop=tomcat_bin + '/catalina.sh stop'
