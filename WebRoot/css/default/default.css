@@ -391,11 +391,15 @@ a.btn-cur {
 	position:fixed;
 	right:-40px;
 	top:0;
-	z-index:99999;
+	z-index:1119;
 	display:none;
-	text-align:center;}
+	text-align:center;
+	overflow:visible;
+	font-size:1.2em;}
 #slide-bar ul {
 	padding-top:300px;}
+#slide-bar ul li{
+	position:relative;}
 #slide-bar em {
 	display:block;
 	height:55px;
@@ -414,3 +418,13 @@ a.btn-cur {
 	background:url(../../img/default/all_bg.png) no-repeat -233px -762px;}
 .gotop-icon {
 	background:url(../../img/default/all_bg.png) no-repeat -280px -762px;}
+#slide-bar span {
+	display:none;
+	color:#ffffff;
+	height:20px;
+	line-height:20px;
+	padding:2px 10px;
+	position:absolute;
+	left:-75px;
+	top:16px;
+	background-color:#f83e77;}

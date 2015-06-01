@@ -38,12 +38,19 @@
 	<insert id="updateRealStoreAuthState" >Update Store set RealStoreAuth=#{status} where ID=#{id};</insert>
 	<!-- 分页查询店铺 orderBy: 1*下载量 2*销售量 3*信誉等级 41:商品数量-->
 	<select id="queryStoreByPage"  resultMap="storeMap">
-		Select * From Store A Left Join (Select B.storeid,Sum(C.downloadcount) DownloadTotal,Sum(C.PurchaseCount) PurchaseTotal,Sum(IF(B.status = 1 AND B.time > DATE_SUB(NOW(),INTERVAL 1 MONTH),1,0)) NewPurchaseTotal,Sum(IF(B.status = 1,1,0)) commodityOnSaleTotal From Goods B,GoodsAux C Where B.id = C.goodsid Group By B.StoreId) R On A.ID = R.storeid Where 1 = 1 
+		Select A.*,R.* ,U.realUserAuthFlg realUserAuth From Store A 
+			Left Join (
+				Select B.storeid,Sum(C.downloadcount) DownloadTotal,Sum(C.PurchaseCount) PurchaseTotal,Sum(IF(B.status = 1 AND B.time > DATE_SUB(NOW(),INTERVAL 1 MONTH),1,0)) NewPurchaseTotal,Sum(IF(B.status = 1,1,0)) commodityOnSaleTotal 
+					From Goods B,GoodsAux C 
+						Where B.id = C.goodsid Group By B.StoreId) R 
+			On A.ID = R.storeid 
+			left join userInfo U on U.userid=A.userID
+		Where 1 = 1 
 		<if test="businessArea != null">
 			and BusinessArea=#{businessArea}
 		</if>
 		<if test="storeName!=null and storeName!=''">
-			and A.StoreName like CONCAT('%',#{storeName},'%')
+			and( A.StoreName REGEXP #{storeName} OR A.Phone REGEXP #{storeName})
 		</if>
 		GROUP BY A.ID
 		<choose>

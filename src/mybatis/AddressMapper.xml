@@ -1,42 +1,209 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhigu.mapper.AddressMapper">
-
-	<!-- 根据userID查询 -->
-	<select id="queryAddressByUserID" parameterType="int" resultType="address">
-		Select * from Address where UserID = #{userID} and Status = 1 Order By IsDefault Desc,ID Desc;
+	<resultMap id="BaseResultMap" type="com.zhigu.model.Address">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="tel" property="tel" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="district" property="district" jdbcType="VARCHAR" />
+		<result column="street" property="street" jdbcType="VARCHAR" />
+		<result column="postcode" property="postcode" jdbcType="VARCHAR" />
+		<result column="default_flag" property="defaultFlag" jdbcType="BIT" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_id, name, phone, tel, province, city, district, street, postcode, default_flag,
+		status, add_time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from address
+		where id = #{id,jdbcType=INTEGER}
 	</select>
-	
-	<!-- 根据ID查询 -->
-	<select id="queryAddressByID" parameterType="int" resultType="address">
-		Select * from Address where UserID = #{userID} And ID = #{id} And Status = 1;
-	</select>
-	<!-- 根据默认收货地址 -->
-	<select id="queryDefaultAddress" parameterType="int" resultType="com.zhigu.model.Address">
-		Select * from Address where UserID = #{userID} And IsDefault = 1 And Status = 1 limit 1;
-	</select>
-
-	<!-- 保存认证信息 -->
-	<insert id="saveAddress" parameterType="address">
-		Insert Into Address(UserID,Name,Phone,Tel,Province,City,District,Street,PostCode,IsDefault,Status) Value(#{userID},#{name},#{phone},#{tel},#{province},#{city},#{district},#{street},#{postcode},#{isDefault},1);
-		<selectKey resultType="int" keyProperty="ID" order="AFTER" >  
-		  SELECT LAST_INSERT_ID()  
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from address
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zhigu.model.Address">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
 		</selectKey>
+		insert into address (id, user_id, name,
+		phone, tel, province,
+		city, district, street,
+		postcode, default_flag, status,
+		add_time)
+		values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR},
+		#{postcode,jdbcType=VARCHAR}, #{defaultFlag,jdbcType=BIT}, #{status,jdbcType=INTEGER},
+		#{addTime,jdbcType=TIMESTAMP})
 	</insert>
-
-	<!-- 修改地址-->
-	<update id="updateAddress" parameterType="address">
-		Update Address Set Name=#{name},Phone=#{phone},Tel=#{tel},Province=#{province},City=#{city},District=#{district},Street=#{street},PostCode=#{postcode},IsDefault=#{isDefault}  Where UserID = #{userID} And ID = #{ID};
+	<insert id="insertSelective" parameterType="com.zhigu.model.Address">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into address
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="tel != null">
+				tel,
+			</if>
+			<if test="province != null">
+				province,
+			</if>
+			<if test="city != null">
+				city,
+			</if>
+			<if test="district != null">
+				district,
+			</if>
+			<if test="street != null">
+				street,
+			</if>
+			<if test="postcode != null">
+				postcode,
+			</if>
+			<if test="defaultFlag != null">
+				default_flag,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=INTEGER},
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="tel != null">
+				#{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="province != null">
+				#{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				#{city,jdbcType=VARCHAR},
+			</if>
+			<if test="district != null">
+				#{district,jdbcType=VARCHAR},
+			</if>
+			<if test="street != null">
+				#{street,jdbcType=VARCHAR},
+			</if>
+			<if test="postcode != null">
+				#{postcode,jdbcType=VARCHAR},
+			</if>
+			<if test="defaultFlag != null">
+				#{defaultFlag,jdbcType=BIT},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="addTime != null">
+				#{addTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.Address">
+		update address
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="tel != null">
+				tel = #{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="province != null">
+				province = #{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				city = #{city,jdbcType=VARCHAR},
+			</if>
+			<if test="district != null">
+				district = #{district,jdbcType=VARCHAR},
+			</if>
+			<if test="street != null">
+				street = #{street,jdbcType=VARCHAR},
+			</if>
+			<if test="postcode != null">
+				postcode = #{postcode,jdbcType=VARCHAR},
+			</if>
+			<if test="defaultFlag != null">
+				default_flag = #{defaultFlag,jdbcType=BIT},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhigu.model.Address">
+		update address
+		set user_id = #{userId,jdbcType=INTEGER},
+		name = #{name,jdbcType=VARCHAR},
+		phone = #{phone,jdbcType=VARCHAR},
+		tel = #{tel,jdbcType=VARCHAR},
+		province = #{province,jdbcType=VARCHAR},
+		city = #{city,jdbcType=VARCHAR},
+		district = #{district,jdbcType=VARCHAR},
+		street = #{street,jdbcType=VARCHAR},
+		postcode = #{postcode,jdbcType=VARCHAR},
+		default_flag = #{defaultFlag,jdbcType=BIT},
+		status = #{status,jdbcType=INTEGER},
+		add_time = #{addTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
 	</update>
 	
-	<!-- 修改默认地址 -->
-	<update id="updateDefaultAddress" >
-		Update Address Set IsDefault = IF(ID = #{id},1,0) Where UserID = #{userID} And Status = 1;
-	</update>
-	
-	<!-- 删除地址 -->
-	<update id="deleteAddress" >
-		Update Address Set Status = 0 Where ID = #{id} And UserID = #{userID};
-	</update>
+	<select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from address
+		where user_id = #{userId,jdbcType=INTEGER} and Status = 1 order by add_time DESC ,default_flag DESC
+	</select>
+	<select id="selectDefaultAddress" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from address
+		where user_id = #{userId,jdbcType=INTEGER} and default_flag=1 And Status = 1
+	</select>
+	<select id="selectAddressByUserIdAndId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from address
+		where user_id = #{userId,jdbcType=INTEGER} and id=#{id,jdbcType=INTEGER} And Status = 1
+	</select>
 </mapper>
-

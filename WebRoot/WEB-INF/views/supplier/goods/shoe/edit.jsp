@@ -7,9 +7,38 @@
 <link href="/js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
 <link rel="stylesheet" href="/js/3rdparty/webuploader/webuploader.css">
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="/js/3rdparty/layer/layer.min.js"></script>
+<script type="text/javascript" language="javascript" src="/js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
+<style type="text/css">
+#upimgul li {
+    background: rgb(244, 244, 244) none repeat scroll 0 0; 
+    border: 1px solid #d4d4dd;  
+    height: 150px;
+    padding: 5px;
+    width: 150px;
+}
+
+
+.imgbox1  {
+    text-align: center;
+}
+
+.fabubgtian  {
+    height: 26px;
+   /*  margin-left: 14px; */
+    width: 122px;
+    text-align: center;
+}
+
+.upimg{
+	width:122px;
+	height:122px; 
+}
+</style>
 </head>
+
 <body>
-<script type="text/javascript" language="javascript" src="js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
+
  <form method="post" action="#">
     <div class="rightContainer fr">
     	<!-- 标题 -->
@@ -44,91 +73,68 @@
 				</td>
 			</tr>
 			<tr>
-				<td></td>
-				<td></td>
+				<td>商品重量：</td>
+				<td>
+					<input type="text" class="input-txt" id="weight" value="${goods.weight }" onkeyup='zhigu.goods.priceInputCheck(this);' onafterpaste='zhigu.goods.priceInputCheck(this);' maxlength='11'/> 千克 （邮费计算用）
+				</td>
 			</tr>
 			<tr>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-			</tr>
-		</table>
-		
-		
-        <div class="jibenxinxi ml20 mt10">
-
-           
-           <div class="jibenform">
-           		<div class="title">
-                    <p>商品总数：</p>
-                    <div class="clear"></div>
-               </div>
-               <span class="jian fl ml10"><font color="red" size="5" id="sumAmount">0</font>&nbsp;&nbsp;件</span>
-               <div class="clear"></div>
-           </div>
-           <div class="jibenform">
-           	   <div class="title">
-                   <strong>*</strong><label for="baobeititle0">商品重量：</label>
-               </div>
-               <input type="text" class="biaobeititle fl" id="weight" value="${goods.weight }" style="width: 100px" onkeyup='zhigu.goods.priceInputCheck(this);' onafterpaste='zhigu.goods.priceInputCheck(this);' maxlength='11'/> 千克 （邮费计算用）
-               <div class="clear"></div>
-           </div>
-           <div class="tupian mt20">
-	        	<div class="title">
-	                <p>商品图片：</p>
-	            </div>
-                <div class="tupianright fl">
-	               	<div class="tupianheader" id="tupianheader">
-	                   	<ul>
+				<td>&nbsp;&nbsp;&nbsp;商品图片：</td>
+				<td>
+					<div class="fun-bar" id="tupianheader">
+	                   	<ul class="fun-tabs">
 	                       	<li class="shangchuanselect" id="shangchuan1" onclick="com_img_upload();">本地上传</li>
-	                       	<li  id="shangchuan2">图片空间</li>
+	                       <!-- 	<li id="shangchuan2" class="hidden">图片空间</li> -->
 	                    </ul>
-	                    <div class="clear"></div>
 	                </div>
-                    <!--本地上传-->
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<!--本地上传-->
                     <div class="shangchuanbox" id="localUpload">
-                    	<div class="xuanzebox mt20">
-                            <div id="chooseUploadImg" style="float: left;margin-left: 25px;">选择本地图片</div>
-                            <div class="clear"></div>
+                    	<div class="xuanzebox">
+                            <div id="chooseUploadImg">选择本地图片</div>
                         </div>
-                        <div class="shangchuantishi mt20">
+                        <div class="shangchuantishi">
                             <p>提示：</p>
-                            <ol>
+                            <ul>
                                 <li>1.商品主图不能超过<strong>800K</strong>，图片规格必须为<strong>正方形</strong>且大于<strong>430x430</strong>。</li>
                                 <li>2.最多可以上传<strong>5</strong>张图片。</li>
                                 <li>3.图片<strong>1</strong>必须上传。</li>
-                            </ol>
+                            </ul>
                         </div>
                     </div>
-                    <div class="shangchuanbox" style="display:none;" id="userspace-com-img">
-                	    <div class="shangchuanleft fl" style="width: 150px;">
-							<div class="easyui-panel" style="height: 220px;width:150px;">
+                    <!--文件夹-->
+                    <div class="shangchuanbox hidden" id="userspace-com-img">
+                	    <div class="shangchuanleft fl">
+							<div class="easyui-panel">
 								<div class="fl ztree"  id="folderTree1" >
 									加载用户文件夹...
 								</div>
 							</div>
-							<div class="clear"></div>
 						</div>
-						<div id="com_shangchuanbox" class="fl" style="width: 640px;"></div>
+						<div id="com_shangchuanbox"></div>
                     </div>
-                    
-                    <div class="shangchuanbottom" style="padding-top: 10px;background-image: url('/img/img_back.png');">
+                    <!--预览图-->
+                    <div class="shangchuanbottom">
                         <ul id="upimgul">
                         	<li class="prebakimg">
                             	<div class="imgbox" id="imgbox1">
-                                     <img src="img/upload-img-bak.jpg" width="102px" height="102px"/>
-                                </div>
-                                <div class="fabubgtian disnone"><span class="ml5 cp" onclick="zhigu.goods.mleft(this)">左移</span><span class="ml10 cp" onclick="zhigu.goods.mright(this)">右移</span> <span class="ml10">×</span></div>
+									<img src="/img/default/upload-img-bak.jpg" width="122" height="122"/>
+								</div>
+                                <div class="fabubgtian hidden">
+                                <span class="" onclick="zhigu.goods.mleft(this)">左移</span>
+                                <span class="" onclick="zhigu.goods.mright(this)">右移</span>
+								<span class="">×</span></div>
                             </li>
                             <c:forEach items="${goods.images }" var="img" varStatus="vs">
-                            	<li id="0.861172192497178${vs.index }" onmouseover="zhigu.goods.mouseover(this)" onmouseout="zhigu.goods.mouseout(this)">
+                            	<li id="0.861172192497178${vs.index }" onmouseover="zhigu.goods.mouseover(this)" onmouseout="zhigu.goods.mouseout(this)" class="prebakimg">
                             		<div class="imgbox" id="imgbox1">
-                            			<img class="upimg" imgId="${img.id }" src="${img.image}" savesrc="${img.image}" savesrc300="${img.image300}" width="102px" height="102px" />
+                            			<img class="upimg" imgId="${img.id }" src="${img.image}" savesrc="${img.image}" savesrc300="${img.image300}" width="122" height="122" />
                             		</div>
-                            		<div class="fabubgtian disnone">
+                            		<div class="fabubgtian hidden">
                             			<span class="ml5 cp" onclick="zhigu.goods.mleft(this)">左移</span>
                             			<span class="ml10 cp" onclick="zhigu.goods.mright(this)">右移</span> 
                             			<span class="ml10 cp" onclick="zhigu.goods.delimg(this)">×</span>
@@ -136,55 +142,42 @@
                             	</li>
                             </c:forEach>
                         </ul>
-                        <div class="clear"></div>
                      </div> 
-                </div>
-                <div class="clear"></div>
-         </div>
-    <%--        <div class="jibenform">
-       	<div class="title">
-                 <p>商品详情：</p>
-                 <div class="clear"></div>
-             </div><br/>
-             <textarea id="introduce" name="introduce" style="width:850px;height:360px;">
-				${goods.description }
-			 </textarea>
-             <div class="clear"></div> 
-         </div>--%>
-             
-              <div class="jibenform">
-		 		<div class="title" style="clear:both;height:30px;">
-					<p>商品详情：</p>
-			 	</div>
-		 	  </div>
-             
-          <div class="clear"></div>
-          
-            <div class="jibenform">
-			 	<div class="tupianright fl" style="border:none;margin-left: -20px;">
-			 		<jsp:include page="../../../ueditor/index_desc.jsp">
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;&nbsp;&nbsp;商品详情：</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2"><jsp:include page="../../../ueditor/index_desc.jsp">
 			 			<jsp:param name="desc" value="${goods.description }" />
-			 		</jsp:include>
-			 	</div>
-		 	  </div>
-             
-          <div class="clear"></div>
-         <h4 class="jbxxtitle pl10">2.上传数据包</h4>
-         <div class="jibenform">
-             <div id="chooseDataFile" style="float: left;margin-left: 25px;">上传数据包</div>
-             <div id="dataFileProgress" style="margin:10px 20px ; float: left"><c:if test="${empty goods.file }">无数据包</c:if><c:if test="${!empty goods.file }"><a href="${goods.file }" target="_blank">原数据包：下载</a></c:if></div>
-             <input type="hidden" id="dataFilePath" value="${goods.file }"/>
-             <div class="clear"></div>
-         </div>
-         </div>
-         <div class="tc fabusubdiv mt20 mb20 "><input class="fabusub f14 fwbold  cp" type="button" value="保存" onclick="save()" id="saveGoods"/></div>
-   </div>
-</form>
-<div class="clear"></div>
-
-<!-- <script charset="utf-8" src="js/3rdparty/kindeditor/kindeditor.js"></script>
-<script charset="utf-8" src="js/3rdparty/kindeditor/lang/zh_CN.js"></script> -->
-<script charset="utf-8" src="js/goods.js"></script>
+			 		</jsp:include></td>
+			</tr>
+		</table>
+		<h4 class="ddtitle">2.上传数据包</h4>
+		<table cellpadding="0" cellspacing="0" class="user-form-table">
+				<tr>
+					<td><div id="chooseDataFile">上传数据包</div></td>
+					<td>
+					<div id="dataFileProgress">
+					<c:if test="${empty goods.file }">无数据包</c:if>
+					<c:if test="${!empty goods.file }">
+					<a href="${goods.file }" target="_blank">原数据包：下载</a></c:if>
+					</div>
+					<input type="hidden" id="dataFilePath" value="${goods.file }"/>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="user-form-table">
+				<tr>
+					<td>&nbsp;</td>
+					<td><input class="input-button" type="button" value="保存" onclick="save()" id="saveGoods"/></td>
+				</tr>
+			</table>
+</div>
+</from>
+<script type="text/javascript" src="js/goods.js"></script>
 <script>
 if (typeof zhigu == "undefined" || !zhigu) {
 	var zhigu = {};
@@ -192,7 +185,7 @@ if (typeof zhigu == "undefined" || !zhigu) {
 
 $(function() {
 	zhigu.goods.editLoadGoods("${goods.id}");
-	$(".prebakimg").hide();
+	$(".prebakimg:first").hide();
 	// ===============初始化数据包上传  start================
 	var $dataFileProgress = $('#dataFileProgress');
 	var dataFileSizeLimit = 1024*1024*50;
@@ -253,7 +246,7 @@ $(function() {
     });
     dataUploader.on('error', function(handler) {
 		if(handler=="F_EXCEED_SIZE"){
-			dialog("文件大小不能超过"+(dataFileSizeLimit/1024/1024)+"M");
+			layer.alert("文件大小不能超过"+(dataFileSizeLimit/1024/1024)+"M");
 		}
     });
 //     setInterval(function(){
@@ -291,13 +284,12 @@ $(function() {
         imgUploader.on( 'beforeFileQueued', function( file ) {
         	var imgsize = $(".upimg").size();
         	if(imgsize >= zhigu.goods.defaultImageAmount){
-        		dialog("上传图片数量已达上限！");
+        		layer.alert("上传图片数量已达上限！");
         		return false;
         	}
         	var size = file.size;
-        	alert(size);
         	if(size>1024*1024*0.8){
-        		dialog("文件大小不能超过800k！");
+        		layer.alert("文件大小不能超过800k！");
         		return false;
         	}
         });
@@ -311,13 +303,13 @@ $(function() {
         	}
         });
         imgUploader.on( 'uploadError', function( file ) {
-        	dialog('上传失败：'+file.name);
+        	layer.alert('上传失败：'+file.name);
         	// 上传失败标记为移除，否则不能重新选择该文件上传
         	imgUploader.removeFile(file);
         });
         imgUploader.on('error', function(handler) {
     		if(handler=="F_EXCEED_SIZE"){
-    			dialog("文件大小不能超过"+(imgSizeLimit/1024)+"k");
+    			layer.alert("文件大小不能超过"+(imgSizeLimit/1024)+"k");
     		}
         });
  // ===============图片上传初始化  end================
@@ -416,12 +408,12 @@ function save() {
 	var saveData = {};
 	var categoryId = "${goods.categoryId}";
 	if (categoryId == '') {
-		dialog("请选择商品类别！");
+		layer.alert("请选择商品类别！");
 		return;
 	}
 	//商品名称 
 	if ($("#name").val() == null || $("#name").val() == '') {
-		dialog("请填商品标题！");
+		layer.alert("请填商品标题！");
 		return;
 	}
 	saveData.name = $("#name").val();
@@ -514,18 +506,18 @@ function save() {
 		}
 	}
 	if (count == 0) {
-		dialog("请选择商品规格！");
+		layer.alert("请选择商品规格！");
 		return;
 	}
 	if ($("#weight").val() == null || $("#weight").val() == '') {
-		dialog('请填写商品重量！');
+		layer.alert('请填写商品重量！');
 		return;
 	}
 	saveData.weight = $("#weight").val();
 	//图片
 	var imagesStr = "[";
 	if ($(".upimg").size() == 0) {
-		dialog("请至少上传一张商品图片！");
+		layer.alert("请至少上传一张商品图片！");
 		return;
 	}
 	$(".upimg").each(function(i) {
@@ -569,7 +561,7 @@ function save() {
 	saveData.id = "${goods.id}";
 	// 数据包上传状态检查
 	if (dataUploader && dataUploader.isInProgress()) {
-		dialog("正在上传数据包中，请等数据包上传完成后再保存！");
+		layer.alert("正在上传数据包中，请等数据包上传完成后再保存！");
 		return false;
 	}
 	// 提交保存
@@ -644,7 +636,7 @@ function uploadToUserspace() {
 		if (data.flag == 0) {
 			loadFolderFile();
 		} else {
-			dialog(data.msg);
+			layer.alert(data.msg);
 		}
 	});
 }
@@ -672,19 +664,21 @@ $(function() {
 	});
 });
 </script>
-<div id='divbox' class='piliansz tl disnone'>
+<div id='divbox' class='hidden'>
 	<ul class=''>
 		<li>价格：</li>
-		<li><input name="rprice" value="1" type='radio' class='ver_ali mr5'/>同颜色分类价格相同</li>
-		<li><input name="rprice" value="2" type='radio' class='ver_ali mr5'/>同规格价格相同</li>
+		<li><input id="rprice_01" name="rprice" value="1" type='radio' class='ver_ali'/><label for="rprice_01">同颜色分类价格相同</label></li>
+		<li><input id="rprice_02" name="rprice" value="2" type='radio' class='ver_ali'/><label for="rprice_02">同规格价格相同</label></li>
 	</ul>
 	<ul class=''>
 		<li>数量：</li>
-		<li><input name="rquantity" value="1" type='radio' class='ver_ali mr5'/>同颜色分类数量相同</li>
-		<li><input name="rquantity" value="2" type='radio' class='ver_ali mr5'/>同规格数量相同</li>
+		<li><input id="rquantity_01" name="rquantity" value="1" type='radio' class='ver_ali'/><label for="rquantity_01">同颜色分类数量相同</label></li>
+		<li><input id="rquantity_02" name="rquantity" value="2" type='radio' class='ver_ali'/><label for="rquantity_02">同规格数量相同</label></li>
 	</ul>
-	<div class='clear'></div>
-	<div class='mt10'><input type='button' value='确定' onclick="confirmbatch()" class='w80' /><input   type='button' onclick="$('#divbox').hide()" value='取消' class='ml10 w80'/></div>
+	<div class='mt10'>
+	<input type='button' value='确定' onclick="confirmbatch()" class='mini-btn' />
+	<input type='button' onclick="javascript:$('#divbox').hide()" value='取消' class='mini-btn'/>
+	</div>
 </div>
 </body>
 </html>

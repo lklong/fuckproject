@@ -1,5 +1,6 @@
 package com.zhigu.service.user.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.constant.Code;
+import com.zhigu.common.constant.SystemConstants;
 import com.zhigu.common.constant.enumconst.MsgLevel;
+import com.zhigu.common.exception.ServiceException;
 import com.zhigu.common.utils.StringUtil;
 import com.zhigu.common.utils.VerifyUtil;
 import com.zhigu.mapper.AddressMapper;
@@ -21,20 +24,24 @@ public class AddressServiceImpl implements IAddressService {
 	private AddressMapper addressMapper;
 
 	@Override
-	public List<Address> queryAddressByUserID(int userID) {
-		return addressMapper.queryAddressByUserID(userID);
+	public List<Address> queryAddressByUserID(int userId) {
+		return addressMapper.selectByUserId(userId);
 	}
 
 	@Override
-	public Address queryAddressByID(int userID, int addressID) {
-		return addressMapper.queryAddressByID(userID, addressID);
+	public Address queryAddressByID(int userId, int addressId) {
+		Address addr = addressMapper.selectByPrimaryKey(addressId);
+		if (addr != null && addr.getUserId() != userId) {
+			addr = null;
+		}
+		return addr;
 	}
 
 	@Override
 	public MsgBean saveAddress(Address address) {
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserID();
 		// 现有地址数
-		List<Address> list = addressMapper.queryAddressByUserID(userID);
+		List<Address> list = addressMapper.selectByUserId(userId);
 		if (list != null && list.size() >= 10) {
 			return new MsgBean(Code.FAIL, "已添加10条地址，不能再新增！", MsgLevel.ERROR);
 		}
@@ -45,12 +52,13 @@ public class AddressServiceImpl implements IAddressService {
 		}
 
 		// 设置用户
-		address.setUserID(userID);
+		address.setUserId(userId);
 		// 保存
-		addressMapper.saveAddress(address);
-		// 是否设置默认
-		if (address.getIsDefault() == 1) {
-			addressMapper.updateDefaultAddress(address.getUserID(), address.getID());
+		address.setId(null);
+		address.setAddTime(new Date());
+		int row = addressMapper.insert(address);
+		if (row != 1) {
+			throw new ServiceException(SystemConstants.DB_UPDATE_FAILED_MSG);
 		}
 		return new MsgBean(Code.SUCCESS, "地址添加成功", MsgLevel.NORMAL);
 	}
@@ -82,38 +90,71 @@ public class AddressServiceImpl implements IAddressService {
 
 	@Override
 	public MsgBean updateAddress(Address address) {
-		String msg = verify(address);
+		int userId = SessionHelper.getSessionUser().getUserID();
+		Address oldAddress = this.queryAddressByID(userId, address.getId());
+		if (oldAddress == null) {
+			return new MsgBean(Code.FAIL, "没找到该地址，不能修改！", MsgLevel.ERROR);
+		}
+		oldAddress.setUserId(userId);
+		oldAddress.setCity(address.getCity());
+		oldAddress.setDefaultFlag(address.getDefaultFlag());
+		oldAddress.setDistrict(address.getDistrict());
+		oldAddress.setName(address.getName());
+		oldAddress.setPhone(address.getPhone());
+		oldAddress.setPostcode(address.getPostcode());
+		oldAddress.setProvince(address.getProvince());
+		oldAddress.setStreet(address.getStreet());
+		oldAddress.setDefaultFlag(address.getDefaultFlag());
 		// 验证信息
+		String msg = verify(oldAddress);
 		if (!StringUtil.isEmpty(msg)) {
 			return new MsgBean(Code.FAIL, msg, MsgLevel.ERROR);
 		}
-		int userID = SessionHelper.getSessionUser().getUserID();
-		Address old = addressMapper.queryAddressByID(userID, address.getID());
-		if (old == null) {
-			return new MsgBean(Code.FAIL, "没找到该地址，不能修改！", MsgLevel.ERROR);
-		}
-		address.setUserID(userID);
-		addressMapper.updateAddress(address);
-		// 是否设置默认
-		if (address.getIsDefault() == 1) {
-			addressMapper.updateDefaultAddress(address.getUserID(), address.getID());
+		addressMapper.updateByPrimaryKey(oldAddress);
+		// 原有默认地址
+		if (address.getDefaultFlag()) {
+			Address defaultAddr = addressMapper.selectDefaultAddress(userId);
+			if (defaultAddr != null && defaultAddr.getId() != oldAddress.getId()) {
+				defaultAddr.setDefaultFlag(false);
+				addressMapper.updateByPrimaryKey(defaultAddr);
+			}
 		}
 		return new MsgBean(Code.SUCCESS, "修改成功", MsgLevel.NORMAL);
 	}
 
 	@Override
-	public void updateDefaultAddress(int userID, int addressID) {
-		addressMapper.updateDefaultAddress(userID, addressID);
+	public MsgBean updateDefaultAddress(int userId, int addressId) {
+		Address addr = addressMapper.selectByPrimaryKey(addressId);
+		if (addr != null && addr.getUserId() == userId) {
+			addr.setDefaultFlag(true);
+			addressMapper.updateByPrimaryKey(addr);
+		} else {
+			return new MsgBean(Code.FAIL, "无效地址", MsgLevel.ERROR);
+		}
+
+		Address defaultAddr = addressMapper.selectDefaultAddress(userId);
+		if (defaultAddr != null && defaultAddr.getId() != addressId) {
+			// 取消原有收货地址
+			defaultAddr.setDefaultFlag(false);
+			addressMapper.updateByPrimaryKey(defaultAddr);
+		}
+
+		return new MsgBean(Code.SUCCESS, "默认地址设置成功", MsgLevel.NORMAL);
 	}
 
 	@Override
-	public void deleteAddress(int userID, int addressID) {
-		addressMapper.deleteAddress(userID, addressID);
+	public MsgBean deleteAddress(int userId, int addressId) {
+		Address addr = addressMapper.selectAddressByUserIdAndId(userId, addressId);
+		if (addr == null) {
+			return new MsgBean(Code.FAIL, "无效地址", MsgLevel.ERROR);
+		}
+		addressMapper.deleteByPrimaryKey(addressId);
+		return new MsgBean(Code.SUCCESS, "删除成功", MsgLevel.NORMAL);
 	}
 
 	@Override
-	public Address queryDefaultAddress(int userID) {
-		return addressMapper.queryDefaultAddress(userID);
+	public Address queryDefaultAddress(int userId) {
+		return addressMapper.selectDefaultAddress(userId);
 	}
 
 }

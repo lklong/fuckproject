@@ -8,7 +8,7 @@
 
 <title>普通会员列表</title>
 <link href="js/3rdparty/easyui/themes/bootstrap/easyui.css" rel="stylesheet" type="text/css" >
-<link href="css/jcDate.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/default/jcDate.css" rel="stylesheet" type="text/css" media="all" />
 <script src="js/admin/admin.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/admin/member.js"></script>
 </head>
@@ -85,10 +85,8 @@
            		<a href="javascript:void(0)" onclick="batchUsing()" class="sysButonA2"><em></em>批量启用</a>
          	</c:when>
          </c:choose>
-		<!-- <a href="javascript:void(0)" class="sysButonA2"><em></em>批量发送消息</a> -->
 	</div>
 </div>
-
         	<table class="sysCommonTable _memTable" cellspacing="0" cellpadding="0">
              	<thead>
             	<tr>
@@ -136,14 +134,17 @@
 		                        </c:choose>
 		                    </td>
 		                    <td>
-		                    	<c:if test="${m.realUserStatus==1 }">
+		                    	<c:if test="${m.realUserAuthFlg==0 }">
 		                        	<a href="javascript:void(0);" class="sysButonA3" onclick="realUserAuthInfo(${m.UserID})" ><em></em>实名认证</a>
 		                        </c:if>
-		                    	<c:if test="${m.realUserStatus==3 }">
+		                        <c:if test="${m.realUserAuthFlg==1 }">
+		                        	<a href="javascript:void(0);" class="sysButonA3"><em></em>已实名</a>
+		                        </c:if>
+		                        <c:if test="${m.realUserAuthFlg==2 }">
 		                        	<a href="javascript:void(0);" class="sysButonA3" onclick="realUserAuthInfo(${m.UserID})" ><em></em>认证未通过</a>
 		                        </c:if>
-		                        <c:if test="${m.realUserStatus==2 }">
-		                        	<a href="javascript:void(0);" class="sysButonA3"><em></em>已实名</a>
+		                    	<c:if test="${m.realUserAuthFlg==3 }">
+		                        	<a href="/admin/realUserAuth/realUserAuthStatus?userID=${m.UserID}" class="sysButonA3"><em></em>实名待认证</a>
 		                        </c:if>
 		                    </td>
 		                    <td>

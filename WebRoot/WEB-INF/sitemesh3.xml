@@ -61,14 +61,14 @@
 	<mapping path="/goods/service/ajaxQueryGoods" exclue="true" />
 	<mapping path="/category/loadProperty" exclue="true" />
 	<mapping path="/goods/ajaxShoe" exclue="true" />
-	<mapping path="/goods/downloadHistory" exclue="true" />
+	<mapping path="/goods/ajax/download/history" exclue="true" />
 	
 	<!-- 评论 -->
 	<mapping path="/goods/ajax/comments" exclue="true" />
 	
 	<!-- 编辑器 -->
 	<mapping path="/js/3rdparty/ueditor/**" exclue="true" />
-	 <mapping path="/ueditor/**" exclue="true" /><!--本地测试使用 -->
+	<mapping path="/ueditor/**" exclue="true" /><!--本地测试使用 -->
 	
 	<!-- 延迟加载图片 -->
 	<mapping path="/lazy/load/**" exclue="true" />

@@ -53,5 +53,38 @@ $(function(){
 		},
 		function(){
 			$(this).find('div').fadeOut('fast');
-	});	
+	});
+	
+	/* 显示侧边栏 */
+	slideBar();
+	
+	/* 回到顶部 */
+	$("#goto-top").click(function() {
+		$('body,html').animate({
+			scrollTop : 0
+		}, 500);
+		return false;
+	});
+	
+	/* 窗口改变时设定边栏高度 */
+	$(window).resize(function(){slideBar();});
 });
+
+/* 侧边栏 包括购物车，收藏，个人中心等 */
+function slideBar(){
+	var w_h = $(window).height();    //获取当前窗口高度
+	var w_w = $(window).width();     //获取当前窗口宽度
+	if($('#slide-bar').length>0){    //如果slide-bar存在
+		$('#slide-bar').css({'height':w_h});
+		$('#slide-bar').show();
+		$('#slide-bar').animate({right:0});
+		
+		$('#slide-bar').find('li').hover(
+				function(){
+					$(this).find('span').hide().fadeIn();
+				},
+				function(){
+					$(this).find('span').hide().fadeOut();
+				});
+	}
+}

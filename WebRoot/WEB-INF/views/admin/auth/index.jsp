@@ -6,7 +6,7 @@
 <head><base href="${applicationScope.basePath}"/>
 
 <title></title>
-<link href="css/jcDate.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/default/jcDate.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/page.css" rel="stylesheet" type="text/css" />
 <script src="js/admin/admin.js" type="text/javascript"></script>
 

@@ -26,7 +26,7 @@
       <li><a href="/user/info">基本资料</a></li>
       <li><a href="/user/security/center">安全设置</a></li>
       <li><a href="/user/address">收货地址</a></li>
-      <li><a href="/user/realauth">实名认证</a></li>
+<!--       <li><a href="/user/realauth">实名认证</a></li> -->
       <%-- 				<c:if test="${sessionScope.sessionUser.userType>1 }"> --%>
       <!-- 					<li><a href="/supplier/store/companyAuth">企业认证</a></li> --> 
       <!-- 					<li><a href="/supplier/store/realStoreAuth">实体认证</a></li> -->

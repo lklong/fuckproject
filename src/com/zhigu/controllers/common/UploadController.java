@@ -29,9 +29,9 @@ import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.utils.DateUtil;
 import com.zhigu.common.utils.ImageUtil;
+import com.zhigu.common.utils.UeditorImage;
 import com.zhigu.common.utils.UploadFileUtil;
 import com.zhigu.common.utils.ZhiguConfig;
-import com.zhigu.controllers.test.UeditorImage;
 import com.zhigu.model.ZhiguFile;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.user.IUserService;
@@ -179,7 +179,7 @@ public class UploadController {
 			if (msgBean.getCode() == Code.SUCCESS) {
 
 				ueditorImage.setState("SUCCESS");
-				ueditorImage.setUrl(ZhiguConfig.getHost() + ((ZhiguFile) msgBean.getData()).getUri());
+				ueditorImage.setUrl(((ZhiguFile) msgBean.getData()).getUri());
 				ueditorImage.setOriginal(upfile.getOriginalFilename());
 				ueditorImage.setTitle(upfile.getName());
 

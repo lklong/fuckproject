@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* jcDateIco */
-.jcDateIco{background:#fff url(../img/dateIco.png) no-repeat right center; font-size:12px; color:#000}
+.jcDateIco{background:#fff url(../img/default/dateIco.png) no-repeat right center; font-size:12px; color:#000}
 input.jcDate{cursor:pointer;font-size:12px;}
 #jcDate{background:#fefefe;width:161px;padding:10px;height:203px;position:absolute;z-index:1000;border:2px solid #2b84b5;color:#333;display:none;font-size:0;overflow:hidden;font-size:12px;}
 #jcDateTt{height:15px;line-height:15px;position:relative;margin-bottom:10px;font-size:12px;}

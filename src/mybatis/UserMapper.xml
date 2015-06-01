@@ -85,25 +85,6 @@
 	<update id="updateUserauthInfoLoginData" parameterType="int">
 		Update Userauth Set LoginCount=LoginCount+1,LatestLoginTime=CURRENT_TIMESTAMP() where UserID=#{userID};
 	</update>
-	<!--实名认证查询-->
-	<select id="queryRealUserAuth" parameterType="int" resultType="realUserAuth">
-		Select * from RealUserAuth where UserID = #{userID};
-	</select>
-	<!--实名认证查询-->
-	<select id="queryRealUserAuthByIdcard" parameterType="String" resultType="realUserAuth">
-		Select * from RealUserAuth where idcard = #{idcard};
-	</select>
-	<!-- 实名认证修改 -->
-	<update id="updateRealUserAuth" parameterType="realUserAuth">
-		Update RealUserAuth Set realName = #{realName},idCard = #{idCard}, cardValidity = #{cardValidity},
-		 perpetual = #{perpetual}, cardFrontImg = #{cardFrontImg}, cardBackImg = #{cardBackImg},
-		  alipay = #{alipay}, applyTime = #{applyTime},approveState = #{approveState},RejectReason=#{rejectReason} Where UserID = #{userID}
-	</update>
-	<!-- 实名认证保存 -->
-	<insert id="saveRealUserAuth" parameterType="realUserAuth">
-		Insert Into RealUserAuth(userID,realName,idCard,cardValidity,perpetual,cardFrontImg,cardBackImg,alipay,applyTime,approveState,approveUser,rejectReason) 
-			Values(#{userID},#{realName},#{idCard},#{cardValidity},#{perpetual},#{cardFrontImg},#{cardBackImg},#{alipay},#{applyTime},#{approveState},#{approveUser},#{rejectReason});
-	</insert>
 	<!-- 用户淘宝 -->
 	<insert id="addUserTaobao" parameterType="userTaobao">
 		insert into UserTaobao(UserID,Access_token,expires_in,Refresh_token,Taobao_user_nick,Taobao_user_id,refreshDate,addDate) value(#{userID},#{access_token},#{expires_in},#{refresh_token},#{taobao_user_nick},#{taobao_user_id},#{refreshDate},#{addDate});

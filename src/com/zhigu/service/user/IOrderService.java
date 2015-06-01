@@ -20,13 +20,12 @@ public interface IOrderService {
 	/**
 	 * 保存订单
 	 * 
-	 * @param userID
+	 * @param userId
 	 * @param address
 	 * @param orders
-	 * @param couponID优惠券ID
 	 * @return MsgBean.data 返回订单id（String[]）
 	 */
-	public MsgBean saveOrders(int userID, int address, List<Order> orders);
+	public MsgBean saveOrders(int userId, Integer addressId, List<Order> orders);
 
 	/**
 	 * 计算运费

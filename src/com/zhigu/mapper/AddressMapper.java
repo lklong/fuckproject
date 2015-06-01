@@ -7,47 +7,19 @@ import org.apache.ibatis.annotations.Param;
 import com.zhigu.model.Address;
 
 public interface AddressMapper {
-	/**
-	 * 根据userID查询收货地址信息
-	 * 
-	 * @param userID
-	 */
-	public List<Address> queryAddressByUserID(int userID);
+	int deleteByPrimaryKey(Integer id);
 
-	/**
-	 * 根据ID查询收货地址信息
-	 * 
-	 * @param ID
-	 */
-	public Address queryAddressByID(@Param("userID") int userID, @Param("id") int addressID);
+	int insert(Address record);
 
-	/**
-	 * 保存收货地址信息
-	 * 
-	 * @param spad
-	 */
-	public int saveAddress(Address address);
+	int insertSelective(Address record);
 
-	/**
-	 * 修改收货地址信息
-	 * 
-	 * @param spad
-	 */
-	public void updateAddress(Address address);
+	Address selectByPrimaryKey(Integer id);
 
-	/**
-	 * 修改默认地址
-	 * 
-	 * @param spad
-	 */
-	public void updateDefaultAddress(@Param("userID") int userID, @Param("id") int addressID);
+	int updateByPrimaryKeySelective(Address record);
 
-	/**
-	 * 删除收货地址信息
-	 * 
-	 * @param spad
-	 */
-	public void deleteAddress(@Param("userID") int userID, @Param("id") int addressID);
+	int updateByPrimaryKey(Address record);
+
+	List<Address> selectByUserId(Integer userId);
 
 	/**
 	 * 默认收货地址
@@ -55,6 +27,7 @@ public interface AddressMapper {
 	 * @param userID
 	 * @return
 	 */
-	public Address queryDefaultAddress(int userID);
+	public Address selectDefaultAddress(int userId);
 
+	public Address selectAddressByUserIdAndId(@Param("userId") int userId, @Param("id") int addressId);
 }

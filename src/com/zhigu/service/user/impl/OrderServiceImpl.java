@@ -95,17 +95,23 @@ public class OrderServiceImpl implements IOrderService {
 	private LogisticsSpecialMapper logisticsSpecialMapper;
 
 	@Override
-	public MsgBean saveOrders(int userID, int addressID, List<Order> pOrders) {
+	public MsgBean saveOrders(int userId, Integer addressId, List<Order> pOrders) {
 
 		// 收货地址
-		Address address = addressMapper.queryAddressByID(userID, addressID);
+		Address address = null;
+		if (addressId != null) {
+			address = addressMapper.selectAddressByUserIdAndId(userId, addressId);
+		} else {
+			// 使用默认地址
+			address = addressMapper.selectDefaultAddress(userId);
+		}
 		if (address == null) {
 			return new MsgBean(Code.FAIL, "收货地址错误", MsgLevel.ERROR);
 		}
 		StringBuilder addrsb = new StringBuilder();
 		addrsb.append(address.getProvince()).append(address.getCity()).append(address.getDistrict()).append(address.getStreet());
 		// 取出购物车中数据，并按店铺排序，便于订单生成
-		List<ShoppingCartItem> cartItems = cartMapper.selectByUserId(userID, true);
+		List<ShoppingCartItem> cartItems = cartMapper.selectByUserId(userId, true);
 		for (ShoppingCartItem item : cartItems) {
 			GoodsSku sku = goodsDao.queryGoodsSkuByID(item.getSkuId());
 			Goods goods = goodsDao.queryGoodsById(sku.getGoodsId());
@@ -145,7 +151,7 @@ public class OrderServiceImpl implements IOrderService {
 
 				//
 				saveOrder.setStoreID(goods.getStoreId());
-				saveOrder.setUserID(userID);
+				saveOrder.setUserID(userId);
 				// 收货人
 				saveOrder.setConsignee(address.getName());
 				saveOrder.setPhone(address.getPhone());
@@ -223,7 +229,7 @@ public class OrderServiceImpl implements IOrderService {
 		for (Order order : saveOrderList) {
 			// 运费计算
 			if (order.getOrderWeight().floatValue() > 0) {
-				order.setLogisticsMoney(this.getExpressMoney(addressID, order.getLogistics(), order.getOrderWeight()).getLogisticsMoney());
+				order.setLogisticsMoney(this.getExpressMoney(addressId, order.getLogistics(), order.getOrderWeight()).getLogisticsMoney());
 			}
 			// 订单应付金额：商品费+物流费+代发费
 			BigDecimal orderPayable = new BigDecimal(0).add(order.getMoney()).add(order.getLogisticsMoney()).add(order.getAgentMoney());
@@ -236,7 +242,7 @@ public class OrderServiceImpl implements IOrderService {
 				orderDao.saveOrderDetail(detail);
 			}
 			// 添加到用户收藏，购买过的店铺
-			favouriteService.addBoughtStore(userID, order.getStoreID());
+			favouriteService.addBoughtStore(userId, order.getStoreID());
 		}
 		// 返回订单号
 
@@ -250,7 +256,7 @@ public class OrderServiceImpl implements IOrderService {
 	}
 
 	public LogisticsDto getExpressMoney(int addressId, int logisticsId, BigDecimal weight) {
-		Address address = addressMapper.queryAddressByID(SessionHelper.getSessionUser().getUserID(), addressId);
+		Address address = addressMapper.selectAddressByUserIdAndId(SessionHelper.getSessionUser().getUserID(), addressId);
 		if (address == null) {
 			throw new ServiceException("收货地址错误");
 		}

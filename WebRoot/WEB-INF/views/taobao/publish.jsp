@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/taobao/default.css">
 <script type="text/javascript" src="/js/3rdparty/jquery1.9.1.js"></script>
 <script type="text/javascript" src="/js/taobao/taobao.js"></script>
-<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
+<script type="text/javascript" src="/js/3rdparty/layer/layer.min.js"></script>
 <style type="text/css">
 	input{
 	border: medium none;

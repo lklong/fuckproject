@@ -9,6 +9,32 @@
 <link href="/js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="/js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
+<style type="text/css">
+#upimgul li {
+    background: rgb(244, 244, 244) none repeat scroll 0 0; 
+    border: 1px solid #d4d4dd;  
+    height: 150px;
+    padding: 5px;
+    width: 150px;
+}
+
+
+.imgbox1  {
+    text-align: center;
+}
+
+.fabubgtian  {
+    height: 26px;
+   /*  margin-left: 14px; */
+    width: 122px;
+    text-align: center;
+}
+
+.upimg{
+	width:122px;
+	height:122px; 
+}
+</style>
 </head>
 <body>
 <div class="rightContainer fr">
@@ -82,7 +108,7 @@
 						<div class="fun-bar" id="tupianheader">
 					   	<ul class="fun-tabs">
 						   	<li class="shangchuanselect" id="shangchuan1" onclick="com_img_upload();">本地上传</li>
-						  <!--  	<li id="shangchuan2">图片空间</li> -->
+						  <!-- 	<li id="shangchuan2 hidden">图片空间</li> -->
 						</ul>
 						</div>
 					</td>
@@ -112,7 +138,6 @@
 									加载用户文件夹...
 								</div>
 							</div>
-							<div class="clear"></div>
 						</div>
 						<div id="com_shangchuanbox" class="fl"></div>
 						</div>
@@ -121,7 +146,7 @@
 							<ul id="upimgul">
 								<li class="prebakimg">
 									<div class="imgbox" id="imgbox1">
-										 <img src="/img/default/upload-img-bak.jpg" width="102" height="102"/>
+										 <img src="/img/default/upload-img-bak.jpg" width="122" height="122"/>
 									</div>
 									<div class="fabubgtian hidden">
 									<span class="" onclick="zhigu.goods.mleft(this)">左移</span>

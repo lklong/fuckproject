@@ -15,7 +15,7 @@ public class ShoppingCart {
 	private List<ShoppingCartItem> item;
 
 	// 订单确认处便于统计而用，其他地方禁用
-	// private BigDecimal storeTotal;// 店铺合计
+	private BigDecimal storeGoodsMoneyTotal;// 店铺合计
 	private BigDecimal weight;// 重量
 
 	public int getStoreId() {
@@ -59,12 +59,11 @@ public class ShoppingCart {
 	}
 
 	// 计算当前店铺总计
-	public BigDecimal getStoreTotal() {
+	public BigDecimal getStoreGoodsMoneyTotal() {
 		BigDecimal temp = new BigDecimal(0);
 		if (CollectionUtils.isNotEmpty(item)) {
-			for (int j = 0; j < item.size(); j++) {
-				ShoppingCartItem _item = item.get(j);
-				temp = temp.add(_item.getGoodsSku().getPrice().multiply(new BigDecimal(_item.getQuantity())));
+			for (ShoppingCartItem item : item) {
+				temp = temp.add(item.getGoodsSku().getPrice().multiply(new BigDecimal(item.getQuantity())));
 			}
 		}
 		return temp;
@@ -73,8 +72,7 @@ public class ShoppingCart {
 	public BigDecimal getWeight() {
 		weight = new BigDecimal(0);
 		if (CollectionUtils.isNotEmpty(item)) {
-			for (int j = 0; j < item.size(); j++) {
-				ShoppingCartItem i = item.get(j);
+			for (ShoppingCartItem i : item) {
 				weight = weight.add(new BigDecimal(String.valueOf(i.getGoods().getWeight())).multiply(new BigDecimal(String.valueOf(i.getQuantity()))));
 			}
 		}

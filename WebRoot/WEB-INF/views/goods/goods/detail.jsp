@@ -9,7 +9,7 @@
 <link href="/css/default/goods.css" rel="stylesheet"/>
 <script src="js/mz-packed.js"></script>
 <script src="/js/jquery.lazyload.js"></script>
-<script src="js/3rdparty/layer/layer.min.js"></script>
+<script src="/js/3rdparty/layer1.9/layer.js"></script>
 <script type="text/javascript">
 	$(function(){
 		$("img.lazy","#description").lazyload({
@@ -116,7 +116,7 @@
             <!--   <li onclick="selTab(this,'pingLunBox'),loadEavaluate()">商品评论</li> -->
             <li class="infoSelectedLi" data-container="baseInfo">商品详情</li>
             <!-- 	<li class="baseInfo infoSelectedLi" data-path="/goods/ajax/comments" data-container="pingLunBox">商品详情</li> -->
-            <li class="download remote" data-path="/goods/ajax/downloads" data-container="downDataList">下载详情</li>
+            <li class="download remote" data-path="/goods/ajax/download/history" data-container="downDataList">下载详情</li>
             <li class="comment remote" data-path="/goods/ajax/comments" data-container="pingLunBox">商品评论</li>
             <!--<li style="cursor: pointer;" onclick="selTab(this,'tousuFankui')">投诉反馈</li>-->
           </ul>
@@ -414,24 +414,16 @@ $(function(){
 		var url = "/user/cart/add";
 		ajaxSubmit(url, json, function(msgBean){
 			if(msgBean.code==zhigu.code.success){
-				$.layer({
-				    shade: [0],
-				    area: ['350px','200px'],
-				    dialog: {
-				        msg: msgBean.msg,
-				        btns: 2,                    
-				        type: 0,
-				        btn: [' 去购物车 ',' 继续购物 '],
-				        yes: function(){
-				        	window.location.href = '/user/cart';
-				        }, no: function(index){
-				        	zhigu.refreshCartNum();
-				            layer.closeAll();
-				        }
+				layer.open({
+				    content: msgBean.msg
+				    ,btn: ['去购物车', '继续购物']
+				    ,yes: function(index, layero){
+				    	window.location.href = '/user/cart';
+				    },cancel: function(index){
+				    	layer.close(index);
 				    }
 				});
 			}else{
-				//layer.alert(msgBean.msg+html, 8);
 				layer.alert(msgBean.msg, 8);
 			}
 		});
@@ -596,7 +588,7 @@ function submitComplaint(){
 	}
 	ajaxSubmit("user/goods/complaint", $("#complaintForm").serialize(), function(msgBean){
 		if(msgBean.code == zhigu.code.success){
-			layer.msg(msgBean.msg, 1, f5);
+			layer.msg(msgBean.msg, f5);
 			$("#complaintContent").val("");
 		}else{
 			layer.alert(msgBean.msg);

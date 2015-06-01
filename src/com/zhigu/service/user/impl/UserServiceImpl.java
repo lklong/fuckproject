@@ -31,7 +31,6 @@ import com.zhigu.common.constant.enumconst.AuthStatus;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.exception.ServiceException;
 import com.zhigu.common.utils.DateUtil;
-import com.zhigu.common.utils.IDCardUtil;
 import com.zhigu.common.utils.Md5;
 import com.zhigu.common.utils.NetUtil;
 import com.zhigu.common.utils.ServiceMsg;
@@ -47,7 +46,6 @@ import com.zhigu.model.Account;
 import com.zhigu.model.LoginLog;
 import com.zhigu.model.OpenAuth;
 import com.zhigu.model.PageBean;
-import com.zhigu.model.RealUserAuth;
 import com.zhigu.model.Store;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.UserInfo;
@@ -230,6 +228,7 @@ public class UserServiceImpl implements IUserService {
 		info.setPhone(auth.getPhone());
 		info.setNickName(auth.getUsername());
 		info.setRegisterTime(new Date());
+		info.setRealUserAuthFlg(AuthStatus.ON_AUTH.getValue());
 
 		userDao.saveUserInfo(info);
 
@@ -285,66 +284,6 @@ public class UserServiceImpl implements IUserService {
 			sess.setStoreId(store.getID());
 		}
 		return sess;
-	}
-
-	@Override
-	public RealUserAuth queryRealUserAuth(int userID) {
-		return userDao.queryRealUserAuth(userID);
-	}
-
-	@Override
-	public MsgBean updateRealUserAuth(RealUserAuth realUserAuth) {
-		MsgBean checkMsg = checkRealAuth(realUserAuth);
-		if (checkMsg.getCode() != Code.SUCCESS) {
-			return checkMsg;
-		}
-		userDao.updateRealUserAuth(realUserAuth);
-		if (realUserAuth.getApproveState() == AuthStatus.PASS.getValue()) {
-			// 更新为通过实名认证
-			userDao.updateUserInfoRealUserFlg(realUserAuth.getUserID(), Flg.ON);
-		}
-		return new MsgBean(Code.SUCCESS, "成功更新实名认证", MsgLevel.NORMAL);
-	}
-
-	@Override
-	public MsgBean saveRealUserAuth(RealUserAuth realUserAuth) {
-		MsgBean checkMsg = checkRealAuth(realUserAuth);
-		if (checkMsg.getCode() != Code.SUCCESS) {
-			return checkMsg;
-		}
-		userDao.saveRealUserAuth(realUserAuth);
-		return new MsgBean(Code.SUCCESS, "成功保存实名认证", MsgLevel.NORMAL);
-	}
-
-	private MsgBean checkRealAuth(RealUserAuth realUserAuth) {
-		if (StringUtil.isEmpty(realUserAuth.getRealName())) {
-			return new MsgBean(Code.FAIL, "用户名不能为空！", MsgLevel.ERROR);
-		}
-		if (StringUtil.isEmpty(realUserAuth.getIdCard())) {
-			return new MsgBean(Code.FAIL, "身份证号不能为空！", MsgLevel.ERROR);
-		}
-		if (!IDCardUtil.isIDCard(realUserAuth.getIdCard())) {
-			return new MsgBean(Code.FAIL, "身份证错误", MsgLevel.ERROR);
-		}
-		RealUserAuth ra = userDao.queryRealUserAuthByIdcard(realUserAuth.getIdCard().trim());
-		if (ra != null && ra.getApproveState() == AuthStatus.PASS.getValue()) {
-			return new MsgBean(Code.FAIL, "该身份证已用于其他账户认证！", MsgLevel.ERROR);
-		}
-		if (StringUtil.isEmpty(realUserAuth.getCardValidity()) && realUserAuth.getPerpetual() == Flg.OFF) {
-			return new MsgBean(Code.FAIL, "身份证有效期不能为空！", MsgLevel.ERROR);
-		}
-		if (StringUtil.isEmpty(realUserAuth.getCardFrontImg())) {
-			return new MsgBean(Code.FAIL, "身份证正面图片不能为空！", MsgLevel.ERROR);
-		}
-		// if (StringUtil.isEmpty(realUserAuth.getCardBackImg())) {
-		// mv.addObject("msg_cardBackImg", "身份证反面不能为空！");
-		// flg = false;
-		// }
-		// if (StringUtil.isEmpty(realUserAuth.getAlipay())) {
-		// mv.addObject("msg_alipay", "支付宝账号不能为空！");
-		// flg = false;
-		// }
-		return new MsgBean(Code.SUCCESS, "ok", MsgLevel.NORMAL);
 	}
 
 	@Override
@@ -480,11 +419,6 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public List<UserRecommend> queryUserRecommendByUserID(PageBean<UserRecommend> page, int userID) {
 		return userDao.queryUserRecommendByUserIDByPage(page, userID);
-	}
-
-	@Override
-	public RealUserAuth queryRealUserAuthByIdcard(String idcard) {
-		return userDao.queryRealUserAuthByIdcard(idcard);
 	}
 
 	@Override

@@ -5,11 +5,24 @@
   <div class="intoTopInside">
     <div class="infoTopLeft">
       <div class="infoTopImg"> <a href="store/index?storeId=${store.ID}"><img src="${store.logoPath}" height="65" width="65" /></a> </div>
-      <div class="infoTopText">
-        <h3><a href="store/index?storeId=${store.ID}">${store.storeName }</a></h3>
-      </div>
-      <div class="infoTopText side-border">
-      	<p><a id="wsc" class="add_shop" href="javascript:void(0)" onclick="favoStore(${store.ID});" >收藏店铺</a> <a id="ysc" class="add_shop" href="javascript:void(0)" >已收藏</a></p>
+      <div id="JS-shop-panel" class="infoTopText side-border">
+        <h2><a href="store/index?storeId=${store.ID}" class="color-red">${store.storeName }</a></h2>
+		<div id="JS-shop-info" class="shop-info-panel">
+			<p class="shop-p">
+		     	<a id="wsc" class="add_shop" href="javascript:void(0)" onclick="favoStore(${store.ID});" >收藏店铺</a>
+				<a id="ysc" class="add_shop" href="javascript:void(0)" >已收藏</a>
+			</p>
+			<ul>
+				<!-- 实名认证 -->
+				<li><span class="rzspan shiming"></span></li>
+				<!-- 实地认证 -->
+				<li><span class="rzspan shidi"></span></li>
+				<!-- 企业认证 -->
+				<li><span class="rzspan qiye"></span></li>
+				<!-- 买家保障 -->
+				<li></li>
+			</ul>
+		</div>
       </div>
       <div class="infoTopText side-border">
       	<p>直达域名：${store.domain }.zhiguw.com</p>
@@ -28,52 +41,54 @@
       </div>
     </div>
     <div class="infoTopRight">
-      
-      <table border="0" cellspacing="0" cellpadding="0" style="display:none;">
-        <tr> 
-          <!-- 个人认证 -->
-          <td  id="geren_renzheng_area" >&nbsp;&nbsp;</td>
-          <!-- 店铺认证 -->
-          <c:if test="${store.realStoreAuth==1 }">
-            <td><span id="dianpu_renzheng"></span>&nbsp;&nbsp;</td>
-          </c:if>
-          <!-- 企业认证 -->
-          <c:if test="${store.companyAuth==1 }">
-            <td><span id="qiye_renzheng"></span>&nbsp;&nbsp;</td>
-          </c:if>
-        </tr>
-      </table>
+      <div id="search" class="search-bar fl">
+      <div class="search-input-div fl">
+        <form method="post" action="/home/search" id="head_search_form">
+          <input type="text" maxlength="30" value="输入商品名或货号" class="search-input" id="keyword" name="goodsName">
+        </form>
+        <div class="search-selector">
+          <div id="search-selector-cur">商品</div>
+          <ul id="search-selector-list">
+            <li data-name="goodsName">商品</li>
+            <li data-name="propName">货号</li>
+            <li data-name="storeName">店铺</li>
+          </ul>
+        </div>
+      </div>
+      <div class="search-button-div fl">
+        <input type="button" class="search-button" id="searchbtn">
+      </div>
+    </div>
     </div>
   </div>
-  <div class="shop-banner"></div>
-  <div class="shopTopNav">
-  	<div class="shopNavInside">
-      <ul>
-        <li><a href="store/index?storeId=${store.ID}">店铺首页</a></li>
-        <li>|</li>
-        <li><a href="store/intro?storeId=${store.ID}">商家介绍</a></li>
-        <li>|</li>
-        <li><a href="store/notice?storeId=${store.ID }">商家公告</a></li>
-        <li>|</li>
-      </ul>
-    </div>
+  <div class="shop-banner">
+  	  <div class="shop-nav-inner">
+	  	  <div class="shopNavInside">
+		      <ul>
+		        <li><a href="store/index?storeId=${store.ID}">店铺首页</a></li>
+		        <li>|</li>
+		        <li><a href="store/intro?storeId=${store.ID}">商家介绍</a></li>
+		        <li>|</li>
+		        <li><a href="store/notice?storeId=${store.ID }">商家公告</a></li>
+		        <li>|</li>
+		      </ul>
+		  </div>
+  	  </div>
+  	  <!-- 半透明背景条 -->
+  	  <div class="shopTopNav"></div>
   </div>
 </div>
 <script type="text/javascript">
-function addFav() { // 加入收藏夹 
-	var sURL = window.location.href; 
-	var sTitle = document.title;
-	try{ 
-		window.external.addFavorite(sURL, sTitle);
-	} catch (e){
-		try{ 
-			window.sidebar.addPanel(sTitle, sURL, "");
-		} catch (e){ 
-			alert("加入收藏失败，请使用Ctrl+D进行添加");
-		 }
-	}
-}
 $(function(){
+	/* 显示或隐藏店铺认证信息板 */
+	$('#JS-shop-panel').hover(
+			function(){
+				$('#JS-shop-info').show();
+			},
+			function(){
+				$('#JS-shop-info').hide();
+			});
+	
 	$.get("/store/info",{"storeId":"${store.ID}"},function(msgBean){
 		if(msgBean.code==zhigu.code.success){
 			if(msgBean.data.isRealUserAuth){

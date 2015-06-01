@@ -1,71 +1,72 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-</head>
+<head>
 <body>
-	<div style="width:700px;" >
-		<label class="error fl" id="error" style="padding-left: 150px;"></label>
-		<div class="clear"></div>
-	</div>
-	<div class="tianjiaform pt10">
-		<div  id="addForm" >
-			<div class="tjformtxt">
-				<p class="fl">
-					<span class="thxing">*</span>收货人姓名：
-				</p>
-				<input name="ID" value="${address.ID }" type="hidden" id="addressId">
-				<input class="tjtext1 fl" name="name" value="${address.name }" type="text" /><span class="errorMsg red"></span>
-				<div class="clear"></div>
-			</div>
-			<div class="tjformtxt">
-				<p class="fl">
-					<span class="thxing">*</span>手机号码：
-				</p>
-				<span><input class="tjtext1 fl" name="phone" value="${address.phone }" type="text" /><span class="errorMsg red"></span></span>
-				<div class="clear"></div>
-			</div>
-			<div class="tjformtxt">
-				<p class="fl">
-					<span class="thxing">*</span>所在地区：
-				</p>
-				<select name="province" id="province" style="width: 110px;"></select>
-				<select name="city" id="city" style="width: 110px;"></select>
-				<select name="district" id="district" style="width: 110px;"></select>
-				<span class="errorMsg red"></span>
-				<div class="clear"></div>
-			</div>
-			<div class="tjformtxt">
-				<p class="fl">
-					<span class="thxing">*</span>街道地址：
-				</p>
-				<span><input class="tjtext2 fl" name="street" value="${address.street }" type="text" /><span class="errorMsg red"></span></span>
-				<div class="clear"></div>
-			</div>
-			<div class="tjformtxt">
-				<p class="fl">
-					邮政编码：
-				</p>
-				<span><input class="tjtext1 fl" name="postcode" value="${address.postcode }" type="text" /><span class="errorMsg red"></span></span>
-				<div class="clear"></div>
-			</div>
-			<div class="tjformtxt">
-				<p class="fl">电话号码：</p>
-				<span><input class="tjtext2 fl" type="text" name="tel" value="${address.tel }" /><span class="errorMsg red"></span></span>
-				<div class="clear"></div>
-			</div>
-			<div class="tjformtxt pl20">
-				<input id="tjcheck1" class="fl ml50 mt15" name="isDefault"  <c:if test="${address.isDefault == 1 }">checked="checked"</c:if> value="1" type="checkbox" /> 
-				<label for="tjcheck1" class="fl ml5 mr10">设置为默认地址</label>
-				<button class="tjsub fl mt5 mr10 cp" type="button"  onclick="submitAddr();">保存</button> 
-				<!-- <a class="tja c666" href="javascript:void(0)" onclick="confirmDialogClose()">取消</a> -->
-				<div class="clear"></div>
-			</div>
-		</div>
-	</div>
-	<script type="text/javascript">
+<table id="addForm" cellpadding="0" cellspacing="0" class="user-form-table">
+				<tr>
+					<td>&nbsp;</td>
+					<td><label class="color-red" id="error"></label></td>
+				</tr>
+				<tr>
+					<td><span color="color-red"> * </span>收货人姓名：</td>
+					<td>
+						<input name="ID" value="${address.ID }" type="hidden" id="addressId">
+      					<input class="tjtext1 fl" name="name" value="${address.name }" type="text" />
+      					<span class="errorMsg color-red"></span>
+					</td>
+				</tr>
+				<tr>
+					<td><span color="color-red"> * </span>手机号码： </td>
+					<td>
+						<input class="tjtext1 fl" name="phone" value="${address.phone }" type="text" />
+						<span class="errorMsg color-red"></span>
+					</td>
+				</tr>
+				<tr>
+					<td><span color="color-red"> * </span>所在地区：</td>
+					<td>
+						<select name="province" id="province"></select>
+					    <select name="city" id="city"></select>
+					    <select name="district" id="district"></select>
+					    <span class="errorMsg color-red"></span>
+					</td>
+				</tr>
+				<tr>
+					<td><span color="color-red"> * </span>街道地址：</td>
+					<td>
+						<input class="tjtext2 fl" name="street" value="${address.street }" type="text" />
+      					<span class="errorMsg color-red"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>邮政编码： </td>
+					<td>
+						<input class="tjtext1 fl" name="postcode" value="${address.postcode }" type="text" />
+	      				<span class="errorMsg color-red"></span>
+      				</td>
+				</tr>
+				<tr>
+					<td>电话号码：</td>
+					<td>
+					<input class="tjtext2 fl" type="text" name="tel" value="${address.tel }" />
+					<span class="errorMsg color-red"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>
+					<input id="tjcheck1" name="isDefault"  <c:if test="${address.isDefault == 1 }">checked="checked"</c:if> value="1" type="checkbox" />
+					<label for="tjcheck1" >设置为默认地址</label>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><input class="input-button" type="button"  onclick="submitAddr();" value="保存"/>
+				</tr>
+</table>
+<script type="text/javascript">
 		$(function() {
 			var pro = "${address.province}";
 			var city = "${address.city}";
@@ -125,4 +126,5 @@ var submitAddr = function(){
 	},"json");
 }
 	</script>
-</body></html>
+</body>
+</html>

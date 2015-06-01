@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.zhigu.model.PageBean;
-import com.zhigu.model.RealUserAuth;
 import com.zhigu.model.SendAward;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.UserInfo;
@@ -172,35 +171,6 @@ public interface UserMapper {
 	 * @param userID
 	 */
 	public void updateUserauthInfoLoginData(int userID);
-
-	/**
-	 * 用户实名认证
-	 * 
-	 * @param userID
-	 */
-	public RealUserAuth queryRealUserAuth(int userID);
-
-	/**
-	 * 查询用户实名认证
-	 * 
-	 * @param idcard
-	 *            身份证号
-	 */
-	public RealUserAuth queryRealUserAuthByIdcard(String idcard);
-
-	/**
-	 * 用户实名认证修改
-	 * 
-	 * @param userID
-	 */
-	public void updateRealUserAuth(RealUserAuth realUserAuth);
-
-	/**
-	 * 用户实名认证保存
-	 * 
-	 * @param userID
-	 */
-	public void saveRealUserAuth(RealUserAuth realUserAuth);
 
 	/**
 	 * 添加用户淘宝

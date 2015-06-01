@@ -1,17 +1,6 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<style type="text/css" >
-.reply {
-	border: 1px solid #ccc;
-	float: right;
-	margin-right: 20px;
-}
-.reply_text {
-	width: 739px;
-	height: 55px;
-}
-</style>
 <div class="changeDiv">
   <ul>
     <li style="cursor: pointer;" class="pingLunSelected all" data-type="all">全部评价(${commentCountMap.all})</li>
@@ -49,25 +38,26 @@
           <fmt:formatDate value="${comment.replyTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
         </p>
       </c:if>
-      <p class="reply_p hidden">
+      <p class="reply_p disnone">
         <textarea class="reply_text" data-id="${comment.id}" placeholder="200个字符内"></textarea>
         <input type="button" value="确认回复" class="reply confirm_reply_btn" style="margin-top:36px" >
       </p>
     </div>
   </div>
 </c:forEach>
+</div>
 <!--** 提交评论框**-->
-<!-- <div class="commandSubmitBox disnone">
+<div class="commandSubmitBox disnone">
   <div>评分：<img src="img/default/star2.png" /><img src="img/default/star2.png" /><img src="img/default/star2.png" /><img src="img/default/star2.png" /><img src="img/default/star2.png" />&nbsp;&nbsp;5星</div>
   <div>用户名：西西</div>
   <div>
     <textarea rows="" cols="" class="submitTextArea"></textarea>
   </div>
   <div>
-    <button class="tijiaoPingLun">提交评论</button>
+    <input type="button" class="input-button" value="提交评论"/>
   </div>
 </div>
-<div class="clear"></div> -->
+<div class="clear"></div>
 <div class="ddpage fr mt20">
   <jsp:include page="../../include/page.jsp">
   <jsp:param name="request" value="ajax"/>

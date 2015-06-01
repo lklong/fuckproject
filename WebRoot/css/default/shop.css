@@ -1,55 +1,312 @@
 /* 商家档案 */
-.shop_info_body { width:1190px; background:url(../../img/shop/bg.jpg); margin:20px auto; padding-top:1px; padding-bottom:1px; font-size:1.2em;}
-.shop_info_inner { margin:10px; border:1px solid #BBD4E0; background-color:#ffffff;}
-.head_info { height:42px; background:url(../../img/shop/head_bg.jpg); line-height:40px; font-size:16px; font-weight:bold; text-indent:14px;}
-.head_body { width:1142px; margin:10px auto 30px auto;}
-.body_title { height:34px; background:url(../../img/shop/body_head_bg.jpg); line-height:34px; text-indent:35px; background-color:#ffffff; font-size:14px;}
-.body_info { border:1px solid #E1E1E1; padding:20px; position:relative;}
-.body_info h3 { height:63px; line-height:63px; font-size:20px; font-weight:normal;}
-.body_info h3 img { margin-bottom:-13px; margin-left:20px;}
-.body_info p { color:#787878; line-height:20px; background:url(../../img/shop/dot_line_01.jpg) repeat-x left bottom; padding-bottom:30px;}
-.body_div { padding-top:20px; line-height:22px; color:#454545;}
-.body_table { width:100%;}
-.body_table td { background:url(../../img/shop/dot_line_01.jpg) repeat-x left bottom; height:40px; line-height:40px;}
-.body_info ul { height:175px; background-color:#F4F4F4; margin-top:40px;}
-.body_info ul li { float:left; margin:10px;}
-.zhenshi_renzheng { height:125px; width:125px; position:absolute; z-indenx:11; background:url(../../img/shop/zhenshi.png) no-repeat; right:20px;}
-.shidi_renzheng { height:125px; width:125px; position:absolute; z-indenx:11; background:url(../../img/shop/shidi.png) no-repeat; right:20px;}
-.span_renzheng { display:block; height:43px; width:48px; margin-right:5px; float:left; margin-left:5px; margin-top:10px;}
-.qiye { background:url(../../img/shop/renzheng.png) no-repeat left top;}
-.shidi { background:url(../../img/shop/renzheng.png) no-repeat -60px top;}
-.baozhang { background:url(../../img/shop/renzheng.png) no-repeat right top;}
-.rzspan { height:42px; width:50px; display:block; float:left; margin-right:10px;}
-.shiming { background:url(../../img/shop/renzheng.png) no-repeat -186px top;}
-.geren { background:url(../../img/shop/renzheng.png) no-repeat right top;}
-
+.shop_info_body {
+	width: 1190px;
+	background: url(../../img/shop/bg.jpg);
+	margin: 20px auto;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	font-size: 1.2em;
+}
+.shop_info_inner {
+	margin: 10px;
+	border: 1px solid #BBD4E0;
+	background-color: #ffffff;
+}
+.head_info {
+	height: 42px;
+	background: url(../../img/shop/head_bg.jpg);
+	line-height: 40px;
+	font-size: 16px;
+	font-weight: bold;
+	text-indent: 14px;
+}
+.head_body {
+	width: 1142px;
+	margin: 10px auto 30px auto;
+}
+.body_title {
+	height: 34px;
+	background: url(../../img/shop/body_head_bg.jpg);
+	line-height: 34px;
+	text-indent: 35px;
+	background-color: #ffffff;
+	font-size: 14px;
+}
+.body_info {
+	border: 1px solid #E1E1E1;
+	padding: 20px;
+	position: relative;
+}
+.body_info h3 {
+	height: 63px;
+	line-height: 63px;
+	font-size: 20px;
+	font-weight: normal;
+}
+.body_info h3 img {
+	margin-bottom: -13px;
+	margin-left: 20px;
+}
+.body_info p {
+	color: #787878;
+	line-height: 20px;
+	background: url(../../img/shop/dot_line_01.jpg) repeat-x left bottom;
+	padding-bottom: 30px;
+}
+.body_div {
+	padding-top: 20px;
+	line-height: 22px;
+	color: #454545;
+}
+.body_table {
+	width: 100%;
+}
+.body_table td {
+	background: url(../../img/shop/dot_line_01.jpg) repeat-x left bottom;
+	height: 40px;
+	line-height: 40px;
+}
+.body_info ul {
+	height: 175px;
+	background-color: #F4F4F4;
+	margin-top: 40px;
+}
+.body_info ul li {
+	float: left;
+	margin: 10px;
+}
+.zhenshi_renzheng {
+	height: 125px;
+	width: 125px;
+	position: absolute;
+	z-indenx: 11;
+	background: url(../../img/shop/zhenshi.png) no-repeat;
+	right: 20px;
+}
+.shidi_renzheng {
+	height: 125px;
+	width: 125px;
+	position: absolute;
+	z-indenx: 11;
+	background: url(../../img/shop/shidi.png) no-repeat;
+	right: 20px;
+}
+.span_renzheng {
+	display: block;
+	height: 43px;
+	width: 48px;
+	margin-right: 5px;
+	float: left;
+	margin-left: 5px;
+	margin-top: 10px;
+}
+.qiye {
+	background: url(../../img/shop/renzheng.png) no-repeat left top;
+}
+.shidi {
+	background: url(../../img/shop/renzheng.png) no-repeat -60px top;
+}
+.baozhang {
+	background: url(../../img/shop/renzheng.png) no-repeat right top;
+}
+.rzspan {
+	height: 42px;
+	width: 50px;
+	display: block;
+	float: left;
+	margin-right: 10px;
+}
+.shiming {
+	background: url(../../img/shop/renzheng.png) no-repeat -186px top;
+}
+.geren {
+	background: url(../../img/shop/renzheng.png) no-repeat right top;
+}
 /*-- 商家动态 --*/
-.shangJiaDongTai { width:1188px; border:1px solid #dedede; height:auto; margin:20px auto;}
-.shangJiaDongTai h3 { height:30px; line-height:30px; text-indent:15px; font-size:15px; color:#454545; background-color:#fafafa; border-bottom:1px solid #dedede;}
-.shangJiaDongTai li { height:40px; line-height:40px; text-indent:15px; width:1180px; margin:0 auto; border-bottom:1px dotted #dedede;}
-.shangJiaDongTai span { float:right; font-size:10px; color:#999999;}
-
+.shangJiaDongTai {
+	width: 1188px;
+	border: 1px solid #dedede;
+	height: auto;
+	margin: 20px auto;
+}
+.shangJiaDongTai h3 {
+	height: 30px;
+	line-height: 30px;
+	text-indent: 15px;
+	font-size: 15px;
+	color: #454545;
+	background-color: #fafafa;
+	border-bottom: 1px solid #dedede;
+}
+.shangJiaDongTai li {
+	height: 40px;
+	line-height: 40px;
+	text-indent: 15px;
+	width: 1180px;
+	margin: 0 auto;
+	border-bottom: 1px dotted #dedede;
+}
+.shangJiaDongTai span {
+	float: right;
+	font-size: 10px;
+	color: #999999;
+}
 /*-- 商家主页面 --*/
-.tongZhi { width:1188px; height:47px; border:1px solid #D2C7A4; margin:20px auto; background-color:#E3D7B1;}
-.tzTitle { float:left; height:47px; width:70px; text-align:center; line-height:47px; background:url(../../img/default/tongzhibg.gif) no-repeat right top;}
-.tzBox { color:#5c5c5c; padding-top:8px; padding-left:20px; float:left; width:1000px}
-#closeTZ { display:block; height:17px; width:17px; float:right; border:1px solid #A89E7D;background-color:#E3D7B1; color:#A89E7D; text-align:center; line-height:17px; font-size:18px; cursor:pointer; margin:13px;}
-.sortShopBar { width:1188px; border:1px solid #dedede; background-color:#fafafa; margin:0 auto; height:35px; margin-top:20px;}
-.shopGoodsListBox { width:1190px; padding-top:10px; height:auto; overflow:hidden; margin:0 auto; font-size:1.2em;}
-.sglbInside { width:1210px;}
-.fengXiangDivOut { display:none;}
-.goodsListBoxes { border:1px solid #dedede; float:left; width:220px; height:310px; margin-right:20px; background: #fff;margin-top: 20px;}
-.goodsListBoxes:hover { border:1px solid #c21902; float:left; width:220px; height:310px; margin-right:20px}
-.goodsListBoxes:hover .fengXiangDivOut { display:block;}
-#listImgBox { height:220px; width:220px; border-bottom:1px solid #dedede; position:relative;}
-.goodsListBoxes h3 {padding-top:5px; padding-left:5px; height:40px;}
-.goodsListBoxes p {padding-top:5px; padding-left:5px; color:#666666; padding-top:7px;}
-.goodsListBoxes p span { float:right; padding-top:5px; padding-right:7px;}
-
-.bsbSort { height:30px; width:1188px; font-size:1.2em;}
-.bsbSortDiv { height:16px; width:100px; float:left; margin-left:15px;}
-.sortUp_1 { display:block; float:left; height:13px; width:13px; background:url(../../img/default/sotrtbg.gif) no-repeat 2px 2px #f0f0f0; border:1px solid #dedede; cursor:pointer; margin-top:1px; margin-left:-1px;}
-.sortUp_2 { display:block; float:left; height:13px; width:13px; background:url(../../img/default/sotrtbg.gif) no-repeat 2px -19px #f0f0f0; border:1px solid #dedede; cursor:pointer; margin-top:1px; margin-left:-1px;}
-.sortDown_1 { display:block; float:left; height:13px; width:13px; background:url(../../img/default/sotrtbg.gif) no-repeat -19px 2px #f0f0f0; border:1px solid #dedede; cursor:pointer; margin-top:1px; margin-left:-1px;}
-.sortDown_2 { display:block; float:left; height:13px; width:13px; background:url(../../img/default/sotrtbg.gif) no-repeat -19px -19px #f0f0f0; border:1px solid #dedede; cursor:pointer; margin-top:1px; margin-left:-1px;}
-.bsbSortDiv div { float:left; padding:10px 0 10px 8px;}
+.tongZhi {
+	width: 1188px;
+	height: 47px;
+	border: 1px solid #D2C7A4;
+	margin: 20px auto;
+	background-color: #E3D7B1;
+}
+.tzTitle {
+	float: left;
+	height: 47px;
+	width: 70px;
+	text-align: center;
+	line-height: 47px;
+	background: url(../../img/default/tongzhibg.gif) no-repeat right top;
+}
+.tzBox {
+	color: #5c5c5c;
+	padding-top: 8px;
+	padding-left: 20px;
+	float: left;
+	width: 1000px
+}
+#closeTZ {
+	display: block;
+	height: 17px;
+	width: 17px;
+	float: right;
+	border: 1px solid #A89E7D;
+	background-color: #E3D7B1;
+	color: #A89E7D;
+	text-align: center;
+	line-height: 17px;
+	font-size: 18px;
+	cursor: pointer;
+	margin: 13px;
+}
+.sortShopBar {
+	width: 1188px;
+	border: 1px solid #dedede;
+	background-color: #fafafa;
+	margin: 0 auto;
+	height: 35px;
+	margin-top: 20px;
+}
+.shopGoodsListBox {
+	width: 1190px;
+	padding-top: 10px;
+	height: auto;
+	overflow: hidden;
+	margin: 0 auto;
+	font-size: 1.2em;
+}
+.sglbInside {
+	width: 1210px;
+}
+.fengXiangDivOut {
+	display: none;
+}
+.goodsListBoxes {
+	border: 1px solid #dedede;
+	float: left;
+	width: 220px;
+	height: 310px;
+	margin-right: 20px;
+	background: #fff;
+	margin-top: 20px;
+}
+.goodsListBoxes:hover {
+	border: 1px solid #c21902;
+	float: left;
+	width: 220px;
+	height: 310px;
+	margin-right: 20px
+}
+.goodsListBoxes:hover .fengXiangDivOut {
+	display: block;
+}
+#listImgBox {
+	height: 220px;
+	width: 220px;
+	border-bottom: 1px solid #dedede;
+	position: relative;
+}
+.goodsListBoxes h3 {
+	padding-top: 5px;
+	padding-left: 5px;
+	height: 40px;
+}
+.goodsListBoxes p {
+	padding-top: 5px;
+	padding-left: 5px;
+	color: #666666;
+	padding-top: 7px;
+}
+.goodsListBoxes p span {
+	float: right;
+	padding-top: 5px;
+	padding-right: 7px;
+}
+.bsbSort {
+	height: 30px;
+	width: 1188px;
+	font-size: 1.2em;
+}
+.bsbSortDiv {
+	height: 16px;
+	width: 100px;
+	float: left;
+	margin-left: 15px;
+}
+.sortUp_1 {
+	display: block;
+	float: left;
+	height: 13px;
+	width: 13px;
+	background: url(../../img/default/sotrtbg.gif) no-repeat 2px 2px #f0f0f0;
+	border: 1px solid #dedede;
+	cursor: pointer;
+	margin-top: 1px;
+	margin-left: -1px;
+}
+.sortUp_2 {
+	display: block;
+	float: left;
+	height: 13px;
+	width: 13px;
+	background: url(../../img/default/sotrtbg.gif) no-repeat 2px -19px #f0f0f0;
+	border: 1px solid #dedede;
+	cursor: pointer;
+	margin-top: 1px;
+	margin-left: -1px;
+}
+.sortDown_1 {
+	display: block;
+	float: left;
+	height: 13px;
+	width: 13px;
+	background: url(../../img/default/sotrtbg.gif) no-repeat -19px 2px #f0f0f0;
+	border: 1px solid #dedede;
+	cursor: pointer;
+	margin-top: 1px;
+	margin-left: -1px;
+}
+.sortDown_2 {
+	display: block;
+	float: left;
+	height: 13px;
+	width: 13px;
+	background: url(../../img/default/sotrtbg.gif) no-repeat -19px -19px #f0f0f0;
+	border: 1px solid #dedede;
+	cursor: pointer;
+	margin-top: 1px;
+	margin-left: -1px;
+}
+.bsbSortDiv div {
+	float: left;
+	padding: 10px 0 10px 8px;
+}

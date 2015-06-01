@@ -379,8 +379,9 @@ public class GoodsServiceImpl implements IGoodsService {
 	}
 
 	@Override
-	public List<DownloadHistory> queryDownloadHistory(PageBean<DownloadHistory> page, int goodsId) {
-		return goodsDao.queryDownloadHistoryByPage(page, goodsId);
+	public void queryDownloadHistory(PageBean<DownloadHistory> page, int goodsId) {
+		List<DownloadHistory> downloadHistories = goodsDao.queryDownloadHistoryByPage(page, goodsId);
+		page.setDatas(downloadHistories);
 	}
 
 	@Override

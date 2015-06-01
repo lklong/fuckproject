@@ -9,24 +9,16 @@
 </head>
 
 <body>
-	<div class="rightContainer">
+	<div class="rightContainer fr">
 		<!--// 标题 //-->
-		<h3 class="rc_title">
-			店铺公告<a href="user/home">我的主页</a>
-		</h3>
+		<h4 class="ddtitle">
+			店铺公告
+		</h4>
 		<!--// 内容框 //-->
 		<div class="rc_body">
-			<!--// tab切换条 //-->
-			<div id="userCommTab" class="userCommTab">
-				<ul>
-					<li><a href="javascript:void(0);" class="uctSelected">店铺公告</a></li>
-				</ul>
-			</div>
-			<div id="userContents" class="userContents">
 				<!--// 内容1 //-->
 				<div class="body_center2" id="alldd">
-					<ul class=" mt30 ml30 c666 f14 dpallzl">
-						<li>店铺公告：</li>
+					<ul class="ml30 c666 f14 dpallzl">
 						<li style="font-size: 12px;font-family: 黑体; ">
 							提示：
 							<ul>
@@ -49,7 +41,6 @@
 			</div>
 			<br style="clear: both;" />
 		</div>
-	</div>
 	<div class="clear"></div>
 <script type="text/javascript">
 function  add(){

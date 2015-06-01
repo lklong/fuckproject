@@ -51,15 +51,14 @@ public interface IAddressService {
 	/**
 	 * 修改默认地址
 	 * 
-	 * @param spad
 	 */
-	public void updateDefaultAddress(int userID, int addressID);
+	public MsgBean updateDefaultAddress(int userID, int addressID);
 
 	/**
 	 * 删除收货地址信息
 	 * 
 	 * @param spad
 	 */
-	public void deleteAddress(int userID, int addressID);
+	public MsgBean deleteAddress(int userID, int addressID);
 
 }

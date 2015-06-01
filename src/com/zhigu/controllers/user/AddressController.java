@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.constant.Code;
-import com.zhigu.common.constant.Flg;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.model.Address;
 import com.zhigu.model.dto.MsgBean;
@@ -49,15 +48,7 @@ public class AddressController {
 	@RequestMapping("/getDefaultAddress")
 	@ResponseBody
 	public Address getDefaultAddress() {
-		List<Address> list = addressService.queryAddressByUserID(SessionHelper.getSessionUser().getUserID());
-		if (list != null && !list.isEmpty()) {
-			for (Address addr : list) {
-				if (addr.getIsDefault() == Flg.ON) {
-					return addr;
-				}
-			}
-		}
-		return null;
+		return addressService.queryDefaultAddress(SessionHelper.getSessionUser().getUserID());
 	}
 
 	@RequestMapping("/add")

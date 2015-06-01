@@ -21,6 +21,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -477,7 +478,7 @@ public class GoodsController {
 	 * @param goodsId
 	 * @return
 	 */
-	@RequestMapping("/downloadHistory")
+	@RequestMapping(value = "/ajax/download/history", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView downloadHistory(PageBean<DownloadHistory> page, Integer goodsId, ModelAndView mv) {
 		page.setPageSize(30);
 		goodsService.queryDownloadHistory(page, goodsId);

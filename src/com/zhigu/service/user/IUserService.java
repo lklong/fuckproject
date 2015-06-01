@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.zhigu.common.SessionUser;
 import com.zhigu.model.LoginLog;
 import com.zhigu.model.PageBean;
-import com.zhigu.model.RealUserAuth;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.UserInfo;
 import com.zhigu.model.UserRecommend;
@@ -170,35 +169,6 @@ public interface IUserService {
 	 * @param userID
 	 */
 	public void updateAvatar(String path, int userID);
-
-	/**
-	 * 用户实名认证
-	 * 
-	 * @param userID
-	 */
-	public RealUserAuth queryRealUserAuth(int userID);
-
-	/**
-	 * 用户实名认证修改
-	 * 
-	 * @param userID
-	 */
-	public MsgBean updateRealUserAuth(RealUserAuth realUserAuth);
-
-	/**
-	 * 用户实名认证保存
-	 * 
-	 * @param userID
-	 */
-	public MsgBean saveRealUserAuth(RealUserAuth realUserAuth);
-
-	/**
-	 * 查询用户实名认证
-	 * 
-	 * @param idcard
-	 *            身份证号
-	 */
-	public RealUserAuth queryRealUserAuthByIdcard(String idcard);
 
 	/**
 	 * 刷新SessionUser对象

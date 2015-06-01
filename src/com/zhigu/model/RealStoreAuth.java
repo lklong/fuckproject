@@ -4,13 +4,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 企业认证
+ * 实体认证认证
  * 
  * @author HeSiMin
  * @date 2014年8月12日
  *
  */
 public class RealStoreAuth implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** ID */
 	private int ID;
 	/** 用户ID */

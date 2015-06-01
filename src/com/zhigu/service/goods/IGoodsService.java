@@ -124,7 +124,7 @@ public interface IGoodsService {
 	 * @param goodsId
 	 * @return
 	 */
-	public List<DownloadHistory> queryDownloadHistory(PageBean<DownloadHistory> page, int goodsId);
+	public void queryDownloadHistory(PageBean<DownloadHistory> page, int goodsId);
 
 	public int saveShortcutGoods(Shortcutgoods shortcutgoods);
 

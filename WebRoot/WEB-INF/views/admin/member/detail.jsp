@@ -7,7 +7,7 @@
 <head><base href="${applicationScope.basePath}"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="js/3rdparty/easyui/themes/bootstrap/easyui.css" rel="stylesheet" type="text/css" >
-<link href="css/jcDate.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/default/jcDate.css" rel="stylesheet" type="text/css" media="all" />
 <script src="js/admin/admin.js" type="text/javascript"></script>
 <title></title>
 </head>
@@ -21,6 +21,7 @@
 				<li onclick="showdis(this,'xianqinidd3')">店铺资料</li>
 			</c:if>
 			<li onclick="showdis(this,'xianqinidd4'),acc();">账户信息</li>
+			<li onclick="showdis(this,'xianqinidd6')">认证信息</li>
 		</ul>
 	<input type="hidden" id="memberID" value="${memberID }">
 </div>
@@ -92,7 +93,51 @@
 			</tr>
 		</table>
 	</div>
-	
+		<div class="hyglbox2 lh30 mt30 xianqinidd disnone" id="xianqinidd6">
+			<table class="sysCommonTable" cellspacing="0" cellpadding="0">
+				<tr>
+					<th width="7%">真实姓名：</th>
+					<td width="93%">${realUserAuth.realName }</td>
+				</tr>
+				<tr>
+					<th width="7%">身份证号码：</th>
+					<td width="93%">${realUserAuth.idCard}</td>
+				</tr>
+				<tr>
+					<th width="7%">身份证到期时间：</th>
+					<td width="93%"><c:choose>
+						<c:when test="${realUserAuth.perpetualFlag ==true}">长期</c:when>
+						<c:otherwise><fmt:formatDate value="${realUserAuth.cardValidity}" pattern="yyyy-MM-dd"/> </c:otherwise>
+						</c:choose> </td>
+			</tr>
+			<tr>
+				<th width="7%">身份证正面图</th>
+				<td width="93%"><img  src="${realUserAuth.cardFrontImg}"></td>
+			</tr>
+			<tr>
+				<th width="7%">业务员：</th>
+				<td width="93%">${addRealUser.realName }</td>
+			</tr>
+			<tr>
+				<th width="7%">上传时间：</th>
+				<td width="93%"><fmt:formatDate value="${realUserAuth.addTime }" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
+			</tr>
+			<tr>
+				<th width="7%">审核人：</th>
+				<td width="93%">${approve.realName }</td>
+			</tr>
+			<tr>
+				<th width="7%">审核时间：</th>
+				<td width="93%"><fmt:formatDate value="${realUserAuth.approveTime }" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
+			</tr>
+			<c:if test="${realUserAuth.status == 2 }">
+				<tr>
+				<th width="7%">驳回原因：</th>
+				<td width="93%">${realUserAuth.rejectReason }</td>
+			</tr>
+			</c:if>
+		</table>
+		</div>
 <div class="hyglbox2 lh30 mt30 xianqinidd disnone" id="xianqinidd3">
 	<table class="sysCommonTable" cellspacing="0" cellpadding="0">
 		<tr>

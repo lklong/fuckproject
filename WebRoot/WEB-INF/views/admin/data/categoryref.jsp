@@ -9,7 +9,7 @@
 
 <title>供应商店铺列表</title>
 <link href="js/3rdparty/easyui/themes/bootstrap/easyui.css" rel="stylesheet" type="text/css">
-<link href="css/jcDate.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/default/jcDate.css" rel="stylesheet" type="text/css" media="all" />
 <script src="js/admin/admin.js" type="text/javascript"></script>
 <link href="js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" language="javascript" src="js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>

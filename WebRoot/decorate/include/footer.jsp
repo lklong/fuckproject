@@ -24,9 +24,9 @@
       </ul>
       <ul>
         <li>
-          <h3><a href="/help/cemment?id=41">关于我们</a></h3>
+          <h3><a href="../static/help/helps.html">关于我们</a></h3>
         </li>
-        <li><a href="/help/cemment?id=41">公司简介</a></li>
+        <li><a href="../static/help/helps.html">公司简介</a></li>
         <li><a href="javascript:void(0)">联系我们</a></li>
         <li><a href="javascript:void(0)">团队招聘</a></li>
       </ul>

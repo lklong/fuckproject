@@ -172,36 +172,6 @@ public class IndexController {
 	}
 
 	/**
-	 * 搜索商品
-	 * 
-	 * @param mv
-	 * @param pageNo
-	 * @param searchName
-	 * @return
-	 */
-	// @RequestMapping("/searchGoods")
-	// public ModelAndView searchGoods(ModelAndView mv, @RequestParam(required =
-	// false) Integer pageNo, @RequestParam(required = false) String keyword) {
-	// try {
-	// if (!StringUtil.isEmpty(keyword) && keyword.equals(new
-	// String(keyword.getBytes(Common.ISO_8859_1), Common.ISO_8859_1))) {
-	// keyword = new String(keyword.getBytes(Common.ISO_8859_1), Common.UTF_8);
-	// }
-	// } catch (UnsupportedEncodingException e) {
-	// }
-	// PageBean<Goods> page = new PageBean<Goods>();
-	// page.setPageSize(30);
-	// page.setPageNo(pageNo == null ? 1 : pageNo.intValue());
-	// GoodsCondition gc = new GoodsCondition();
-	// gc.setGoodsName(keyword);
-	// goodsService.queryGoodsList(gc, page);
-	// mv.addObject("page", page);
-	// mv.addObject("keyword", keyword);
-	// mv.setViewName("home/searchGoods");
-	// return mv;
-	// }
-
-	/**
 	 * 前台商品检索
 	 * 
 	 * @param model

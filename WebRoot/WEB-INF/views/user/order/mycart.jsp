@@ -31,7 +31,7 @@
 				<th style="width: 9%">操作</th>
 			</tr>
 			<c:forEach items="${shoppingCartList }" var="sc" varStatus="scStatus">
-				<tr class="store-tr">
+				<tr class="js-store-tr">
 					<td colspan="8">
 						<!-- 店铺 -->
 						<div class="shop-list-head">
@@ -57,7 +57,7 @@
 						<!-- 商品 --> 
 						<c:forEach items="${sc.item }" var="item" varStatus="itemStatus">
 							<table cellpadding="0" cellspacing="0" class="shopping-list-table no-border-margin">
-								<tr class="goods-tr">
+								<tr class="js-goods-tr">
 									<td style="width: 6%">
 										<input onclick="zhigu.itemCheckBoxClick(this);" name="itemCheckBox"
 										class="jinhuocheck fl ml10 mr10 ckbox  ibox" data-goods-id="${item.goods.id}" data-sku-id="${item.goodsSku.id }" value="${item.id }"
@@ -70,7 +70,7 @@
 									<td style="width: 9%">${item.goodsSku.amount }</td>
 									<td style="width: 9%">
 										<a class="fl tc" href="javascript:void(0);" onclick="zhigu.addBuynum($(this).parent().find(':[name=buynum]')[0],-1);">-</a> 
-										<input name="buynum" class="modinum fl quantify" type="text"   maxlength="5"
+										<input name="buynum" class="modinum fl" type="text"   maxlength="5"
 											 data-item-id="${item.id}" data-repertory="${item.goodsSku.amount}" data-item-unit-price="${item.goodsSku.price }" value="${item.quantity }"
 											onblur="this.value=(this.value == '' ? 0 : parseInt(this.value,10));" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /> 
 										<a class="fl tc" href="javascript:void(0)" onclick="zhigu.addBuynum($(this).parent().find(':[name=buynum]')[0],1);">+</a>
@@ -120,7 +120,31 @@ $(function(){
 			zhigu.updateCartGoodsQuantity(this);
 		});
 	});
+	buyNumCheck();
 })
+// 购买数量检查，只根据选中的商品返回true/false
+function buyNumCheck(obj){
+	var okflag = true;
+	var singleCheck = function(obj){
+		var $this = $(obj);
+		if($this.val()>$this.data("repertory")){
+			if($this.closest(".js-goods-tr").find("input[name='itemCheckBox']").prop("checked")){
+				okflag = false;
+			}
+			$this.addClass("quantify");
+		}else{
+			$this.removeClass("quantify");
+		}
+	}
+	if(obj){
+		singleCheck(obj);
+	}else{
+		$("input[name='buynum']").each(function(){
+			singleCheck(this);
+		});
+	}
+	return okflag;
+}
 // 服务器请求，修改购物车商品数量
 zhigu.updateCartGoodsQuantity = function(buynum_obj){
 	var $buynum = $(buynum_obj);
@@ -131,17 +155,19 @@ zhigu.updateCartGoodsQuantity = function(buynum_obj){
 		return;
 	}
 	var repertory = $buynum.data("repertory");
-	if(repertory<quantity){
-		layer.alert("商品库存不足！");
-		return;
+// 	if(repertory<quantity){
+// 		layer.alert("商品库存不足！剩余库存为："+repertory);
+// 		return;
+// 	}
+	if(buyNumCheck(buynum_obj)){
+		$.post("/user/cart/updateGoodsQuantity",{"id":id,"quantity":quantity},function(msgBean){
+			if(msgBean.code==zhigu.code.success){
+				zhigu.cartCount();
+			}else{
+				layer.msg(msgBean.msg,2,f5);
+			}
+		});
 	}
-	$.post("/user/cart/updateGoodsQuantity",{"id":id,"quantity":quantity},function(msgBean){
-		if(msgBean.code==zhigu.code.success){
-			zhigu.cartCount();
-		}else{
-			layer.msg(msgBean.msg,2,f5);
-		}
-	});
 }
 // 添加购买数量
 zhigu.addBuynum = function(buynum_obj,addnum){
@@ -157,9 +183,9 @@ zhigu.addBuynum = function(buynum_obj,addnum){
 	zhigu.updateCartGoodsQuantity(buynum_obj);
 }
 // 服务器请求，选中状态修改(param[] = id:isChecked)
-zhigu.updateIsChecked = function(param){
-	if(!param||param.length<1)return;
-	$.post("/user/cart/checked",{"idAndIsChecked":param},function(result){
+zhigu.updateIsChecked = function(paramArray){
+	if(!paramArray||paramArray.length<1)return;
+	$.post("/user/cart/checked",{"idAndIsChecked":paramArray.join()},function(result){
 		if(result.code==1){
 			zhigu.cartCount();
 		}else{
@@ -169,7 +195,7 @@ zhigu.updateIsChecked = function(param){
 }
 zhigu.itemCheckBoxClick = function(obj){
 	var toIschecked = $(obj).prop("checked")?1:0;
-	var param = $(obj).val()+":"+toIschecked;
+	var param = [$(obj).val()+":"+toIschecked];
 	zhigu.updateIsChecked(param);
 }
 zhigu.storeCheckBoxClick = function(obj){
@@ -177,10 +203,10 @@ zhigu.storeCheckBoxClick = function(obj){
 	var itemCheckBox = {};
 	if(toIschecked==1){
 		// 获取未被选中的项
-		itemCheckBox = $(obj).closest(".store-tr").find("input[name='itemCheckBox']").not(":checked");
+		itemCheckBox = $(obj).closest(".js-store-tr").find("input[name='itemCheckBox']").not(":checked");
 		itemCheckBox.prop("checked",true);
 	}else{
-		itemCheckBox = $(obj).closest(".store-tr").find("input[name='itemCheckBox']:checked");
+		itemCheckBox = $(obj).closest(".js-store-tr").find("input[name='itemCheckBox']:checked");
 		itemCheckBox.prop("checked",false);
 	}
 	var param = [];
@@ -216,11 +242,11 @@ zhigu.cartCount = function(){
 	var  allQuantity= 0;
 	var allMoneyCount=0;
 	// 循环处理每一个店铺
-	$(".store-tr").each(function(){
+	$(".js-store-tr").each(function(){
 		var $storeTr = $(this);
 		var storeCountPrice = 0;
 		// 循环处理店铺里的商品
-		$storeTr.find(".goods-tr").each(function(){
+		$storeTr.find(".js-goods-tr").each(function(){
 			var $goodsTr = $(this);
 			var $buynumInput = $goodsTr.find("input[name='buynum']");
 			var goodsCountPrice = zhigu.cmn.arith($buynumInput.val(),"*",$buynumInput.data("item-unit-price"));
@@ -277,8 +303,13 @@ function del(item){
 }
 //确认订单
 function confirm(){
-	window.location.href="/user/order/confirm";
+	if(buyNumCheck()){
+		window.location.href="/user/order/confirm";
+	}else{
+		layer.alert("有库存不足的商品，请修改");
+	}
 }
+
 //收藏商品
 function addFavouriteGoods(goodsID){
 	$.post("/user/favourite/addFavouriteGoods",{"goodsID":goodsID},function(msgBean){

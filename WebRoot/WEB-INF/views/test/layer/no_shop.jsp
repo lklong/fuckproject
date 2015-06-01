@@ -4,6 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>淘宝产品发布-没店铺</title>
+<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
 
 </head>
 <body>

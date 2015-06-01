@@ -8,6 +8,10 @@ package com.zhigu.common.constant.enumconst;
  *
  */
 public enum AuthStatus {
+	/**
+	 * 未认证
+	 */
+	ON_AUTH("未认证", 0),
 	// 待审核
 	WAIT("待审核", 1),
 	// 通过

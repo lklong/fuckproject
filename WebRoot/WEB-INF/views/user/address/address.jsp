@@ -4,6 +4,7 @@
 <html>
 <head>
 <script type="text/javascript" src="js/pca.js"></script>
+<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
 <title>收货地址</title>
 </head>
 <body>
@@ -35,10 +36,10 @@
                     <c:when test="${ad.phone!='' && ad.phone!=null}"> ${ad.phone} </c:when>
                     <c:otherwise> ${ad.tel} </c:otherwise>
                   </c:choose></td>
-                <td><c:choose>
-                    <c:when test="${ad.isDefault==1}"> 默认地址 </c:when>
-                    <c:when test="${ad.isDefault!=1}"> <a href="javascript:void(0)" onclick="setDefault(${ad.ID})">设为默认</a> </c:when>
-                  </c:choose></td>
+                <td>
+                  <c:if test="${ad.isDefault == 0 }"> <a href="javascript:void(0)" onclick="setDefault(${ad.ID})" >设为默认</a> </c:if>
+                  <c:if test="${ad.isDefault == 1 }">默认地址</c:if>
+                  </td>
                 <td><a href="/user/address/set?addressId=${ad.ID}" class="edit-user-photo">修改</a><a class="edit-user-photo" onclick="del(${ad.ID})">删除</a></td>
               </tr>
             </c:forEach>

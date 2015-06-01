@@ -40,7 +40,7 @@
               <li>
                 <c:if test="${s.companyAuth==1 }"><span class="rzspan qiye"></span></c:if>
                 <c:if test="${s.realStoreAuth==1 }"><span class="rzspan shidi"></span></c:if>
-                <!-- 	                    		<span class="rzspan geren"></span> --> 
+                <c:if test="${s.realUserAuthFlg==1 }"><span class="rzspan shiming"></span></c:if>
               </li>
             </ul>
             <ul class="w200">

@@ -2,9 +2,13 @@
 <!doctype html>
 <html>
 <head>
-<!-- 滚动相册插件-orbit-css -->
 <link rel="stylesheet"  href="/css/default/orbit.css?v=20150505">
-<title>智谷首页</title></head>
+<meta name='keywords' content='同城,货源,同城货源,服装批发网,批发市场,摄影,网店装修,一件代发' />
+<meta name='description' content='智谷同城货源网是一家专业从事电子商务运营平台，提供最优质的"同城货源"、一件代发服务；专业服务、品质保障！欢迎访问 www.zhiguw.com' />
+<title>货源批发网</title>
+
+<!-- 滚动相册插件-orbit-css -->
+</head>
 <body>
 <!-- 主Flash -->
 <div class="flash">

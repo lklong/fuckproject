@@ -1,7 +1,5 @@
 package com.zhigu.controllers.user;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,23 +7,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.SessionUser;
 import com.zhigu.common.constant.Code;
-import com.zhigu.common.constant.Flg;
-import com.zhigu.common.constant.SystemConstants;
 import com.zhigu.common.constant.UserType;
-import com.zhigu.common.constant.enumconst.AuthStatus;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.utils.DateUtil;
-import com.zhigu.common.utils.ImageUtil;
 import com.zhigu.common.utils.ServiceMsg;
 import com.zhigu.common.utils.StringUtil;
-import com.zhigu.common.utils.UploadFileUtil;
 import com.zhigu.common.utils.VerifyUtil;
 import com.zhigu.common.utils.ZhiguConfig;
 import com.zhigu.model.Account;
@@ -34,7 +26,6 @@ import com.zhigu.model.Message;
 import com.zhigu.model.Order;
 import com.zhigu.model.OrderCondition;
 import com.zhigu.model.PageBean;
-import com.zhigu.model.RealUserAuth;
 import com.zhigu.model.Store;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.UserInfo;
@@ -135,81 +126,6 @@ public class UserController {
 		mv.addObject("auth", auth);
 		mv.addObject("info", info);
 		return mv;
-	}
-
-	/**
-	 * 实名认证 查询
-	 */
-
-	@RequestMapping("/realauth")
-	public ModelAndView auth(ModelAndView mv) {
-
-		UserAuth auth = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID());
-		mv.addObject("userAuth", auth);
-		int userId = SessionHelper.getSessionUser().getUserID();
-		RealUserAuth realUserAuth = userService.queryRealUserAuth(userId);
-		String url = "";
-		if (realUserAuth == null) {
-			url = "user/info/addrealauth";
-		} else if (realUserAuth.getApproveState() == AuthStatus.PASS.getValue() || realUserAuth.getApproveState() == AuthStatus.WAIT.getValue()) {
-			mv.addObject("realUserAuth", realUserAuth);
-			url = "user/info/detailrealauth";
-		} else {
-			mv.addObject("realUserAuth", realUserAuth);
-			url = "user/info/addrealauth";
-		}
-		mv.setViewName(url);
-		return mv;
-	}
-
-	/**
-	 * 实名认证 添加
-	 * 
-	 * @throws IOException
-	 */
-
-	@RequestMapping("/addrealauth")
-	@ResponseBody
-	public MsgBean addRealAuth(String realName, String cardId, String datec, @RequestParam(defaultValue = "0") int codechk, String codeimg1, String codeimg2, String zfks) throws IOException {
-		int userId = SessionHelper.getSessionUser().getUserID();
-		RealUserAuth realUserAuth = userService.queryRealUserAuth(userId);
-		if (realUserAuth != null) {
-			realUserAuth.setRealName(realName);
-			realUserAuth.setIdCard(cardId);
-			realUserAuth.setCardValidity(codechk == Flg.ON ? "" : datec);
-			realUserAuth.setPerpetual(codechk);
-			String cardFrontImg = UploadFileUtil.copyTempImg(codeimg1, "idcard1");
-			realUserAuth.setCardFrontImg(cardFrontImg);
-			// String cardBackImg = UploadFileUtil.copyTempImg(codeimg2,
-			// "idcard2");
-			// realUserAuth.setCardBackImg(cardBackImg);
-			realUserAuth.setAlipay(zfks);
-			realUserAuth.setApproveState(AuthStatus.WAIT.getValue());
-			realUserAuth.setApplyTime(new Date());
-			ImageUtil.pressText(ZhiguConfig.getSaveFileRoot() + cardFrontImg, SystemConstants.WATERMARK_TEXT);
-			// ImageUtil.pressText(ZhiguConfig.getSaveFileRoot() +
-			// cardBackImg, SystemConstants.WATERMARK_TEXT);
-			return userService.updateRealUserAuth(realUserAuth);
-		} else {
-			RealUserAuth realUserAuthAdd = new RealUserAuth();
-			realUserAuthAdd.setUserID(userId);
-			realUserAuthAdd.setRealName(realName);
-			realUserAuthAdd.setIdCard(cardId);
-			realUserAuthAdd.setCardValidity(codechk == Flg.ON ? "" : datec);
-			realUserAuthAdd.setPerpetual(codechk);
-			String cardFrontImg = UploadFileUtil.copyTempImg(codeimg1, "idcard1");
-			realUserAuthAdd.setCardFrontImg(cardFrontImg);
-			// String cardBackImg = UploadFileUtil.copyTempImg(codeimg2,
-			// "idcard2");
-			// realUserAuthAdd.setCardBackImg(cardBackImg);
-			realUserAuthAdd.setAlipay(zfks);
-			realUserAuthAdd.setApproveState(AuthStatus.WAIT.getValue());
-			realUserAuthAdd.setApplyTime(new Date());
-			ImageUtil.pressText(ZhiguConfig.getSaveFileRoot() + cardFrontImg, SystemConstants.WATERMARK_TEXT);
-			// ImageUtil.pressText(ZhiguConfig.getSaveFileRoot() +
-			// cardBackImg, SystemConstants.WATERMARK_TEXT);
-			return userService.saveRealUserAuth(realUserAuthAdd);
-		}
 	}
 
 	/**

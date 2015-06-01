@@ -30,7 +30,6 @@ import com.zhigu.common.utils.Md5;
 import com.zhigu.common.utils.StringUtil;
 import com.zhigu.model.Address;
 import com.zhigu.model.AgentUser;
-import com.zhigu.model.Club;
 import com.zhigu.model.Logistics;
 import com.zhigu.model.Order;
 import com.zhigu.model.OrderCondition;
@@ -110,7 +109,7 @@ public class OrderController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/confirm")
+	@RequestMapping(value = "/confirm", method = RequestMethod.GET)
 	public ModelAndView confirmOrder(ModelAndView mv) {
 		int userId = SessionHelper.getSessionUser().getUserID();
 		// 收货地址
@@ -130,21 +129,15 @@ public class OrderController {
 		return mv;
 	}
 
-	/**
-	 * 提交订单
-	 * 
-	 * @param club
-	 * @param mv
-	 * @return
-	 */
-	@RequestMapping("/submit")
+	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
 	@ResponseBody
-	public MsgBean submitOrder(Club club, Integer addressID, Integer couponID, ModelAndView mv) {
-		if (club == null || club.getOrders() == null || club.getOrders().isEmpty()) {
-			return new MsgBean(Code.FAIL, "请检查提交的商品是否存在！", MsgLevel.ERROR);
-		}
-		List<Order> orders = club.getOrders();
-		return orderService.saveOrders(SessionHelper.getSessionUser().getUserID(), addressID, orders);
+	public MsgBean submitOrder(List<Order> orders, Integer addressId) {
+		// if (club == null || club.getOrders() == null ||
+		// club.getOrders().isEmpty()) {
+		// return new MsgBean(Code.FAIL, "请检查提交的商品是否存在！", MsgLevel.ERROR);
+		// }
+		// List<Order> orders = club.getOrders();
+		return orderService.saveOrders(SessionHelper.getSessionUser().getUserID(), addressId, orders);
 	}
 
 	/**

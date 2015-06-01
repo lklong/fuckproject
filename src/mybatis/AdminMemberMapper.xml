@@ -5,9 +5,9 @@
     <!-- 查询普通会员列表 -->
 	<select id="queryCommonMemberListByPage"  resultType="hashmap">
 		<![CDATA[
-	   	Select R.*,H.RealName,H.ApproveState realUserStatus From (
-			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,G.name staffName From 
-				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status` From UserAuth A,UserInfo B Where A.UserID = B.UserID ) L 
+	   	Select R.*,H.real_name From (
+			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,G.name staffName,L.realUserAuthFlg  From 
+				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status`,B.RealUserAuthFlg From UserAuth A,UserInfo B Where A.UserID = B.UserID ) L 
 			Left Join 
 				(Select A.UserID,Sum(B.Quantity) BuyCount From Orders A,OrderDetail B Where A.ID = B.OrderID And A.`Status` = 4 Group By A.UserID) D
 					On L.UserID = D.UserID
@@ -19,14 +19,14 @@
 			Left Join 
 				(Select A.UserID,A.StaffID,B.name From StaffMember A,Admin B Where A.Status = 0 And A.StaffID = B.ID Group By UserID) G
 					On L.UserID = G.UserID
-		) R Left Join  realuserauth H On R.UserID = H.UserID 
+		) R Left Join  real_user_auth H On R.UserID = H.user_id 
 		]]>
 		Where R.Status = 0
 		<if test="mc.staffID != null">
 			And StaffID = #{mc.staffID} 
 		</if>
 		<if test="mc.realUserStatus>0">
-			And H.approveState = #{mc.realUserStatus} 
+			And H.status = #{mc.realUserStatus} 
 		</if>
 		<!-- 用户名 -->
 		<if test="mc.username != null and mc.username != ''">
@@ -85,9 +85,9 @@
 	<!-- 公司员工会员 -->
 	<select id="queryInnerEmployeeMemberByPage"  resultType="hashmap">
 		<![CDATA[
-	   	Select R.*,H.RealName,H.ApproveState realUserStatus From (
-			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,G.name staffName From 
-				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status` From UserAuth A,UserInfo B Where A.UserID = B.ID and B.IsInnerEmployee=1) L 
+	   	Select R.*,H.real_name From (
+			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,G.name staffName,L.realUserAuthFlg From 
+				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status`,B.RealUserAuthFlg From UserAuth A,UserInfo B Where A.UserID = B.userid and B.IsInnerEmployee=1) L 
 			Left Join 
 				(Select A.UserID,Sum(B.Quantity) BuyCount From Orders A,OrderDetail B Where A.ID = B.OrderID And A.`Status` = 4 Group By A.UserID) D
 					On L.UserID = D.UserID
@@ -97,16 +97,16 @@
 			Left Join 
 				Account F On L.UserID = F.User_ID
 			Left Join 
-				(Select A.UserID,A.StaffID,B.Username From StaffMember A,Admin B Where A.Status = 0 And A.StaffID = B.ID Group By UserID) G
+				(Select A.UserID,A.StaffID,B.name From StaffMember A,Admin B Where A.Status = 0 And A.StaffID = B.ID Group By UserID) G
 					On L.UserID = G.UserID
-		) R Left Join  realuserauth H On R.UserID = H.UserID 
+		) R Left Join real_user_auth  H On R.UserID = H.user_id
 		]]>
 		Where 1=1
 		<if test="mc.staffID != null">
 			And StaffID = #{mc.staffID} 
 		</if>
 		<if test="mc.realUserStatus>0">
-			And H.approveState = #{mc.realUserStatus} 
+			And H.status = #{mc.realUserStatus} 
 		</if>
 		<!-- 用户名 -->
 		<if test="mc.username != null and mc.username != ''">
@@ -164,9 +164,9 @@
 	<!-- 禁用用户 -->
 	<select id="queryUnableMemberListByPage"  resultType="hashmap">
 		<![CDATA[
-	   	Select R.*,H.RealName,H.ApproveState realUserStatus From (
-			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,G.name staffName From 
-				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status` From UserAuth A,UserInfo B Where A.UserID = B.UserID and A.Status = 9) L 
+	   	Select R.*,H.real_name From (
+			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,G.name staffName ,L.RealUserAuthFlg From 
+				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status`,B.RealUserAuthFlg From UserAuth A,UserInfo B Where A.UserID = B.UserID and A.Status = 9) L 
 			Left Join 
 				(Select A.UserID,Sum(B.Quantity) BuyCount From Orders A,OrderDetail B Where A.ID = B.OrderID And A.`Status` = 4 Group By A.UserID) D
 					On L.UserID = D.UserID
@@ -178,14 +178,14 @@
 			Left Join 
 				(Select A.UserID,A.StaffID,B.name From StaffMember A,Admin B Where A.Status = 0 And A.StaffID = B.ID Group By UserID) G
 					On L.UserID = G.UserID
-		) R Left Join  realuserauth H On R.UserID = H.UserID 
+		) R Left Join  real_user_auth H On R.UserID = H.user_id 
 		]]>
 		Where 1=1
 		<if test="mc.staffID != null">
 			And StaffID = #{mc.staffID} 
 		</if>
 		<if test="mc.realUserStatus>0">
-			And H.approveState = #{mc.realUserStatus} 
+			And H.status = #{mc.realUserStatus} 
 		</if>
 		<!-- 用户名 -->
 		<if test="mc.username != null and mc.username != ''">
@@ -243,9 +243,9 @@
 	<!-- 查询供应商列表 -->
 	<select id="querySupplieMemberByPage"  resultType="hashmap">
 		<![CDATA[
-	   	Select R.*,H.RealName,H.ApproveState realUserStatus,I.ApproveState companyStatus,J.approve_state realStoreStatus From (
-			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(C.UploadCount),0,C.UploadCount) UploadCount,IF(ISNULL(C.PubCount),0,C.PubCount) PubCount,IF(ISNULL(C.PurchaseCount),0,C.PurchaseCount) PurchaseCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,C.StoreName,G.name staffName From 
-				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status` From UserAuth A,UserInfo B Where A.UserID = B.UserID and B.UserType>1) L 
+	   	Select R.*,H.real_name,I.ApproveState companyStatus,J.status realStoreStatus From (
+			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(C.UploadCount),0,C.UploadCount) UploadCount,IF(ISNULL(C.PubCount),0,C.PubCount) PubCount,IF(ISNULL(C.PurchaseCount),0,C.PurchaseCount) PurchaseCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,C.StoreName,G.name staffName,L.RealUserAuthFlg From 
+				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status`,B.RealUserAuthFlg From UserAuth A,UserInfo B Where A.UserID = B.UserID and B.UserType>1) L 
 			Left Join 
 				(Select A.UserID,1 Store,A.StoreName,Sum(1) UploadCount,Sum(IF(B.`Status` = 1,1,0)) PubCount,Sum(C.Purchasecount) PurchaseCount,Sum(IF(B.File IS NOT NULL AND B.File <> '',1,0)) Upload From Store A,Goods B,Goodsaux C Where A.ID = B.StoreID and B.id=C.goodsid Group By A.ID) C
 					On L.UserID = C.UserID
@@ -260,7 +260,7 @@
 			Left Join 
 				(Select A.UserID,A.StaffID,B.name From StaffMember A,Admin B Where A.Status = 0 And A.StaffID =B.ID  Group By UserID) G
 					On L.UserID = G.UserID
-		) R Left Join  realuserauth H On R.UserID = H.UserID 
+		) R Left Join  real_user_auth H On R.UserID = H.user_id 
 			Left Join CompanyAuth I On R.UserID = I.UserID 
 			Left Join real_store_auth J On R.UserID = J.user_id
 		]]>
@@ -269,13 +269,13 @@
 			And StaffID = #{mc.staffID} 
 		</if>
 		<if test="mc.realUserStatus>0">
-			And H.approveState = #{mc.realUserStatus} 
+			And H.status = #{mc.realUserStatus} 
 		</if>
 		<if test="mc.companyStatus>0">
 			And I.approveState = #{mc.companyStatus} 
 		</if>
 		<if test="mc.realStoreStatus>0">
-			And J.approve_state = #{mc.realStoreStatus} 
+			And J.status = #{mc.realStoreStatus} 
 		</if>
 		<!-- 用户名 -->
 		<if test="mc.username != null and mc.username != ''">
@@ -364,11 +364,11 @@
 	</update>
 	<!-- 取消会员分配 -->
 	<delete id="deleteStaffMemberByStaffID" parameterType="int">
-		DELETE from staffmember where staffID=#{staffID};
+		DELETE from staffMember where staffID=#{staffID};
 	</delete>
 	<!-- 查询会员，通过推荐人  -->
 	<select id="queryMemberByRecommendUser" parameterType="int" resultType="userInfo">
-		select A.userID,A.UserName  from userauth A,userinfo B where A.UserID=B.UserID and B.RecommendUserID=#{recommendUserID};
+		select A.userID,A.UserName  from userAuth A,userInfo B where A.UserID=B.UserID and B.RecommendUserID=#{recommendUserID};
 	</select>
 </mapper>
 

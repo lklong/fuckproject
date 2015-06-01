@@ -1,56 +1,48 @@
 package com.zhigu.model;
 
-import java.io.Serializable;
+import java.util.Date;
 
-/***********************************************************************
- * Module: ShippingAddress.java Author: Administrator Purpose: Defines the Class
- * ShippingAddress
- ***********************************************************************/
+public class Address {
+	private Integer id;
 
-public class Address implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6627778418796643267L;
-	// ID
-	private int ID;
-	// 用户ID
-	private int userID;
-	// 收货人姓名
+	private Integer userId;
+
 	private String name;
-	// 联系手机
+
 	private String phone;
-	// 电话
+
 	private String tel;
-	// 省
+
 	private String province;
-	// 市
+
 	private String city;
-	// 区
+
 	private String district;
-	// 街道（详细地址）
+
 	private String street;
-	// 邮编
+
 	private String postcode;
-	// 是否默认地址(1：是，0：否)
-	private int isDefault;
-	// 是否删除(0:删除,1非删除)
-	private int Status;
 
-	public int getID() {
-		return ID;
+	private Boolean defaultFlag;
+
+	private Integer status;
+
+	private Date addTime;
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public int getUserID() {
-		return userID;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getName() {
@@ -58,7 +50,7 @@ public class Address implements Serializable {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = name == null ? null : name.trim();
 	}
 
 	public String getPhone() {
@@ -66,31 +58,7 @@ public class Address implements Serializable {
 	}
 
 	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getPostcode() {
-		return postcode;
-	}
-
-	public void setPostcode(String postcode) {
-		this.postcode = postcode;
-	}
-
-	public int getIsDefault() {
-		return isDefault;
-	}
-
-	public void setIsDefault(int isDefault) {
-		this.isDefault = isDefault;
+		this.phone = phone == null ? null : phone.trim();
 	}
 
 	public String getTel() {
@@ -98,7 +66,7 @@ public class Address implements Serializable {
 	}
 
 	public void setTel(String tel) {
-		this.tel = tel;
+		this.tel = tel == null ? null : tel.trim();
 	}
 
 	public String getProvince() {
@@ -106,7 +74,7 @@ public class Address implements Serializable {
 	}
 
 	public void setProvince(String province) {
-		this.province = province;
+		this.province = province == null ? null : province.trim();
 	}
 
 	public String getCity() {
@@ -114,7 +82,7 @@ public class Address implements Serializable {
 	}
 
 	public void setCity(String city) {
-		this.city = city;
+		this.city = city == null ? null : city.trim();
 	}
 
 	public String getDistrict() {
@@ -122,15 +90,46 @@ public class Address implements Serializable {
 	}
 
 	public void setDistrict(String district) {
-		this.district = district;
+		this.district = district == null ? null : district.trim();
 	}
 
-	public int getStatus() {
-		return Status;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setStatus(int status) {
-		Status = status;
+	public void setStreet(String street) {
+		this.street = street == null ? null : street.trim();
 	}
 
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode == null ? null : postcode.trim();
+	}
+
+	public Boolean getDefaultFlag() {
+		return defaultFlag;
+	}
+
+	public void setDefaultFlag(Boolean defaultFlag) {
+		this.defaultFlag = defaultFlag;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Date getAddTime() {
+		return addTime;
+	}
+
+	public void setAddTime(Date addTime) {
+		this.addTime = addTime;
+	}
 }

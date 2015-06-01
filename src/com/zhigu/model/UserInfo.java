@@ -13,6 +13,10 @@ import com.zhigu.common.utils.StringUtil;
  ***********************************************************************/
 
 public class UserInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// 用户ID
 	private int userID;
 	// 账户名

@@ -16,7 +16,7 @@
 </table>
 
 <div class="clear"></div>
-<form action="goods/downloadHistory" method="post" id="downloadForm">
+<form action="/goods/ajax/download/history" method="post" id="downloadForm">
 	<input type="hidden" name="goodsId" value="${goodsId }">
 </form>
 <div class="ddpage fr mt20">

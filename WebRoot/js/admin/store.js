@@ -41,17 +41,6 @@ function storeCompanyAuthInfo(storeID){
 	},"text");
 }
 /**
- * 点击“长期”按钮 隐藏时间选项控件
- */
-function hideBusinessTerm(){
-	if($("#perpetual").is(":checked")){
-		$("#businessTerm").val('');
-		$("#businessTerm").hide();
-	}else{
-		$("#businessTerm").show();
-	}
-}
-/**
  * 保存企业信息
  */
 function saveCompanyAuth(){

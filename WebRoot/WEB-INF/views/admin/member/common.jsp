@@ -8,7 +8,7 @@
 
 <title>普通会员列表</title>
 <link href="js/3rdparty/easyui/themes/bootstrap/easyui.css" rel="stylesheet" type="text/css" >
-<link href="css/jcDate.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/default/jcDate.css" rel="stylesheet" type="text/css" media="all" />
 <script src="js/admin/admin.js" type="text/javascript"></script>
 <link href="js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" language="javascript" src="js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
@@ -49,9 +49,9 @@
         <div>
             <select class="sysComSelect" name="realUserStatus" id="realUserStatus" >
             	<option value="">实名认证</option>
-                <option value="1">待审核</option>
+                <option value="3">待审核</option>
                 <option value="2">已认证</option>
-                <option value="0">全部</option>
+                <option value="1">未认证</option>
             </select>
         </div>
 	</div>
@@ -104,7 +104,6 @@
                     <th>操作</th>
                     <th>认证审核</th>
                     <th>公司员工</th>
-                    <th>推荐的用户</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -135,22 +134,22 @@
 		                        </c:choose>
 		                    </td>
 		                    <td>
-		                    	<c:if test="${m.realUserStatus==1 }">
+		                    	<c:if test="${m.realUserAuthFlg==0 }">
 		                        	<a href="javascript:void(0);" class="sysButonA3" onclick="realUserAuthInfo(${m.UserID})" ><em></em>实名认证</a>
 		                        </c:if>
-		                    	<c:if test="${m.realUserStatus==3 }">
+		                        <c:if test="${m.realUserAuthFlg==1 }">
+		                        	<a href="javascript:void(0);" class="sysButonA3"><em></em>已实名</a>
+		                        </c:if>
+		                        <c:if test="${m.realUserAuthFlg==2 }">
 		                        	<a href="javascript:void(0);" class="sysButonA3" onclick="realUserAuthInfo(${m.UserID})" ><em></em>认证未通过</a>
 		                        </c:if>
-		                        <c:if test="${m.realUserStatus==2 }">
-		                        	<a href="javascript:void(0);" class="sysButonA3"><em></em>已实名</a>
+		                    	<c:if test="${m.realUserAuthFlg==3 }">
+		                        	<a href="/admin/realUserAuth/realUserAuthStatus?userID=${m.UserID}" class="sysButonA3"><em></em>实名待认证</a>
 		                        </c:if>
 		                    </td>
 		                    <td>
 		                    	<a class="sysButonA1" href="javascript:void(0);" onclick="updateIsInnerEmployee(${m.UserID},0,this)" class="red" <c:if test="${m.IsInnerEmployee==0 }">style="display: none;"</c:if>><em></em>取消</a>
 		                    	<a class="sysButonA2" href="javascript:void(0);" onclick="updateIsInnerEmployee(${m.UserID},1,this)" <c:if test="${m.IsInnerEmployee==1 }">style="display: none;"</c:if>><em></em>标记</a>
-		                     </td>
-		                     <td>
-		                     	<a class="sysButonA1" href="javascript:void(0);" onclick="lookRecommend('${m.UserID}','${m.Username }')" ><em></em>查看</a>
 		                     </td>
 		                </tr>
 	             	</c:forEach>

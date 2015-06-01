@@ -10,12 +10,16 @@
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
         var ue = UE.getEditor('editor');
-         UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
-        UE.Editor.prototype.getActionUrl = function(action) {
-            if (action == 'uploadimage') {
-                return '/img/goods/detail';
-            } 
-        } 
+        UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+    	UE.Editor.prototype.getActionUrl = function(action) {
+    	    if (action === 'uploadimage' || action === 'uploadscrawl' ) {
+    	    	 return '/upload/img/goods/detail';
+    	    } else if (action === 'uploadvideo') {
+    	        return '/upload/goods/video';
+    	    } else {
+    	        return this._bkGetActionUrl.call(this, action);
+    	    }
+    	}
         ue.addListener('afterinserthtml', function (html) {
             //操作, 查找  a    ,将之删除操作
            // html=html.replace(/<img[^>]*>/i,'');

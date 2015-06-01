@@ -22,6 +22,7 @@ import com.zhigu.model.MemberInfo;
 import com.zhigu.model.Order;
 import com.zhigu.model.OrderCondition;
 import com.zhigu.model.PageBean;
+import com.zhigu.model.RealUserAuth;
 import com.zhigu.model.Store;
 import com.zhigu.model.UserInfo;
 import com.zhigu.model.UserRecommend;
@@ -33,6 +34,7 @@ import com.zhigu.service.store.IStoreService;
 import com.zhigu.service.user.IAccountService;
 import com.zhigu.service.user.IAddressService;
 import com.zhigu.service.user.IOrderService;
+import com.zhigu.service.user.IRealUserAuthService;
 import com.zhigu.service.user.IUserService;
 
 @Controller()
@@ -54,6 +56,8 @@ public class MemberController {
 	private IAdminOrderService adminOrderService;
 	@Autowired
 	private IAdminService adminService;
+	@Autowired
+	private IRealUserAuthService realUserAuthService;
 
 	/**
 	 * 普通会员列表
@@ -195,6 +199,17 @@ public class MemberController {
 		mv.addObject("auth", userService.queryUserAuthByUserID(memberID));
 		mv.addObject("defAdd", addressService.queryDefaultAddress(memberID));
 		mv.addObject("stat", adminOrderService.memberOrderStat(memberID));
+		// 实名认证资料
+		RealUserAuth realUserAuth = realUserAuthService.queryRealUserAuth(memberID);
+		mv.addObject("realUserAuth", realUserAuth);
+		if (realUserAuth != null) {
+			if (realUserAuth.getAddAdminId() != 0) {
+				mv.addObject("addRealUser", adminService.queryAdmin(realUserAuth.getAddAdminId()));
+			}
+			if (realUserAuth.getApproveAdminId() != 0) {
+				mv.addObject("approve", adminService.queryAdmin(realUserAuth.getApproveAdminId()));
+			}
+		}
 		// 店铺资料
 		Store store = storeService.queryStoreByUserID(memberID);
 		mv.addObject("store", store);
