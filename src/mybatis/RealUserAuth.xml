@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhigu.mapper.RealUserAuthMapper">
+
+	<resultMap id="BaseResultMap" type="com.zhigu.model.RealUserAuth" >
+	    <id column="user_id" property="userId" jdbcType="INTEGER" />
+	    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+	    <result column="IdCard" property="idCard" jdbcType="VARCHAR" />
+	    <result column="card_validity" property="cardValidity" jdbcType="VARCHAR" />
+	    <result column="perpetual_flag" property="perpetualFlag" jdbcType="BIT" />
+	    <result column="card_front_img" property="cardFrontImg" jdbcType="VARCHAR" />
+	    <result column="card_back_img" property="cardBackImg" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="INTEGER" />
+	    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+	    <result column="add_admin_id" property="addAdminId" jdbcType="INTEGER" />
+	    <result column="approve_admin_id" property="approveAdminId" jdbcType="INTEGER" />
+	    <result column="approve_time" property="approveTime" jdbcType="TIMESTAMP" />
+	    <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
+  	</resultMap>
+  <sql id="Base_Column_List" >
+    user_id, real_name, IdCard, card_validity, perpetual_flag, card_front_img, card_back_img, 
+    status, add_time, add_admin_id, approve_admin_id, approve_time, reject_reason
+  </sql>
+	<!-- 实名认证保存 -->
+	<insert id="saveRealUserAuth" parameterType="com.zhigu.model.RealUserAuth" >
+    insert into real_user_auth (user_id, real_name, IdCard, 
+      card_validity, perpetual_flag, card_front_img, 
+      card_back_img, status, add_time, 
+      add_admin_id, approve_admin_id, approve_time, 
+      reject_reason)
+    values (#{userId,jdbcType=INTEGER}, #{realName,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
+      #{cardValidity,jdbcType=VARCHAR}, #{perpetualFlag,jdbcType=BIT}, #{cardFrontImg,jdbcType=VARCHAR}, 
+      #{cardBackImg,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{addAdminId,jdbcType=INTEGER}, #{approveAdminId,jdbcType=INTEGER}, #{approveTime,jdbcType=TIMESTAMP}, 
+      #{rejectReason,jdbcType=VARCHAR})
+  </insert>
+	<!--实名认证查询 根据用户ID-->
+	<select id="queryRealUserAuthByUserID" parameterType="int" resultMap="BaseResultMap">
+		Select <include refid="Base_Column_List" /> from real_user_auth where user_id = #{userID};
+	</select>
+	
+	<!--实名认证查询 根据身份证-->
+	<select id="queryRealUserAuthByIdcard" parameterType="String" resultMap="BaseResultMap">
+		Select <include refid="Base_Column_List" /> from real_user_auth where idCard = #{idCard};
+	</select>
+	
+	<!-- 实名认证修改 -->
+	<update id="updateRealUserAuth" parameterType="com.zhigu.model.RealUserAuth" >
+	    update real_user_auth
+	    set real_name = #{realName,jdbcType=VARCHAR},
+	      IdCard = #{idCard,jdbcType=VARCHAR},
+	      card_validity = #{cardValidity,jdbcType=VARCHAR},
+	      perpetual_flag = #{perpetualFlag,jdbcType=BIT},
+	      card_front_img = #{cardFrontImg,jdbcType=VARCHAR},
+	      card_back_img = #{cardBackImg,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=INTEGER},
+	      add_time = #{addTime,jdbcType=TIMESTAMP},
+	      add_admin_id = #{addAdminId,jdbcType=INTEGER},
+	      approve_admin_id = #{approveAdminId,jdbcType=INTEGER},
+	      approve_time = #{approveTime,jdbcType=TIMESTAMP},
+	      reject_reason = #{rejectReason,jdbcType=VARCHAR}
+	    where user_id = #{userId,jdbcType=INTEGER}
+  	</update>
+	<!-- 修改用户实名认证状态 -->
+	<update id="updateRealUserAuthStatus">
+	 update real_user_auth
+	    set status = #{status,jdbcType=INTEGER},
+	   	  approve_admin_id = #{approveAdminId,jdbcType=INTEGER},
+	      approve_time = #{approveTime,jdbcType=TIMESTAMP},
+	      reject_reason = #{rejectReason,jdbcType=VARCHAR}
+	    where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+</mapper>
+
