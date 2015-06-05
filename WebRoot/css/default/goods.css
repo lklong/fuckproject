@@ -25,7 +25,7 @@
 	margin: 0 auto;
 	position: relative;
 	height: auto;
-	padding-top: 115px;
+	padding-top: 120px;
 }
 .intoTopInside {
 	margin: 0 auto;
@@ -34,31 +34,33 @@
 }
 .shopTopNav {
 	width: 100%;
-	height: 35px;
+	height: 30px;
 	clear: both;
 	background: #353535;
 	position: absolute;
 	bottom: 0;
-	filter: alpha(Opacity=50);
-	-moz-opacity: 0.5;
-	opacity: 0.5;
+	filter: alpha(Opacity=80);
+	-moz-opacity: 0.8;
+	opacity: 0.8;
 	z-index: 33;
 }
 .shopNavInside li {
 	float: left;
 	position: relative;
-	height: 35px;
-	line-height: 35px;
+	height: 30px;
+	line-height: 30px;
 	padding: 0 15px;
-	color: #686868;
+	color: #ffffff;
 }
 .shopNavInside li a {
 	display: block;
+	padding:0 25px;
 	font-size: 1.2em;
-	color: #f0f0f0;
+	color: #ffffff;
 }
 .shopNavInside li a:hover {
 	color: #ffffff;
+	background-color:#f83e77;
 }
 .shopNavSelected a {
 	background-color: #c21902;
@@ -249,6 +251,8 @@ a.add_fav:hover {
 	top: 65px;
 	display: none;
 }
+.shop-info-panel ul {
+	padding:15px 0 0 17px;}
 .shop-p {
 	float: left;
 	text-align: center;
@@ -643,3 +647,17 @@ a.add_fav:hover {
 	background: #FFF;
 	cursor: pointer
 }
+.qq-kefu-top {
+	display:block;
+	height:21px;
+	width:21px;
+	float:left;
+	background:url(../../img/default/all_bg.png) no-repeat -446px -811px;
+	margin-left:7px;}
+.wangwang-kefu-top {
+	display:block;
+	height:20px;
+	width:20px;
+	float:left;
+	background:url(../../img/default/all_bg.png) no-repeat right -811px;
+	margin-left:7px;}

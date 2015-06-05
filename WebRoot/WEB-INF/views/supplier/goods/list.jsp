@@ -5,7 +5,7 @@
 <html>
 <head>
 <title>出售中的商品</title>
-<script type="text/javascript" src="/js/3rdparty/layer/layer.min.js?v=20150505"></script>
+<script type="text/javascript" src="/js/3rdparty/layer1.9/layer.js"></script>
 </head>
 <body>
 <div class="rightContainer fr">
@@ -31,12 +31,12 @@
         <td style="width:10%">￥${item.minPrice }-￥${item.maxPrice }</td>
         <td style="width:10%">${item.aux.amount < 0 ? '-' : item.aux.amount }</td>
         <td style="width:10%"><fmt:formatDate value="${item.time}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-        <td style="width:35%"><span><a href="javascript:void(0);" class="default-a" onclick="refresh(${item.id})" >刷新商品</a></span> <span><a href="supplier/goods/edit?goodsId=${item.id}" class="default-a">编辑商品</a></span> <span><a href="javascript:void(0);" class="default-a" onclick="soldout(${item.id},${gc.status == 1 ? 2 : 1});">
+        <td style="width:35%"><span><a href="javascript:void(0);" class="edit-user-photo" onclick="refresh(${item.id})" >刷新商品</a></span> <span><a href="supplier/goods/edit?goodsId=${item.id}" class="edit-user-photo">编辑商品</a></span> <span><a href="javascript:void(0);" class="edit-user-photo" onclick="soldout(${item.id},${gc.status == 1 ? 2 : 1});">
           <c:choose>
             <c:when test="${gc.status == 1 }">商品下架</c:when>
             <c:when test="${gc.status == 2 }">商品上架</c:when>
           </c:choose>
-          </a></span> <span><a href="javascript:void(0);" class="default-a" onclick="delGoods(${item.id});">删除商品</a></span></td>
+          </a></span> <span><a href="javascript:void(0);" class="edit-user-photo" onclick="delGoods(${item.id});">删除商品</a></span></td>
       </tr>
     </c:forEach>
   </table>
@@ -56,7 +56,7 @@ function soldout(goodsId,status){
 	layer.confirm(tips,function(){
 		$.post("supplier/goods/soldOut",{"goodsId":goodsId},function(msgBean){
 			if(msgBean.code==zhigu.code.success){
-				layer.msg(msgBean.msg,2,reloadCurrentPage);
+				layer.alert(msgBean.msg,reloadCurrentPage);
 			}else{
 				layer.alert(msgBean.msg);
 			}
@@ -69,7 +69,7 @@ function soldout(goodsId,status){
 function refresh(goodsID){
 	ajaxSubmit("supplier/goods/refresh", {"goodsID":goodsID}, function(msgBean){
 		if(msgBean.code==zhigu.code.success){
-			layer.msg(msgBean.msg, 1, reloadCurrentPage);
+			layer.alert(msgBean.msg,reloadCurrentPage);
 		}else{
 			layer.alert(msgBean.msg);
 		}
@@ -80,7 +80,7 @@ function delGoods(goodsID){
 	layer.confirm("确定要删除该商品？",function(){
 		$.post("supplier/goods/delGoods",{"goodsID":goodsID},function(msgBean){
 			if(msgBean.code==zhigu.code.success){
-				layer.msg(msgBean.msg,2,reloadCurrentPage);
+				layer.alert(msgBean.msg,reloadCurrentPage);
 			}else{
 				layer.alert(msgBean.msg);
 			}

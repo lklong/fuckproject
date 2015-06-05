@@ -67,9 +67,9 @@ task server << {
         startServer()
     } else if (project.hasProperty('stop')) {
         stopServer()
-    } else if (project.hasProperty('deployNstart')) {
+    } else if (project.hasProperty('deploystart')) {
         stopServer()
-        webappsCopy()
+        deploy()
         startServer()
     } else {
         throw new RuntimeException('unrecognized option')
@@ -86,11 +86,17 @@ def startServer() {
 
 
 def executeCmd(command) {
-    command.execute()
+    def proc = command.execute()
     proc.waitFor()
+	println "${proc.text}"
 }
 
-def webappsCopy() {
+def deploy() {
+	copy {
+		from 'src'
+		into 'WebRoot/WEB-INF/classes'
+		include '**/*.xml', '**/*.txt', '**/*.properties'
+	}
     copy {
         from 'WebRoot' 
         into tomcat_webapps

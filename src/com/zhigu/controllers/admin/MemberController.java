@@ -25,7 +25,6 @@ import com.zhigu.model.PageBean;
 import com.zhigu.model.RealUserAuth;
 import com.zhigu.model.Store;
 import com.zhigu.model.UserInfo;
-import com.zhigu.model.UserRecommend;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.admin.IAdminOrderService;
 import com.zhigu.service.admin.IAdminService;
@@ -284,18 +283,4 @@ public class MemberController {
 		return ts;
 	}
 
-	/**
-	 * 查询用户填写的推荐
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/queryUserWriteRecommend")
-	public ModelAndView queryUserWriteRecommend(ModelAndView mv, PageBean<UserRecommend> page, int userID) {
-		page.setPageSize(3);
-		mv.setViewName("admin/member/inner_writerecommendrecord");
-		userService.queryUserRecommendByUserID(page, userID);
-		mv.addObject("userID", userID);
-		mv.addObject("page", page);
-		return mv;
-	}
 }

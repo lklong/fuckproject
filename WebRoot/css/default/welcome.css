@@ -61,8 +61,16 @@ a.btn-cur {
 	line-height: 40px;
 	text-indent: 37px;
 }
+.block_title p{  height: 28px;
+  line-height: 28px;
+  padding: 65px 5px 0 0;
+  float: right;}
 .block_title a {
-	color: #ffffff !important;
+	color: #333;
+	  font-size: 14px;
+}
+.block_title a:hover{
+	color:#f83e77;
 }
 .xielei_icon {
 	background: url(../../img/welcome/jingxuanxielei.png) no-repeat 15px 9px #c21902;

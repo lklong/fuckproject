@@ -3,7 +3,7 @@
 <html>
 <head>
 <link href="/css/default/user.css" rel="stylesheet"/>
-<script src="js/3rdparty/layer/layer.min.js"></script>
+<script src="/js/3rdparty/layer1.9/layer.js"></script>
 <title>登录</title>
 </head>
 <body>
@@ -25,7 +25,7 @@
               <td colspan="2"><input id="password" name="password" type="password" class="input_passw_1" value="" /></td>
             </tr>
             <tr>
-              <td><input type="checkbox" id="autoLogin" name="autoLogin" value="1" />
+              <td><input type="checkbox" id="autoLogin" />
                 <label for="autoLogin"> 7天免登录</label></td>
               <td align="right"><a href="security/retrieve/step1">忘记密码？</a></td>
             </tr>
@@ -82,7 +82,9 @@ function keyListener(e){
 		var params = {};
 		params.username = username;
 		params.password = zhigu.encodeBase64(password);
-		params.autoLogin = $("#autoLogin").val();
+		if($("#autoLogin").prop("checked")){
+			params.autoLogin = '1';
+		}
 		ajaxSubmit("login/loginIn", params, function(msgBean){
 			if(msgBean.code==zhigu.code.success){
 				var bak = "${backUrl }";

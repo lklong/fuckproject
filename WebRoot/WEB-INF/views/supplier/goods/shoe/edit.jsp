@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,8 +8,8 @@
 <link href="/js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
 <link rel="stylesheet" href="/js/3rdparty/webuploader/webuploader.css">
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
-<script type="text/javascript" src="/js/3rdparty/layer/layer.min.js"></script>
-<script type="text/javascript" language="javascript" src="/js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
+<script type="text/javascript" src="/js/3rdparty/layer1.9/layer.js"></script>
+<script type="text/javascript" src="/js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
 <style type="text/css">
 #upimgul li {
     background: rgb(244, 244, 244) none repeat scroll 0 0; 
@@ -61,7 +62,7 @@
 				<td style="width:10%"><strong class="color-red"> * </strong>商品标题：</td>
 				<td>
 					<input type="text" value="${goods.name }" style="width:550px;" class="input-txt" id="name" onkeyup="zhigu.goods.checkTitleLen(this)"/>
-               		<span class="color-gray">还能输入<strong class="color-red" id="titleCount"> 30 </strong>字</span>
+               		<span class="color-gray">还能输入<strong class="color-red" id="titleCount"> ${30-fn:length(goods.name)} </strong>字</span>
 				</td>
 			</tr>
 			<tr>
@@ -202,7 +203,7 @@ $(function() {
         // 只允许选择文件，可选。
         accept: {
         	title: 'RAR Archive',
-            extensions: 'rar',
+            extensions: 'rar,zip',
             mimeTypes: 'application/x-rar-compressed'
         },
         fileSingleSizeLimit:dataFileSizeLimit
@@ -248,6 +249,10 @@ $(function() {
 		if(handler=="F_EXCEED_SIZE"){
 			layer.alert("文件大小不能超过"+(dataFileSizeLimit/1024/1024)+"M");
 		}
+		if(handler == "Q_TYPE_DENIED"){
+			layer.alert("仅支持zip,rar压缩格式的文件上传");
+		}
+		
     });
 //     setInterval(function(){
 //     	zhigu.log("轮询文件上传文件==：",dataUploader.getFiles());
@@ -276,7 +281,7 @@ $(function() {
             // 只允许选择文件，可选。
             accept: {
                 title: 'Images',
-                extensions: 'gif,jpg,jpeg,bmp,png',
+                extensions: 'jpg,jpeg,bmp,png',
                 mimeTypes: 'image/*'
             }
         });
@@ -297,7 +302,7 @@ $(function() {
         	if(response.code==zhigu.code.success){
         		zhigu.goods.appendToUpimgul(response.data,response.data);
         	}else{
-        		dialog(response.msg);
+        		layer.alert(response.msg);
         		// 上传失败标记为移除，否则不能重新选择该文件上传
             	imgUploader.removeFile(file);
         	}
@@ -310,6 +315,9 @@ $(function() {
         imgUploader.on('error', function(handler) {
     		if(handler=="F_EXCEED_SIZE"){
     			layer.alert("文件大小不能超过"+(imgSizeLimit/1024)+"k");
+    		}
+    		if(handler == "Q_TYPE_DENIED"){
+    			layer.alert("仅支持jpg,jpeg,bmp,png图片格式的文件上传");
     		}
         });
  // ===============图片上传初始化  end================
@@ -425,7 +433,7 @@ function save() {
 				var required = $("#property_" + $(this).attr("index")).attr("requ");
 				var value = $(this).val();
 				if (required == 'true' && value == '') {
-					dialog("请选择商品属性！");
+					layer.alert("请选择商品属性！");
 					submit = false;
 					return false;
 				}
@@ -440,7 +448,7 @@ function save() {
 	$("#attributes .checkboxpro[requ=true]").each(function() {
 		var size = $(this).find("input:checked").size();
 		if (size == 0) {
-			dialog("请选择商品属性！");
+			layer.alert("请选择商品属性！");
 			submit = false;
 			return false;
 		}
@@ -483,7 +491,7 @@ function save() {
 								+ skuArr[i].rele[j].pid + ",propertyName:'" + skuArr[i].rele[j].pname + "',propertyValueId:" + skuArr[i].rele[j].vid + ",propertyValueName:'"
 								+ skuArr[i].rele[j].usename + "',sku:1}]},";
 					} else {
-						dialog('请填写完整商品规格中的价格和数量！');
+						layer.alert('请填写完整商品规格中的价格和数量！');
 						return false;
 					}
 					count++;
@@ -498,7 +506,7 @@ function save() {
 							+ (skuArr[i].pname + ":" + skuArr[i].usename) + "',skupros:[{propertyId:" + skuArr[i].pid
 							+ ",propertyName:'" + skuArr[i].pname + "',propertyValueId:" + skuArr[i].vid + ",propertyValueName:'" + skuArr[i].usename + "'}]},";
 				}else {
-					dialog('请填写完整商品规格中的价格和数量！');
+					layer.alert('请填写完整商品规格中的价格和数量！');
 					return false;
 				}
 				count++;
@@ -526,22 +534,8 @@ function save() {
 
 	saveData.file = $("#dataFilePath").val();
 	
-	// 描述
-    var desc = UE.getEditor('editor').getPlainTxt();
-	// 过滤外链
-	var reg2 = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
-    var reg = new RegExp(reg2);
-    //saveData.description = desc.replace(reg, "");
-    desc = desc.replace(reg, "");
-    
-    // 过滤a标签
-    var $desc = $("<div>"+desc+"</div>");
-    if($desc.find("a").length>0){
-       $desc.find("a").replaceAll("span");
-    }
-    
-	saveData.description = $desc.html();
-
+	// 描述  过滤a标签外链已使用api处理
+    saveData.description  = UE.getEditor('editor').getContent();
 
 	//去掉最后多余的逗号
 	if (propertyStr.length > 1)
@@ -570,9 +564,9 @@ function save() {
 		setTimeout(function(){
 			$("#saveGoods").prop("disabled",false);
 		}, 4000);
-		layer.load("商品保存中", 3);
+		layer.load();
 		$.post("/supplier/goods/update", saveData, function(msgBean) {
-			layer.msg(msgBean.msg,1, function() {
+			layer.alert(msgBean.msg,function() {
 				if(msgBean.code==zhigu.code.success && msgBean.data){
 					window.location.href= "goods/detail?goodsId="+msgBean.data;
 				}
@@ -598,7 +592,7 @@ var zTreesetting = {
 		onRename : function(event, treeId, treeNode, isCancel) {
 			ajaxSubmit("/supplier/space/updateFolderName", {"folderID" : treeNode.id,"folderName" : treeNode.name}, function(msgBean) {
 				if(msgBean.code == zhigu.code.success){
-					layer.msg(msgBean.msg, 1, f5);
+					layer.alert(msgBean.msg,f5);
 					zTree.editName(treeNode);
 				}else{
 					layer.alert(msgBean.msg);

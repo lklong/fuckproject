@@ -2,6 +2,8 @@ package com.zhigu.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.zhigu.model.DownloadHistory;
 import com.zhigu.model.PageBean;
 
@@ -33,17 +35,18 @@ public interface DownloadHistoryMapper {
 	public List<DownloadHistory> queryDownloadHistoryByPage(PageBean<DownloadHistory> page);
 
 	/**
-	 * 查询下载历史
-	 * 
-	 * @param downloadHistory
-	 * @return
-	 */
-	public List<DownloadHistory> queryDownloadHistory(DownloadHistory downloadHistory);
-
-	/**
 	 * 批量删除
 	 * 
 	 * @param IDs
 	 */
 	public void deleteDownloadHistoryByIDs(int[] IDs);
+
+	/**
+	 * 查询下载历史
+	 * 
+	 * @param userID
+	 * @param goodsID
+	 * @return
+	 */
+	public DownloadHistory queryDownloadHistory(@Param("userId") int userId, @Param("goodsId") int goodsId);
 }

@@ -15,7 +15,7 @@
       <div class="body_center2">
         <div class="mt10">
           <div class="mingxitable0 mt10">
-            <table cellpadding="0" cellspacing="0" class="user-list-table">
+            <table cellpadding="0" cellspacing="0" class="user-list-table txt-center">
               <tr class="mingxitableth">
                 <th>流水号</th>
                 <th>金额</th>

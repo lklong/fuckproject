@@ -12,28 +12,28 @@
     <result column="Image1" property="image1" jdbcType="VARCHAR" />
     <result column="Image2" property="image2" jdbcType="VARCHAR" />
     <result column="Image3" property="image3" jdbcType="VARCHAR" />
-    <result column="apply_time" property="applyTime" jdbcType="VARCHAR" />
-    <result column="approve_state" property="approveState" jdbcType="TINYINT" />
-    <result column="approve_user_id" property="approveUser" jdbcType="INTEGER" />
+    <result column="add_time" property="applyTime" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="approve_admin_id" property="approveUser" jdbcType="INTEGER" />
     <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
-    <result column="salesman_id" property="salesman" jdbcType="INTEGER" />
-    <result column="auth_time" property="authTime" jdbcType="TIMESTAMP" />
+    <result column="add_admin_id" property="salesman" jdbcType="INTEGER" />
+    <result column="approve_time" property="authTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
     ID, user_id,store_id, real_store_name, master, phone, real_store_address, Image1, Image2, 
-    Image3, apply_time, approve_state, approve_user_id, reject_reason, salesman_id, auth_time
+    Image3, add_time, status, approve_admin_id, reject_reason, add_admin_id, approve_time
   </sql>
 	<insert id="addRealStoreAuth" parameterType="realStoreAuth">
-		insert into real_store_auth(user_id,store_id,real_store_name,master,phone,real_store_address,Image1,Image2,Image3,apply_time,approve_state,approve_user_id,reject_reason,salesman_id,auth_time) 
-		value(#{userID},#{storeID},#{realStoreName},#{master},#{phone},#{realStoreAddress},#{image1},#{image2},#{image3},#{applyTime},#{approveState},#{approveUser},#{rejectReason},#{salesman},#{authTime});
+		insert into real_store_auth(user_id,store_id,real_store_name,master,phone,real_store_address,Image1,Image2,Image3,add_time,status,approve_admin_id,reject_reason,add_admin_id,approve_time) 
+		value(#{userID},#{storeID},#{realStoreName},#{master},#{phone},#{realStoreAddress},#{image1},#{image2},#{image3},#{applyTime},#{status},#{approveUser},#{rejectReason},#{salesman},#{authTime});
 	</insert>
 	<update id="updateRealStoreAuth">
 		update real_store_auth set user_id=#{realStoreAuth.userID}, real_store_name=#{realStoreAuth.realStoreName},master=#{realStoreAuth.master},phone=#{realStoreAuth.phone},
 		real_store_address=#{realStoreAuth.realStoreAddress},Image1=#{realStoreAuth.image1},Image2=#{realStoreAuth.image2},
-		Image3=#{realStoreAuth.image3},apply_time=#{realStoreAuth.applyTime}, approve_state=#{realStoreAuth.approveState},
-		approve_user_id=#{realStoreAuth.approveUser},reject_reason=#{realStoreAuth.rejectReason},salesman_id=#{realStoreAuth.salesman},
-		auth_time=#{realStoreAuth.authTime}
-		where StoreID=#{storeID};
+		Image3=#{realStoreAuth.image3},add_time=#{realStoreAuth.applyTime}, status=#{realStoreAuth.status},
+		approve_admin_id=#{realStoreAuth.approveUser},reject_reason=#{realStoreAuth.rejectReason},add_admin_id=#{realStoreAuth.salesman},
+		approve_time=#{realStoreAuth.authTime}
+		where store_id=#{storeID};
 	</update>
 	<select id="queryRealStoreAuthByStoreID" parameterType="int" resultMap="BaseResultMap">
 		select <include refid="Base_Column_List" /> from real_store_auth where store_id=#{storeID};

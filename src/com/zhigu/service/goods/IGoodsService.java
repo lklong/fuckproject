@@ -12,7 +12,6 @@ import com.zhigu.model.GoodsImage;
 import com.zhigu.model.GoodsProperty;
 import com.zhigu.model.GoodsSku;
 import com.zhigu.model.PageBean;
-import com.zhigu.model.Shortcutgoods;
 import com.zhigu.model.dto.MsgBean;
 
 /**
@@ -125,20 +124,6 @@ public interface IGoodsService {
 	 * @return
 	 */
 	public void queryDownloadHistory(PageBean<DownloadHistory> page, int goodsId);
-
-	public int saveShortcutGoods(Shortcutgoods shortcutgoods);
-
-	public List<Shortcutgoods> queryshortcutgoods(int userId);
-
-	public List<Shortcutgoods> queryshortcutgoods(int userId, boolean status);
-
-	public boolean deleteShortcut(int id);
-
-	public List<Shortcutgoods> queryshortcutgoodsByManagerList(PageBean<Shortcutgoods> page);
-
-	public boolean changeShortcutGoodsStatus(Shortcutgoods shortcutgoods);
-
-	public Shortcutgoods queryShortcutGoodsByID(int shortcutGoodsID);
 
 	/**
 	 * 正则查询商品名称集合

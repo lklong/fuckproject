@@ -36,7 +36,7 @@
 					</select>
 				</c:when>
 				<c:when test="${p.input}">
-					<input index="${pv.index }" class="only_input" pid="${p.id }" pname="${p.name }"/><!-- <em>提示：系统默认为货号加上您的店铺名称，提高检索效率</em> -->
+					<input index="${pv.index }" class="only_input_${p.id} only_input" pid="${p.id}" pname="${p.name }"/><!-- <em>提示：系统默认为货号加上您的店铺名称，提高检索效率</em> -->
 				</c:when>
 			</c:choose>
 		</div>

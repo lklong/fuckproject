@@ -1,51 +1,66 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhigu.mapper.FavouriteMapper">
-	<!-- 添加收藏信息 -->
-	<insert id="addFavourite" parameterType="favourite">
-		insert into Favourite(UserID,FavouriteID,type,addDate)
-		values(#{userID},#{favouriteID},#{type},#{addDate});
-		<selectKey resultType="int" keyProperty="ID" order="AFTER" >
-			SELECT
-			LAST_INSERT_ID()
-		</selectKey>
-	</insert>
-	<!-- 批量删除 -->
+  <resultMap id="BaseResultMap" type="com.zhigu.model.Favourite">
+    <id column="id" jdbcType="INTEGER" property="ID" />
+    <result column="user_id" jdbcType="INTEGER" property="userID" />
+    <result column="store_or_goods_id" jdbcType="INTEGER" property="storeOrGoodsId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, store_or_goods_id, type, add_time
+  </sql>
+  
+  <!-- 添加收藏信息 -->
+  <insert id="addFavourite" parameterType="com.zhigu.model.Favourite">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into favourite (user_id, store_or_goods_id, type, 
+      add_time)
+    values(#{userID},#{favouriteID},#{type},now());
+  </insert>
+  
+  <!-- 批量删除 -->
 	<delete id="delFavourite" >
-		delete from Favourite where UserID=#{userID} and type=#{type} and FavouriteID in
+		delete from Favourite where user_id=#{userID} and type=#{type} and store_or_goods_id in
 		<foreach item="idItem" collection="favouriteIDs"   open="(" separator="," close=")">
 			#{idItem}
 		</foreach>
 	</delete>
-	<!-- 查询收藏（用户ID,收藏ID,类型） -->
-	<select id="queryFavourite" parameterType="favourite" resultType="favourite">
-		select * from Favourite where UserID=#{userID} and FavouriteID=#{favouriteID} and type=#{type};
+	
+  <!-- 查询收藏（用户ID,收藏ID,类型） -->
+	<select id="queryFavourite" resultMap="BaseResultMap" >
+		select  <include refid="Base_Column_List" /> from Favourite where user_id=#{userID} and store_or_goods_id=#{storeOrGoodsId} and type=#{type} limit 1;
 	</select>
 	
 	<!-- 查询用户收藏商品 -->
-	<select id="queryFavouriteGoodsByUserID" parameterType="favourite" resultType="goods">
+	<select id="queryFavouriteGoodsByUserID" parameterType="java.lang.Integer" resultType="goods">
 		SELECT A.*
 		FROM  Goods  A,Favourite B
-		where  A.ID=B.FavouriteID And B.UserID=#{userID} And B.Type=2 And A.delete_flag=0 order by B.addDate DESC ;
+		where  A.ID=B.store_or_goods_id And B.user_id=#{userID} And B.Type=2 And A.delete_flag=0 order by B.add_time DESC ;
 	</select>
+	
 	<!-- 分页查询用户收藏商品() -->
 	<select id="queryFavouriteGoodsByPage" resultType="goods">
 		SELECT A.*
 		FROM  Goods  A,Favourite B
-		where  A.ID=B.FavouriteID And B.UserID=#{userID} And B.Type=2 And A.delete_flag=0 order by B.addDate DESC
+		where  A.ID=B.store_or_goods_id And B.user_id=#{userID} And B.type=2 And A.delete_flag=0 order by B.add_time DESC
 	</select>
 	
 	<!-- 查询用户收藏店铺 -->
-	<select id="queryFavouriteStoreByUserID" parameterType="favourite" resultType="store">
+	<select id="queryFavouriteStoreByUserID" resultType="store">
 		SELECT A.*
 		FROM Store A,Favourite B
-		where B.type=1 and B.userID=#{userID} and B.FavouriteID=A.ID;
+		where B.type=1 and B.user_id=#{userID} and B.store_or_goods_id=A.ID;
 	</select>
+	
 	<!-- 分页查询用户收藏店铺 -->
 	<select id="queryFavouriteStoreByPage" resultType="store">
 		SELECT A.*
 		FROM Store A,Favourite B
-		where B.type=1 and B.userID=#{userID} and B.FavouriteID=A.ID  order by addDate DESC 
+		where B.type=1 and B.user_id=#{userID} and B.store_or_goods_id=A.ID  order by add_time DESC 
 	</select>
+	
 </mapper>
-

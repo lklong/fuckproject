@@ -8,7 +8,7 @@
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
 <link href="/js/3rdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="/js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
-<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 <style type="text/css">
 #upimgul li {
     background: rgb(244, 244, 244) none repeat scroll 0 0; 
@@ -204,7 +204,7 @@ $(function() {
         // 只允许选择文件，可选。
         accept: {
         	title: 'RAR Archive',
-            extensions: 'rar',
+            extensions: 'rar,zip',
             mimeTypes: 'application/x-rar-compressed'
         },
         fileSingleSizeLimit:dataFileSizeLimit
@@ -251,8 +251,12 @@ $(function() {
     });
     dataUploader.on('error', function(handler) {
 		if(handler=="F_EXCEED_SIZE"){
-			layer.alert("文件大小不能超过"+(dataFileSizeLimit/1024/1024/5)+"M");
+			layer.alert("文件大小不能超过"+(dataFileSizeLimit/1024/1024)+"M");
 		}
+		if(handler == "Q_TYPE_DENIED"){
+			layer.alert("仅支持zip,rar压缩格式的文件上传");
+		}
+		
     });
 //     setInterval(function(){
 //     	zhigu.log("轮询文件上传文件==：",dataUploader.getFiles());
@@ -282,7 +286,7 @@ $(function() {
             // 只允许选择文件，可选。
             accept: {
                 title: 'Images',
-                extensions: 'gif,jpg,jpeg,bmp,png',
+                extensions: 'jpg,jpeg,bmp,png',
                 mimeTypes: 'image/*'
             },
             duplicate:false
@@ -295,7 +299,7 @@ $(function() {
         		layer.alert("上传图片数量已达上限！");
         		return false;
         	}
-        	var size = file.size;
+         	var size = file.size;
         	if(size>1024*1024*0.8){
         		layer.alert("文件大小不能超过800k！");
         		return false;
@@ -318,8 +322,11 @@ $(function() {
         	imgUploader.removeFile(file);
         });
         imgUploader.on('error', function(handler) {
-    		if(handler=="F_EXCEED_SIZE"){
+    		 if(handler=="F_EXCEED_SIZE"){
     			layer.alert("文件大小不能超过"+(imgSizeLimit/1024)+"k");
+    		} 
+    		if(handler == "Q_TYPE_DENIED"){
+    			layer.alert("仅支持jpg,jpeg,bmp,png图片格式的文件上传");
     		}
         });
  // ===============图片上传初始化  end================
@@ -401,17 +408,15 @@ function save() {
 	var saveData = {};
 	var categoryId = $("#categorySelectDiv select").last().val();
 	if (categoryId == '') {
-		dialog("请选择商品类别！");
+		layer.alert('请选择商品类别！');
 		return;
 	}
 	//商品名称 
 	if ($("#name").val() == null || $("#name").val() == '') {
-		dialog("请填商品标题！");
+		layer.alert('请填商品标题！');
 		return;
 	}
 	saveData.name = $("#name").val();
-	
-	debugger;
 
 	var propertyStr = "[";
 	//属性（select)
@@ -420,7 +425,7 @@ function save() {
 				var required = $("#property_" + $(this).attr("index")).attr("requ");
 				var value = $(this).val();
 				if (required == 'true' && value == '') {
-					dialog("请选择商品属性！");
+					layer.alert("请选择商品属性！");
 					submit = false;
 					return false;
 				}
@@ -437,7 +442,7 @@ function save() {
 	$("#attributes .checkboxpro[requ=true]").each(function() {
 		var size = $(this).find("input:checked").size();
 		if (size == 0) {
-			dialog("请选择商品属性！");
+			layer.alert("请选择商品属性！");
 			submit = false;
 			return false;
 		}
@@ -482,7 +487,7 @@ function save() {
 									+ skuArr[i].rele[j].pid + ",propertyName:'" + skuArr[i].rele[j].pname + "',propertyValueId:" + skuArr[i].rele[j].vid + ",propertyValueName:'"
 									+ skuArr[i].rele[j].usename + "',sku:1}]},";
 						} else {
-							dialog('请填写完整商品规格中的价格和数量！');
+							layer.alert("请填写完整商品规格中的价格和数量！");
 							return false;
 						}
 						count++;
@@ -497,7 +502,7 @@ function save() {
 							+ (skuArr[i].pname + ":" + skuArr[i].usename) + "',skupros:[{propertyId:" + skuArr[i].pid
 							+ ",propertyName:'" + skuArr[i].pname + "',propertyValueId:" + skuArr[i].vid + ",propertyValueName:'" + skuArr[i].usename + "'}]},";
 				}else {
-					dialog('请填写完整商品规格中的价格和数量！');
+					layer.alert("请填写完整商品规格中的价格和数量！");
 					return false;
 				}
 				count++;
@@ -505,18 +510,18 @@ function save() {
 		}
 	}
 	if (count == 0) {
-		dialog("请选择商品规格！");
+		layer.alert("请选择商品规格！");
 		return;
 	}
 	if ($("#weight").val() == null || $("#weight").val() == '') {
-		dialog('请填写商品重量！');
+		layer.alert('请填写商品重量！');
 		return;
 	}
 	saveData.weight = $("#weight").val();
 	//图片
 	var imagesStr = "[";
 	if ($(".upimg").size() == 0) {
-		dialog("请至少上传一张商品图片！");
+		layer.alert('请至少上传一张商品图片！');
 		return;
 	}
 	$(".upimg").each(function(i) {
@@ -525,21 +530,21 @@ function save() {
 
 	saveData.file = $("#dataFilePath").val();
 	
-	// 描述
-    var desc = UE.getEditor('editor').getPlainTxt();
+	// 描述 过滤外链已是使用api
+    saveData.description = UE.getEditor('editor').getContent();
 	// 过滤外链
-	var reg2 = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
+	/*var reg2 = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
     var reg = new RegExp(reg2);
     //saveData.description = desc.replace(reg, "");
     desc = desc.replace(reg, "");
-    
+   */ 
     // 过滤a标签
-    var $desc = $("<div>"+desc+"</div>");
+/*    var $desc = $("<div>"+desc+"</div>");
     if($desc.find("a").length>0){
        $desc.find("a").replaceAll("span");
     }
-    
-	saveData.description = $desc.html();
+    */
+	
 	
 	//去掉最后多余的逗号
 	if (propertyStr.length > 1)
@@ -558,7 +563,7 @@ function save() {
 	saveData.categoryId = categoryId;
 	// 数据包上传状态检查
 	if (dataUploader && dataUploader.isInProgress()) {
-		dialog("正在上传数据包中，请等数据包上传完成后再保存！");
+		layer.alert("正在上传数据包中，请等数据包上传完成后再保存！");
 		return false;
 	}
 	// 提交保存
@@ -567,9 +572,9 @@ function save() {
 		setTimeout(function(){
 			$("#saveGoods").prop("disabled",false);
 		}, 4000);
-		layer.load("商品保存中", 3);
+		layer.load();
 		$.post("/supplier/goods/save", saveData, function(msgBean) {
-			layer.msg(msgBean.msg,2, function() {
+			layer.alert(msgBean.msg,function() {
 				if(msgBean.code==zhigu.code.success && msgBean.data){
 					window.location.href= "goods/detail?goodsId="+msgBean.data;
 				}
@@ -593,7 +598,7 @@ var zTreesetting = {
 		onRename : function(event, treeId, treeNode, isCancel) {
 			ajaxSubmit("/supplier/space/updateFolderName", {"folderID" : treeNode.id,"folderName" : treeNode.name}, function(msgBean) {
 				if(msgBean.code == zhigu.code.success){
-					layer.msg(msgBean.msg, 1, f5);
+					layer.alert(msgBean.msg,f5);
 					zTree.editName(treeNode);
 				}else{
 					layer.alert(msgBean.msg);

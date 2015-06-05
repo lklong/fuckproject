@@ -13,6 +13,9 @@
 
                         // 提取属性字穿
                         var color_id = $this.val();
+                        
+                        // 获取销售属性的个数
+                        var len = $(".li_sale_prop").length;
 
 
                         if (color_check_status) {
@@ -33,6 +36,11 @@
                             });
                             // console.log(skuids);
                             // console.log(list);
+
+                            if(len === 1){
+                                list.push("");
+                                skuids.push(color_id);
+                            }
                             // 组合表格
                             var tr_html = "";
                             for (var i = 0; i < list.length; i++) {
@@ -61,14 +69,19 @@
                             $("#sku_table").append(tr_html);
                         } else {
                             // 删除行
-                            $("#sku_table tr").each(function(i, n) {
+                            $("#sku_table tbody tr").each(function(i, n) {
                                 var class_val = $(n).attr("class");
-                                console.log(class_val);
+//                                console.log(class_val);
                                 if (class_val != undefined && class_val.indexOf(color_id) != -1) {
                                     $(n).remove();
                                 }
                             });
 
+                        }
+                        if(len === 1){
+                        	 $("#sku_table tr").each(function(i,n){
+                        		 $("td:eq(1)",$(n)).addClass("hidden");
+                        	 });
                         }
                         // 下标排序
                         $("#sku_table tbody tr").each(function(i, n) {
@@ -76,7 +89,7 @@
                                 var old_name = $(k).attr("name");
                                 var new_name = old_name.replace(/\d+/, i);
                                 $(k).attr("name", new_name);
-                                console.log(new_name);
+//                                console.log(new_name);
                             });
                         });
                     }

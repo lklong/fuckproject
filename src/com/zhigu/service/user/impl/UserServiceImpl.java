@@ -6,7 +6,6 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -33,24 +32,20 @@ import com.zhigu.common.exception.ServiceException;
 import com.zhigu.common.utils.DateUtil;
 import com.zhigu.common.utils.Md5;
 import com.zhigu.common.utils.NetUtil;
-import com.zhigu.common.utils.ServiceMsg;
 import com.zhigu.common.utils.StringUtil;
 import com.zhigu.common.utils.StringUtil.RandomType;
 import com.zhigu.common.utils.VerifyUtil;
 import com.zhigu.mapper.AccountMapper;
 import com.zhigu.mapper.AdminMemberMapper;
-import com.zhigu.mapper.OpenAuthMapper;
+import com.zhigu.mapper.OpenUserMapper;
 import com.zhigu.mapper.StoreMapper;
 import com.zhigu.mapper.UserMapper;
 import com.zhigu.model.Account;
 import com.zhigu.model.LoginLog;
-import com.zhigu.model.OpenAuth;
-import com.zhigu.model.PageBean;
+import com.zhigu.model.OpenUser;
 import com.zhigu.model.Store;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.UserInfo;
-import com.zhigu.model.UserRecommend;
-import com.zhigu.model.UserTaobao;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.user.IAccountService;
 import com.zhigu.service.user.ILoginLogService;
@@ -66,7 +61,7 @@ import com.zhigu.service.user.IUserService;
 public class UserServiceImpl implements IUserService {
 	private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 	@Autowired
-	private OpenAuthMapper openAuthDao;
+	private OpenUserMapper openUserMapper;
 	@Autowired
 	private AccountMapper accountMapper;
 	@Autowired
@@ -120,19 +115,6 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserInfo queryUserInfoById(int userID) {
 		return userDao.queryUserInfoById(userID);
-	}
-
-	@Override
-	public UserAuth verifyLogin(String username, String pwd) {
-		if (StringUtil.isEmpty(username, pwd))
-			return null;
-		UserAuth auth = queryUserAuthByLoginName(username);
-
-		if (auth == null)
-			return null;
-		if (auth.getPassword().equals(Md5.convert(pwd, auth.getSalt())))
-			return auth;
-		return null;
 	}
 
 	@Override
@@ -294,140 +276,8 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public void addUserTaobao(UserTaobao userTaobao) {
-		userTaobao.setAddDate(new Date());
-		userTaobao.setRefreshDate(new Date());
-		userDao.addUserTaobao(userTaobao);
-	}
-
-	@Override
-	public UserTaobao queryUserTaobaoByUserID(int userID) {
-		UserTaobao userTaobao = userDao.queryUserTaobaoByUserID(userID);
-		if (userTaobao != null) {
-			if (userTaobao.getRefreshDate().getTime() / 1000 + userTaobao.getExpires_in() < new Date().getTime() / 1000) {
-				// 有效期小于现在时间
-				userTaobao = null;
-			}
-		}
-		return userTaobao;
-	}
-
-	@Override
 	public LoginLog queryLastTimeLogin(int userID) {
 		return loginLogService.queryPreviousLoginLogByUserID(userID);
-	}
-
-	@Override
-	public void updateLevelPoint(int userID, int addLevelPoint) {
-		userDao.updateLevelPoint(userID, addLevelPoint);
-	}
-
-	@Override
-	public List<UserInfo> queryRecommended(int userID) {
-		return userDao.queryRecommended(userID);
-	}
-
-	@Override
-	public int handlerPayDeposit(int userID, int depositLevel) {
-		throw new ServiceException("无效业务");
-		// UserInfo userInfo = userDao.queryUserInfoById(userID);
-		// // 当前选择的保证金
-		// DepositLevel curDepositLevel =
-		// DepositLevel.getDepositLevelByValue(depositLevel);
-		// DepositLevel oldDepositLevel =
-		// DepositLevel.getDepositLevelByValue(userInfo.getDepositLevel());
-		// // 支付保证金金额
-		// BigDecimal depositMoney = null;
-		// if (userInfo.getDepositLevel() == 0) {
-		// // 没有选过保证金
-		// depositMoney = new BigDecimal(curDepositLevel.getMoney());
-		// } else {
-		// // 保证金升级
-		// if (userInfo.getDepositLevel() >= curDepositLevel.getValue()) {
-		// ServiceMsg.addMsg(Code.FAIL, "不能选择该等级！你已经是：" +
-		// curDepositLevel.getName(), MsgLevel.ERROR);
-		// return 0;
-		// }
-		// // 支付差价
-		// depositMoney = new BigDecimal(curDepositLevel.getMoney() -
-		// oldDepositLevel.getMoney());
-		// }
-		// // 账户余额判定、交易
-		// Account account = accountDao.queryAccountByUserIDForUpdate(userID);
-		// BigDecimal originalMoney = new
-		// BigDecimal(account.getNormalMoney().toString());
-		// if (originalMoney.compareTo(depositMoney) < 0) {
-		// ServiceMsg.addMsg(Code.FAIL, "账户金额不足！需要金额：" + depositMoney.toString()
-		// + " 元", MsgLevel.ERROR);
-		// return 0;
-		// }
-		// account.setNormalMoney(account.getNormalMoney().subtract(depositMoney));
-		// account.setFreezeMoney(account.getFreezeMoney().add(depositMoney));
-		// accountDao.updateAccount(account);
-		// // 添加交易明细
-		// AccountDetail detail = new AccountDetail();
-		// detail.setSno(Sequence.generateSeq(SequenceConstant.FLOW));
-		// detail.setUserId(userID);
-		// detail.setIncomeFlag(false);
-		// detail.setOriginalMoney(originalMoney);
-		// detail.setDealMoney(depositMoney);
-		// if (userInfo.getDepositLevel() == 0) {
-		// detail.setDealMatter("资金冻结，诚信保证金【" + curDepositLevel.getName() +
-		// "】");
-		// } else {
-		// detail.setDealMatter("资金冻结，诚信保证金升级【" + oldDepositLevel.getName() +
-		// "-->" + curDepositLevel.getName() + "】");
-		// }
-		// detail.setDealTime(new Date());
-		// accountDao.saveAccountDetail(detail);
-		// // 更新用户保证金等级
-		// userInfo.setDepositLevel(curDepositLevel.getValue());
-		// userDao.updateDepositLevel(userInfo);
-		// // // 修改店铺正式会员flg
-		// // Store store = storeDao.queryStoreByUserID(userID);
-		// // storeDao.updateFullMemberFlg(store.getID(), Flg.ON);
-		// // // 修改店铺为诚信商家
-		// // store.setIntegrityAuth(Flg.ON);
-		// // storeDao.updateStore(store);
-		// return PayMsg.SUCCESS.getCode();
-	}
-
-	@Override
-	public int saveUserRecommend(UserRecommend userRecommend) {
-		if (!VerifyUtil.phoneVerify(userRecommend.getRecommendPhone())) {
-			ServiceMsg.addMsg(Code.FAIL, "保存失败，手机号码错误！", MsgLevel.ERROR);
-			return 0;
-		}
-		UserRecommend ur = userDao.queryUserRecommend(userRecommend.getRecommendPhone());
-		if (ur != null) {
-			// 该号码已被其他推荐人记录过
-			ServiceMsg.addMsg(Code.FAIL, "该手机号码已被记录过！", MsgLevel.ERROR);
-			return 0;
-		}
-		if (userDao.queryUserAuthByPhone(userRecommend.getRecommendPhone()) != null) {
-			ServiceMsg.addMsg(Code.FAIL, "该手机号码已经注册，不能推荐！", MsgLevel.ERROR);
-			return 0;
-		}
-		return userDao.saveUserRecommend(userRecommend);
-	}
-
-	@Override
-	public UserRecommend queryUserRecommend(String recommendPhone) {
-		return userDao.queryUserRecommend(recommendPhone);
-	}
-
-	@Override
-	public List<UserRecommend> queryUserRecommendByUserID(PageBean<UserRecommend> page, int userID) {
-		return userDao.queryUserRecommendByUserIDByPage(page, userID);
-	}
-
-	@Override
-	public void deleteUserWriteRecommend(int id) {
-		UserRecommend ur = userDao.queryUserRecommendById(id);
-		if (ur.getUserId() != SessionHelper.getSessionUser().getUserID()) {
-			throw new ServiceException("非法操作！");
-		}
-		userDao.deleteUserRecommend(id);
 	}
 
 	@Override
@@ -511,16 +361,20 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public MsgBean openIDLogin(String openID) {
-		OpenAuth auth = openAuthDao.queryOpenAuthByOpenID(openID);
-		if (auth == null) {
+	public MsgBean openIDLogin(String openId) {
+		OpenUser openUser = openUserMapper.selectByOpenId(openId);
+		if (openUser == null) {
 			return new MsgBean(Code.FAIL, "未找到openID", MsgLevel.ERROR);
 		}
-		UserAuth ua = userDao.queryUserAuthByUserID(auth.getUserID());
+		UserAuth ua = userDao.queryUserAuthByUserID(openUser.getUserId());
+		if (ua == null) {
+			openUserMapper.deleteByPrimaryKey(openUser.getId());
+			return new MsgBean(Code.FAIL, "账号不存在，请重新绑定！", MsgLevel.ERROR);
+		}
 		if (ua.getStatus() == UserAuthStatus.FREEZE) {
 			return new MsgBean(Code.FAIL, "帐号已被冻结，请联系客服！", MsgLevel.ERROR);
 		}
-		SessionUser sess = this.getSessionUser(auth.getUserID());
+		SessionUser sess = this.getSessionUser(openUser.getUserId());
 		SessionHelper.setSessionUser(sess);
 		this.loginSucessLog();
 		return new MsgBean(Code.SUCCESS, "登陆成功", MsgLevel.NORMAL);

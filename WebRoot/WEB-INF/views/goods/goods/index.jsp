@@ -9,7 +9,7 @@
 <body>
 <div class="mainbody">
   <div class="cur-pos">
-     首页> 全部商品> <a href="goods/list?categoryId=${paramCategory.id }">${paramCategory.name }</a>
+     <a href="/">首页</a>> <a href="/welcome" >全部商品</a> > <a href="goods/list?categoryId=${paramCategory.id }">${paramCategory.name }</a>
   </div>
   <div class="souyoufeileitop">
     <div class="fwryh souyoufeileinrdi"> 所有分类：共<span class="cf86666">${page.totalRow } </span>件宝贝 </div>

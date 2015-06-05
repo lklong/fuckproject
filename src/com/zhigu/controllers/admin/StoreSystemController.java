@@ -1,7 +1,10 @@
 package com.zhigu.controllers.admin;
 
 import java.io.IOException;
+import java.text.ParseException;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +19,8 @@ import com.zhigu.model.RealStoreAuth;
 import com.zhigu.model.Store;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.admin.IAdminService;
+import com.zhigu.service.store.ICompanyAuthService;
+import com.zhigu.service.store.IRealStoreAuthService;
 import com.zhigu.service.store.IStoreService;
 
 /**
@@ -33,6 +38,12 @@ public class StoreSystemController {
 
 	@Autowired
 	public IAdminService adminService;
+
+	@Autowired
+	public IRealStoreAuthService realStoreAuthService;
+
+	@Autowired
+	public ICompanyAuthService companyAuthService;
 
 	/**
 	 * 店铺列表
@@ -78,7 +89,7 @@ public class StoreSystemController {
 	@RequestMapping("/company/inner_info")
 	public ModelAndView realUserAuthInfo(ModelAndView mav, int storeID) {
 
-		mav.addObject("companyAuth", storeService.queryCompanyAuthByStoreID(storeID));
+		mav.addObject("companyAuth", companyAuthService.queryCompanyAuthByStoreID(storeID));
 		mav.addObject("storeID", storeID);
 
 		mav.setViewName("admin/store/inner_storeCompanyAuthInfo");
@@ -90,12 +101,15 @@ public class StoreSystemController {
 	 * 
 	 * @param mav
 	 * @return
+	 * @throws ParseException
 	 * @throws IOException
 	 */
 	@RequestMapping("/saveCompanyAuth")
 	@ResponseBody
-	public MsgBean saveCompanyAuth(CompanyAuth companyAuth, int storeID) {
-		return storeService.saveCompanyAuth(companyAuth, storeID);
+	public MsgBean saveCompanyAuth(CompanyAuth companyAuth, String dateStr, int storeID) throws ParseException {
+		if (StringUtils.isNotBlank(dateStr))
+			companyAuth.setBusinessTerm(DateUtils.parseDate(dateStr, "yyyy-MM-dd"));
+		return companyAuthService.saveCompanyAuth(companyAuth, storeID);
 	}
 
 	/**
@@ -108,7 +122,7 @@ public class StoreSystemController {
 	@RequestMapping("/realStore/inner_info")
 	public ModelAndView realStoreAuthInfo(ModelAndView mav, int storeID) {
 
-		mav.addObject("realStoreAuth", storeService.queryRealStoreAuthByStoreID(storeID));
+		mav.addObject("realStoreAuth", realStoreAuthService.queryRealStoreAuthByStoreID(storeID));
 		mav.addObject("storeID", storeID);
 
 		mav.setViewName("admin/store/inner_storeRealStoreAuthInfo");
@@ -127,7 +141,7 @@ public class StoreSystemController {
 	@RequestMapping("/seveRealStoreAuth")
 	@ResponseBody
 	public MsgBean seveRealStoreAuthInfo(RealStoreAuth realStoreAuth, int storeID) {
-		return storeService.saveRealStoreAuth(realStoreAuth, storeID);
+		return realStoreAuthService.saveRealStoreAuth(realStoreAuth, storeID);
 	}
 
 	/**
@@ -139,7 +153,7 @@ public class StoreSystemController {
 	@RequestMapping("/company/skipCompanyAuthStatus")
 	public ModelAndView skipCompanyAuthStatus(int storeID) {
 		ModelAndView mav = new ModelAndView();
-		CompanyAuth companyAuth = storeService.queryCompanyAuthByStoreID(storeID);
+		CompanyAuth companyAuth = companyAuthService.queryCompanyAuthByStoreID(storeID);
 
 		mav.addObject("companyAuth", companyAuth);
 
@@ -165,7 +179,7 @@ public class StoreSystemController {
 	@RequestMapping("/updateCompanyAuthStatus")
 	@ResponseBody
 	public MsgBean updateCompanyAuthStatus(String rejectReason, Integer status, Integer storeID) {
-		return storeService.updateCompanyAuthStatus(rejectReason, status, storeID);
+		return companyAuthService.updateCompanyAuthStatus(rejectReason, status, storeID);
 	}
 
 	/**
@@ -177,7 +191,7 @@ public class StoreSystemController {
 	@RequestMapping("/realStore/skipRealStoreAuthStatus")
 	public ModelAndView skipRealStoreAuthStatus(int storeID) {
 		ModelAndView mav = new ModelAndView();
-		RealStoreAuth realStoreAuth = storeService.queryRealStoreAuthByStoreID(storeID);
+		RealStoreAuth realStoreAuth = realStoreAuthService.queryRealStoreAuthByStoreID(storeID);
 
 		mav.addObject("realStoreAuth", realStoreAuth);
 
@@ -203,7 +217,7 @@ public class StoreSystemController {
 	@RequestMapping("/updateRealStoreAuthStatus")
 	@ResponseBody
 	public MsgBean updateRealStoreAuthStatus(String rejectReason, Integer status, Integer storeID) {
-		return storeService.updateRealStoreAuthStatus(rejectReason, status, storeID);
+		return realStoreAuthService.updateRealStoreAuthStatus(rejectReason, status, storeID);
 	}
 
 	/**
@@ -220,7 +234,7 @@ public class StoreSystemController {
 
 		mav.addObject("store", store);
 
-		CompanyAuth companyAuth = storeService.queryCompanyAuthByStoreID(store.getID());
+		CompanyAuth companyAuth = companyAuthService.queryCompanyAuthByStoreID(store.getID());
 		mav.addObject("companyAuth", companyAuth);
 		if (companyAuth != null) {
 			if (companyAuth.getSalesman() != 0)
@@ -230,7 +244,7 @@ public class StoreSystemController {
 				mav.addObject("caApproveUser", adminService.queryAdminById(companyAuth.getApproveUser())); // 审核者
 		}
 
-		RealStoreAuth realStoreAuth = storeService.queryRealStoreAuthByStoreID(store.getID());
+		RealStoreAuth realStoreAuth = realStoreAuthService.queryRealStoreAuthByStoreID(store.getID());
 		mav.addObject("realStoreAuth", realStoreAuth);
 		if (realStoreAuth != null) {
 			if (realStoreAuth.getSalesman() != 0)

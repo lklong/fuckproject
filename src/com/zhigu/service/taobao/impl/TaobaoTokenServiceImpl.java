@@ -161,11 +161,13 @@ public class TaobaoTokenServiceImpl implements ITaobaoTokenService {
 
 		if (userInfo == null) {
 
-			throw new ServiceException("用户授权信息已过期，请重新获取授权");
+			// 刷新token
+			access_token = getRefreshTokenMap(refresh_token, userId);
+
+			// throw new ServiceException("用户授权信息已过期，请重新获取授权");
 
 		}
-		access_token = getRefreshTokenMap(refresh_token, userId);
-		// 刷新token
+
 		return access_token;
 
 	}

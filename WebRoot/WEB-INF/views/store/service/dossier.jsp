@@ -38,10 +38,10 @@
 				<div class="rz_table_1">
 					<h4>企业身份认证信息 
 						<c:choose>
-							<c:when test="${companyAuth.approveState!=2}"><span class="red">*未认证</span></c:when>
+							<c:when test="${companyAuth.status!=2}"><span class="red">*未认证</span></c:when>
 						</c:choose>
 						</h4>
-					<c:if test="${companyAuth.approveState==2}">
+					<c:if test="${companyAuth.status==2}">
 					<table>
 						<tr>
 							<td class="bg_col">企业名称</td>
@@ -81,10 +81,10 @@
 				<div class="rz_table_1">
 					<h4>实体认证信息
 						<c:choose>
-							<c:when test="${realStoreAuth.approveState!=2}"><span class="red">*未认证</span></c:when>
+							<c:when test="${realStoreAuth.status!=2}"><span class="red">*未认证</span></c:when>
 						</c:choose>
 					</h4>
-					<c:if test="${realStoreAuth.approveState==2}">
+					<c:if test="${realStoreAuth.status==2}">
 					<table>
 						<tr>
 							<td class="bg_col">实体名称</td>

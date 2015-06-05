@@ -4,9 +4,8 @@
 <!doctype html>
 <html>
 <head>
-<link href="/css/default/goods.css" rel="stylesheet"/>
-<link href="/css/default/shop.css" rel="stylesheet"/>
-<title>商家通知</title>
+
+<title>店铺商品</title>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
@@ -14,8 +13,7 @@
 <div class="tongZhi hidden">
   <div class="tzTitle">通知</div>
   <div class="tzBox">
-    <p>会上，全国公安系统100个爱民模范集体和100名爱民模范受到表彰。<br />
-      2014年10月28日 19:06:40 </p>
+    <p>test</p>
   </div>
   <span id="closeTZ" title="关闭通知">╳</span> </div>
 
@@ -27,23 +25,23 @@
     </div>
     <div class="bsbSortDiv">
       <div>销售量</div>
-      <div> <span class="${gc.sort == 1 ? 'sortUp_2' : 'sortUp_1'}"  onclick="javascript:search(1)"></span> <span class="${gc.sort == 2 ? 'sortDown_2' : 'sortDown_1'}" onclick="javascript:search(2)"></span> </div>
+      <div> <span class="${gc.sort == 1 ? 'sortUp_2' : 'sortUp_1'}"  onclick="zhigu.storeGoods(1,1)"></span> <span class="${gc.sort == 2 ? 'sortDown_2' : 'sortDown_1'}" onclick="zhigu.storeGoods(1,2)"></span> </div>
     </div>
     <div class="bsbSortDiv">
       <div>下载量</div>
-      <div> <span class="${gc.sort == 5 ? 'sortUp_2' : 'sortUp_1'}"  onclick="javascript:search(5)"></span> <span class="${gc.sort == 6 ? 'sortDown_2' : 'sortDown_1'}" onclick="javascript:search(6)"></span> </div>
+      <div> <span class="${gc.sort == 5 ? 'sortUp_2' : 'sortUp_1'}"  onclick="zhigu.storeGoods(1,5)"></span> <span class="${gc.sort == 6 ? 'sortDown_2' : 'sortDown_1'}" onclick="zhigu.storeGoods(1,6)"></span> </div>
     </div>
-    <div class="bsbSortDiv">
+    <div class="bsbSortDiv hidden">
       <div>人气</div>
-      <div> <span class="${gc.sort == 3 ? 'sortUp_2' : 'sortUp_1'}"  onclick="javascript:search(3)"></span> <span class="${gc.sort == 4 ? 'sortDown_2' : 'sortDown_1'}" onclick="javascript:search(4)"></span> </div>
+      <div> <span class="${gc.sort == 3 ? 'sortUp_2' : 'sortUp_1'}"  onclick="zhigu.storeGoods(1,3)"></span> <span class="${gc.sort == 4 ? 'sortDown_2' : 'sortDown_1'}" onclick="zhigu.storeGoods(1,4)"></span> </div>
     </div>
     <div class="bsbSortDiv">
       <div>时间</div>
-      <div> <span class="${gc.sort == 9 ? 'sortUp_2' : 'sortUp_1'}"  onclick="javascript:search(9)"></span> <span class="${gc.sort == 10 ? 'sortDown_2' : 'sortDown_1'}" onclick="javascript:search(10)"></span> </div>
+      <div> <span class="${gc.sort == 9 ? 'sortUp_2' : 'sortUp_1'}"  onclick="zhigu.storeGoods(1,9)"></span> <span class="${gc.sort == 10 ? 'sortDown_2' : 'sortDown_1'}" onclick="zhigu.storeGoods(1,10)"></span> </div>
     </div>
     <div class="bsbSortDiv">
       <div>价格</div>
-      <div> <span class="${gc.sort == 7 ? 'sortUp_2' : 'sortUp_1'}"  onclick="javascript:search(7)"></span> <span class="${gc.sort == 8 ? 'sortDown_2' : 'sortDown_1'}" onclick="javascript:search(8)"></span> </div>
+      <div> <span class="${gc.sort == 7 ? 'sortUp_2' : 'sortUp_1'}"  onclick="zhigu.storeGoods(1,7)"></span> <span class="${gc.sort == 8 ? 'sortDown_2' : 'sortDown_1'}" onclick="zhigu.storeGoods(1,8)"></span> </div>
     </div>
   </div>
 </div>
@@ -67,22 +65,23 @@
   <div class="clear"></div>
   <div class="ddpage fr mt20">
     <jsp:include page="../../include/page.jsp">
-    <jsp:param name="request" value="form"/>
-    <jsp:param name="requestForm" value="storeHomeForm"/>
+    <jsp:param name="request" value="function"/>
+    <jsp:param name="functionName" value="storeGoods"/>
     </jsp:include>
   </div>
 </div>
-<form action="store/index?storeId=${store.ID}" id="storeHomeForm" method="post">
-  <input type="hidden" name="sort" id="sort" value="${gc.sort }">
-</form>
 <script type="text/javascript">
-function search(sort){
-	$("#sort").val(sort);
-	$("#storeHomeForm").submit();
+if (typeof zhigu == "undefined" || !zhigu) {
+	var zhigu = {};
+}
+zhigu.storeGoods = function(pageNo,sort){
+	if(!sort)sort = "${gc.sort }";
+	if(!pageNo)pageNo=1;
+	window.location.href = "/store/index?storeId=${store.ID}"+(sort?("&sort="+sort):"")+"&pageNo="+pageNo;
 }
 //隐藏主导航和搜索框
 $('.nav').hide();
-$('.search').hide();
+$('.search').remove();
 </script>
 </body>
 </html>

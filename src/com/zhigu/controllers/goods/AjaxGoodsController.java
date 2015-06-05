@@ -9,8 +9,6 @@ import java.util.List;
 import net.sf.json.JSONArray;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +24,6 @@ import com.zhigu.service.user.ICartService;
 @Controller
 @RequestMapping("/ajax/goods")
 public class AjaxGoodsController {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(AjaxGoodsController.class);
 
 	/** 注入商品业务处理接口 */
 	@Autowired

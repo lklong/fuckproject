@@ -1,7 +1,11 @@
 package com.zhigu.controllers.user;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,14 +119,35 @@ public class FavouriteController {
 	 * 
 	 * @param commodityID
 	 */
+	/*
+	 * @RequestMapping("/addFavouriteGoods")
+	 * 
+	 * @ResponseBody public MsgBean addFavouriteGoods(@RequestParam int goodsID)
+	 * { if (SessionHelper.getSessionUser() == null) { return new
+	 * MsgBean(Code.FAIL, "未登录！", MsgLevel.ERROR); }
+	 * favouriteService.addFavouriteCommodity
+	 * (SessionHelper.getSessionUser().getUserID(), goodsID); return new
+	 * MsgBean(Code.SUCCESS, "收藏成功！", MsgLevel.NORMAL); }
+	 */
 	@RequestMapping("/addFavouriteGoods")
 	@ResponseBody
-	public MsgBean addFavouriteGoods(@RequestParam int goodsID) {
+	public MsgBean addFavouriteGoods(String... goodsIds) {
 		if (SessionHelper.getSessionUser() == null) {
 			return new MsgBean(Code.FAIL, "未登录！", MsgLevel.ERROR);
 		}
-		favouriteService.addFavouriteCommodity(SessionHelper.getSessionUser().getUserID(), goodsID);
-		return new MsgBean(Code.SUCCESS, "收藏成功！", MsgLevel.NORMAL);
+		// id 去重复
+		List<String> _goodsIds = Arrays.asList(goodsIds);
+		Set<String> idSet = new HashSet<String>();
+		idSet.addAll(_goodsIds);
+
+		for (String goodsId : idSet) {
+			if (StringUtils.isNotBlank(goodsId)) {
+				favouriteService.addFavouriteCommodity(SessionHelper.getSessionUser().getUserID(), Integer.valueOf(goodsId));
+			}
+		}
+		MsgBean msgBean = new MsgBean(Code.SUCCESS, "收藏成功！", MsgLevel.NORMAL);
+		msgBean.setData(goodsIds);
+		return msgBean;
 	}
 
 	/**

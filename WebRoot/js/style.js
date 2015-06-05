@@ -4,7 +4,7 @@ $(function(){
 	$('.search-selector').hover(
 	function(){
 			$('#search-selector-list').show();
-			$(this).find('li').click(
+			$('#search-selector-list').find('li').click(
 			function(){
 					$('#search-selector-cur').html($(this).html());
 					$('#search-selector-list').hide();
@@ -49,10 +49,10 @@ $(function(){
 	/* 下拉导航 */
 	$('#menu_ul').find('li').hover(
 		function(){
-			$(this).find('div').fadeIn('fast');
+			$(this).find('div').show();
 		},
 		function(){
-			$(this).find('div').fadeOut('fast');
+			$(this).find('div').hide();
 	});
 	
 	/* 显示侧边栏 */
@@ -78,13 +78,14 @@ function slideBar(){
 		$('#slide-bar').css({'height':w_h});
 		$('#slide-bar').show();
 		$('#slide-bar').animate({right:0});
-		
 		$('#slide-bar').find('li').hover(
 				function(){
-					$(this).find('span').hide().fadeIn();
+					$(this).find('.kefu-qq').hide().fadeIn('fast');
+					$(this).find('span').hide().fadeIn('fast');
 				},
 				function(){
-					$(this).find('span').hide().fadeOut();
+					$(this).find('.kefu-qq').hide().fadeOut('fast');
+					$(this).find('span').hide().fadeOut('fast');
 				});
 	}
 }

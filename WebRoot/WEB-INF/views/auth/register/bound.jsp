@@ -1,43 +1,48 @@
 <%@ page language="java" pageEncoding="utf-8"%>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
 <link href="/css/default/user.css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/3rdparty/layer1.9/layer.js"></script>
 <title>帐号绑定</title>
-<style type="text/css">
-	.bdzh2 {
-	    align-self: center;
-	    background-color: #f0f8ff;
-	    border: 1px solid #d6d6d6;
-	    text-align: center;
-	    width: 200px;
-	    cursor: default;
-	    margin:0 auto;
-	}
-</style>
 </head>
 <body>
 <div class="userRegPanel">
 	<div class="urpInside">
 		<div class="urpMiddleBox">
-			<div class="urpBound">
-				<div class="urpMethod1"><strong>绑定第三方账号：</strong><font style="font-size:12px;">(完成账号绑定后，即可直接使用您的第三方账号登录同城货源网)</font></div>
-				<div class="urpPhoto">
-					<div><img src="${avatar }" width="75" height="75" /></div>
-					<div>用户昵称：<font color="#ff4444">${nike } </font></div>
-				</div>
-			</div>
-			<div class="urpBound">
-				<div>
-					<div class="urpMethod1"><strong>同城账号 ： </strong><a href="/register" target="_blank" style="color:#ff5500" class="fr">还没有同城账号？去注册 >></a></div>
-						<ul class="urpUl">
-							<li><span class="fl w60 tl">&nbsp;</span><font color="#ff4444" id="e_msg">${e_msg }</font></li>
-							<li><span class="fl w60 tl">登录名：</span><input name="username" id="username" type="text" class="urpInput" /></li>  
-							<li><span class="fl w60 tl">登录密码：</span><input name="password" type="password" id="password" class="urpInput" /></li>
-							<li><span class="fl w60 tl">&nbsp;</span><button class="button white bdzh2" onclick="submit()" type="button">绑定账号</button></li>
-						</ul>	
-				</div>
-			</div>
+			<div class="urpTopTip">
+	          <div id="step1">
+	            <h2>绑定第三方账号</h2>
+	          </div>
+	        </div>
+	        <div class="urpMiddleDiv">
+	        	<div class="msg-alert">
+	        		完成账号绑定后，即可直接使用您的第三方账号登录同城货源网。
+	        	</div>
+	        </div>
+	        <div class="urpMiddleDiv txt-center">
+	        	<img src="${avatar }" width="75" height="75" />
+	        	<p>用户昵称：<span class="color-red fwb">${nike } </span></p>
+	        </div>
+	        <div class="urpMiddleDiv txt-center">
+	        	<a href="/register">还没有同城账号？去注册 ></a>
+	        </div>
+	        <div class="urpMiddleDiv">
+	        	<table cellpadding="0" cellspacing="0" class="user-form-table" style="width:420px;margin:0 auto;">
+					<tr>
+						<td style="width:20%">登录名:</td>
+						<td style="width:80%"><input name="username" id="username" type="text" class="input-txt" /><span class="color-red" id="e_msg">${e_msg }</span></td>
+					</tr>
+					<tr>
+						<td>登录密码:</td>
+						<td><input name="password" type="password" id="password" class="input-txt" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><input type="button" class="input-button" onclick="submit()" value="绑定账号"/></td>
+					</tr>
+				</table>
+	        </div>
 		</div>
 	</div>
 </div>
@@ -47,7 +52,7 @@
 		params.username = $("#username").val();
 		params.password = $("#password").val();
 		if(!params.username){
-			$("#e_msg").html("请输入用户名");
+			$("#e_msg").html("请输入登录名");
 			return false;
 		}
 		if(!params.password){

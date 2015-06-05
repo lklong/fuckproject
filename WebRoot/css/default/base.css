@@ -12,7 +12,7 @@ ul, ol, li, p, h1, h2, h3, h4, h5, h6, dl, dt, dd, table, img, form, input, butt
 	margin:0;
 	padding:0;}
 img, input {
-	border:none;cursor: pointer;}
+	border:none;background: none;}
 ul, ol, li {
 	list-style:none;}
 .wrapper {
@@ -37,6 +37,10 @@ a:hover {
 	color:#f83e77;}
 .color-gray {
 	color:#b0b0b0;}
+.color-78 {
+	color:#787878;}
+.color-white {
+	color:#ffffff;}
 .pt10 {
 	padding-top:10px;}
 .pt20 {
@@ -59,6 +63,8 @@ a:hover {
 	font-size:1.4em;}
 .fz16 {
 	font-size:1.6em;}
+.ml3 {
+	margin-left:3px;}
 .ml5 {
 	margin-left:5px;}
 .ml10 {
@@ -73,14 +79,20 @@ a:hover {
 	margin-top:3px;}
 .mt5 {
 	margin-top:5px;}
+.mt6 {
+	margin-top:6px;}
 .mt10 {
 	margin-top:10px;}
 .mt15 {
 	margin-top:15px;}
 .mt20 {
 	margin-top:20px;}
+.mt25 {
+	margin-top:25px;}
 .mr10 {
 	margin-right:10px;}
+.mr15 {
+	margin-right:15px;}
 .txt-center {
 	text-align:center;}
 .mini-btn {
@@ -97,3 +109,16 @@ a:hover {
 .c666 {
     color: #777;
 }
+.clear {
+	clear:both;}
+.no-right-border {
+	border-right:none !important;}
+.input-textarea {
+	border:1px solid #afafaf;
+	height:70px;
+	width:300px;}
+.no-margin-top-bottom {
+	margin-top:0 !important;
+	margin-bottom:0 !important;}
+.no-border-margin {
+	margin:-1px 0 0 0 !important;}

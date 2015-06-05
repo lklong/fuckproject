@@ -1,17 +1,12 @@
 package com.zhigu.service.user;
 
-import java.util.List;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import com.zhigu.common.SessionUser;
 import com.zhigu.model.LoginLog;
-import com.zhigu.model.PageBean;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.UserInfo;
-import com.zhigu.model.UserRecommend;
-import com.zhigu.model.UserTaobao;
 import com.zhigu.model.dto.MsgBean;
 
 /**
@@ -45,10 +40,10 @@ public interface IUserService {
 	/**
 	 * 第三方登陆
 	 * 
-	 * @param openID
+	 * @param openId
 	 * @return
 	 */
-	public MsgBean openIDLogin(String openID);
+	public MsgBean openIDLogin(String openId);
 
 	/**
 	 * 取得sessionUser对象
@@ -115,15 +110,6 @@ public interface IUserService {
 	public UserAuth queryUserAuthByUserID(int userID);
 
 	/**
-	 * 登录验证
-	 * 
-	 * @param username
-	 * @param pwd
-	 * @return
-	 */
-	public UserAuth verifyLogin(String username, String pwd);
-
-	/**
 	 * 修改手机号
 	 * 
 	 * @param userID
@@ -176,83 +162,11 @@ public interface IUserService {
 	public void refreshSessionUser();
 
 	/**
-	 * 添加用户淘宝
-	 * 
-	 * @param userTaobao
-	 */
-	public void addUserTaobao(UserTaobao userTaobao);
-
-	/**
-	 * 查询用户淘宝(只取有效期内)
-	 * 
-	 * @param userID
-	 * @return
-	 */
-	public UserTaobao queryUserTaobaoByUserID(int userID);
-
-	/**
 	 * 用户上次登录日志
 	 * 
 	 * @param userID
 	 * @return
 	 */
 	public LoginLog queryLastTimeLogin(int userID);
-
-	/**
-	 * 修改用户等级点数（plus：LevelPoint+=#{levelPoint}）
-	 * 
-	 * @param userID
-	 * @param addLevelPoint
-	 */
-	public void updateLevelPoint(int userID, int addLevelPoint);
-
-	/**
-	 * 查询用户的被推荐人
-	 * 
-	 * @param userID
-	 * @return
-	 */
-	public List<UserInfo> queryRecommended(int userID);
-
-	/**
-	 * 支付诚信保证金
-	 * 
-	 * @param userID
-	 * @param depositLevel
-	 *            保证金等级
-	 * @return
-	 */
-	public int handlerPayDeposit(int userID, int depositLevel);
-
-	/**
-	 * 添加用户推荐人,推荐人主动记录
-	 * 
-	 * @param userRecommend
-	 * @return
-	 */
-	public int saveUserRecommend(UserRecommend userRecommend);
-
-	/**
-	 * 查询用户推荐人
-	 * 
-	 * @param recommendPhone
-	 * @return
-	 */
-	public UserRecommend queryUserRecommend(String recommendPhone);
-
-	/**
-	 * 查询用户填写的推荐
-	 * 
-	 * @param userID
-	 * @return
-	 */
-	public List<UserRecommend> queryUserRecommendByUserID(PageBean<UserRecommend> page, int userID);
-
-	/**
-	 * 删除用户填写的推荐
-	 * 
-	 * @param id
-	 */
-	public void deleteUserWriteRecommend(int id);
 
 }

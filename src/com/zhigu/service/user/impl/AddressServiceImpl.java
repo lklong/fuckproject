@@ -56,10 +56,23 @@ public class AddressServiceImpl implements IAddressService {
 		// 保存
 		address.setId(null);
 		address.setAddTime(new Date());
+
+		// 判断该地址是否是默认地址，如果是的话
+		// 就查询该用户有没有默认地址，
+		// 如果有的话就修改以前的默认地址为false
+		if (address.getDefaultFlag()) {
+			Address defAddress = addressMapper.selectDefaultAddress(userId);
+			if (defAddress != null) {
+				defAddress.setDefaultFlag(false);
+				addressMapper.updateByPrimaryKeySelective(defAddress);
+			}
+		}
+
 		int row = addressMapper.insert(address);
 		if (row != 1) {
 			throw new ServiceException(SystemConstants.DB_UPDATE_FAILED_MSG);
 		}
+
 		return new MsgBean(Code.SUCCESS, "地址添加成功", MsgLevel.NORMAL);
 	}
 
@@ -110,35 +123,33 @@ public class AddressServiceImpl implements IAddressService {
 		if (!StringUtil.isEmpty(msg)) {
 			return new MsgBean(Code.FAIL, msg, MsgLevel.ERROR);
 		}
-		addressMapper.updateByPrimaryKey(oldAddress);
 		// 原有默认地址
 		if (address.getDefaultFlag()) {
-			Address defaultAddr = addressMapper.selectDefaultAddress(userId);
-			if (defaultAddr != null && defaultAddr.getId() != oldAddress.getId()) {
-				defaultAddr.setDefaultFlag(false);
-				addressMapper.updateByPrimaryKey(defaultAddr);
+			Address defAddress = addressMapper.selectDefaultAddress(userId);
+			if (defAddress != null && defAddress.getId().intValue() != address.getId()) {
+				defAddress.setDefaultFlag(false);
+				addressMapper.updateByPrimaryKeySelective(defAddress);
 			}
 		}
+		addressMapper.updateByPrimaryKey(oldAddress);
 		return new MsgBean(Code.SUCCESS, "修改成功", MsgLevel.NORMAL);
 	}
 
 	@Override
 	public MsgBean updateDefaultAddress(int userId, int addressId) {
 		Address addr = addressMapper.selectByPrimaryKey(addressId);
-		if (addr != null && addr.getUserId() == userId) {
-			addr.setDefaultFlag(true);
-			addressMapper.updateByPrimaryKey(addr);
-		} else {
+		if (addr == null || addr.getUserId() != userId) {
 			return new MsgBean(Code.FAIL, "无效地址", MsgLevel.ERROR);
 		}
-
-		Address defaultAddr = addressMapper.selectDefaultAddress(userId);
-		if (defaultAddr != null && defaultAddr.getId() != addressId) {
-			// 取消原有收货地址
-			defaultAddr.setDefaultFlag(false);
-			addressMapper.updateByPrimaryKey(defaultAddr);
+		// 取消原有默认收货地址
+		Address defAddress = addressMapper.selectDefaultAddress(userId);
+		if (defAddress != null && defAddress.getId().intValue() != addr.getId()) {
+			defAddress.setDefaultFlag(false);
+			addressMapper.updateByPrimaryKeySelective(defAddress);
 		}
-
+		// 设置新默认收货地址
+		addr.setDefaultFlag(true);
+		addressMapper.updateByPrimaryKey(addr);
 		return new MsgBean(Code.SUCCESS, "默认地址设置成功", MsgLevel.NORMAL);
 	}
 

@@ -5,7 +5,8 @@
 <html>
 <head>
 <link href="/css/default/user.css" rel="stylesheet">
-<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
+<link href="/css/default/goods.css" rel="stylesheet">
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 <title>我的购物车</title>
 </head>
 <body>
@@ -20,14 +21,14 @@
 		<table cellpadding="0" cellspacing="0" class="shopping-cart-table">
 			<!-- 标题 -->
 			<tr>
-				<th style="width: 6%"><input type="checkbox" onclick="zhigu.allCheckBoxClick(this);" class="fl mt10 ml10" id="allChoose"> <label
+				<th style="width: 6%" class="no-right-border"><input type="checkbox" onclick="zhigu.allCheckBoxClick(this);" class="fl mt10 ml10" id="allChoose"> <label
 					class="fl ml10" for="allChoose">全选</label></th>
-				<th style="width: 30%">货品</th>
-				<th style="width: 19%">规格</th>
-				<th style="width: 9%">价格</th>
-				<th style="width: 9%">库存</th>
-				<th style="width: 9%">数量</th>
-				<th style="width: 9%">小计</th>
+				<th style="width: 30%" class="no-right-border">货品</th>
+				<th style="width: 19%" class="no-right-border">规格</th>
+				<th style="width: 9%" class="no-right-border">价格</th>
+				<th style="width: 9%" class="no-right-border">库存</th>
+				<th style="width: 9%" class="no-right-border">数量</th>
+				<th style="width: 9%" class="no-right-border">小计</th>
 				<th style="width: 9%">操作</th>
 			</tr>
 			<c:forEach items="${shoppingCartList }" var="sc" varStatus="scStatus">
@@ -79,7 +80,7 @@
 										<strong class="color-red">￥</strong> <strong class="color-red data-goods-count-price" ></strong>
 									</td>
 									<td style="width: 9%"><ul>
-											<li><a href="javascript:void(0)" onclick="addFavouriteGoods(${item.goods.id});" class="default-a">收藏</a></li>
+											<li><a href="javascript:void(0)" onclick="addFavouriteGoods(${item.goods.id});" class="default-a favourite${item.goods.id}">收藏</a></li>
 											<li><a href="javascript:void(0)" onclick="del(${item.id})" class="default-a">删除</a></li>
 										</ul></td>
 								</tr>
@@ -96,8 +97,9 @@
 			</c:forEach>
 		</table>
 		<div class="shop-list-head">
-			<span> <input type="checkbox" onclick="zhigu.allCheckBoxClick(this);" class="ckbox ml10 fl mt15" id="allChoose"> <label
-				class="fl ml10" for="allChoose">全选</label>
+			<span class="ml10 fl mr10">
+			<input type="checkbox" onclick="zhigu.allCheckBoxClick(this);" class="ckbox" id="allChoose">
+			<label for="allChoose">全选</label>
 			</span> <span><a href="javascript:void(0)" onclick="del('')" class="default-a">删除所选</a></span> <span><a href="javascript:void(0)"
 				onclick="addFavouriteGoodsBatch();" class="default-a">批量收藏</a></span>
 			<div class="fr">
@@ -124,26 +126,28 @@ $(function(){
 })
 // 购买数量检查，只根据选中的商品返回true/false
 function buyNumCheck(obj){
-	var okflag = true;
 	var singleCheck = function(obj){
 		var $this = $(obj);
 		if($this.val()>$this.data("repertory")){
-			if($this.closest(".js-goods-tr").find("input[name='itemCheckBox']").prop("checked")){
-				okflag = false;
-			}
 			$this.addClass("quantify");
+			//if($this.closest(".js-goods-tr").find("input[name='itemCheckBox']").prop("checked")){
+				return false;
+			//}
 		}else{
 			$this.removeClass("quantify");
 		}
+		return true;
 	}
 	if(obj){
-		singleCheck(obj);
+		return singleCheck(obj);
 	}else{
+		var okflag = true;
 		$("input[name='buynum']").each(function(){
-			singleCheck(this);
+			okflag = singleCheck(this);
+			if(!okflag)return false;
 		});
+		return okflag;
 	}
-	return okflag;
 }
 // 服务器请求，修改购物车商品数量
 zhigu.updateCartGoodsQuantity = function(buynum_obj){
@@ -164,7 +168,7 @@ zhigu.updateCartGoodsQuantity = function(buynum_obj){
 			if(msgBean.code==zhigu.code.success){
 				zhigu.cartCount();
 			}else{
-				layer.msg(msgBean.msg,2,f5);
+				layer.alert(msgBean.msg,f5);
 			}
 		});
 	}
@@ -280,31 +284,28 @@ function del(item){
 		layer.alert("请选择需要删除的商品");
 		return;
 	}
-	$.layer({
-	    shade: [0.5, '#000'],
-	    area: ['auto','auto'],
-	    dialog: {
-	        msg: '确定删除选择商品？',
-	        btns: 2,                    
-	        type: 4,
-	        btn: ['确定','取消'],
-	        yes: function(){
-	        	ajaxSubmit("/user/cart/delete", data, function(msgBean){
-	    			if(msgBean.code == zhigu.code.success){
-	    				f5();
-	    			}else{
-	    				layer.alert(msgBean.msg);
-	    			}
-	    		});
-	        },
-	        no: function(){}
-	    }
+	layer.confirm('确定删除选择商品？', {
+	    btn: ['确定','取消']
+	}, function(){
+		ajaxSubmit("/user/cart/delete", data, function(msgBean){
+			if(msgBean.code == zhigu.code.success){
+				f5();
+			}else{
+				layer.alert(msgBean.msg);
+			}
+		});
+	}, function(){
+	    
 	});
 }
 //确认订单
 function confirm(){
 	if(buyNumCheck()){
-		window.location.href="/user/order/confirm";
+		if($("input[name='itemCheckBox']:checked").size() > 0){
+			window.location.href="/user/order/confirm";
+		}else{
+			layer.alert("购物车中无选中商品");
+		}
 	}else{
 		layer.alert("有库存不足的商品，请修改");
 	}
@@ -312,10 +313,10 @@ function confirm(){
 
 //收藏商品
 function addFavouriteGoods(goodsID){
-	$.post("/user/favourite/addFavouriteGoods",{"goodsID":goodsID},function(msgBean){
+	$.post("/user/favourite/addFavouriteGoods",{"goodsIds":goodsID},function(msgBean){
 		if(msgBean.code == zhigu.code.success){
-			$("#favourite"+goodsID).html("已收藏");
-			layer.msg(msgBean.msg, 1);
+			$(".favourite"+goodsID).html("已收藏").attr('onClick',"");;
+			layer.alert(msgBean.msg, 1);
 		}else{
 			layer.alert(msgBean.msg);
 		}
@@ -323,16 +324,37 @@ function addFavouriteGoods(goodsID){
 };
 // 批量添加
 function addFavouriteGoodsBatch(){
-	var count = 0;
-	$("input[name='itemCheckBox']:checked").each(function(){
-		if ($(this).attr("checked")) {
-			addFavouriteGoods($(this).data("goods-id"));
-			count ++;
+	var $check_boxs = $("input[name='itemCheckBox']:checked");
+	var len = $check_boxs.length ;
+	
+	if(len === 0){
+		layer.alert("请选择商品！");
+		return;
+	}
+
+	var goodsIds = "";
+	$check_boxs.each(function(i,n){
+		if (n.checked) {
+			goodsIds += $(n).data("goods-id")+",";
 		}
 	});
-	if(count==0){
-		layer.msg("请选择商品！");
+
+	if(goodsIds !== "" ){
+		$.post("/user/favourite/addFavouriteGoods",{"goodsIds":goodsIds},function(msgBean){
+			if(msgBean.code == zhigu.code.success){
+				var goodsIds = msgBean.data;
+				if(goodsIds !== null){
+					for(var i = 0 ;i<goodsIds.length ;i++){
+						$(".favourite"+goodsIds[i]).html("已收藏").attr('onClick',"");
+					}
+				}
+				layer.alert(msgBean.msg);
+			}else{
+				layer.alert(msgBean.msg);
+			}
+		});
 	}
+	
 }
 </script>
 </body>

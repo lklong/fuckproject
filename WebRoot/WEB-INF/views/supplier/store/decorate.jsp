@@ -6,6 +6,7 @@
 <title>店铺装饰</title>
 <link rel="stylesheet" type="text/css" href="/js/3rdparty/webuploader/webuploader.css" />
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 </head>
 <body>
 <div class="rightContainer fr">
@@ -23,7 +24,7 @@
         <td><textArea class="dianpujianjie mt10" id="introduction" name="introduction">${store.introduction }</textArea></td>
       </tr>
       <tr>
-        <td colspan="2"><a href="javascript:;" onclick="updateDecorate();" class="default-a">保存</a>
+        <td colspan="2"><input type="button" onclick="updateDecorate();" class="input-button" value="保存"/>
           <input type="submit" class="baochun" value="保存" style="display: none" id="subForm" />
           <input type="hidden" id="logoPath" name="logoPath" />
           <input type="hidden" id="signagePath" name="signagePath" /></td>

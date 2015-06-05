@@ -4,16 +4,20 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Favourite implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** ID */
 	private int ID;
 	/** 用户ID */
 	private int userID;
 	/** 收藏的ID */
-	private int favouriteID;
-	/** 类型：1：店铺、2：商品 */
+	private int storeOrGoodsId;
+	/** 类型 1：店铺 2：商品 */
 	private int type;
 	/** 添加日期 */
-	private Date addDate;
+	private Date addTime;
 
 	public int getID() {
 		return ID;
@@ -31,12 +35,12 @@ public class Favourite implements Serializable {
 		this.userID = userID;
 	}
 
-	public int getFavouriteID() {
-		return favouriteID;
+	public int getStoreOrGoodsId() {
+		return storeOrGoodsId;
 	}
 
-	public void setFavouriteID(int favouriteID) {
-		this.favouriteID = favouriteID;
+	public void setStoreOrGoodsId(int storeOrGoodsId) {
+		this.storeOrGoodsId = storeOrGoodsId;
 	}
 
 	public int getType() {
@@ -47,12 +51,12 @@ public class Favourite implements Serializable {
 		this.type = type;
 	}
 
-	public Date getAddDate() {
-		return addDate;
+	public Date getAddTime() {
+		return addTime;
 	}
 
-	public void setAddDate(Date addDate) {
-		this.addDate = addDate;
+	public void setAddTime(Date addTime) {
+		this.addTime = addTime;
 	}
 
 }

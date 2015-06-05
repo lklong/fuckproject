@@ -44,15 +44,16 @@ import com.zhigu.model.PageBean;
 import com.zhigu.model.Property;
 import com.zhigu.model.Store;
 import com.zhigu.model.StoreNotice;
+import com.zhigu.model.UserInfo;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.goods.ICategoryService;
 import com.zhigu.service.goods.IGoodsComplaintService;
 import com.zhigu.service.goods.IGoodsEvaluateService;
 import com.zhigu.service.goods.IGoodsService;
+import com.zhigu.service.store.IStoreNoticeService;
 import com.zhigu.service.store.IStoreService;
-import com.zhigu.service.storeNotice.IStoreNoticeService;
 import com.zhigu.service.user.IDownloadHistoryService;
-import com.zhigu.service.user.IFavouriteService;
+import com.zhigu.service.user.IUserService;
 
 /**
  * 商品
@@ -69,8 +70,6 @@ public class GoodsController {
 	@Autowired
 	private IStoreService storeService;
 	@Autowired
-	private IFavouriteService favouriteService;
-	@Autowired
 	private IDownloadHistoryService downloadHistoryService;
 	@Autowired
 	private IGoodsComplaintService goodsComplaintService;
@@ -78,6 +77,8 @@ public class GoodsController {
 	private IGoodsEvaluateService goodsEvaluateService;
 	@Autowired
 	private IStoreNoticeService storeNoticeService;
+	@Autowired
+	private IUserService userService;
 
 	/**
 	 * 全部货源
@@ -319,7 +320,7 @@ public class GoodsController {
 		if (goods == null) {
 			// response.setStatus(404);
 			mv.addObject("msg", "很抱歉，您查看的商品找不到了！");
-			mv.setViewName("/error/error-tips");
+			mv.setViewName("/tips/error-tips");
 			return mv;
 		}
 		// 描述特殊处理用于延迟加载
@@ -332,9 +333,12 @@ public class GoodsController {
 		Store store = storeService.queryStoreByID(goods.getStoreId());
 		if (store == null) {
 			mv.addObject("msg", "很抱歉，您查看的商品找不到了！（商品数据不全）");
-			mv.setViewName("/error/error-tips");
+			mv.setViewName("/tips/error-tips");
 			return mv;
 		}
+		UserInfo user = userService.queryUserInfoById(store.getUserID());
+		if (user != null)
+			mv.addObject("userInfo", user);
 
 		mv.addObject("store", store);
 		mv.addObject("goods", goods);

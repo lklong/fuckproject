@@ -15,8 +15,8 @@ import com.zhigu.model.PageBean;
 import com.zhigu.model.Store;
 import com.zhigu.model.StoreNotice;
 import com.zhigu.model.dto.MsgBean;
+import com.zhigu.service.store.IStoreNoticeService;
 import com.zhigu.service.store.IStoreService;
-import com.zhigu.service.storeNotice.IStoreNoticeService;
 
 /**
  * 店铺公告（供应商）

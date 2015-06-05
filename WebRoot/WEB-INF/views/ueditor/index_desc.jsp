@@ -9,7 +9,7 @@
 <script type="text/javascript" src="/js/3rdparty/ueditor/ueditor.all.js"></script>
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
-	var ue = UE.getEditor('editor');
+	var ue = UE.getEditor("editor");
 	UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
 	UE.Editor.prototype.getActionUrl = function(action) {
 	    if (action === 'uploadimage' || action === 'uploadscrawl' ) {
@@ -27,5 +27,5 @@
             html=html.replace(/<\/a>/i,'');
             // 更新编辑器内容, 把html 写进去, 替换原来的
             ue.execCommand( 'justify', 'center' );
-        });
+     });
 </script>

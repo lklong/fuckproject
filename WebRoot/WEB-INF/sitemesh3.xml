@@ -35,7 +35,6 @@
 	<mapping path="/admin/member/allot" exclue="true" />
 	<mapping path="/admin/member/detail/acc" exclue="true" />
 	<mapping path="/admin/member/detail/order" exclue="true" />
-	<mapping path="/admin/member/queryUserWriteRecommend" exclue="true" />
 	<mapping path="/admin/goods/add" decorator="/decorate/main.jsp"/>
 	
 	<mapping path="/user/address/dialog" exclue="true" />

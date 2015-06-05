@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.alibaba.fastjson.JSON;
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.UserType;
@@ -28,7 +29,6 @@ import com.zhigu.common.constant.enumconst.OrderStatus;
 import com.zhigu.common.exception.ServiceException;
 import com.zhigu.common.utils.Md5;
 import com.zhigu.common.utils.StringUtil;
-import com.zhigu.model.Address;
 import com.zhigu.model.AgentUser;
 import com.zhigu.model.Logistics;
 import com.zhigu.model.Order;
@@ -43,7 +43,6 @@ import com.zhigu.service.store.IStoreService;
 import com.zhigu.service.user.IAccountService;
 import com.zhigu.service.user.IAddressService;
 import com.zhigu.service.user.ICartService;
-import com.zhigu.service.user.IFavouriteService;
 import com.zhigu.service.user.IOrderService;
 import com.zhigu.service.user.IUserService;
 
@@ -64,8 +63,6 @@ public class OrderController {
 	private IAccountService accountService;
 	@Autowired
 	private IUserService userService;
-	@Autowired
-	private IFavouriteService favouriteService;
 	@Autowired
 	private IStoreService storeService;
 	@Autowired
@@ -113,7 +110,9 @@ public class OrderController {
 	public ModelAndView confirmOrder(ModelAndView mv) {
 		int userId = SessionHelper.getSessionUser().getUserID();
 		// 收货地址
-		List<Address> address = shippingAddressService.queryAddressByUserID(userId);
+		// List<Address> address =
+		// shippingAddressService.queryAddressByUserID(userId);
+		// mv.addObject("addresses", address);
 
 		List<ShoppingCart> shoppingCarts = cartService.queryShoppingCart(userId, true);
 
@@ -123,7 +122,6 @@ public class OrderController {
 		List<Logistics> logistics = orderService.queryAllLogistics();
 		mv.addObject("logistics", logistics);
 
-		mv.addObject("addresses", address);
 		mv.addObject("shoppingCarts", shoppingCarts);
 		mv.setViewName("user/order/confirm");
 		return mv;
@@ -131,12 +129,13 @@ public class OrderController {
 
 	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
 	@ResponseBody
-	public MsgBean submitOrder(List<Order> orders, Integer addressId) {
+	public MsgBean confirmOrder(String ordersJson, Integer addressId) {
 		// if (club == null || club.getOrders() == null ||
 		// club.getOrders().isEmpty()) {
 		// return new MsgBean(Code.FAIL, "请检查提交的商品是否存在！", MsgLevel.ERROR);
 		// }
 		// List<Order> orders = club.getOrders();
+		List<Order> orders = JSON.parseArray(ordersJson, Order.class);
 		return orderService.saveOrders(SessionHelper.getSessionUser().getUserID(), addressId, orders);
 	}
 

@@ -12,21 +12,21 @@
 	<bean id="exceptionResolver" class="com.zhigu.common.exception.CustomExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
-				<prop key="ServiceException">/error/error-service</prop>
-				<prop key="java.lang.Throwable">/error/error-500</prop>
+				<prop key="ServiceException">/tips/error-service</prop>
+				<prop key="java.lang.Throwable">/tips/error-500</prop>
 			</props>
 		</property>
 		<property name="statusCodes">
 			<props>
-				<prop key="/error/error-500">500</prop>
-				<prop key="/error/error-404">404</prop>
-				<prop key="/error/error-403">403</prop>
+				<prop key="/tips/error-500">500</prop>
+				<prop key="/tips/error-404">404</prop>
+				<prop key="/tips/error-403">403</prop>
 			</props>
 		</property>
 		<!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
 		<property name="warnLogCategory" value="WARN"></property>
 		<!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->
-		<property name="defaultErrorView" value="/error/error"></property>
+		<property name="defaultErrorView" value="/tips/error"></property>
 		<!-- 默认HTTP状态码 -->
 		<property name="defaultStatusCode" value="500"></property>
 	</bean>
@@ -79,12 +79,12 @@
 		<property name="mappings">
 			<value>
 				/login=UrlFilenameController
-				/error/error-403=UrlFilenameController
-				/error/error-404=UrlFilenameController
-				/error/error-500=UrlFilenameController
-				/error/error=UrlFilenameController
-				/error/timeout=UrlFilenameController
-				/error/error-file-exceeds-limit=UrlFilenameController
+				/tips/error-403=UrlFilenameController
+				/tips/error-404=UrlFilenameController
+				/tips/error-500=UrlFilenameController
+				/tips/error=UrlFilenameController
+				/tips/timeout=UrlFilenameController
+				/tips/error-file-exceeds-limit=UrlFilenameController
 			</value>
 		</property>
 		<property name="order" value="1" />

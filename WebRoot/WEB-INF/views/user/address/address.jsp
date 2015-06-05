@@ -4,7 +4,7 @@
 <html>
 <head>
 <script type="text/javascript" src="js/pca.js"></script>
-<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 <title>收货地址</title>
 </head>
 <body>
@@ -16,7 +16,7 @@
       <!--// 内容1 //-->
       <div class="dengjibox">
         <div class="dizhibox2">
-          <table cellpadding="0" cellspacing="0" class="user-list-table">
+          <table cellpadding="0" cellspacing="0" class="user-list-table txt-center">
             <tr>
               <th>收货人</th>
               <th>所在地区</th>
@@ -37,10 +37,11 @@
                     <c:otherwise> ${ad.tel} </c:otherwise>
                   </c:choose></td>
                 <td>
-                  <c:if test="${ad.isDefault == 0 }"> <a href="javascript:void(0)" onclick="setDefault(${ad.ID})" >设为默认</a> </c:if>
-                  <c:if test="${ad.isDefault == 1 }">默认地址</c:if>
+                  <c:if test="${ad.defaultFlag == false }"> <a href="javascript:void(0)" onclick="setDefault(${ad.id})" >设为默认</a> </c:if>
+                  <c:if test="${ad.defaultFlag == true }"><span class="color-red fwb">默认地址</span></c:if>
                   </td>
-                <td><a href="/user/address/set?addressId=${ad.ID}" class="edit-user-photo">修改</a><a class="edit-user-photo" onclick="del(${ad.ID})">删除</a></td>
+                <td><a href="/user/address/set?addressId=${ad.id}" class="edit-user-photo">修改</a>
+                <a class="edit-user-photo" onclick="del(${ad.id})" href="javascript:;">删除</a></td>
               </tr>
             </c:forEach>
           </table>
@@ -52,45 +53,6 @@
 </div>
 <script type="text/javascript">
 $().ready(function(){
-	var addressID = "${ad.ID}";
-	$("#addForm").validate({
-		rules:{
-			name:{
-				maxlength:32,
-				required:true,
-			},
-			street:{
-				required:true,
-				minlength:2,
-				maxlength:128
-			},
-			postcode:{
-				postCode:true,
-				number:true
-			},
-			district:{
-				required:true,
-			},
-			tel:{
-				number:true,
-			},
-			phone:{
-				mobilePhone:true,
-				required:true,
-			}
-		},
-		submitHandler:function(form){
-			var url = addressID?"user/address/modify":"user/address/add";
-			ajaxSubmit($(form).attr("action"), $("#addForm").serialize(), function(msgBean){
-				if(msgBean.code == zhigu.code.success){
-					layer.msg(msgBean.msg, 1, f5);
-				}else{
-					layer.alert(msgBean.msg);
-				}
-			},"json");
-		}
-		
-	})
 	var pro = "${ad.province}";
 	var city = "${ad.city}";
 	if(pro == "")
@@ -100,8 +62,8 @@ $().ready(function(){
 	new PCAS("province", "city", "district",pro,city,"${ad.district}");
 })
 //设置默认
-function setDefault(addressID){
-	ajaxSubmit("user/address/default", "addressID=" + addressID, function(msgBean){
+function setDefault(addressId){
+	ajaxSubmit("user/address/default", "addressId=" + addressId, function(msgBean){
 		if(msgBean.code == zhigu.code.success){
 			layer.msg(msgBean.msg, 1, f5);
 		}else{
@@ -110,24 +72,19 @@ function setDefault(addressID){
 	},"json");
 }
 //删除收货地址
-function del(addressID){
-	$.layer({
-	    shade: [0.5,'#000'],
-	    area: ['auto','auto'],
-	    dialog: {
-	        msg: '确认要删除收货地址？',
-	        btns: 2,                    
-	        type: 4,
-	        btn: ['确定','取消'],
-	        yes: function(){
-	        	_del();
-	        }
-	    }
+function del(addressId){
+	layer.confirm('确认要删除收货地址？', {
+	    btn: ['确定','取消']
+	}, function(){
+		_del();
+	}, function(){
+	    
 	});
+	
 	function _del(){
-		ajaxSubmit("user/address/del", "addressID=" + addressID, function(msgBean){
+		ajaxSubmit("user/address/del", "addressId=" + addressId, function(msgBean){
 			if(msgBean.code == zhigu.code.success){
-				layer.msg(msgBean.msg, 1, f5);
+				layer.alert(msgBean.msg,f5);
 			}else{
 				layer.alert(msgBean.msg);
 			}

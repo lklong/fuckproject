@@ -31,32 +31,36 @@ public class DownloadHistoryServiceImpl implements IDownloadHistoryService {
 		// 商品信息
 		Goods goods = goodsDao.queryGoodsById(goodsID);
 		Store store = storeDao.queryStoreByID(goods.getStoreId());
+
 		// 店铺所有者下载数据包不添加下载历史
-		if (SessionHelper.getSessionUser().getUserID() != store.getUserID()) {
-			// 添加下载历史
-			DownloadHistory downloadHistory = new DownloadHistory();
-			downloadHistory.setUserID(SessionHelper.getSessionUser().getUserID());
-			downloadHistory.setGoodsID(goodsID);
-			downloadHistory.setGoodsName(goods.getName());
-			downloadHistory.setStoreID(goods.getStoreId());
-			downloadHistory.setImagePath(goods.getImage300());
-			downloadHistory.setMinPrice(goods.getMinPrice().doubleValue());
-			downloadHistory.setMaxPrice(goods.getMaxPrice().doubleValue());
-			downloadHistory.setDownloadTime(new Date());
-			downloadHistory.setStoreName(store.getStoreName());
-			// 每个用户下载同一商品只记录一次
-			List list = downloadHistoryDao.queryDownloadHistory(downloadHistory);
-			if (list == null || list.isEmpty()) {
+		if (userID != store.getUserID()) {
+
+			// 先判断该用户是否下载过该商品的数据包
+			DownloadHistory _downloadHistory = downloadHistoryDao.queryDownloadHistory(userID, goodsID);
+			if (_downloadHistory == null) {
+				// 添加下载历史
+				DownloadHistory downloadHistory = new DownloadHistory();
+				downloadHistory.setUserID(SessionHelper.getSessionUser().getUserID());
+				downloadHistory.setGoodsID(goodsID);
+				downloadHistory.setGoodsName(goods.getName());
+				downloadHistory.setStoreID(goods.getStoreId());
+				downloadHistory.setImagePath(goods.getImage300());
+				downloadHistory.setMinPrice(goods.getMinPrice().doubleValue());
+				downloadHistory.setMaxPrice(goods.getMaxPrice().doubleValue());
+				downloadHistory.setDownloadTime(new Date());
+				downloadHistory.setStoreName(store.getStoreName());
 				downloadHistoryDao.addDownloadHistory(downloadHistory);
-				GoodsAux goodsAux = goodsDao.queryGoodsAux(goodsID);
-				goodsAux.setDownloadCount(goodsAux.getDownloadCount() + 1);
-				// 修改商品下载统计数
-				goodsDao.updateGoodsAux(goodsAux);
-				// TODO mapper之后需要其他方式实现 aux.setOverallScore((float)
-				// (aux.getDownloadCount() / 2 + aux.getEvaluateCount() / 2 +
-				// aux.getPurchaseCount() * 1.5 + aux.getFavouriteCount() +
-				// aux.getBrowseCount() / 4.0));
+
 			}
+			// 修改商品下载统计数
+			GoodsAux goodsAux = goodsDao.queryGoodsAux(goodsID);
+			goodsAux.setDownloadCount(goodsAux.getDownloadCount() + 1);
+			goodsDao.updateGoodsAux(goodsAux);
+
+			// TODO mapper之后需要其他方式实现 aux.setOverallScore((float)
+			// (aux.getDownloadCount() / 2 + aux.getEvaluateCount() / 2 +
+			// aux.getPurchaseCount() * 1.5 + aux.getFavouriteCount() +
+			// aux.getBrowseCount() / 4.0));
 		}
 	}
 

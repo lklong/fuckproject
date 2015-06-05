@@ -2,6 +2,7 @@ package com.zhigu.service.common.impl;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class PhoneSendServiceImpl implements IPhoneSendService {
 		Date now = new Date();
 		String ip = NetUtil.getIpAddr(SessionHelper.getRequest());
 
-		if (type == 1) {
+		if (type == PhoneSendType.PHONE_REGISTER) {
 			// 注册验证码，手机号重复check
 			UserAuth user = userMapper.queryUserAuthByPhone(phone);
 			if (user != null) {
@@ -114,19 +115,23 @@ public class PhoneSendServiceImpl implements IPhoneSendService {
 
 	@Override
 	public MsgBean verify(String phone, int type, String captcha) {
+		if (StringUtils.isBlank(phone)) {
+			return new MsgBean(Code.FAIL, "手机号不能为空！", MsgLevel.ERROR);
+		}
+		if (StringUtils.isBlank(captcha)) {
+			return new MsgBean(Code.FAIL, "手机验证码不能为空！", MsgLevel.ERROR);
+		}
 		PhoneSend ps = phoneSendMapper.selectByPhoneAndType(phone, type);
 		if (ps == null) {
-			return new MsgBean(Code.FAIL, "无效手机验证码，请重新发送！", MsgLevel.ERROR);
-		}
-		if (ps.getExpiryDate().getTime() < new Date().getTime()) {
-			return new MsgBean(Code.FAIL, "手机验证码已过期，请重新发送！", MsgLevel.ERROR);
+			return new MsgBean(Code.FAIL, "无效手机验证码！", MsgLevel.ERROR);
 		}
 		if (ps.getCaptcha().equalsIgnoreCase(captcha) && ps.getStatus() == PhoneSendStatus.SEND_SUCCESS) {
-			// ps.setStatus(PhoneSendStatus.USED);
-			// phoneSendMapper.updateByPrimaryKey(ps);
+			if (ps.getExpiryDate().getTime() < new Date().getTime()) {
+				return new MsgBean(Code.FAIL, "手机验证码已过期，请重新发送！", MsgLevel.ERROR);
+			}
 			return new MsgBean(Code.SUCCESS, "手机验证码正确", MsgLevel.NORMAL);
 		}
-		return new MsgBean(Code.FAIL, "无效手机验证码，请重新发送！", MsgLevel.ERROR);
+		return new MsgBean(Code.FAIL, "无效手机验证码！", MsgLevel.ERROR);
 	}
 
 }

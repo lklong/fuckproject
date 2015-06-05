@@ -184,12 +184,6 @@ function batchFreeze(){
 		},"json");
 	}
 }
-//获取用户填写推荐人的初始数据
-zhigu.queryUserWriteRecommend = function(userID){
-	ajaxSubmit("/admin/member/queryUserWriteRecommend?userID="+userID,{},function(data){
-		$("#userWriteRecommend").html(data);
-	},"text");
-}
 
 /* 批量分配
  */

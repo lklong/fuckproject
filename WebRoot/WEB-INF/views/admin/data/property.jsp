@@ -46,7 +46,7 @@
 		    <tbody>
 		      <tr>
 		      <td>
-		      	<select name="thirdcategory" class="thirdcategory" style="width:100px;">
+		      	<select name="thirdcategory" class="thirdcategory" style="width:100px;" >
 		      		<option>请选择</option>
 		      		<c:forEach items="${tbcategory}" var="item">
 			      	<option value="${item.cid}" isParent="${item.isParent}">${item.name}</option> 
@@ -119,6 +119,8 @@
 			}
 		});
 		
+		var tpcatId = parseInt("${pcategory.code}");
+		$(".thirdcategory").val(tpcatId);
 		// 加载子类目
 		$(".thirdcategory").live('change',function(){
 			
@@ -176,7 +178,7 @@
 				
 			}
 			
-		}).val("122650005").trigger("change");
+		});
 		
 		$(".tbprop").live("change",function(){
 			
@@ -271,9 +273,7 @@
 			});
 		});
 	});
-	
 </script>
-	
 	
 </body>
 </html>

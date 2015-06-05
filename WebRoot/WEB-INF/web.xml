@@ -135,10 +135,10 @@
 	</welcome-file-list>
 	<error-page>
 		<error-code>404</error-code>
-		<location>/error/error-404</location>
+		<location>/tips/error-404</location>
 	</error-page>
 	<session-config>
-		<session-timeout>10</session-timeout>
+		<session-timeout>20</session-timeout>
 	</session-config>
 
 	<!-- comet <listener> <description>Comet4J容器侦听</description> <listener-class>org.comet4j.core.CometAppListener</listener-class> </listener> <servlet> 

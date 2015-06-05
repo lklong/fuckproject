@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
 <script type="text/javascript" src="js/jQuery-jcDate.js"></script>
 <script type="text/javascript">
 	$(function (){
@@ -65,7 +64,7 @@
 
 </style>
 <div style="height:20px;"></div>
-<c:if test="${companyAuth.approveState == 2}">
+<c:if test="${companyAuth.status == 2}">
 <div style="color:red;"> 审核未通过 </div>
 <div > 未通过原因：${companyAuth.rejectReason } </div>
 </c:if>
@@ -100,7 +99,7 @@
 			<tr>
 				<td class="textprompt">营业期限：</td>
 				<td>
-						<input class="jcDate jcDateIco dpnameq fl "  name="businessTerm" id="businessTerm" readonly="readonly"  value="<fmt:formatDate value="${companyAuth.businessTerm }" pattern="yyyy-MM-dd" />" <c:if test="${companyAuth.perpetual==1 }">style="display:none"</c:if>/>
+						<input class="jcDate jcDateIco dpnameq fl "  name="dateStr" id="businessTerm" readonly="readonly"  value="<fmt:formatDate value="${companyAuth.businessTerm }" pattern="yyyy-MM-dd" />" <c:if test="${companyAuth.perpetual==1 }">style="display:none"</c:if>/>
 						<input type="checkbox" name="perpetual" id="perpetual" onclick="hideBusinessTerm();" value="1" <c:if test="${companyAuth.perpetual==1 }">checked="checked"</c:if>/><label for="perpetual">长期</label><span class="msg_businessTerm" style="color: red;"></span>
 				</td>
 			</tr>

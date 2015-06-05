@@ -4,17 +4,47 @@
 <meta charset="UTF-8">
 <title>公司简介</title>
 <link type="text/css" rel="stylesheet" rev="stylesheet" href="/static/help/css/center.css" />
+
 <script type="text/javascript">
+$(function(){
+							/* 获取页面的URL */
+					var urlinfo=window.location.href;
+					 var len=urlinfo.length;
+					 var offset=urlinfo.indexOf("?");
+					 var newsidinfo=urlinfo.substr(offset,len);
+					var newsids=newsidinfo.split("=");
+					/* 取到第二个值 */
+					 var newsid=newsids[1];
+					
+					 /* 根据获取的值判读页面内容的显示 */
+			 if((newsid !=null)){
+				 for(var i=0;i<=11;i++)
+					{
+				
+					$("#Table_Item"+i).css("display","none");
+					
+					}
+						 if((newsid ==10)){
+								
+							 $("#Table_Item10").css("display","block");
+							}else if((newsid ==11)){
+							
+							 $("#Table_Item11").css("display","block");
+						 }
+					 }
+})
+							/* 点击左侧导航显示内容 */
 							function chickMenu(TDID){
 							for(var i=0;i<=11;i++)
 							{
-							document.getElementById("TD_Item" + i).className='menu1';
-							document.getElementById("Table_Item"+i).style.display='none';
+							
+							$("#Table_Item"+i).css("display","none");
 							
 							}
-							document.getElementById("TD_Item" + TDID).className='menu2';
-							document.getElementById("Table_Item"+TDID).style.display='block';
+							
+							$("#Table_Item"+TDID).css("display","block");
 							}
+
 </script>
 </head>
 <body>
@@ -324,7 +354,7 @@
 				工作地点：成都市金牛区人民北路金牛万达广场（肖家村三巷69号）A组团1栋四单元702<br />
 				<font color="#ff3300">联系方式：人事部  电话：18140227955 /18782462983     028-65336799/826</font></p><br />
 
-					<h4>●Java软件工程师师</h4>
+					<h4>●Java软件工程师</h4>
 					<p>岗位职责：<br />
 					  1.在公司战略规划旗下，根据部门工作目标负责项目技术开发工作。<br />
 					  2.按项目的要求，独立完成软件设计文档、实现和单元测试。<br />
@@ -344,8 +374,8 @@
 					  10.有团队合作精神，较强的沟通能力，工作态度严谨，认真细致。<br />
 					薪资福利：享受国家规定法定节假日及公司相关福利品，六险一金，一经录用公司将提供优厚的薪资待遇及广阔的发展晋升空间。<br />
 					作息时间：双休。<br />
-					冬季作息时间：09：00—12：00  13：00—17：30；<br />
-					夏季作息时间：08：30—12：00，13：00—17：30。<br />
+					冬季作息时间：09：00—12：00, 13：00—17：30。<br />
+					夏季作息时间：08：30—12：00, 13：00—17：30。<br />
 					工作地点：成都市金牛区人民北路金牛万达广场（肖家村三巷69号）A组团1栋四单元702<br />
 					<font color="#ff3300">联系方式：人事部  电话：18140227955 /18782462983     028-65336799/826</font></p><br />
 </div>

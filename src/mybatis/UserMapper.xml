@@ -7,7 +7,7 @@
 	</select>
 	<!-- 根据ip查询有几条相同的 -->
 	<select id="countUserAuthByIp"  resultType="int">
-	SELECT  COUNT(1)  FROM userauth u, userinfo i where u.registerIP=#{registerIP} and u.UserID=i.UserID AND i.RegisterTime &gt;= #{startTime}
+	SELECT  COUNT(1)  FROM userauth u, userinfo i where u.registerIP=#{ip} and u.UserID=i.UserID AND i.RegisterTime &gt;= #{startTime}
 	</select>
 	<!-- email查询用户认证信息 -->
 	<select id="queryUserAuthByEmail" parameterType="java.lang.String" resultType="userAuth">
@@ -85,76 +85,6 @@
 	<update id="updateUserauthInfoLoginData" parameterType="int">
 		Update Userauth Set LoginCount=LoginCount+1,LatestLoginTime=CURRENT_TIMESTAMP() where UserID=#{userID};
 	</update>
-	<!-- 用户淘宝 -->
-	<insert id="addUserTaobao" parameterType="userTaobao">
-		insert into UserTaobao(UserID,Access_token,expires_in,Refresh_token,Taobao_user_nick,Taobao_user_id,refreshDate,addDate) value(#{userID},#{access_token},#{expires_in},#{refresh_token},#{taobao_user_nick},#{taobao_user_id},#{refreshDate},#{addDate});
-	</insert>
-	<select id="queryUserTaobaoByUserID" parameterType="int" resultType="userTaobao">
-		select * from UserTaobao where UserID=#{userID} order by addDate DESC limit 1;
-	</select>
 	
-	<!-- 用户积分相关 -->
-	<insert id="saveUserPoint" parameterType="userPoint">
-		insert into UserPoint(userID,Name,phone,address,comment,addDate) values(#{userID},#{name},#{phone},#{address},#{comment},#{addDate});
-	</insert>
-	<update id="updateUserPoint" parameterType="userPoint">
-		update UserPoint set phone=#{phone},Name=#{name},address=#{address},RechargePoint=#{rechargePoint},comment=#{comment},servicePoint=#{servicePoint},goodsPoint=#{goodsPoint} where UserID=#{userID};
-	</update>
-	<select id="queryUserPoint" parameterType="int" resultType="userPoint">
-		select A.*,B.userName from UserPoint A,UserAuth B where A.UserID=#{userID} and A.userID=B.userID;
-	</select>
-	<select id="queryUserPointByPage" parameterType="page" resultType="userPoint">
-		select A.*,B.userName from UserPoint A,UserAuth B where A.userID=B.userID order by rechargePoint DESC
-	</select>
-	<insert id="saveUserPointExchange" parameterType="userPointExchange">
-		insert into UserPointExchange(userid,name,address,phone,postcode,orignalpoint,usepoint,pointtype,exchangeName,adminid,status,comment,addTime) values(#{userId},#{name},#{address},#{phone},#{postCode},#{orignalPoint},#{usePoint},#{pointType},#{exchangeName},#{adminId},#{status},#{comment},now());
-	</insert>
-	<update id="updateUserPointExchange" parameterType="userPointExchange">
-		update UserPointExchange set adminid=#{adminId},status=#{status},comment=#{comment} where id=#{id};
-	</update>
-	<select id="queryUserPointExchange" parameterType="page" resultType="userPointExchange">
-		select A.userName,B.* from userAuth A,UserPointExchange B where A.userID=B.UserID
-		<if test="paras.status != null">
-			and B.status=#{paras.status}
-		</if>
-	</select>
-	<insert id="saveSendAward" parameterType="sendAward">
-		insert into SendAward(UserID,AdminID,OrignalPoint,UsePoint,Comment) values(#{userID},#{adminID},#{orignalPoint},#{usePoint},#{comment});
-	</insert>
-	<select id="querySendAwardByUserID" parameterType="int" resultType="sendAward">
-		select * from SendAward where UserID=#{userID}
-	</select>
-	<!-- 查询用户的已注册被推荐人 -->
-	<select id="queryRecommended" parameterType="int" resultType="userInfo">
-		select A.UserName,A.EMail,A.Phone from UserAuth A,UserInfo B where A.UserID=B.UserID and B.RecommendUserID=#{userID};
-	</select>
-	<!-- 添加用户推荐人,推荐人主动记录-->
-	<insert id="saveUserRecommend" parameterType="userRecommend">
-		insert into UserRecommend(userid,recommendname,recommendphone,addtime) values(#{userId},#{recommendName},#{recommendPhone},NOW());
-	</insert>
-	<!-- 查询用户填写的推荐人-->
-	<select id="queryUserRecommendById" parameterType="int" resultType="userRecommend">
-		select * from userrecommend where id=#{id};
-	</select>
-	<!-- 删除用户填写的推荐人-->
-	<insert id="deleteUserRecommend" parameterType="int">
-		delete from userrecommend where id=#{id};
-	</insert>
-	<!-- 查询用户填写的推荐 -->
-	<select id="queryUserRecommendByUserIDByPage" resultType="userRecommend">
-		select A.*,IF(B.userid IS NOT NULL AND B.userid!= '',1,0) as isRegister  from UserRecommend A LEFT JOIN userInfo B ON (A.userid=B.recommenduserid And A.recommendphone=B.phone) where A.userid=#{userID} order by A.addtime DESC
-	</select>
-	<!-- 查询用户推荐by 被推荐手机号 -->
-	<select id="queryUserRecommend" parameterType="String" resultType="userRecommend">
-		select * from UserRecommend where recommendphone=#{recommendPhone};
-	</select>
-	<!-- 用户诚信保证金等级 -->
-	<update id="updateDepositLevel" parameterType="userInfo">
-		update userInfo set DepositLevel=#{depositLevel} where UserID=#{userID};
-	</update>
-	<!-- 更新打折信息 -->
-	<update id="updateDiscount" parameterType="map">
-		Update UserInfo set rechargediscount = #{rechargeDiscount} where userID=#{userID};
-	</update>
 </mapper>
 

@@ -45,41 +45,6 @@ $(document).ready(function() {
 		return (this.parents(b).length > 0);
 	};
 	
-//显示浮动导航和购物车方法
-/*	function showFloatNav()
-	{
-		var w_w = $(window).width();
-		var left_pos = (w_w - 1802) / 2 - 50;
-		$('#float_nav').css({'right':left_pos});
-	}*/
-	//客服qq
-	//显示回到顶部
-	//显示左侧浮动导航
-	$(window).scroll(function() {
-		$('#float_nav').show();
-		/*if ($(window).scrollTop() > 300) {
-			showFloatNav();
-		} else {
-			$('#jump li:eq(0)').fadeOut(800);
-			
-		}*/
-	});
-	
-//	//窗口改变大小重新地位浮动导航和回到顶部
-//	$(window).resize(function(){
-//		showFloatNav();
-//	});
-	
-
-	//回到顶部
-	$("#top").click(function() {
-		$('body,html').animate({
-			scrollTop : 0
-		}, 1000);
-		return false;
-	});
-	
-
 	$(".fenxianddd").hover(function() {
 		$(this).find(".span2fxnr").show();
 	}, function() {

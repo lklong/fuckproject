@@ -144,10 +144,15 @@ public class AdminDataManagerController {
 		// 加载该类目数据
 		Category category = categoryService.queryCategoryById(catId);
 
+		// 获取父级
+		Category pcategory = categoryService.queryCategoryById(category.getParentId());
+
 		// 加载淘宝类目
 		model.addAttribute("tbcategory", taobaoCategoryService.getCats(0L));
 
 		model.addAttribute("category", category);
+
+		model.addAttribute("pcategory", pcategory);
 
 		model.addAttribute("props", propertyService.queryPropsByCatId(catId));
 

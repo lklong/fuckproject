@@ -1,11 +1,8 @@
 package com.zhigu.mapper;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 import com.zhigu.model.CompanyAuth;
-import com.zhigu.model.PageBean;
 
 public interface CompanyAuthMapper {
 	/**
@@ -37,13 +34,5 @@ public interface CompanyAuthMapper {
 	 * @param companyAuth
 	 */
 	public int updateCompanyAuth(@Param("companyAuth") CompanyAuth companyAuth, @Param("storeID") Integer storeID);
-
-	/**
-	 * 分页查询企业认证
-	 * 
-	 * @param page
-	 * @return
-	 */
-	public List<CompanyAuth> queryCompanyAuthByPage(PageBean page);
 
 }

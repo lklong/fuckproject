@@ -1,10 +1,10 @@
 <%@ page language="java" pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!doctype html>
 <html>
 <head>
-<link href="/css/default/user.css" rel="stylesheet"/>
-<script src="js/3rdparty/layer/layer.min.js"></script>
+<link href="/css/default/user.css" rel="stylesheet" />
+<script src="js/3rdparty/layer1.9/layer.js"></script>
 <title>用户注册</title>
 </head>
 <body>
@@ -17,58 +17,50 @@
       <div class="urpMiddleBox">
         <div class="urpTopTip">
           <div id="step1">
-            <h1>用户注册</h1>
+            <h2>用户注册</h2>
           </div>
         </div>
         <!--** 帐号 **-->
-        <div class="urpMiddleDiv" style="width:400px"> <span style="color:red">*</span>
+        <div class="urpMiddleDiv"><strong class="color-red fwb"> * </strong>
           <input id="usernameReg" name="username" default_value="手机" type="text" class="userRegInput_1"  value="${username }"/>
-          &nbsp;&nbsp;
-          <input type="button" id="phoneCaptchaSend" value="发送手机验证码" disabled="disabled" class="button white">
-        </div>
-        <div class="urpAlert"> 
-          <!--** 验证成功与失败的消息 **-->
-          <p class="" id="msg_username" style="padding:0 3px ;">请输入11位的手机号</p>
+          <input type="button" id="phoneCaptchaSend" value="发送手机验证码" disabled="disabled" class="input-button-gray">
+          <div class="urpAlert"> 
+	          <!--** 验证成功与失败的消息 **-->
+	          <p class="fl" id="msg_username">请输入11位的手机号</p>
+	        </div>
         </div>
         <!--** 验证码 **-->
-        <div class="urpMiddleDiv" style="width:400px">
-          <div class="fl"><span style="color:red;margin:0 3px;">*</span>
+        <div class="urpMiddleDiv">
+          <div class="fl"><strong class="color-red fwb"> * </strong>
             <input id="phoneCaptcha" type="text" class="urpYanZhengCode_1" />
           </div>
-        </div>
-        <div class="urpAlert"> 
-          <!--** 验证成功与失败的消息 **-->
-          <p id="msg_captcha" style="padding:0 3px ;"></p>
+          <div class="urpAlert"> 
+	          <!--** 验证成功与失败的消息 **-->
+	          <p id="msg_captcha"></p>
+	        </div>
         </div>
         <!--** 密码 **-->
-        <div class="urpMiddleDiv" style="width:400px"> <span style="color:red">*</span>
+        <div class="urpMiddleDiv"><strong class="color-red fwb"> * </strong>
           <input id="urpRegPassWord" name="password" type="password" class="urpRegPassWord_1"/>
-        </div>
-        <div class="urpAlert"> 
-          <!--** 验证成功与失败的消息 **-->
-          <p id="msg_password" style="padding:0 3px ;">密码为6-16个字符，必须包含数字、字母！</p>
+          <div class="urpAlert"> 
+	          <!--** 验证成功与失败的消息 **-->
+	          <p id="msg_password">密码为6-16个字符，必须包含数字、字母！</p>
+	        </div>
         </div>
         <!--重复密码 -->
-        <div class="urpMiddleDiv" style="width:400px"> <span style="color:red">*</span>
+        <div class="urpMiddleDiv"><strong class="color-red fwb"> * </strong>
           <input id="reurpRegPassWord" name="repassword" type="password" class="urpRegPassWord_10"/>
+          <div class="urpAlert"> 
+	          <!--** 验证成功与失败的消息 **-->
+	          <p id="msg_repassword"></p>
+	        </div>
         </div>
-        <div class="urpAlert"> 
-          <!--** 验证成功与失败的消息 **-->
-          <p id="msg_repassword" style="padding:0 3px ;"></p>
-        </div>
-        
         <!--** 同意 **-->
-        <div class="urpMiddleDiv disnone">
-          <input type="checkbox" checked="checked"  id="readagree"/>
-          <a class="agree_a" target="_blank " href="help/agreement"> 我同意《智谷同城货源网用户服务协议》</a> </div>
-        <div class="urpMiddleDiv mt30"> <br />
-          <br />
-          <br />
+<!--         <div class="urpMiddleDiv"> -->
+<!--           <input type="checkbox" checked="checked"  id="readagree"/> -->
+<!--           <a class="agree_a" target="_blank " href="help/agreement"> 我同意《智谷同城货源网用户服务协议》</a> </div> -->
+        <div class="urpMiddleDiv mt30">
           <input type="button" class="urpSubMit" value="注册" title="注册" id="registerBtn"/>
-          <br />
-          <br />
-          <br />
-          <br />
           <br />
           <br />
         </div>
@@ -79,6 +71,10 @@
 <script type="text/javascript">
 function sendCaptcha(){
 	var username = $("#usernameReg").val();
+	if(!zhigu.verify.phoneReg(username)){
+		layer.alert("请填写正确的手机号");
+		return false;
+	}
 	$.post("/register/verifyPhone", {"phone":username},function(msgBean){
 		if(msgBean.code==zhigu.code.success){
 			$("#phoneCaptchaSend").attr("disabled",false);
@@ -86,13 +82,19 @@ function sendCaptcha(){
 				if(msgBean.code==zhigu.code.success){
 					$("#phoneCaptchaSend").val("手机验证码已发送");
 					$("#phoneCaptchaSend").attr("disabled",true);
+					$("#phoneCaptchaSend").removeClass("input-button");
+					$("#phoneCaptchaSend").addClass("input-button-gray");
 				}else{
 					layer.alert(msgBean.msg);
 					$("#phoneCaptchaSend").attr("disabled",false);
+					$("#phoneCaptchaSend").removeClass("input-button-gray");
+					$("#phoneCaptchaSend").addClass("input-button");
 				}
 			});
 		}else{
 			$("#phoneCaptchaSend").attr("disabled",true);
+			$("#phoneCaptchaSend").removeClass("input-button");
+			$("#phoneCaptchaSend").addClass("input-button-gray");
 			layer.alert(msgBean.msg);
 		}
 	})
@@ -104,10 +106,12 @@ $(function(){
 	$("#usernameReg").focusout(function(){
 		var username = $(this).val();
 		//用户名
-		if(username && phoneReg(username)){
+		if(username && zhigu.verify.phoneReg(username)){
 			$.post("/register/verifyPhone", {"phone":username}, function (msgBean){
 				if(msgBean.code==zhigu.code.success){
 					$("#phoneCaptchaSend").attr("disabled",false);
+					$("#phoneCaptchaSend").removeClass("input-button-gray");
+					$("#phoneCaptchaSend").addClass("input-button");
 					$("#msg_username").removeClass("okMsg failMsg").addClass("okMsg").html("<em></em>"+msgBean.msg);
 				}else{
 					$("#msg_username").removeClass("okMsg failMsg").addClass("failMsg").html("<em></em>"+msgBean.msg);
@@ -135,7 +139,7 @@ $(function(){
 		params.encodePwd = zhigu.encodeBase64(opwd);
 		$.post("/register",params,function(msgBean){
 			if(msgBean.code==zhigu.code.success){
-				layer.msg(msgBean.msg,2,function(){
+				layer.alert(msgBean.msg,function(){
 					window.location.href = "/login";
 				})
 			}else{

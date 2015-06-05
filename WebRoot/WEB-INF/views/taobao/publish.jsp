@@ -1,6 +1,7 @@
-<%@page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html><head>
 <title>淘宝产品发布平台</title>
@@ -14,7 +15,7 @@
 <script type="text/javascript" src="/js/3rdparty/layer/layer.min.js"></script>
 <style type="text/css">
 	input{
-	border: medium none;
+		border:1px solid #ABADB3;
 	}
 </style>
 <script type="text/javascript">
@@ -251,7 +252,7 @@ $(function(){
                         
                         
                       <li hidden_attr="1">
-                      	<label>商品价格：</label><input name="price"  value='<fmt:formatNumber value="${goods.maxPrice*1.2}" pattern="#.##"></fmt:formatNumber>' type="text"> 
+                      	<label>商品价格：</label><input name="price"  value='<fmt:formatNumber value="${goods.maxPrice*1.20}" pattern="#.##"></fmt:formatNumber>' type="text"> 
                       	<em style="font-size:12px;font-style:normal;">默认在批发价的基础上加价20%</em>
 						</li> 
 						<li hidden_attr="1">
@@ -313,7 +314,7 @@ $(function(){
 					<li>
 						<label>宝贝名称：</label>
 						<input name="title" size="80" maxlength="60" id="title" style="width:575px;" type="text" value="${goods.name }">
-						<em id="TitleLen">可以输入30个字！</em>
+						<em id="TitleLen">可以输入${30-fn:length(goods.name)}个字！</em>
 					</li>
 										<li>
 						<label>运费承担：</label>
@@ -334,7 +335,7 @@ $(function(){
                     <!-- 颜色 -->
                     <c:forEach items="${props }"  var="prop">
                               <c:if test="${prop.isColorProp&&prop.isSaleProp }">                                                
-		       				 	<li hidden_attr="2">
+		       				 	<li hidden_attr="2" class="li_sale_prop">
 		                            <label>${prop.name }：</label>
 		                            
 		                            <ul>
@@ -351,7 +352,7 @@ $(function(){
                     <!-- 尺码 /身高-->
                     <c:forEach items="${props }"  var="prop">
                          <c:if test="${prop.isSaleProp &&!prop.isColorProp}">
-                            <li hidden_attr="2">
+                            <li hidden_attr="2" class="li_sale_prop">
 	                          <label>${prop.name}：</label>
 	                          
 	                          <ul>
@@ -452,6 +453,14 @@ $(function(){
 		                    		i = j-1;
 	                    			
                     		}
+                    		
+                    		 // 获取销售属性的个数
+                            var len = $(".li_sale_prop").length;
+                    		if(len === 1){
+                           	 $("#sku_table tr").each(function(i,n){
+                           		 $("td:eq(1)",$(n)).addClass("hidden");
+                           	 });
+                           }
                     		
                     	})
                     	

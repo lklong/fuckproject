@@ -29,9 +29,15 @@ public class AddressController {
 	@Autowired
 	private IAddressService addressService;
 
+	@RequestMapping("userAllAddress")
+	@ResponseBody
+	public MsgBean userAllAddress() {
+		return new MsgBean(Code.SUCCESS, "ok", MsgLevel.NORMAL).setData(addressService.queryAddressByUserID(SessionHelper.getSessionUser().getUserID()));
+	}
+
 	// 初始化跳转操作
 	@RequestMapping("")
-	public ModelAndView index(Integer addressID, ModelAndView mv) {
+	public ModelAndView index(Integer addressId, ModelAndView mv) {
 		// 查询并显示所有的地址信息
 		List<Address> list = new ArrayList<Address>();
 		list = addressService.queryAddressByUserID(SessionHelper.getSessionUser().getUserID());
@@ -83,32 +89,32 @@ public class AddressController {
 	/**
 	 * 修改默认
 	 * 
-	 * @param addressID
+	 * @param addressId
 	 * @return
 	 */
 	@RequestMapping("/default")
 	@ResponseBody
-	public MsgBean updateDefault(Integer addressID) {
-		if (addressID == null) {
+	public MsgBean updateDefault(Integer addressId) {
+		if (addressId == null) {
 			return new MsgBean(Code.FAIL, "传递信息丢失", MsgLevel.ERROR);
 		}
-		addressService.updateDefaultAddress(SessionHelper.getSessionUser().getUserID(), addressID);
+		addressService.updateDefaultAddress(SessionHelper.getSessionUser().getUserID(), addressId);
 		return new MsgBean(Code.SUCCESS, "设置默认地址成功", MsgLevel.NORMAL);
 	}
 
 	/**
 	 * 删除
 	 * 
-	 * @param addressID
+	 * @param addressId
 	 * @return
 	 */
 	@RequestMapping("/del")
 	@ResponseBody
-	public MsgBean delete(Integer addressID) {
-		if (addressID == null)
+	public MsgBean delete(Integer addressId) {
+		if (addressId == null)
 			return new MsgBean(Code.FAIL, "传递信息丢失", MsgLevel.ERROR);
 
-		addressService.deleteAddress(SessionHelper.getSessionUser().getUserID(), addressID);
+		addressService.deleteAddress(SessionHelper.getSessionUser().getUserID(), addressId);
 
 		return new MsgBean(Code.SUCCESS, "删除地址成功", MsgLevel.NORMAL);
 	}
@@ -116,17 +122,17 @@ public class AddressController {
 	/**
 	 * 弹框新增、修改地址
 	 * 
-	 * @param addressID
+	 * @param addressId
 	 * @param mv
 	 * @return
 	 */
 	@RequestMapping("/dialog")
-	public ModelAndView dialog(Integer addressID, ModelAndView mv) {
-		mv.setViewName("user/address/dialog");
-		if (addressID == null)
+	public ModelAndView dialog(Integer addressId, ModelAndView mv) {
+		mv.setViewName("/user/address/dialog");
+		if (addressId == null)
 			return mv;
 
-		Address address = addressService.queryAddressByID(SessionHelper.getSessionUser().getUserID(), addressID);
+		Address address = addressService.queryAddressByID(SessionHelper.getSessionUser().getUserID(), addressId);
 		mv.addObject("address", address);
 		return mv;
 	}

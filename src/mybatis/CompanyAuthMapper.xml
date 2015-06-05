@@ -1,36 +1,109 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zhigu.mapper.CompanyAuthMapper">
-
-	<insert id="addCompanyAuth" parameterType="companyAuth">
-		insert into CompanyAuth(UserID,StoreID,CompanyName,CompanyType,RegNumber,Corporation,BusinessTerm,perpetual,Capital,BusinessScope,RegProvince,RegCity,RegDistrict,RegStreet,CompanyProvince,CompanyCity,CompanyDistrict,CompanyStreet,Image,ApplyTime,ApproveState,ApproveUser,RejectReason,imageSmall,salesman) 
-		value(#{userID},#{storeID},#{companyName},#{companyType},#{regNumber},#{corporation},#{businessTerm},#{perpetual},#{capital},#{businessScope},#{regProvince},#{regCity},#{regDistrict},#{regStreet},#{companyProvince},#{companyCity},#{companyDistrict},#{companyStreet},#{image},#{applyTime},#{approveState},#{approveUser},#{rejectReason},#{imageSmall},#{salesman});
-		<selectKey resultType="int" keyProperty="ID" order="AFTER" >
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-	</insert>
-	
-	<select id="queryCompanyAuthByStoreID" parameterType="int" resultType="companyAuth">
-		select * from CompanyAuth where storeID=#{storeID};
-	</select>
-	
-	<select id="queryCompanyAuthByUserID" parameterType="int" resultType="companyAuth">
-		select * from CompanyAuth where UserID=#{userID};
-	</select>
-	
-	<select id="queryCompanyAuthByPage" parameterType="page" resultType="companyAuth">
-		select * from CompanyAuth where ApproveState=#{paras.approveState};
-	</select>
-	
-	<update id="updateCompanyAuth">
-		update CompanyAuth set CompanyName=#{companyAuth.companyName}, CompanyType=#{companyAuth.companyType},RegNumber=#{companyAuth.regNumber}, 
-		Corporation=#{companyAuth.corporation}, BusinessTerm=#{companyAuth.businessTerm},perpetual=#{companyAuth.perpetual},Capital=#{companyAuth.capital},
-		BusinessScope=#{companyAuth.businessScope},RegProvince=#{companyAuth.regProvince},RegCity=#{companyAuth.regCity},RegDistrict=#{companyAuth.regDistrict},
-		RegStreet=#{companyAuth.regDistrict},CompanyProvince=#{companyAuth.companyProvince},CompanyCity=#{companyAuth.companyCity},
-		CompanyDistrict=#{companyAuth.companyDistrict},CompanyStreet=#{companyAuth.companyStreet},Image=#{companyAuth.image}, imageSmall=#{companyAuth.imageSmall},ApproveState=#{companyAuth.approveState},
-		ApproveUser=#{companyAuth.approveUser},RejectReason=#{companyAuth.rejectReason},AuthTime=#{companyAuth.authTime}   
-		where storeId=#{storeID};
-	</update>
-	
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhigu.mapper.CompanyAuthMapper" >
+  <resultMap id="BaseResultMap" type="com.zhigu.model.CompanyAuth" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userID" jdbcType="INTEGER" />
+    <result column="store_id" property="storeID" jdbcType="INTEGER" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_type" property="companyType" jdbcType="INTEGER" />
+    <result column="reg_number" property="regNumber" jdbcType="VARCHAR" />
+    <result column="corporation" property="corporation" jdbcType="VARCHAR" />
+    <result column="business_term" property="businessTerm" jdbcType="TIMESTAMP" />
+    <result column="capital" property="capital" jdbcType="INTEGER" />
+    <result column="business_scope" property="businessScope" jdbcType="VARCHAR" />
+    <result column="Image" property="image" jdbcType="VARCHAR" />
+    <result column="add_time" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="approve_admin_id" property="approveUser" jdbcType="INTEGER" />
+    <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
+    <result column="perpetual" property="perpetual" jdbcType="TINYINT" />
+    <result column="auth_time" property="authTime" jdbcType="TIMESTAMP" />
+    <result column="reg_province" property="regProvince" jdbcType="VARCHAR" />
+    <result column="reg_city" property="regCity" jdbcType="VARCHAR" />
+    <result column="reg_district" property="regDistrict" jdbcType="VARCHAR" />
+    <result column="reg_street" property="regStreet" jdbcType="VARCHAR" />
+    <result column="company_province" property="companyProvince" jdbcType="VARCHAR" />
+    <result column="company_city" property="companyCity" jdbcType="VARCHAR" />
+    <result column="company_district" property="companyDistrict" jdbcType="VARCHAR" />
+    <result column="company_street" property="companyStreet" jdbcType="VARCHAR" />
+    <result column="add_admin_id" property="salesman" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, store_id, company_name, company_type, reg_number, corporation, business_term, 
+    capital, business_scope,  Image, add_time, status, approve_admin_id, 
+    reject_reason, perpetual, auth_time, reg_province, reg_city, reg_district, reg_street, 
+    company_province, company_city, company_district, company_street, add_admin_id
+  </sql>
+  
+  <!-- 保存企业认证 -->
+  <insert id="addCompanyAuth" parameterType="com.zhigu.model.CompanyAuth" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into company_auth (user_id, store_id, company_name, 
+      company_type, reg_number, corporation, 
+      business_term, capital, business_scope, 
+        Image, add_time, 
+      status, approve_admin_id, reject_reason, 
+      perpetual, auth_time, reg_province, 
+      reg_city, reg_district, reg_street, 
+      company_province, company_city, company_district, 
+      company_street, add_admin_id)
+    values (#{userID,jdbcType=INTEGER}, #{storeID,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, 
+      #{companyType,jdbcType=INTEGER}, #{regNumber,jdbcType=VARCHAR}, #{corporation,jdbcType=VARCHAR}, 
+      #{businessTerm,jdbcType=TIMESTAMP}, #{capital,jdbcType=INTEGER}, #{businessScope,jdbcType=VARCHAR}, 
+      #{image,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT}, #{approveUser,jdbcType=INTEGER}, #{rejectReason,jdbcType=VARCHAR}, 
+      #{perpetual,jdbcType=TINYINT}, #{authTime,jdbcType=TIMESTAMP}, #{regProvince,jdbcType=VARCHAR}, 
+      #{regCity,jdbcType=VARCHAR}, #{regDistrict,jdbcType=VARCHAR}, #{regStreet,jdbcType=VARCHAR}, 
+      #{companyProvince,jdbcType=VARCHAR}, #{companyCity,jdbcType=VARCHAR}, #{companyDistrict,jdbcType=VARCHAR}, 
+      #{companyStreet,jdbcType=VARCHAR}, #{salesman,jdbcType=INTEGER})
+  </insert>
+  
+  <!-- 根据店铺ID查询企业认证信息 -->
+  <select id="queryCompanyAuthByStoreID" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from company_auth
+    where store_id=#{storeID};
+  </select>
+  
+  <!-- 根据用户ID查询企业认证信息 -->
+  <select id="queryCompanyAuthByUserID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+	select 
+  	<include refid="Base_Column_List" />
+    from company_auth
+    where user_id=#{userID};
+  </select>
+  
+	<!-- 更新企业认证信息 -->
+  <update id="updateCompanyAuth" parameterType="com.zhigu.model.CompanyAuth" >
+    update company_auth
+    set 
+      company_name = #{companyAuth.companyName,jdbcType=VARCHAR},
+      company_type = #{companyAuth.companyType,jdbcType=INTEGER},
+      reg_number = #{companyAuth.regNumber,jdbcType=VARCHAR},
+      corporation = #{companyAuth.corporation,jdbcType=VARCHAR},
+      business_term = #{companyAuth.businessTerm,jdbcType=TIMESTAMP},
+      capital = #{companyAuth.capital,jdbcType=INTEGER},
+      business_scope = #{companyAuth.businessScope,jdbcType=VARCHAR},
+      Image = #{companyAuth.image,jdbcType=VARCHAR},
+      add_time = #{companyAuth.applyTime,jdbcType=TIMESTAMP},
+      status = #{companyAuth.status,jdbcType=TINYINT},
+      approve_admin_id = #{companyAuth.approveUser,jdbcType=INTEGER},
+      reject_reason = #{companyAuth.rejectReason,jdbcType=VARCHAR},
+      perpetual = #{companyAuth.perpetual,jdbcType=TINYINT},
+      auth_time = #{companyAuth.authTime,jdbcType=TIMESTAMP},
+      reg_province = #{companyAuth.regProvince,jdbcType=VARCHAR},
+      reg_city = #{companyAuth.regCity,jdbcType=VARCHAR},
+      reg_district = #{companyAuth.regDistrict,jdbcType=VARCHAR},
+      reg_street = #{companyAuth.regStreet,jdbcType=VARCHAR},
+      company_province = #{companyAuth.companyProvince,jdbcType=VARCHAR},
+      company_city = #{companyAuth.companyCity,jdbcType=VARCHAR},
+      company_district = #{companyAuth.companyDistrict,jdbcType=VARCHAR},
+      company_street = #{companyAuth.companyStreet,jdbcType=VARCHAR},
+      add_admin_id = #{companyAuth.salesman,jdbcType=INTEGER}
+    where store_id = #{storeID,jdbcType=INTEGER}
+  </update>
 </mapper>
-

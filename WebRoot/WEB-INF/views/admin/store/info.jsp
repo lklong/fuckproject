@@ -46,14 +46,14 @@
 				<tr><th width="7%">经营地址：</th><td width="93%">${companyAuth.companyProvince}-${companyAuth.companyCity}-${companyAuth.companyDistrict}-${companyAuth.companyStreet}</td></tr>
 				<tr><th width="7%">营业执照：</th><td width="93%"><img  src="${companyAuth.image}" width="244px" height="165px"></td></tr>
 				<tr><th width="7%">业务员：</th><td width="93%">${caSaleSman.realName }</td></tr>
-				<tr><th width="7%">申请时间：</th><td width="93%"><fmt:formatDate value="${companyAuth.applyTime }" pattern="yyyy-MM-dd"/></td></tr>
+				<tr><th width="7%">申请时间：</th><td width="93%"><fmt:formatDate value="${companyAuth.applyTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td></tr>
 				<tr><th width="7%">审核者：</th><td width="93%">${caApproveUser.realName }</td></tr>
-				<tr><th width="7%">审核时间：</th><td width="93%"><fmt:formatDate value="${companyAuth.authTime }" pattern="yyyy-MM-dd"/></td></tr>
+				<tr><th width="7%">审核时间：</th><td width="93%"><fmt:formatDate value="${companyAuth.authTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td></tr>
 				<tr><th width="7%">审核状态：</th><c:if test="${store.companyAuth == 0}"><td width="93%" style="color: red;">未认证</td></c:if>
 																				  <c:if test="${store.companyAuth == 1}"><td width="93%">认证通过</td></c:if>
 																				  <c:if test="${store.companyAuth == 2}"><td width="93%">认证不通过</td></c:if>
 				</tr>
-				<c:if test="${companyAuth.approveState==2 }">
+				<c:if test="${companyAuth.status==2 }">
 					<tr><th width="7%">审核不通过原因：</th><td width="93%"><textarea id="rejectReason">${companyAuth.rejectReason}</textarea></td></tr>
 				</c:if>
 		</table>
@@ -73,14 +73,14 @@
 				<tr><th width="7%">实体图2：</th><td width="93%"><img  src="${realStoreAuth.image2}" width="244px" height="165px"></td></tr>
 				<tr><th width="7%">实体图3：</th><td width="93%"><img  src="${realStoreAuth.image3}" width="244px" height="165px"></td></tr>
 				<tr><th width="7%">业务员：</th><td width="93%">${rsSaleSman.realName }</td></tr>
-				<tr><th width="7%">申请时间：</th><td width="93%"><fmt:formatDate value="${realStoreAuth.applyTime }" pattern="yyyy-MM-dd"/></td></tr>
+				<tr><th width="7%">申请时间：</th><td width="93%"><fmt:formatDate value="${realStoreAuth.applyTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td></tr>
 				<tr><th width="7%">审核者：</th><td width="93%">${rsApproveUser.realName }</td></tr>
-				<tr><th width="7%">审核时间：</th><td width="93%"><fmt:formatDate value="${realStoreAuth.authTime }" pattern="yyyy-MM-dd"/></td></tr>
+				<tr><th width="7%">审核时间：</th><td width="93%"><fmt:formatDate value="${realStoreAuth.authTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td></tr>
 				<tr><th width="7%">审核状态：</th><c:if test="${store.realStoreAuth == 0}"><td width="93%" style="color: red;">未认证</td></c:if>
 																				  <c:if test="${store.realStoreAuth == 1}"><td width="93%">认证通过</td></c:if>
 																				  <c:if test="${store.realStoreAuth == 2}"><td width="93%">认证不通过</td></c:if>
 				</tr>
-				<c:if test="${realStoreAuth.approveState == 2 }">
+				<c:if test="${realStoreAuth.status == 2 }">
 					<tr><th width="7%">审核不通过原因：</th><td width="93%">${realStoreAuth.rejectReason}</td></tr>
 				</c:if>
 		</table>

@@ -28,7 +28,7 @@ public interface ZhiguFileService {
 	 * @return
 	 * @throws IOException
 	 */
-	MsgBean saveImage(MultipartFile file, String[] specs, String specType, Integer minWidth, Integer maxWidth, String fileNamePrefix) throws IOException;
+	MsgBean saveImage2(MultipartFile file, String[] specs, String specType, Integer minWidth, Integer maxWidth, String fileNamePrefix) throws IOException;
 
 	/**
 	 * 保存数据包
@@ -38,5 +38,7 @@ public interface ZhiguFileService {
 	 * @throws IOException
 	 */
 	MsgBean saveData(MultipartFile file) throws IOException;
+
+//	MsgBean saveImage(MultipartFile file, String[] specs, String specType, Integer minWidth, Integer maxWidth, String fileNamePrefix) throws IOException;
 
 }

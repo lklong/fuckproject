@@ -198,9 +198,13 @@ zhigu.cmn.ajax = function(options) {
 function f5() {
 	var href = window.location.href;
 	if(href.indexOf("?")>0){
-		window.location.href = href+"&"+new Date().getTime();
+		var index_v = href.indexOf("&v="); 
+		if(index_v>0){
+			href = href.substring(0,index_v);
+		}
+		window.location.href = href+"&v="+new Date().getTime();
 	}else{
-		window.location.href = href+"?"+new Date().getTime();
+		window.location.href = href+"?&v="+new Date().getTime();
 	}
 }
 // 去空格
@@ -390,7 +394,7 @@ Date.prototype.format = function(fmt) {
 
 //收藏商品
 function favoGoods(goodsId){
-	ajaxSubmit("/user/favourite/addFavouriteGoods", {goodsID:goodsId}, function(msgBean){
+	ajaxSubmit("/user/favourite/addFavouriteGoods", {goodsIds:goodsId}, function(msgBean){
 		if(msgBean.code == zhigu.code.success){
 			layer.msg(msgBean.msg);
 		}else{

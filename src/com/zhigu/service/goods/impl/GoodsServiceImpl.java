@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.SessionUser;
 import com.zhigu.common.constant.Code;
-import com.zhigu.common.constant.SessionKey;
 import com.zhigu.common.constant.StoreNoticeType;
 import com.zhigu.common.constant.enumconst.GoodsStatus;
 import com.zhigu.common.constant.enumconst.MsgLevel;
@@ -38,7 +37,6 @@ import com.zhigu.model.GoodsImage;
 import com.zhigu.model.GoodsProperty;
 import com.zhigu.model.GoodsSku;
 import com.zhigu.model.PageBean;
-import com.zhigu.model.Shortcutgoods;
 import com.zhigu.model.Store;
 import com.zhigu.model.StoreNotice;
 import com.zhigu.model.dto.MsgBean;
@@ -71,11 +69,6 @@ public class GoodsServiceImpl implements IGoodsService {
 		// 店铺id设置
 		SessionUser user = SessionHelper.getSessionUser();
 		int userID = user.getUserID();
-		boolean proxyFlg = false;
-		if (user.getUserID() == 0 && user.getFakeUserID() > 0) {
-			userID = user.getFakeUserID();
-			proxyFlg = true;
-		}
 		Store store = storeDao.queryStoreByUserID(userID);
 		goods.setStoreId(store.getID());
 		// 图片处理
@@ -200,18 +193,6 @@ public class GoodsServiceImpl implements IGoodsService {
 		notice.setContent(store.getStoreName() + "  添加了  " + goods.getName() + "  商品!");
 		storeNoticeMapper.saveStoreNotice(notice);
 
-		if (proxyFlg) {
-			// 代理发布商品后续处理
-			int shortcutGoodsID = (int) SessionHelper.getAttribute(SessionKey.PROXY_GOODS_SHORTCUTGOODS_ID);
-			Shortcutgoods shortcutgoods = goodsDao.queryShortcutGoodsByID(shortcutGoodsID);
-			// 修改快速发布商品状态
-			shortcutgoods.setStatus(1);
-			shortcutgoods.setHandlerId(SessionHelper.getSessionAdmin().getId());
-			goodsDao.changeShortcutGoodsStatus(shortcutgoods);
-			// 移除session属性
-			SessionHelper.removeAttribute(SessionKey.SESSION_USER);
-			SessionHelper.removeAttribute(SessionKey.PROXY_GOODS_SHORTCUTGOODS_ID);
-		}
 		return new MsgBean(Code.SUCCESS, "保存成功", MsgLevel.NORMAL).setData(goods.getId());
 	}
 
@@ -349,6 +330,18 @@ public class GoodsServiceImpl implements IGoodsService {
 		}
 
 		List<Goods> list = goodsDao.queryGoodsByPage(gc, page);
+
+		// 货号处理
+		for (Goods goods : list) {
+			Store store = storeDao.queryStoreByID(goods.getStoreId());
+			String name = store.getStoreName();
+			String propValueName = goodsDao.queryItemNoInGoodsProperty(goods.getId());
+			if (StringUtils.isBlank(propValueName)) {
+				propValueName = "156-3";
+			}
+			goods.setItemNo(name + "&" + propValueName);
+		}
+
 		page.setDatas(list);
 		return list;
 	}
@@ -385,41 +378,6 @@ public class GoodsServiceImpl implements IGoodsService {
 	}
 
 	@Override
-	public int saveShortcutGoods(Shortcutgoods shortcutgoods) {
-		return goodsDao.saveShortcutGoods(shortcutgoods);
-	}
-
-	@Override
-	public List<Shortcutgoods> queryshortcutgoods(int userId) {
-		return goodsDao.queryshortcutgoods(userId);
-	}
-
-	@Override
-	public List<Shortcutgoods> queryshortcutgoods(int userId, boolean status) {
-		return goodsDao.queryshortcutgoodsByStatus(userId, status);
-	}
-
-	@Override
-	public boolean deleteShortcut(int id) {
-		return goodsDao.deleteShortcut(id);
-	}
-
-	@Override
-	public List<Shortcutgoods> queryshortcutgoodsByManagerList(PageBean<Shortcutgoods> page) {
-		return goodsDao.queryshortcutgoodsByManagerListByPage(page);
-	}
-
-	@Override
-	public boolean changeShortcutGoodsStatus(Shortcutgoods shortcutgoods) {
-		return goodsDao.changeShortcutGoodsStatus(shortcutgoods);
-	}
-
-	@Override
-	public Shortcutgoods queryShortcutGoodsByID(int shortcutGoodsID) {
-		return goodsDao.queryShortcutGoodsByID(shortcutGoodsID);
-	}
-
-	@Override
 	public List<String> queryGoodsNames(String keyword) {
 
 		return goodsDao.queryGoodsNames(keyword);
@@ -429,8 +387,7 @@ public class GoodsServiceImpl implements IGoodsService {
 	public MsgBean updateGoodsRefreshDate(Integer goodsId) {
 		Integer userId = SessionHelper.getSessionUser().getUserID();
 		Date now = new Date();
-		int refreshCount = 0;
-		refreshCount = goodsAndStoreRefreshMapper.countNum(DateUtil.format(now, DateUtil.yyyy_MM_dd), userId, goodsId, null);
+		int refreshCount = goodsAndStoreRefreshMapper.countNum(DateUtil.format(now, DateUtil.yyyy_MM_dd), userId, goodsId, null);
 		int usableRefreshNum = GOODS_REFRESH_NUM_LIMIT - refreshCount;
 		if (usableRefreshNum <= 0) {
 			return new MsgBean(Code.FAIL, "已超过刷新次数限制", MsgLevel.ERROR);
@@ -443,7 +400,7 @@ public class GoodsServiceImpl implements IGoodsService {
 			goodsAndStoreRefreshMapper.insert(goodsRefresh);
 
 			goodsDao.updateGoodsRefreshDate(now, goodsId);
-			return new MsgBean(Code.SUCCESS, "刷新成功，今天还可刷新 " + usableRefreshNum + " 次", MsgLevel.NORMAL);
+			return new MsgBean(Code.SUCCESS, "刷新成功，今天还可刷新 " + (usableRefreshNum - 1) + " 次", MsgLevel.NORMAL);
 		}
 	}
 

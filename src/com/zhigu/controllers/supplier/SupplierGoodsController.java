@@ -31,8 +31,8 @@ import com.zhigu.model.Store;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.goods.ICategoryService;
 import com.zhigu.service.goods.IGoodsService;
+import com.zhigu.service.store.IStoreNoticeService;
 import com.zhigu.service.store.IStoreService;
-import com.zhigu.service.storeNotice.IStoreNoticeService;
 
 /**
  * 商品

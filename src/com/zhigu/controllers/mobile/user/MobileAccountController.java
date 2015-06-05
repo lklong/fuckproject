@@ -16,7 +16,6 @@ import com.zhigu.model.AccountDetail;
 import com.zhigu.model.PageBean;
 import com.zhigu.model.RechargeRecord;
 import com.zhigu.service.user.IAccountService;
-import com.zhigu.service.user.IUserPointService;
 import com.zhigu.service.user.IUserService;
 
 /**
@@ -32,8 +31,6 @@ public class MobileAccountController {
 	private IAccountService accountService;
 	@Autowired
 	private IUserService userService;
-	@Autowired
-	private IUserPointService userPointService;
 
 	/* 分页取得当前账号 充值信息 */
 	@RequestMapping("/rechargelist")

@@ -89,12 +89,12 @@ filter:alpha(opacity:40);
 	color: #ffffff;
 	font-size: 14px;
 	line-height: 36px;
-	background: url(../../img/default/all_bg.png) no-repeat left -562px #ff9900;
+	background: url(../../img/default/all_bg.png) repeat left -562px #ff9900;
 	font-weight: bold;
 	text-align: center
 }
 .subLogin:hover {
-	background: url(../../img/default/all_bg.png) no-repeat left -661px #ff9900;
+	background: url(../../img/default/all_bg.png) repeat left -661px #ff9900;
 }
 .panelBox table a {
 	color: #ffffff;
@@ -122,6 +122,7 @@ filter:alpha(opacity:40);
 	height: auto;
 	margin: 0 auto;
 	box-shadow: 0 0 5px #dedede;
+	font-size: 1.2em;
 }
 .urpTopBox {
 	width: 1190px;
@@ -145,7 +146,7 @@ filter:alpha(opacity:40);
 	padding-top: 20px;
 }
 .urpMiddleDiv {
-	width: 390px;
+	width: 550px;
 	margin: 20px auto 0 auto;
 	clear: both;
 }
@@ -155,7 +156,7 @@ filter:alpha(opacity:40);
 	border: 1px solid #e0e0e0;
 	line-height: 38px;
 	font-size: 14px;
-	background: url(../../img/user/userregbg.jpg) no-repeat left -76px;
+	background: url(../../img/user/userregbg.jpg) repeat left -76px;
 	text-indent: 25px;
 }
 .userRegInput_2 {
@@ -164,24 +165,23 @@ filter:alpha(opacity:40);
 	border: 1px solid #e0e0e0;
 	line-height: 38px;
 	font-size: 14px;
-	background: url(../../img/user/userregbg.jpg) no-repeat left top;
+	background: url(../../img/user/userregbg.jpg) repeat left top;
 	text-indent: 25px;
 }
 div.urpAlert {
-	width: 390px;
 	margin: 0 auto;
 	height: 30px;
 	line-height: 30px;
 	color: #999999;
-	font-size: 1.2em;
-	clear: both
+	clear: both;
+	padding:10px;
 }
 div.urpAlert .okMsg em {
 	display: block;
 	float: left;
 	height: 14px;
 	width: 14px;
-	background: url(../../img/user/alertbg.jpg) no-repeat left top;
+	background: url(../../img/user/alertbg.jpg) repeat left top;
 	margin-top: 7px;
 	margin-right: 4px;
 }
@@ -190,8 +190,8 @@ div.urpAlert .failMsg em {
 	float: left;
 	height: 14px;
 	width: 14px;
-	background: url(../../img/user/alertbg.jpg) no-repeat left -14px;
-	margin-top: 7px;
+	background: url(../../img/user/alertbg.jpg) repeat left -14px;
+	margin-top: 9px;
 	margin-right: 4px;
 }
 .urpRegPassWord_1 {
@@ -200,7 +200,7 @@ div.urpAlert .failMsg em {
 	border: 1px solid #e0e0e0;
 	line-height: 38px;
 	font-size: 14px;
-	background: url(../../img/user/userregbg.jpg) no-repeat left -114px;
+	background: url(../../img/user/userregbg.jpg) repeat left -114px;
 	text-indent: 25px;
 }
 .urpRegPassWord_2 {
@@ -209,7 +209,7 @@ div.urpAlert .failMsg em {
 	border: 1px solid #e0e0e0;
 	line-height: 38px;
 	font-size: 14px;
-	background: url(../../img/user/userregbg.jpg) no-repeat left -38px;
+	background: url(../../img/user/userregbg.jpg) repeat left -38px;
 	text-indent: 25px;
 }
 .urpRegPassWord_10 {
@@ -218,7 +218,7 @@ div.urpAlert .failMsg em {
 	border: 1px solid #e0e0e0;
 	line-height: 38px;
 	font-size: 14px;
-	background: url(../../img/user/userregbg.jpg) no-repeat left -304px;
+	background: url(../../img/user/userregbg.jpg) repeat left -304px;
 	text-indent: 25px;
 }
 .urpRegPassWord_11 {
@@ -227,7 +227,7 @@ div.urpAlert .failMsg em {
 	border: 1px solid #e0e0e0;
 	line-height: 38px;
 	font-size: 14px;
-	background: url(../../img/user/userregbg.jpg) no-repeat left -266px;
+	background: url(../../img/user/userregbg.jpg) repeat left -266px;
 	text-indent: 25px;
 }
 .urpRegPassWord_12 {
@@ -236,7 +236,7 @@ div.urpAlert .failMsg em {
 	border: 1px solid #e0e0e0;
 	line-height: 38px;
 	font-size: 14px;
-	background: url(../../img/user/userregbg.jpg) no-repeat left -228px;
+	background: url(../../img/user/userregbg.jpg) repeat left -228px;
 	text-indent: 25px;
 }
 .urpYanZhengCode_1 {
@@ -245,7 +245,7 @@ div.urpAlert .failMsg em {
 	border: 1px solid #e0e0e0;
 	line-height: 38px;
 	font-size: 14px;
-	background: url(../../img/user/userregbg.jpg) no-repeat left -190px;
+	background: url(../../img/user/userregbg.jpg) repeat left -190px;
 	text-indent: 25px;
 }
 .urpYanZhengCode_2 {
@@ -254,15 +254,13 @@ div.urpAlert .failMsg em {
 	border: 1px solid #e0e0e0;
 	line-height: 38px;
 	font-size: 14px;
-	background: url(../../img/user/userregbg.jpg) no-repeat left -152px;
+	background: url(../../img/user/userregbg.jpg) repeat left -152px;
 	text-indent: 25px;
 }
 .urpMiddleDiv a {
-	font-size: 1.2em;
 	color: #666666;
 }
 .urpMiddleDiv a:hover {
-	font-size: 1.2em;
 	color: #ff5500;
 }
 .urpSubMit {
@@ -271,12 +269,12 @@ div.urpAlert .failMsg em {
 	height: 37px;
 	color: #ffffff;
 	font-size: 14px;
-	background: url(../../img/default/all_bg.png) no-repeat left -562px;
+	background: url(../../img/default/all_bg.png) repeat left -562px;
 	font-weight: bold;
 	text-align: center
 }
 .urpSubMit:hover {
-	background: url(../../img/default/all_bg.png) no-repeat left -661px;
+	background: url(../../img/default/all_bg.png) repeat left -661px;
 }
 .busyInfoBox {
 	width: 520px;
@@ -294,7 +292,7 @@ div.urpAlert .failMsg em {
 	width: 290px;
 	height: 29px;
 	border: 1px solid #afafaf;
-	background: url(../img/inputBg2.jpg) no-repeat left top;
+	background: url(../img/inputBg2.jpg) repeat left top;
 	line-height: 29px;
 }
 .bibinput {
@@ -317,7 +315,7 @@ div.urpAlert .failMsg em {
 	float: left;
 	height: 14px;
 	width: 14px;
-	background: url(../img/alertbg.jpg) no-repeat left top;
+	background: url(../img/alertbg.jpg) repeat left top;
 	margin-top: 7px;
 	margin-right: 4px;
 }
@@ -326,7 +324,7 @@ div.urpAlert .failMsg em {
 	float: left;
 	height: 14px;
 	width: 14px;
-	background: url(../img/alertbg.jpg) no-repeat left -14px;
+	background: url(../img/alertbg.jpg) repeat left -14px;
 	margin-top: 7px;
 	margin-right: 4px;
 }
@@ -384,6 +382,8 @@ div.urpAlert .failMsg em {
 	background-color: #f83e77;
 	color: #ffffff;
 }
+.left_hover .left_bt a {
+	color: #ffffff;}
 .left_hover .tit {
 	font-size: 1.2em;
 	font-weight: bold;
@@ -458,7 +458,7 @@ div.urpAlert .failMsg em {
 	padding: 10px 0;
 }
 a.congzhi {
-	background: url(../../img/default/all_bg.png) no-repeat right -610px;
+	background: url(../../img/default/all_bg.png) repeat right -610px;
 	display: block;
 	height: 30px;
 	width: 90px;
@@ -467,9 +467,7 @@ a.congzhi {
 	font-weight: bold;
 	text-align: center;
 	border-radius: 3px;
-	float: left;
 	margin-left: 20px;
-	margin-top: -3px;
 }
 .dingdan {
 	line-height: 45px;
@@ -492,6 +490,7 @@ a.congzhi {
 	border-bottom: 2px solid #e8e8e8;
 	font-size: 1.2em;
 	text-indent: 15px;
+	clear:both;
 }
 .sc_sp {
 	clear: both;
@@ -537,18 +536,28 @@ a.congzhi {
 	width: 200px;
 	height: 28px;
 	border: 1px solid #9a9a9a;
+	background-color:#ffffff;
 }
 .input-button {
-	background: url(../../img/default/all_bg.png) no-repeat right -562px;
+	background: url(../../img/default/all_bg.png) repeat right -562px;
 	border-radius: 3px;
-	height: 33px;
-	line-height: 31px;
+	height: 30px;
+	line-height: 30px;
 	color: #ffffff;
 	font-weight: bold;
-	width: 90px;
+	padding:0 15px;
+}
+.input-button-gray {
+	background: url(../../img/default/all_bg.png) repeat right -882px;
+	border-radius: 3px;
+	height: 30px;
+	line-height: 30px;
+	color: #ffffff;
+	font-weight: bold;
+	padding:0 15px;
 }
 .input-button:hover {
-	background: url(../../img/default/all_bg.png) no-repeat right -661px;
+	background: url(../../img/default/all_bg.png) repeat right -661px;
 }
 .select-txt {
 	height: 30px;
@@ -572,19 +581,43 @@ a.congzhi {
 }
 .msg-alert {
 	border: 1px solid #FFDFD0;
-	height: 23px;
+	height: auto;
 	line-height: 23px;
 	padding: 5px;
 	background-color: #FFF3EE;
 	margin-bottom: 20px;
 }
-.edit-user-photo {
+.msg-alert .gantanhao {
+	display:block;
+	float:left;
+	height:16px;
+	width:16px;
+	margin:3px;
+	background: url(../../img/default/all_bg.png) repeat left -840px;
+}
+a.edit-user-photo:link {
 	display: inline-block;
-	padding: 1px 15px;
+	padding: 3px 13px;
 	border-radius: 3px;
 	background-color: #ffffff;
 	border: 1px solid #dedede;
-	margin-right: 5px;
+	color:#353535;
+}
+a.edit-user-photo:visited {
+	display: inline-block;
+	padding: 3px 13px;
+	border-radius: 3px;
+	background-color: #ffffff;
+	border: 1px solid #dedede;
+	color:#787878;
+}
+a.edit-user-photo:hover {
+	display: inline-block;
+	padding: 3px 13px;
+	border-radius: 3px;
+	background-color: #ffffff;
+	border: 1px solid #f83e77;
+	color:#f83e77;
 }
 .set-icon {
 	height: 80px;
@@ -592,19 +625,19 @@ a.congzhi {
 	display: block;
 }
 .si-pwd {
-	background: url(../../img/default/security-status.png) no-repeat right top;
+	background: url(../../img/default/security-status.png) repeat right top;
 }
 .si-phone {
-	background: url(../../img/default/security-status.png) no-repeat right -100px;
+	background: url(../../img/default/security-status.png) repeat right -100px;
 }
 .si-mail {
-	background: url(../../img/default/security-status.png) no-repeat right -202px;
+	background: url(../../img/default/security-status.png) repeat right -202px;
 }
 .si-money {
-	background: url(../../img/default/security-status.png) no-repeat right -402px;
+	background: url(../../img/default/security-status.png) repeat right -402px;
 }
 .si-bank {
-	background: url(../../img/default/security-status.png) no-repeat right -604px;
+	background: url(../../img/default/security-status.png) repeat right -604px;
 }
 a.default-a:link {
 	display: inline-block;
@@ -617,8 +650,10 @@ a.default-a:link {
 	text-indent: 0;
 	font-size: 1.0em;
 	font-weight: normal;
+	color:#353535;
 }
 a.default-a:hover {
+	border: 1px solid #f83e77;
 	background-color: #ffffff;
 	color: #f83e77;
 }
@@ -626,8 +661,11 @@ a.default-a:hover {
 	height: 260px;
 }
 .fun-bar {
-	padding: 20px 0;
+	padding: 20px 20px;
 	clear: both;
+	border:1px solid #e8e8e8;
+	background-color:#fafafa;
+	margin:10px 0;
 }
 .zhifubaobox {
 	background-color: #fafafa;
@@ -637,16 +675,13 @@ a.default-a:hover {
 .fun-tabs {
 	background-color: #fafafa;
 	width: 100%;
-	height: 50px;
+	height: 20px;
 }
 .fun-tabs li {
 	float: left;
 	padding: 0 25px;
 	border-right: 1px solid #dedede;
-	line-height: 50px;
-}
-.fun-tabs li:hover {
-	background-color: #e8e8e8;
+	line-height: 20px;
 }
 .dingdanhao p {
 	line-height: 30px;
@@ -763,7 +798,7 @@ a.tc:hover {
 	clear: both;
 }
 /* 库存紧张样式 */
-.goods-tr td .quantify {
+.quantify {
 	background: #f00;
 	color: #fff;
 	border: 1px solid #f00;
@@ -894,7 +929,7 @@ label.error {
 	background-color: #f0f0f0;
 	margin-top: -10px;
 }
-.no-border-margin {
+.border-margin {
 	margin-top: -11px;
 }
 .order-money {
@@ -925,7 +960,7 @@ label.error {
 
 #alldd {
 	position: relative;
-}
+}.word-overflow
 .dpallzl li {
 	margin-top: 20px;
 	overflow: hidden;
@@ -957,4 +992,101 @@ label.error {
 	background-color: #FFF;
 	border: 1px solid #DEDEDE;
 	color: #FFF;
+}
+/* 店铺收藏 */
+.fav-shop-list {
+	height:200px;
+	padding:15px 15px;
+	border-bottom:1px solid #e8e8e8;}
+.fav-shop-left {
+	width:200px;
+	line-height:30px;}
+.fav-shop-right {
+	width:780px;}
+.fav-shop-right li {
+	float:left;
+	width:115px;
+	margin-right:20px;}
+	
+.word-overflow{
+	height: 34px;
+	line-height: 18px;
+overflow: hidden;}
+/* 供应商 */
+.gy-userbar {
+	margin:20px 0;
+	background-color:#f5f8fa;
+	border:1px solid #e4eaee;
+	line-height:23px;
+	vertical-align:middle;}
+.gy-baseinfo {
+	width:23%;
+	height:65px;
+	padding:20px;}
+a.gy-photo {
+	display:block;
+	height:65px;
+	width:65px;}
+.gy-bind {
+	height:20px;
+	width:20px;
+	display:block;
+	float:left;
+	margin-right:10px;}
+.email-yes {
+	background: url(../../img/default/all_bg.png) repeat left -520px;}
+.phone-yes {
+	background: url(../../img/default/all_bg.png) repeat -21px -520px;}
+.email-no {
+	background: url(../../img/default/all_bg.png) repeat -100px -520px;}
+.phone-no {
+	background: url(../../img/default/all_bg.png) repeat -121px -520px;}
+.gy-userinfo {
+	background-color:#ffffff;
+	padding:30px;
+	clear:both;
+	border-top:1px solid #e4eaee;}
+.pinglun_goods {
+	height:auto;
+	overflow:hidden;}
+.pg_title {
+	width:100px;
+	text-align:center;
+	border-right:1px solid #e8e8e8;}
+.pg_title p {
+	border-bottom:1px solid #e8e8e8;
+	line-height:27px;}
+.pg_body {
+	border:1px solid #e8e8e8;
+	background-color:#ffffff;
+	padding:10px;
+	margin:5px;}
+.commandSubmitBox {
+	width:30%;
+	height:160px;
+	padding:20px 0;}
+.chongzhi-input-btn {
+	display:inline-block;
+	cursor:pointer;
+	height:33px;
+	line-height:32px;
+	padding:0 20px;
+	color:#ffffff;
+	font-weight:bold;
+	border-radius:3px;
+	background:url(../../img/default/all_bg.png) no-repeat right -610px;}
+.chongzhi-input-btn:hover {
+	color:#ffffff;
+	background:url(../../img/default/all_bg.png) no-repeat -211px -610px;}
+.fav-shop {
+	clear:both;
+	width:100%;
+	margin-top:5px;
+}
+.fav-shop li{
+	float:left;
+	height:200px;
+	width:150px;
+	over-flow:hidden;
+	margin-right:20px;
 }

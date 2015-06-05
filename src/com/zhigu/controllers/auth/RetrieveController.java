@@ -123,7 +123,7 @@ public class RetrieveController {
 		EmailVerify ev = emailService.queryVerifyEmail(uid, EmailVerifyType.PASSWORD_RESET);
 		if (ev == null) {
 			mv.addObject("msg", "无效的链接，请重新发送验证邮件");
-			mv.setViewName("/error/error-tips");
+			mv.setViewName("/tips/error-tips");
 			return mv;
 		}
 		mv.addObject("uid", uid);

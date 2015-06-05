@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
 	$(function (){
-		if("${realStoreAuth.approveState!=null&&(realStoreAuth.approveState==1||realStoreAuth.approveState==2)}"=="true"){
+		if("${realStoreAuth.status!=null&&(realStoreAuth.status==1||realStoreAuth.status==2)}"=="true"){
 			$("#alldd input").attr("disabled","disabled");
 			$("#alldd select").attr("disabled","disabled");
 		}
@@ -24,7 +24,7 @@
 	}
 </script>
 <div style="height:20px;"></div>
-<c:if test="${realStoreAuth.approveState == 2}">
+<c:if test="${realStoreAuth.status == 2}">
 <div > 审核未通过 </div>
 <div > 未通过原因： ${realStoreAuth.rejectReason }</div>
 </c:if>

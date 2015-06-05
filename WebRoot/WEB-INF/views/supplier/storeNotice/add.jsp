@@ -3,60 +3,54 @@
 <!DOCTYPE html >
 <html >
 <head>
-<base href="${applicationScope.basePath}" />
-
 <title>店铺公告</title>
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 </head>
 
 <body>
 	<div class="rightContainer fr">
-		<!--// 标题 //-->
 		<h4 class="ddtitle">
 			店铺公告
 		</h4>
-		<!--// 内容框 //-->
-		<div class="rc_body">
-				<!--// 内容1 //-->
-				<div class="body_center2" id="alldd">
-					<ul class="ml30 c666 f14 dpallzl">
-						<li style="font-size: 12px;font-family: 黑体; ">
-							提示：
-							<ul>
-								<li>1.店铺公告可设置为活动公告内容;</li>
-								<li>2.上传图片最宽不得超过<strong style="color: red;">1188px</strong>;</li>
-							</ul>
-						</li>
-						<li style="margin-left: -30px;">
-							<div class="jibenform" >
-							 	<div class="tupianright fl" style="border:none;">
-								 	<jsp:include page="../../ueditor/index_desc.jsp"></jsp:include>
-								 </div>
-							</div>
-						 	<div class="clear"></div>
-						 	<input type="hidden" value="${storeID }" id="storeID"/>
-				 		</li>
-					 	<li class="baochun"><a onclick="add();">保存</a></li>
-					</ul>
-				</div>
-			</div>
-			<br style="clear: both;" />
-		</div>
-	<div class="clear"></div>
+		<table cellpadding="0" cellspacing="0" class="user-form-table">
+			<tr>
+				<td>
+					<div class="msg-alert">
+						<p>温馨提示：</p>
+						<p>1.店铺公告可设置为活动公告内容;</p>
+						<p>2.上传图片最宽不得超过<strong class="color-red">1188px</strong>;</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td><jsp:include page="../../ueditor/index_desc.jsp"></jsp:include></td>
+			</tr>
+			<tr>
+				<td>
+				<input type="hidden" value="${storeID }" id="storeID"/>
+				<input type="button" class="input-button" onclick="add();" value="保存" />
+				</td>
+			</tr>
+		</table>
+</div>
 <script type="text/javascript">
 function  add(){
   	var content = UE.getEditor('editor').getPlainTxt();
+  	if($.trim(content) == ''){
+  		layer.alert('不能发布空的内容!');
+  		return;
+  	}
   	 var storeID = $("#storeID").val();
         $.post("/supplier/storeNotice/addStoreNotice",{storeID:storeID,content:content},function(msgBean){
  		if(msgBean.code ==zhigu.code.success){
- 			 alert("发布成功!");
+ 			layer.alert("发布成功!");
 			 setTimeout("changePage()", 100);
  		}else{
-	    	alert(msgBean.msg);
+ 			layer.alert(msgBean.msg);
 		}
   }); 
 } 
 function changePage(){
-	parent.layer.closeAll();
 	window.location = "/supplier/storeNotice/storeNoticeList";	
 }
 </script>

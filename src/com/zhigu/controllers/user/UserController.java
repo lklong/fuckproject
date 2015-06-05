@@ -11,27 +11,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zhigu.common.SessionHelper;
-import com.zhigu.common.SessionUser;
 import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.UserType;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.utils.DateUtil;
-import com.zhigu.common.utils.ServiceMsg;
 import com.zhigu.common.utils.StringUtil;
 import com.zhigu.common.utils.VerifyUtil;
 import com.zhigu.common.utils.ZhiguConfig;
 import com.zhigu.model.Account;
 import com.zhigu.model.Goods;
-import com.zhigu.model.Message;
 import com.zhigu.model.Order;
 import com.zhigu.model.OrderCondition;
 import com.zhigu.model.PageBean;
 import com.zhigu.model.Store;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.UserInfo;
-import com.zhigu.model.UserRecommend;
 import com.zhigu.model.dto.MsgBean;
-import com.zhigu.service.message.IMessageSendService;
 import com.zhigu.service.store.IStoreService;
 import com.zhigu.service.user.IAccountService;
 import com.zhigu.service.user.IFavouriteService;
@@ -55,8 +50,6 @@ public class UserController {
 	private IFavouriteService favouriteService;
 	@Autowired
 	private IOrderService orderService;
-	@Autowired
-	private IMessageSendService messageSendService;
 	@Autowired
 	private IStoreService storeService;
 
@@ -195,67 +188,4 @@ public class UserController {
 		return mv;
 	}
 
-	/**
-	 * 被推荐的人(仅有账户信息)
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/recommended")
-	@ResponseBody
-	public List<UserInfo> recommended() {
-		return userService.queryRecommended(SessionHelper.getSessionUser().getUserID());
-	}
-
-	/**
-	 * 查询用户填写的推荐
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/queryUserWriteRecommend")
-	@ResponseBody
-	public List<UserRecommend> queryUserWriteRecommend(PageBean<UserRecommend> page) {
-		page.setPageSize(100);
-		return userService.queryUserRecommendByUserID(page, SessionHelper.getSessionUser().getUserID());
-	}
-
-	/**
-	 * 删除用户填写的推荐
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/deleteUserWriteRecommend")
-	@ResponseBody
-	public MsgBean deleteUserWriteRecommend(int id) {
-		userService.deleteUserWriteRecommend(id);
-		return new MsgBean(Code.SUCCESS, "删除成功", MsgLevel.NORMAL);
-	}
-
-	/**
-	 * 保存用户记录被推荐人
-	 * 
-	 * @param userRecommend
-	 * @return
-	 */
-	@RequestMapping("/saveUserRecommend")
-	@ResponseBody
-	public MsgBean saveUserRecommend(UserRecommend userRecommend) {
-		userRecommend.setUserId(SessionHelper.getSessionUser().getUserID());
-		userService.saveUserRecommend(userRecommend);
-		return ServiceMsg.getMsgBean();
-	}
-
-	@RequestMapping("getSendingMessage")
-	@ResponseBody
-	public MsgBean getSendingMessage() {
-		SessionUser sessionUser = SessionHelper.getSessionUser();
-		if (sessionUser == null) {
-			return new MsgBean(Code.SUCCESS, "未登陆！", MsgLevel.ERROR);
-		}
-		MsgBean msgBean = new MsgBean(Code.SUCCESS, "发送成功", MsgLevel.ERROR);
-
-		List<Message> messageList = messageSendService.querySendingMessage(sessionUser.getUserID());
-		msgBean.setData(messageList);
-
-		return msgBean;
-	}
 }

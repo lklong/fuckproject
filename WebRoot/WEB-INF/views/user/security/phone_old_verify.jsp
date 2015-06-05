@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 <title>手机设置</title>
 </head>
 <body>
@@ -11,8 +11,8 @@
 		<h4 class="ddtitle">手机设置</h4>
 		<table cellpadding="0" cellspacing="0" class="user-form-table">
 				<tr>
-					<td>原始手机号：</td>
-					<td><input class="input-txt" type="text" id="oldPhone" value="${oldPhone }" disabled="disabled"/><input class="input-button ml20" style="cursor: pointer;" onclick="sendCaptcha(this)" type="button" value="获取验证码" /> </td>
+					<td style="width:15%">原始手机号：</td>
+					<td style="width:85%"><input class="input-txt" type="text" id="oldPhone" value="${oldPhone }" disabled="disabled"/><input class="input-button ml20" style="cursor: pointer;" onclick="sendCaptcha(this)" type="button" value="获取验证码" /> </td>
 				</tr>
 				<tr>
 					<td>验证码：</td>
@@ -20,7 +20,7 @@
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
-					<td><span id="info_area" class="red">${msg }</td>
+					<td><span id="info_area" class="color-red">${msg }</span></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -48,7 +48,7 @@
 			}
 			ajaxSubmit("user/security/verifyOldPhone", {"captcha":captcha}, function(msgBean){
 				if(msgBean.code==zhigu.code.success){
-					layer.msg(msgBean.msg,2,function(){
+					layer.msg(msgBean.msg,function(){
 						window.location.href = "/user/security/phone?oldPhoneVerifyKey="+msgBean.data.oldPhoneVerifyKey;
 					});
 				}else{

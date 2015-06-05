@@ -18,7 +18,7 @@ public class EmailController {
 	public ModelAndView verifyBindEmail(String uid, ModelAndView mv) {
 		MsgBean msg = emailService.verifyBindEmail(uid);
 		mv.addObject("msg", msg.getMsg());
-		mv.setViewName("/error/tips");
+		mv.setViewName("/tips/tips");
 		return mv;
 	}
 }

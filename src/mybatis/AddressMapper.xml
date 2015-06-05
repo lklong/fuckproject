@@ -192,18 +192,18 @@
 		select
 		<include refid="Base_Column_List" />
 		from address
-		where user_id = #{userId,jdbcType=INTEGER} and Status = 1 order by add_time DESC ,default_flag DESC
+		where user_id = #{userId,jdbcType=INTEGER} order by add_time DESC
 	</select>
 	<select id="selectDefaultAddress" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
 		from address
-		where user_id = #{userId,jdbcType=INTEGER} and default_flag=1 And Status = 1
+		where user_id = #{userId,jdbcType=INTEGER} and default_flag=1
 	</select>
 	<select id="selectAddressByUserIdAndId" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from address
-		where user_id = #{userId,jdbcType=INTEGER} and id=#{id,jdbcType=INTEGER} And Status = 1
-	</select>
+		where user_id = #{userId,jdbcType=INTEGER} and id=#{id,jdbcType=INTEGER}
+	</select> 
 </mapper>

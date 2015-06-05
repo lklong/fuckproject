@@ -8,6 +8,7 @@
 <script type="text/javascript" src="js/validate/jquery.validate.js"></script>
 <script type="text/javascript" src="js/validate/message_cn.js"></script>
 <script type="text/javascript" src="js/validate/additional-methods.js"></script>
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 <title>收货地址</title>
 </head>
 <body>
@@ -19,7 +20,7 @@
 		<table cellpadding="0" cellspacing="0" class="user-form-table">
 				<tr>
 					<td><c:choose>
-								<c:when test="${not empty address.ID }">
+								<c:when test="${not empty address.id }">
 									<h4>修改收货地址</h4>
 								</c:when>
 								<c:otherwise>
@@ -33,8 +34,8 @@
 				</tr>
 				<tr>
 					<td style="width:15%"><span class="color-red">*</span> 收货人姓名：</td>
-					<td style="width:85%"><c:if test="${not empty address.ID }">
-									<input type="hidden" name="ID" value="${address.ID }">
+					<td style="width:85%"><c:if test="${not empty address.id }">
+									<input type="hidden" name="id" value="${address.id }">
 								</c:if>
 								<input class="input-txt" type="text" name="name" placeholder="最多 32个字符" value="${address.name}" /></td>
 				</tr>
@@ -63,8 +64,9 @@
 				</tr>
 				<tr>
 					<td> 是否默认：</td>
-					<td><input type="checkbox" id="isDefault" class="mr10" value="1" <c:if test="${address.isDefault == 1 }">checked="checked"</c:if> name="isDefault" />
-					<label for="isDefault"><strong>设置为默认收货地址</strong></label></td>
+					<td><input type="checkbox" id="isDefault"  class="mr10" <c:if test="${address.defaultFlag}">checked="checked"</c:if> />
+							<label for="isDefault"><strong>设置为默认收货地址</strong></label>
+					</td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -96,7 +98,7 @@ $().ready(function(){
 			},
 			tel:{
 				tel:true,
-				required:true,
+// 				required:true,
 				//number:true,
 			},
 			phone:{
@@ -105,13 +107,19 @@ $().ready(function(){
 			}
 		},
 		submitHandler:function(form){
-			var addressID = "${address.ID}";
-			var url = addressID?"/user/address/modify":"/user/address/add";
-			ajaxSubmit(url, $("#addForm").serialize(), function(msgBean){
+			var addressId = "${address.id}";
+			var default_addr = 0;
+			if($("#isDefault")[0].checked){
+				 default_addr = 1;
+			}
+			var url = addressId?"/user/address/modify":"/user/address/add";
+			var param = $("#addForm").serialize()+"&defaultFlag="+default_addr;
+			ajaxSubmit(url, param, function(msgBean){
 				if(msgBean.code == zhigu.code.success){
-					layer.msg(msgBean.msg, 1, function(){
+					layer.alert(msgBean.msg);
+					setTimeout(function(){
 						window.location.href = "/user/address";
-					});
+					},3000);
 				}else{
 					layer.alert(msgBean.msg);
 				}
@@ -126,6 +134,8 @@ $().ready(function(){
 	if(city == "")
 		city = "成都市";
 	new PCAS("province", "city", "district",pro,city,"${address.district}");
+	
+	
 })
 </script>
 </body>

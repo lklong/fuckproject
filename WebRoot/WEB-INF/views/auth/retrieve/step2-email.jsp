@@ -1,52 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<base href="${applicationScope.basePath}" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>密码找回</title>
-<link href="css/reg.css" rel="stylesheet" type="text/css" />
+<title>重置密码</title>
+<link href="/css/default/user.css" rel="stylesheet"/>
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 </head>
 <body>
-	<!--** Step.3 重置密码 **-->
-	<div class="userRegPanel disnonex">
-		<div class="urpInside">
-			<div class="urpTopBox"></div>
-			<div class="urpMiddleBox">
-				<div class="urpTopTip">
-					<div id="step1">
-						<img src="img/backpass_3.jpg" />
-					</div>
-				</div>
-				<div class="urpMiddleDiv">
-					<div class="busyInfoBox">
-						<div class="bibTxt">新密码</div>
-						<div class="bibinput">
-							<input type="password" class="busyInput" id="password" name="password" />
-						</div>
-						<div class="bibAlert" id="msg_password"></div>
-					</div>
-					<div class="busyInfoBox">
-						<div class="bibTxt">再次输入密码</div>
-						<div class="bibinput">
-							<input type="password" class="busyInput" id="repassword" />
-						</div>
-						<div class="bibAlert" id="msg_repassword"></div>
-					</div>
-					<div class="urpMiddleDiv mt30">
-						<br />
-						<br /> <input type="button" class="urpSubMit" value="修改密码" title="修改密码" onclick="_submit()" /> <br />
-						<br />
-						<br /> <br />
-						<br />
-						<br />
-					</div>
-				</div>
-			</div>
-			<div class="urpFootBox"></div>
-		</div>
-	</div>
-	<script type="text/javascript">
+<!--** Step.3 重置密码 **-->
+<div class="userRegPanel">
+  <div class="urpInside">
+    <div class="urpMiddleBox">
+      <div class="urpTopTip">
+        <div id="step1">
+          <h2>重置密码 </h2>
+        </div>
+      </div>
+      <div class="urpMiddleDiv">
+        <table cellpadding="0" cellspacing="0" class="user-form-table">
+          <tr>
+            <td style="width:20%">新密码</td>
+            <td style="width:80%"><input type="password" class="input-txt" id="password" name="password" />
+              <div class="color-red" id="msg_password"></div></td>
+          </tr>
+          <tr>
+            <td>再次输入密码</td>
+            <td><input type="password" class="input-txt" id="repassword" />
+              <div class="color-red" id="msg_repassword"></div></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input type="button" class="input-button" value="修改密码" title="修改密码" onclick="_submit()" /></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
 function _submit(){
 	var pwd = $("#password").val();
 	var pwd1 = $("#repassword").val();

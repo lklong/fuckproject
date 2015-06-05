@@ -4,16 +4,15 @@
 <!doctype html>
 <html>
 <head>
-<link href="/css/default/goods.css" rel="stylesheet"/>
-<link href="/css/default/shop.css" rel="stylesheet"/>
 <title>动态公告</title>
+<link rel="stylesheet"  href="/css/default/shop.css">
 </head>
 <body>
 <jsp:include page="header.jsp"/>
 <div class="shangJiaDongTai">
   <h3>商家公告</h3>
   <div class="notice">
-    <c:forEach items="${notice }" var="storeNotice"> ${storeNotice.content } </c:forEach>
+    <c:forEach items="${notice }" var="storeNotice"> ${storeNotice.content }<br /> </c:forEach>
   </div>
 </div>
 <script type="text/javascript">

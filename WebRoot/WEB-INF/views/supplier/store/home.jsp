@@ -4,77 +4,60 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="/css/default/goods.css">
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 <title>供应商首页</title>
 </head>
-
 <body>
 <div class="rightContainer fr">
 		<h4 class="ddtitle">供应商中心</h4>
-		<table cellpadding="0" cellspacing="0" class="user-form-table">
-				<tr>
-					<td><img src="${userInfo.avatar}" title="头像" alt="头像" width="80" height="80" /></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>店铺名称：</td>
-					<td>${store.storeName }
-					<a href="javascript:void(0)" onclick="refresh()" title="刷新店铺，提升店铺搜索排名" class="default-a">刷新店铺</a></td>
-				</tr>
-				<tr>
-					<td>欢迎您，${sessionUser.username }</td>
-					<td><c:if test="${userInfo.realUserAuthFlg==1 }">
-								<img src="img/sfz.jpg" title="已实名认证"/>
-							</c:if></td>
-				</tr>
-				<tr>
-					<td>今天： ${today } </td>
-					<td>上次登录：<fmt:formatDate value="${loginLog.loginDate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-				</tr>
-				<tr>
-					<td>可用金额：</td>
-					<td><span>￥${account.normalMoney }元</span></td>
-				</tr>
-				<tr>
-					<td>冻结金额：</td>
-					<td><span>￥${account.freezeMoney }</span></td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td><a href="user/recharge" class="default-a">充值</a></td>
-				</tr>
-				<tr>
-					<td colspan="2"><div class="contact">
-					<div>
-						<c:if test="${empty userAuth.phone}">
-							<img src="img/tel.png" title="电话未绑定" alt="电话未绑定" />
-						</c:if>
-						<c:if test="${!empty userAuth.phone}">
-							<img src="img/telhong.png" title="${userAuth.phone}" alt="电话已绑定" />
-						</c:if>
-
-						<c:if test="${empty userAuth.email}">
-							<img src="img/mail.png" title="邮箱未绑定" alt="邮箱未绑定" />
-						</c:if>
-						<c:if test="${!empty userAuth.email}">
-							<img src="img/mailhong.png" title="${userAuth.email}" alt="邮箱已绑定" />
-						</c:if>
-					</div>
-				</div></td>
-				</tr>
-			</table>
+		<div class="gy-userbar">
+			<div class="gy-baseinfo fl side-border">
+				<a href="javascript:void(0);" class="gy-photo fl mr10 ml10"><img src="${userInfo.avatar}" title="头像" alt="头像" width="65" height="65" /></a>
+				<span class="fwb color-red">${store.storeName }</span>
+				<p class="mt10">
+				<c:if test="${empty userAuth.email}">
+					<em class="gy-bind email-no" title="邮箱未绑定"></em>
+				</c:if>
+				<c:if test="${!empty userAuth.email}">
+					<em class="gy-bind email-yes" title="邮箱已绑定"></em>
+				</c:if>
+				<c:if test="${empty userAuth.phone}">
+					<em class="gy-bind phone-no" title="电话未绑定"></em>
+				</c:if>
+				<c:if test="${!empty userAuth.phone}">
+					<em class="gy-bind phone-yes" title="电话已绑定"></em>
+				</c:if>	
+				</p>
+			</div>
+			<div class="gy-baseinfo fl side-border">
+				<p class="clear"><a href="javascript:void(0)" onclick="refresh()" title="刷新店铺，提升店铺搜索排名" class="default-a">刷新店铺</a></p>
+			</div>
+			<div class="gy-baseinfo fl color-78">
+				<p>今天： ${today } </p>
+				<p>上次登录：<fmt:formatDate value="${loginLog.loginDate }" pattern="yyyy-MM-dd HH:mm:ss"/></p>
+			</div>
+			<div class="gy-userinfo">
+				<span>欢迎您，<strong class="color-red">${sessionUser.username }</strong></span>
+				<span>
+					<c:if test="${userInfo.realUserAuthFlg==1 }">
+						<img src="img/user/sfz.jpg" title="已实名认证"/>
+					</c:if>
+				</span>
+				<span class="ml20">可用金额：<strong class="color-red">${account.normalMoney }</strong> 元</span>
+				<span class="ml20">冻结金额：<strong class="color-red">${account.freezeMoney }</strong> 元</span>
+				<span class="ml20"><a href="user/recharge" class="chongzhi-input-btn">充值</a></span>
+			</div>
+		</div>
 			<h4 class="ddtitle">已卖出商品</h4>
 			<div class="dingdan">
-
-					
 					<p>
 						<a href="supplier/order?status=1">待付款<strong>(${statusCount.waitPay +0 })</strong></a>
 						<a href="supplier/order?status=2">待发货<strong>(${statusCount.waitSend +0 })</strong></a>
 						<a href="supplier/order?status=3">待收货<strong>(${statusCount.waitConfirm +0 })</strong></a>
 					</p>
-
-				</div>
-
-			<table cellpadding="0" cellspacing="0" class="user-list-table">
+			</div>
+			<table cellpadding="0" cellspacing="0" class="user-list-table txt-center">
 				<tr>
 					<th>商品</th>
 					<th>价格</th>
@@ -93,7 +76,7 @@
 					<td>共${o.styleNum }款，合计${o.quantity }件</td>
 					<td><fmt:formatDate value="${o.orderTime }" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>${o.statusLabel }</td>
-					<td><a class="default-a" href="supplier/order/detail?orderID=${o.ID}">查看详情</a></td>
+					<td><a class="edit-user-photo" href="supplier/order/detail?orderID=${o.ID}">查看详情</a></td>
 				</tr>
 				</c:forEach>
 			</table>
@@ -102,7 +85,7 @@
 function refresh(storeId){
 	ajaxSubmit("supplier/store/refresh", {}, function(msgBean){
 		if(msgBean.code==zhigu.code.success){
-			layer.msg(msgBean.msg);
+			layer.alert(msgBean.msg);
 		}else{
 			layer.alert(msgBean.msg);
 		}

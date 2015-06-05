@@ -243,7 +243,7 @@
 	<!-- 查询供应商列表 -->
 	<select id="querySupplieMemberByPage"  resultType="hashmap">
 		<![CDATA[
-	   	Select R.*,H.real_name,I.ApproveState companyStatus,J.status realStoreStatus From (
+	   	Select R.*,H.real_name,I.status companyStatus,J.status realStoreStatus From (
 			Select L.UserID,L.Username,L.IsInnerEmployee,L.Phone,L.EMail,IF(L.Phone IS NOT NULL AND L.Phone <> '',1,0) isPhoneBound,IF(L.EMail IS NOT NULL AND L.EMail <> '',1,0) isEmailBound,L.RegisterTime,L.LatestLoginTime,L.LoginCount,L.`Status`,IF(ISNULL(D.BuyCount),0,D.BuyCount) BuyCount,IF(ISNULL(E.DownLoadCount),0,E.DownLoadCount) DownLoadCount,IF(ISNULL(C.UploadCount),0,C.UploadCount) UploadCount,IF(ISNULL(C.PubCount),0,C.PubCount) PubCount,IF(ISNULL(C.PurchaseCount),0,C.PurchaseCount) PurchaseCount,IF(ISNULL(F.Normal_Money),0,F.Normal_Money) accountMoney,G.StaffID,IF(ISNULL(G.StaffID),0,1) IsAllot,C.StoreName,G.name staffName,L.RealUserAuthFlg From 
 				(Select A.UserID,A.Username,A.Phone,A.EMail,B.RegisterTime,B.IsInnerEmployee,A.LatestLoginTime,A.LoginCount,A.`Status`,B.RealUserAuthFlg From UserAuth A,UserInfo B Where A.UserID = B.UserID and B.UserType>1) L 
 			Left Join 
@@ -261,7 +261,7 @@
 				(Select A.UserID,A.StaffID,B.name From StaffMember A,Admin B Where A.Status = 0 And A.StaffID =B.ID  Group By UserID) G
 					On L.UserID = G.UserID
 		) R Left Join  real_user_auth H On R.UserID = H.user_id 
-			Left Join CompanyAuth I On R.UserID = I.UserID 
+			Left Join company_auth I On R.UserID = I.user_id 
 			Left Join real_store_auth J On R.UserID = J.user_id
 		]]>
 		Where R.Status = 0
@@ -272,7 +272,7 @@
 			And H.status = #{mc.realUserStatus} 
 		</if>
 		<if test="mc.companyStatus>0">
-			And I.approveState = #{mc.companyStatus} 
+			And I.status = #{mc.companyStatus} 
 		</if>
 		<if test="mc.realStoreStatus>0">
 			And J.status = #{mc.realStoreStatus} 

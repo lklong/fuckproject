@@ -1,27 +1,18 @@
 package com.zhigu.controllers.store;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zhigu.common.constant.BusinessArea;
-import com.zhigu.common.constant.Code;
-import com.zhigu.common.constant.Flg;
 import com.zhigu.common.constant.StoreType;
 import com.zhigu.common.constant.enumconst.CompanyType;
 import com.zhigu.common.constant.enumconst.GoodsStatus;
-import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.utils.DateUtil;
-import com.zhigu.common.utils.ServiceMsg;
 import com.zhigu.common.utils.StringUtil;
 import com.zhigu.model.CompanyAuth;
 import com.zhigu.model.Goods;
@@ -30,8 +21,9 @@ import com.zhigu.model.PageBean;
 import com.zhigu.model.RealStoreAuth;
 import com.zhigu.model.Store;
 import com.zhigu.model.UserInfo;
-import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.goods.IGoodsService;
+import com.zhigu.service.store.ICompanyAuthService;
+import com.zhigu.service.store.IRealStoreAuthService;
 import com.zhigu.service.store.IStoreService;
 import com.zhigu.service.user.IUserService;
 
@@ -51,6 +43,10 @@ public class StoreController {
 	private IUserService userService;
 	@Autowired
 	private IGoodsService goodsService;
+	@Autowired
+	private ICompanyAuthService companyAuthService;
+	@Autowired
+	private IRealStoreAuthService realStoreAuthService;
 
 	/**
 	 * 店铺
@@ -97,24 +93,22 @@ public class StoreController {
 	 * @param storeId
 	 * @return
 	 */
-	@RequestMapping("/info")
-	@ResponseBody
-	public MsgBean queryInfo(int storeId) {
-		Store store = storeService.queryStoreByID(storeId);
-		if (store == null) {
-			return new MsgBean(Code.FAIL, "未找到店铺！", MsgLevel.ERROR);
-		}
-		UserInfo storeMaster = userService.queryUserInfoById(store.getUserID());
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			BeanUtils.populate(store, map);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new MsgBean(Code.FAIL, "数据转换错误！", MsgLevel.ERROR);
-		}
-		map.put("isRealUserAuth", storeMaster.getRealUserAuthFlg() == Flg.ON);
-		return ServiceMsg.getMsgBean().setData(map);
-	}
+	// @RequestMapping("/info")
+	// @ResponseBody
+	// public MsgBean queryInfo(int storeId) {
+	// Store store = storeService.queryStoreByID(storeId);
+	// if (store == null) {
+	// return new MsgBean(Code.FAIL, "未找到店铺！", MsgLevel.ERROR);
+	// }
+	// Map<String, Object> map = new HashMap<String, Object>();
+	// try {
+	// BeanUtils.populate(store, map);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// return new MsgBean(Code.FAIL, "数据转换错误！", MsgLevel.ERROR);
+	// }
+	// return ServiceMsg.getMsgBean().setData(map);
+	// }
 
 	/**
 	 * 店铺
@@ -133,7 +127,7 @@ public class StoreController {
 		}
 		if (store == null) {
 			mv.addObject("msg", "很抱歉，未找到该店铺！");
-			mv.setViewName("/error/error-tips");
+			mv.setViewName("/tips/error-tips");
 			return mv;
 		}
 
@@ -141,7 +135,7 @@ public class StoreController {
 		page.setPageSize(50);
 
 		if (store.getSupplierType() == StoreType.SUPPLIER) {
-			gc.setSort(2);
+			gc.setSort(gc.getSort() == null ? 2 : gc.getSort());
 			mv.setViewName("store/shoe/index");
 		} else if (store.getSupplierType() == StoreType.SERVICE_DECORATE) {
 			mv.setViewName("store/service/finish");
@@ -149,7 +143,9 @@ public class StoreController {
 			mv.setViewName("store/service/photograph/home");
 		}
 		goodsService.queryGoodsList(gc, page);
+		UserInfo userInfo = userService.queryUserInfoById(store.getUserID());
 
+		mv.addObject("userInfo", userInfo);
 		mv.addObject("gc", gc);
 		mv.addObject("page", page);
 		mv.addObject("store", store);
@@ -178,12 +174,17 @@ public class StoreController {
 		mv.addObject("storeCommodityNumber", storeCommodityNumber);
 
 		// 企业认证
-		CompanyAuth companyAuth = storeService.queryCompanyAuthByStoreID(storeId);
+		CompanyAuth companyAuth = companyAuthService.queryCompanyAuthByStoreID(storeId);
 		if (companyAuth != null) {
 			mv.addObject("companyType", CompanyType.getNameByValue(companyAuth.getCompanyType()));
 		}
 		// 实体认证
-		RealStoreAuth realStoreAuth = storeService.queryRealStoreAuthByStoreID(storeId);
+		RealStoreAuth realStoreAuth = realStoreAuthService.queryRealStoreAuthByStoreID(storeId);
+
+		// 实名认证
+		UserInfo user = userService.queryUserInfoById(store.getUserID());
+		if (user != null)
+			mv.addObject("userInfo", user);
 
 		mv.addObject("openStoreDate", DateUtil.format(store.getOpenStoreDate(), DateUtil.yyyy_MM_dd));
 		mv.addObject("introduction", store.getIntroduction());
@@ -266,13 +267,13 @@ public class StoreController {
 		int storeCommodityNumber = page.getDatas() == null ? 0 : page.getDatas().size();
 		mv.addObject("storeCommodityNumber", storeCommodityNumber);
 		// 企业认证
-		CompanyAuth companyAuth = storeService.queryCompanyAuthByStoreID(storeID);
+		CompanyAuth companyAuth = companyAuthService.queryCompanyAuthByStoreID(storeID);
 		mv.addObject("companyAuth", companyAuth);
 		if (companyAuth != null) {
 			mv.addObject("companyType", CompanyType.getNameByValue(companyAuth.getCompanyType()));
 		}
 		// 实体认证
-		RealStoreAuth realStoreAuth = storeService.queryRealStoreAuthByStoreID(storeID);
+		RealStoreAuth realStoreAuth = realStoreAuthService.queryRealStoreAuthByStoreID(storeID);
 		mv.addObject("realStoreAuth", realStoreAuth);
 		mv.addObject("store", store);
 		return mv;
@@ -296,13 +297,13 @@ public class StoreController {
 				StringUtil.nullToBlank(store.getProvince()) + " " + StringUtil.nullToBlank(store.getCity()) + " " + StringUtil.nullToBlank(store.getDistrict()) + " "
 						+ StringUtil.nullToBlank(store.getStreet()) + " " + BusinessArea.getNameByValue(store.getBusinessArea()));
 		// 企业认证
-		CompanyAuth companyAuth = storeService.queryCompanyAuthByStoreID(storeID);
+		CompanyAuth companyAuth = companyAuthService.queryCompanyAuthByStoreID(storeID);
 		mv.addObject("companyAuth", companyAuth);
 		if (companyAuth != null) {
 			mv.addObject("companyType", CompanyType.getNameByValue(companyAuth.getCompanyType()));
 		}
 		// 实体认证
-		RealStoreAuth realStoreAuth = storeService.queryRealStoreAuthByStoreID(storeID);
+		RealStoreAuth realStoreAuth = realStoreAuthService.queryRealStoreAuthByStoreID(storeID);
 		mv.addObject("realStoreAuth", realStoreAuth);
 		mv.addObject("store", store);
 		return mv;

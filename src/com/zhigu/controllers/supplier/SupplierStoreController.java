@@ -21,17 +21,15 @@ import com.zhigu.common.constant.UserType;
 import com.zhigu.common.constant.enumconst.StoreApproveState;
 import com.zhigu.common.utils.DateUtil;
 import com.zhigu.model.Account;
-import com.zhigu.model.CompanyAuth;
 import com.zhigu.model.Order;
 import com.zhigu.model.OrderCondition;
 import com.zhigu.model.PageBean;
-import com.zhigu.model.RealStoreAuth;
 import com.zhigu.model.Store;
 import com.zhigu.model.UserAuth;
 import com.zhigu.model.UserInfo;
 import com.zhigu.model.dto.MsgBean;
+import com.zhigu.service.store.IStoreNoticeService;
 import com.zhigu.service.store.IStoreService;
-import com.zhigu.service.storeNotice.IStoreNoticeService;
 import com.zhigu.service.user.IAccountService;
 import com.zhigu.service.user.IOrderService;
 import com.zhigu.service.user.IUserService;
@@ -104,7 +102,6 @@ public class SupplierStoreController {
 	public MsgBean register(Store store) {
 		// 供应商注册保存
 		return storeService.registerStore(store);
-		// mv.setViewName("supplier/store/middle");
 	}
 
 	/**
@@ -221,7 +218,6 @@ public class SupplierStoreController {
 	public MsgBean updateBaseInfo(Store store) {
 		// 更新店铺信息
 		return storeService.updateStoreBase(store);
-		// mv.setViewName("redirect:/supplier/store/home");
 	}
 
 	/**
@@ -247,51 +243,9 @@ public class SupplierStoreController {
 	 */
 	@RequestMapping(value = "/updateDecorate")
 	public String updateDecorate(Store store) throws IOException {
-		// // 将用户上传的临时图片转存
-		// store.setLogoPath(UploadFileUtil.copyTempImg(store.getLogoPath(),
-		// StoreConst.IMAGE_LOGO_NAME));
-		// store.setSignagePath(UploadFileUtil.copyTempImg(store.getSignagePath(),
-		// "signage"));
 		store.setUserID(SessionHelper.getSessionUser().getUserID());
 		storeService.updateStoreDecorate(store);
 		return "redirect:/store/index?storeId=" + store.getID();
-	}
-
-	/**
-	 * 企业认证
-	 * 
-	 * @param mv
-	 * @return
-	 */
-	@RequestMapping("/companyAuth")
-	public ModelAndView companyAuth(ModelAndView mv) {
-		CompanyAuth companyAuth = storeService.queryCompanyAuthByUserID(SessionHelper.getSessionUser().getUserID());
-		mv.addObject("companyAuth", companyAuth);
-		mv.setViewName("supplier/store/companyAuth");
-		return mv;
-	}
-
-	/**
-	 * 实体认证
-	 * 
-	 * @param mv
-	 * @return
-	 */
-	@RequestMapping("/realStoreAuth")
-	public ModelAndView realStoreAuth(ModelAndView mv) {
-		RealStoreAuth realStoreAuth = storeService.queryRealStoreAuthByUserID(SessionHelper.getSessionUser().getUserID());
-		if (realStoreAuth == null) {
-			CompanyAuth company = storeService.queryCompanyAuthByUserID(SessionHelper.getSessionUser().getUserID());
-			if (company != null) {
-				realStoreAuth = new RealStoreAuth();
-				realStoreAuth.setRealStoreName(company.getCompanyName());
-				realStoreAuth.setMaster(company.getCorporation());
-				realStoreAuth.setApproveState(-1);
-			}
-		}
-		mv.addObject("realStoreAuth", realStoreAuth);
-		mv.setViewName("supplier/store/realStoreAuth");
-		return mv;
 	}
 
 	/**

@@ -1,6 +1,8 @@
 package com.zhigu.service.user.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -38,9 +40,7 @@ public class CartServiceImpl implements ICartService {
 		List<ShoppingCart> cartList = new ArrayList<ShoppingCart>();
 		List<ShoppingCartItem> cartItems = cartItemMapper.selectByUserId(userId, checked);
 
-		ShoppingCart cart = null;
 		for (ShoppingCartItem item : cartItems) {
-			// 查询店铺，商品，sku等信息
 			GoodsSku sku = goodsMapper.queryGoodsSkuByID(item.getSkuId());
 			if (sku == null) {
 				// 购物车中不存在的商品sku
@@ -53,10 +53,23 @@ public class CartServiceImpl implements ICartService {
 				cartItemMapper.deleteByPrimaryKey(item.getId());
 				continue;
 			}
-			if (cart == null || cart.getStoreId() != goods.getStoreId()) {
+			item.setGoods(goods);
+			item.setGoodsSku(sku);
+		}
+		// 按店铺进行排序，便于下面按店铺进行商品分类
+		Collections.sort(cartItems, new Comparator<ShoppingCartItem>() {
+			@Override
+			public int compare(ShoppingCartItem o1, ShoppingCartItem o2) {
+				return o1.getGoods().getStoreId() - o2.getGoods().getStoreId();
+			}
+		});
+		ShoppingCart cart = null;
+		for (ShoppingCartItem item : cartItems) {
+			if (cart == null || cart.getStoreId() != item.getGoods().getStoreId()) {
+				// 店铺发生变化，创建一个新的
 				cart = new ShoppingCart();
 				// 店铺信息
-				Store store = storeMapper.queryStoreByID(goods.getStoreId());
+				Store store = storeMapper.queryStoreByID(item.getGoods().getStoreId());
 				cart.setStoreId(store.getID());
 				cart.setAliWangWang(store.getAliWangWang());
 				cart.setItem(new ArrayList<ShoppingCartItem>());
@@ -65,9 +78,6 @@ public class CartServiceImpl implements ICartService {
 
 				cartList.add(cart);
 			}
-			item.setGoods(goods);
-			item.setGoodsSku(sku);
-
 			cart.getItem().add(item);
 		}
 		return cartList;

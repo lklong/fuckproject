@@ -13,12 +13,11 @@ import org.springframework.web.util.HtmlUtils;
 
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.SessionUser;
-import com.zhigu.common.constant.CRSAuditStatus;
 import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.Flg;
-import com.zhigu.common.constant.StoreConst;
 import com.zhigu.common.constant.StoreType;
 import com.zhigu.common.constant.SystemConstants;
+import com.zhigu.common.constant.enumconst.FavouriteType;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.constant.enumconst.StoreApproveState;
 import com.zhigu.common.exception.ServiceException;
@@ -26,19 +25,16 @@ import com.zhigu.common.utils.DateUtil;
 import com.zhigu.common.utils.StringUtil;
 import com.zhigu.common.utils.VerifyUtil;
 import com.zhigu.common.utils.sms.SMSUtil;
-import com.zhigu.mapper.CompanyAuthMapper;
 import com.zhigu.mapper.FavouriteMapper;
 import com.zhigu.mapper.GoodsAndStoreRefreshMapper;
 import com.zhigu.mapper.RealStoreAuthMapper;
 import com.zhigu.mapper.StoreMapper;
 import com.zhigu.mapper.UserMapper;
-import com.zhigu.model.CompanyAuth;
 import com.zhigu.model.Favourite;
 import com.zhigu.model.Goods;
 import com.zhigu.model.GoodsAndStroeRefresh;
 import com.zhigu.model.GoodsCondition;
 import com.zhigu.model.PageBean;
-import com.zhigu.model.RealStoreAuth;
 import com.zhigu.model.Store;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.goods.IGoodsService;
@@ -53,8 +49,6 @@ public class StoreServiceImpl implements IStoreService {
 	@Autowired
 	private FavouriteMapper favouriteDao;
 	@Autowired
-	private CompanyAuthMapper companyAuthDao;
-	@Autowired
 	private RealStoreAuthMapper realStoreAuthDao;
 	@Autowired
 	private UserMapper userDao;
@@ -64,6 +58,9 @@ public class StoreServiceImpl implements IStoreService {
 	private IUserService userService;
 	@Autowired
 	private GoodsAndStoreRefreshMapper goodsAndStoreRefreshMapper;
+
+	/** 用户刷新店铺次数限制 */
+	private static final int GOODS_REFRESH_NUM_LIMIT = 3;
 
 	@Override
 	public Store queryStoreByUserID(int userID) {
@@ -114,10 +111,6 @@ public class StoreServiceImpl implements IStoreService {
 			storeDao.addStore(store);
 		}
 
-		// 修改用户类型
-		// userDao.updateUserType(store.getUserID(), store.getSupplierType());
-		// 更新session用户信息
-		userService.refreshSessionUser();
 		return new MsgBean(Code.SUCCESS, "申请提交成功", MsgLevel.NORMAL);
 	}
 
@@ -245,18 +238,12 @@ public class StoreServiceImpl implements IStoreService {
 			return null;
 		SessionUser loginUser = SessionHelper.getSessionUser();
 		if (loginUser != null && store != null) {
-			Favourite favourite = new Favourite();
-			favourite.setUserID(loginUser.getUserID());
-			favourite.setFavouriteID(storeID);
-			favourite.setType(1);
-			favourite = favouriteDao.queryFavourite(favourite);
+			Favourite favourite = favouriteDao.queryFavourite(loginUser.getUserID(), storeID, FavouriteType.STORE.getValue());
 			store.setIsFavourite(favourite == null ? 0 : 1);
 		}
-		// if (store.getSupplierType() == UserType.SERVICE_DECORATE) {
 		GoodsCondition gc = new GoodsCondition();
 		gc.setStoreId(store.getID());
 		store.setCommodityOnSaleTotal(goodsService.queryStoreGoodsNum(gc));
-		// }
 		return store;
 	}
 
@@ -267,107 +254,8 @@ public class StoreServiceImpl implements IStoreService {
 	}
 
 	@Override
-	public CompanyAuth queryCompanyAuthByStoreID(int storeID) {
-		return companyAuthDao.queryCompanyAuthByStoreID(storeID);
-	}
-
-	@Override
-	public CompanyAuth queryCompanyAuthByUserID(int userID) {
-		return companyAuthDao.queryCompanyAuthByUserID(userID);
-	}
-
-	@Override
-	public RealStoreAuth queryRealStoreAuthByStoreID(int storeID) {
-		return realStoreAuthDao.queryRealStoreAuthByStoreID(storeID);
-	}
-
-	@Override
-	public RealStoreAuth queryRealStoreAuthByUserID(int userID) {
-		return realStoreAuthDao.queryRealStoreAuthByUserID(userID);
-	}
-
-	@Override
 	public void updateFullMemberFlg(int ID, int flg) {
 		storeDao.updateFullMemberFlg(ID, flg);
-	}
-
-	@Override
-	public int applyPayStoreCost(int userID) {
-		throw new ServiceException("无效业务");
-		// // 支付店铺保证金
-		// BigDecimal storeCost = new BigDecimal(StoreConst.STORE_DEPOSIT);
-		// Account account = accountDao.queryAccountByUserIDForUpdate(userID);
-		// BigDecimal originalMoney = new
-		// BigDecimal(account.getNormalMoney().toString());
-		// if (originalMoney.compareTo(storeCost) < 0) {
-		// return PayMsg.MONEY_INSUFFICIENT.getCode();
-		// }
-		// account.setNormalMoney(account.getNormalMoney().subtract(storeCost));
-		// account.setFreezeMoney(account.getFreezeMoney().add(storeCost));
-		// accountDao.updateAccount(account);
-		// // 添加交易明细
-		// AccountDetail detail = new AccountDetail();
-		// detail.setSno(Sequence.generateSeq(SequenceConstant.FLOW));
-		// detail.setUserId(userID);
-		// detail.setIncomeFlag(false);
-		// detail.setOriginalMoney(originalMoney);
-		// detail.setDealMoney(storeCost);
-		// detail.setDealMatter("资金冻结【诚信会员保证金】");
-		// detail.setDealTime(new Date());
-		// accountDao.saveAccountDetail(detail);
-		// // 修改店铺正式会员flg
-		// Store store = storeDao.queryStoreByUserID(userID);
-		// storeDao.updateFullMemberFlg(store.getID(), Flg.ON);
-		// // 修改店铺为诚信商家
-		// store.setIntegrityAuth(Flg.ON);
-		// storeDao.updateStore(store);
-		// return PayMsg.SUCCESS.getCode();
-	}
-
-	public void applyReturnStoreCost(int userID) {
-		throw new ServiceException("无效业务");
-		// BigDecimal storeCost = new BigDecimal(StoreConst.STORE_DEPOSIT);
-		// // 修改店铺正式会员flg
-		// Store store = storeDao.queryStoreByUserID(userID);
-		// storeDao.updateFullMemberFlg(store.getID(), Flg.OFF);
-		// // 修改店铺诚信商家
-		// store.setIntegrityAuth(Flg.OFF);
-		// storeDao.updateStore(store);
-		// // 退还店铺保证金
-		// Account account = accountDao.queryAccountByUserIDForUpdate(userID);
-		// BigDecimal originalMoney = new
-		// BigDecimal(account.getNormalMoney().toString());
-		// account.setNormalMoney(account.getNormalMoney().add(storeCost));
-		// account.setFreezeMoney(account.getFreezeMoney().subtract(storeCost));
-		// accountDao.updateAccount(account);
-		// // 添加交易明细
-		// AccountDetail detail = new AccountDetail();
-		// detail.setSno(Sequence.generateSeq(SequenceConstant.FLOW));
-		// detail.setUserId(userID);
-		// detail.setIncomeFlag(true);
-		// detail.setOriginalMoney(originalMoney);
-		// detail.setDealMoney(storeCost);
-		// detail.setDealMatter("资金解冻【诚信会员保证金】");
-		// detail.setDealTime(new Date());
-		// accountDao.saveAccountDetail(detail);
-	}
-
-	@Override
-	public boolean isUseable(int storeID) {
-		Store store = storeDao.queryStoreByID(storeID);
-		if (store.getFullMemberFlg() == Flg.ON) {
-			return true;
-		} else {
-			if (DateUtil.getDateBefore(new Date(), StoreConst.PROBATION_PERIOD).before(store.getOpenStoreDate())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public void updateLevelPoint(int ID, int addLevelPoint) {
-		storeDao.updateLevelPoint(ID, addLevelPoint);
 	}
 
 	@Override
@@ -403,8 +291,6 @@ public class StoreServiceImpl implements IStoreService {
 			}
 			SMSUtil.sendMsg("你申请的店铺（" + store.getStoreName() + ")审核已通过并开启，请重新登录后开始使用，欢迎来到智谷同城货源网。", store.getPhone());
 		}
-		// 更新session用户信息
-		// userService.refreshSessionUser();
 		return new MsgBean(Code.SUCCESS, "店铺审核状态修改成功", MsgLevel.NORMAL);
 		// }
 	}
@@ -421,163 +307,13 @@ public class StoreServiceImpl implements IStoreService {
 	}
 
 	@Override
-	public MsgBean saveCompanyAuth(CompanyAuth companyAuth, int storeID) {
-
-		int userID = SessionHelper.getSessionAdmin().getId();
-		Store store = storeDao.queryStoreByID(storeID);
-
-		if (store != null) {
-			CompanyAuth newCompanyAuth = new CompanyAuth();
-			newCompanyAuth.setStoreID(store.getID());
-			newCompanyAuth.setSalesman(userID);
-			newCompanyAuth.setCompanyName(companyAuth.getCompanyName());
-			newCompanyAuth.setCompanyType(companyAuth.getCompanyType());
-			newCompanyAuth.setRegNumber(companyAuth.getRegNumber());
-			newCompanyAuth.setCorporation(companyAuth.getCorporation());
-			newCompanyAuth.setBusinessTerm(companyAuth.getBusinessTerm());
-			newCompanyAuth.setCapital(companyAuth.getCapital());
-			newCompanyAuth.setBusinessScope(companyAuth.getBusinessScope());
-			newCompanyAuth.setRegProvince(companyAuth.getRegProvince());
-			newCompanyAuth.setRegCity(companyAuth.getRegCity());
-			newCompanyAuth.setRegDistrict(companyAuth.getRegDistrict());
-			newCompanyAuth.setRegStreet(companyAuth.getRegStreet());
-			newCompanyAuth.setCompanyProvince(companyAuth.getCompanyProvince());
-			newCompanyAuth.setCompanyCity(companyAuth.getCompanyCity());
-			newCompanyAuth.setCompanyDistrict(companyAuth.getCompanyDistrict());
-			newCompanyAuth.setCompanyStreet(companyAuth.getCompanyStreet());
-			newCompanyAuth.setApplyTime(new Date());
-			newCompanyAuth.setApproveState(CRSAuditStatus.STATUS_PENDING_REVIEW);
-			newCompanyAuth.setImage(companyAuth.getImage());
-
-			if (store.getCompanyAuth() == CRSAuditStatus.STATUS_NOPASS) {
-				companyAuthDao.updateCompanyAuth(newCompanyAuth, store.getID());
-
-				storeDao.updateCompanyAuthState(CRSAuditStatus.STATUS_PENDING_REVIEW, store.getID());
-
-				return new MsgBean(Code.SUCCESS, "修改成功！", MsgLevel.NORMAL);
-
-			} else {
-
-				companyAuthDao.addCompanyAuth(newCompanyAuth);
-
-				storeDao.updateCompanyAuthState(CRSAuditStatus.STATUS_PENDING_REVIEW, store.getID());
-
-				return new MsgBean(Code.SUCCESS, "保存成功！", MsgLevel.NORMAL);
-			}
-
-		} else {
-			return new MsgBean(Code.FAIL, "保存失败！", MsgLevel.ERROR);
-		}
-	}
-
-	@Override
-	public MsgBean saveRealStoreAuth(RealStoreAuth realStoreAuth, int storeID) {
-
-		int userID = SessionHelper.getSessionAdmin().getId();
-		Store store = storeDao.queryStoreByID(storeID);
-
-		if (store != null) {
-			RealStoreAuth newRealStoreAuth = new RealStoreAuth();
-			newRealStoreAuth.setStoreID(store.getID());
-			newRealStoreAuth.setRealStoreName(realStoreAuth.getRealStoreName());
-			newRealStoreAuth.setMaster(realStoreAuth.getMaster());
-			newRealStoreAuth.setPhone(realStoreAuth.getPhone());
-			newRealStoreAuth.setRealStoreAddress(realStoreAuth.getRealStoreAddress());
-			newRealStoreAuth.setApproveState(CRSAuditStatus.STATUS_PENDING_REVIEW);
-			newRealStoreAuth.setImage1(realStoreAuth.getImage1());
-			newRealStoreAuth.setImage2(realStoreAuth.getImage2());
-			newRealStoreAuth.setImage3(realStoreAuth.getImage3());
-			newRealStoreAuth.setSalesman(userID);
-			newRealStoreAuth.setApplyTime(new Date());
-
-			if (store.getRealStoreAuth() == CRSAuditStatus.STATUS_NOPASS) {
-				realStoreAuthDao.updateRealStoreAuth(newRealStoreAuth, store.getID());
-
-				storeDao.updateRealStoreAuthState(CRSAuditStatus.STATUS_PENDING_REVIEW, store.getID());
-
-				return new MsgBean(Code.SUCCESS, "修改成功！", MsgLevel.NORMAL);
-
-			} else {
-
-				realStoreAuthDao.addRealStoreAuth(newRealStoreAuth);
-
-				storeDao.updateRealStoreAuthState(CRSAuditStatus.STATUS_PENDING_REVIEW, store.getID());
-
-				return new MsgBean(Code.SUCCESS, "保存成功！", MsgLevel.NORMAL);
-			}
-		} else {
-			return new MsgBean(Code.FAIL, "保存失败！", MsgLevel.ERROR);
-		}
-	}
-
-	@Override
-	public MsgBean updateCompanyAuthStatus(String rejectReason, Integer status, Integer storeID) {
-
-		if (status == CRSAuditStatus.STATUS_NOPASS && rejectReason.length() == 0) {
-			return new MsgBean(Code.FAIL, "请输入审核不通过的原因！", MsgLevel.WARNING);
-		}
-
-		int userID = SessionHelper.getSessionAdmin().getId();
-
-		Store store = storeDao.queryStoreByID(storeID);
-
-		CompanyAuth companyAuth = companyAuthDao.queryCompanyAuthByStoreID(storeID);
-
-		companyAuth.setApproveState(status);
-		companyAuth.setApproveUser(userID);
-		companyAuth.setAuthTime(new Date());
-		companyAuth.setRejectReason(rejectReason);
-
-		int count = companyAuthDao.updateCompanyAuth(companyAuth, store.getID());
-		if (count != 1) {
-			return new MsgBean(Code.FAIL, "审核出错，请重试！", MsgLevel.ERROR);
-		}
-		storeDao.updateCompanyAuthState(status, store.getID());
-
-		return new MsgBean(Code.SUCCESS, "审核成功！", MsgLevel.NORMAL);
-	}
-
-	@Override
-	public MsgBean updateRealStoreAuthStatus(String rejectReason, Integer status, Integer storeID) {
-
-		if (status == CRSAuditStatus.STATUS_NOPASS && rejectReason.length() == 0) {
-			return new MsgBean(Code.FAIL, "请输入审核不通过的原因！", MsgLevel.WARNING);
-		}
-
-		int userID = SessionHelper.getSessionAdmin().getId();
-
-		Store store = storeDao.queryStoreByID(storeID);
-
-		RealStoreAuth realStoreAuth = realStoreAuthDao.queryRealStoreAuthByStoreID(storeID);
-
-		realStoreAuth.setApproveState(status);
-		realStoreAuth.setApproveUser(userID);
-		realStoreAuth.setRejectReason(rejectReason);
-		realStoreAuth.setAuthTime(new Date());
-
-		int count = realStoreAuthDao.updateRealStoreAuth(realStoreAuth, store.getID());
-		if (count != 1) {
-			return new MsgBean(Code.FAIL, "审核出错，请重试！", MsgLevel.ERROR);
-		}
-		storeDao.updateRealStoreAuthState(status, store.getID());
-		return new MsgBean(Code.SUCCESS, "审核成功！", MsgLevel.NORMAL);
-	}
-
-	@Override
-	public List queryStoreIDList() {
-
-		return storeDao.queryStoreIDList();
-	}
-
-	@Override
 	public MsgBean updateRefreshDate() {
 		SessionUser sessionUser = SessionHelper.getSessionUser();
 		int userId = sessionUser.getUserID();
 		Integer storeId = sessionUser.getStoreId();
 		Date now = new Date();
-		int refreshCount = 0;
-		refreshCount = goodsAndStoreRefreshMapper.countNum(DateUtil.format(now, DateUtil.yyyy_MM_dd), userId, null, storeId);
-		int usableRefreshNum = 3 - refreshCount;
+		int refreshCount = goodsAndStoreRefreshMapper.countNum(DateUtil.format(now, DateUtil.yyyy_MM_dd), userId, null, storeId);
+		int usableRefreshNum = GOODS_REFRESH_NUM_LIMIT - refreshCount;
 		if (usableRefreshNum <= 0) {
 			return new MsgBean(Code.FAIL, "已超过刷新次数限制", MsgLevel.ERROR);
 		} else {
@@ -589,7 +325,7 @@ public class StoreServiceImpl implements IStoreService {
 			goodsAndStoreRefreshMapper.insert(goodsRefresh);
 
 			storeDao.updateStoreRefreshDateByStoreId(now, storeId);
-			return new MsgBean(Code.SUCCESS, "刷新成功，今天还可刷新 " + usableRefreshNum + " 次", MsgLevel.NORMAL);
+			return new MsgBean(Code.SUCCESS, "刷新成功，今天还可刷新 " + (usableRefreshNum - 1) + " 次", MsgLevel.NORMAL);
 		}
 	}
 

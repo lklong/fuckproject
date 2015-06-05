@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zhigu.common.constant.Flg;
 import com.zhigu.mapper.LoginLogMapper;
 import com.zhigu.mapper.UserMapper;
 import com.zhigu.model.LoginLog;
@@ -20,7 +21,9 @@ public class LoginLogServiceImpl implements ILoginLogService {
 
 	@Override
 	public void addLoginLog(LoginLog loginLog) {
-		userDao.updateUserauthInfoLoginData(loginLog.getUserID());
+		if (loginLog.getLoginStatus() == Flg.ON) {
+			userDao.updateUserauthInfoLoginData(loginLog.getUserID());
+		}
 		loginLogDao.addLoginLog(loginLog);
 	}
 

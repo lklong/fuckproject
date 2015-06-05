@@ -58,9 +58,6 @@
 	<select id="queryOrdersByPage" parameterType="com.zhigu.model.PageBean" resultType="order">
 		Select A.*,E.StoreName,E.AliWangWang,E.QQ,E.UserID StoreUserID,F.Username,K.`Name` LogisticsName,K.Code LogisticsCode,E.supplierType
 			From Orders A 
-			<if test="paras.oc.staffID != null">
-				Left Join StaffMember S On A.UserID = S.UserID 
-			</if>
 			Left Join Logistics K On A.Logistics = K.ID,
 					OrderDetail B,
 					Store E,
@@ -77,9 +74,6 @@
 							</when>
 						</choose>
 					</if>
-				</if>
-				<if test="paras.oc.staffID != null">
-					And S.StaffID = #{paras.oc.staffID} 
 				</if>
 				<if test="paras.oc.orderNO != null and paras.oc.orderNO != ''">
 					And A.OrderNO = #{paras.oc.orderNO} 

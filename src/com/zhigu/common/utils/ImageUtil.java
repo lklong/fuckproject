@@ -18,7 +18,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
-import java.io.File;
+import java.awt.image.renderable.ParameterBlock;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +27,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
 import javax.swing.ImageIcon;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
@@ -55,14 +58,25 @@ public final class ImageUtil {
 		InputStream is = null;
 		OutputStream os = null;
 		try {
-			Image srcImg = ImageIO.read(new File(srcImgPath));
-			int fontSize = srcImg.getWidth(null) / 15;
-			BufferedImage buffImg = new BufferedImage(srcImg.getWidth(null), srcImg.getHeight(null), BufferedImage.TYPE_INT_RGB);
+			InputStream _is = new FileInputStream(srcImgPath);
+
+			ByteArraySeekableStreamWrap wrap = ByteArraySeekableStreamWrap.wrapInputStream(_is);
+
+			/**
+			 * 利用JAI读取源图片
+			 */
+			ParameterBlock pb = new ParameterBlock();
+			pb.add(wrap);
+			PlanarImage srcImg = JAI.create("Stream", pb);
+			srcImg = ImageColorConvertHelper.convertCMYK2RGB(srcImg);
+
+			int fontSize = srcImg.getWidth() / 15;
+			BufferedImage buffImg = new BufferedImage(srcImg.getWidth(), srcImg.getHeight(), BufferedImage.TYPE_INT_RGB);
 			// 得到画笔对象
 			Graphics2D g = buffImg.createGraphics();
 			// 设置对线段的锯齿状边缘处理
 			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			g.drawImage(srcImg.getScaledInstance(srcImg.getWidth(null), srcImg.getHeight(null), Image.SCALE_SMOOTH), 0, 0, null);
+			g.drawImage(srcImg.getAsBufferedImage(), 0, 0, null);
 			// 设置水印旋转
 			g.rotate(Math.toRadians(325), (double) buffImg.getWidth() / 2, (double) buffImg.getHeight() / 2);
 			// 设置颜色
@@ -72,8 +86,8 @@ public final class ImageUtil {
 			g.setFont(font);
 			float alpha = 0.5f;
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
-			int width = srcImg.getWidth(null);
-			int height = srcImg.getHeight(null);
+			int width = srcImg.getWidth();
+			int height = srcImg.getHeight();
 
 			/** 设置字体在图片中的位置 在这里是居中* */
 			FontRenderContext context = g.getFontRenderContext();
@@ -88,7 +102,7 @@ public final class ImageUtil {
 			g.dispose();
 			os = new FileOutputStream(srcImgPath);
 			// 生成图片
-			ImageIO.write(buffImg, FileUtil.getFileExtensionNameNotDot(srcImgPath), os);
+			ImageIO.write(buffImg, "jpg", os);
 		} finally {
 			try {
 				if (null != is)
@@ -105,15 +119,12 @@ public final class ImageUtil {
 		}
 	}
 
-	// public static void main(String[] args) {
-	// File f = new File("F:\\imgtest\\0");
-	// File[] fs = f.listFiles();
-	// for (File t : fs) {
-	// ImageUtil.ImageScale(t.getPath(), "F:\\imgtest\\1\\" + t.getName() +
-	// "0_285.jpg", 285, 2000);
-	//
+	// public static void main(String[] args) throws IOException {
+	// String srcImgPath = "F:/static/081/a.jpg";
+	// String log = "ffafasdfwertewtfffffff";
+	// pressText(srcImgPath, log);
 	// }
-	// }
+
 	/**
 	 * 创建小图片 V1.3使用，改写算法，图片清晰度更好
 	 * 

@@ -245,38 +245,11 @@
 	</delete>
 	
 	
-	<!-- 快速发布商品 -->
-	<insert id="saveShortcutGoods" parameterType="shortcutGoods" >
-		insert into shortcutgoods(userId,status,createDate,filePath,realFileName) values(#{userId},#{status},now(),#{filePath},#{realFileName})
-	</insert>
-	<select id="queryShortcutGoodsByID" parameterType="int" resultType="shortcutGoods">
-		select * from shortcutGoods where id = #{id}
-	</select>
-	<select id="queryshortcutgoods" parameterType="int" resultType="shortcutGoods">
-		select * from shortcutgoods where userId = #{userId}
-	</select>
-	<select id="queryshortcutgoodsByStatus"  resultType="shortcutGoods">
-		select * from shortcutgoods where userId = #{userId} and status = #{status}
-	</select>
-	<delete id="deleteShortcut" parameterType="int">
-		delete from shortcutgoods where id = #{id}
-	</delete>
-	
-	<select id="queryshortcutgoodsByManagerListByPage"  resultMap="shortcutGoodsResultMap">
-		select * from shortcutgoods order by status,createDate
-	</select>
-	
-	<resultMap type="shortcutGoods" id="shortcutGoodsResultMap">
-		<association property="user" column="userId" select="queryUser" ></association>
-	</resultMap>
 	<select id="queryUser" resultType="userAuth" parameterType="int">
 		select * from userauth where UserID = #{UserID}
 	</select>
 	
 	
-	<update id="changeShortcutGoodsStatus" parameterType="shortcutGoods">
-		update shortcutgoods set status = #{status},handlerId = #{handlerId},handleDate = #{handleDate} where id = #{id}
-	</update>
 	
 	<select id="queryGoodsNames" resultType="string" parameterType="string">
 		SELECT 

@@ -115,7 +115,7 @@ public class UploadController {
 		try {
 			// return zhiguFileService.saveImage(file, null, "1", 975,
 			// "goods_d");
-			return zhiguFileService.saveImage(file, specs, "1", null, 975, null);
+			return zhiguFileService.saveImage2(file, specs, "1", null, 975, null);
 		} catch (IOException e) {
 			return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
 		}
@@ -138,7 +138,7 @@ public class UploadController {
 	public MsgBean goodsMain(MultipartFile file) {
 		String[] specs = new String[] { "285x285", "160x160" };
 		try {
-			return zhiguFileService.saveImage(file, specs, "1", 430, 430 * 3, "goodsm_");
+			return zhiguFileService.saveImage2(file, specs, "1", 430, 430 * 3, "goodsm_");
 		} catch (IOException e) {
 			return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
 		}
@@ -174,7 +174,7 @@ public class UploadController {
 		UeditorImage ueditorImage = new UeditorImage();
 		try {
 
-			MsgBean msgBean = zhiguFileService.saveImage(upfile, null, "1", null, 975, "goodsd_");
+			MsgBean msgBean = zhiguFileService.saveImage2(upfile, null, "1", null, 975, "goodsd_");
 
 			if (msgBean.getCode() == Code.SUCCESS) {
 
@@ -185,12 +185,12 @@ public class UploadController {
 
 			} else {
 
-				ueditorImage.setState("ERROR");
+				ueditorImage.setState("ERROR:" + msgBean.getMsg());
 
 			}
 
 		} catch (IOException e) {
-			ueditorImage.setState("ERROR");
+			ueditorImage.setState("ERROR:上传失败，稍候再试");
 		}
 
 		return ueditorImage;
@@ -222,7 +222,7 @@ public class UploadController {
 	@ResponseBody
 	public MsgBean imgUserCard(@RequestParam("file") MultipartFile file) {
 		try {
-			return zhiguFileService.saveImage(file, null, "1", null, 800, "cd_");
+			return zhiguFileService.saveImage2(file, null, "1", null, 800, "cd_");
 		} catch (IOException e) {
 			return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
 		}
@@ -241,11 +241,10 @@ public class UploadController {
 	public void uploadLogoFile(@RequestParam("preImageFile") MultipartFile logoFile, String callBackFun, HttpServletResponse response) throws IOException {
 		JSONObject json = new JSONObject();
 		try {
-			MsgBean msg = zhiguFileService.saveImage(logoFile, null, "1", null, 800, null);
+			MsgBean msg = zhiguFileService.saveImage2(logoFile, null, "1", null, 800, null);
 			ZhiguFile zf = (ZhiguFile) msg.getData();
-			// 画水印
 			try {
-
+				// 画水印
 				ImageUtil.pressText(zf.getRealPath(), "www.zhiguw.com");
 			} catch (IOException e) {
 

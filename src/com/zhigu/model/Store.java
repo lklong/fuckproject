@@ -95,7 +95,7 @@ public class Store implements Serializable {
 
 	private String businessAreaLabel;
 	/** 作为临时查询使用 非数据库字段 实名认证标示 */
-	private Integer realUserAuthFlg;
+	private Integer realUserAuth;
 
 	public String getBusinessAreaLabel() {
 		return BusinessArea.getNameByValue(businessArea);
@@ -421,12 +421,12 @@ public class Store implements Serializable {
 		this.refreshDate = refreshDate;
 	}
 
-	public Integer getRealUserAuthFlg() {
-		return realUserAuthFlg;
+	public Integer getRealUserAuth() {
+		return realUserAuth;
 	}
 
-	public void setRealUserAuthFlg(Integer realUserAuthFlg) {
-		this.realUserAuthFlg = realUserAuthFlg;
+	public void setRealUserAuth(Integer realUserAuth) {
+		this.realUserAuth = realUserAuth;
 	}
 
 }

@@ -1,114 +1,106 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!DOCTYPE html >
-<html >
-<head><base href="${applicationScope.basePath}"/>
-
+<!DOCTYPE html>
+<html>
+<head>
 <title>收藏的店铺</title>
-<link href="css/wangshang.css" rel="stylesheet" type="text/css" />
-<link href="css/shoucang.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 </head>
-
 <body onload="haha()">
-    <div class="rightContainer">
-        <!--// 标题 //-->
-        <h3 class="rc_title">
-            我的收藏<a href="user/home">我的主页</a>
-        </h3>
-        <!--// 内容框 //-->
-        <div class="rc_body">
-            <!--// tab切换条 //-->
-            <div id="userCommTab" class="userCommTab">
-                <ul>
-                    <li><a href="/user/favourite/favouriteGoods" >收藏的商品</a></li>
-                    <li><a href="javascript:void(0);" class="uctSelected">收藏的店铺</a></li>
-                </ul>
-            </div>
-	<div id="userContents" class="userContents">
-		<div class="shouchangdian mt20 c333">
-			<div class="shouciantitle">
-				<p class="mr10">店铺信息</p>
-				<p>店铺动态</p>
-				<div class="clear"></div>
-			</div>
-			<c:if test="${empty stores }"><strong>暂无收藏！</strong></c:if>
-			<c:forEach var="store" items="${stores }">
-				<ul>
-					<li class="li1 pt10">
-
-						<div class="shoudianleft mr10 fl">
-							<p class="shoudianp1">
-								<a href="store/index?storeId=${store.ID}"><span class="mr10">${store.storeName }</span></a>
-							</p>
-							<p>
-								<span class="ver_ali">店铺信誉：</span><span class="levelPoint">${store.levelPoint }</span></p>
-							<p>
-								<span class="ver_ali">进货咨询：</span>
-								<span >
-									<c:if test="${!empty store.QQ}"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=${store.QQ }&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:${store.QQ}:52" alt="点这里给我发消息" /></a> </c:if>
-									<c:if test="${!empty store.aliWangWang}"><a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&uid=${store.aliWangWang}&site=cntaobao&s=2&charset=utf-8" ><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid=${store.aliWangWang }&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" /></a></c:if> 
-								</span>
-							</p>
-							<p class="fenxiang mt20">
-								<ul>
-									<li class="fl mr10">&nbsp;</li>
-									<li class="del fl"><a href="javascript:delfavouritestore(${store.ID });" >删除</a></li>
-								</ul>
-							</p>
-						</div>
-						<div class="shoudianright fl">
-							<p>
-								<h4 class="xinpintitle fl">新上商品</h4>
-								<a href="store/index?storeId=${store.ID}" class="chakanmore fr mr10">更多&gt;&gt;</a>
-								<div class="clear"></div>
-							</p>
-							<ul>
-								<c:forEach var = "goods" items="${store.goods }">
-									<li>
-										<div class="dongtaiimg">
-											<a href="goods/detail?goodsId=${goods.id}"><img src="${goods.image300}" title="${goods.name}"/></a>
-										</div>
-										<p class="dongtaimiao" >
-											<a href="goods/detail?goodsId=${goods.id}">${goods.name}</a>
-										</p>
-										<div class="dongtaiimgbot">
-											<strong class="fl">￥${goods.minPrice}-￥${goods.maxPrice}</strong>
-											 <jsp:useBean id= "nowDate" class = "java.util.Date" /> 
-											 <c:set var="someDate" value="${goods.time}"/>
-											  <c:set var= "interval" value= "${nowDate.time-goods.time.time}" />
-											<p class="fl c666"> <fmt:formatNumber value= "${interval/1000/60/60/24}" pattern= "#0" />天前</p>
-											<div class="clear"></div>
-										</div>
-									</li>
-								</c:forEach>
-							</ul>
-							<div class="clear"></div>
-						</div>
-						<div class="clear"></div>
-					</li>
-				</ul>
-			</c:forEach>
+	<div class="rightContainer fr">
+		<h4 class="ddtitle">收藏的店铺</h4>
+		<div class="fun-bar">
+			<ul class="fun-tabs">
+				<li><a href="/user/favourite/favouriteGoods">收藏的商品</a></li>
+				<li><a href="javascript:void(0);">收藏的店铺</a></li>
+			</ul>
 		</div>
-		
-		
+		<h4 class="ddtitle">全部店铺</h4>
+		<c:forEach var="store" items="${stores }">
+			<div class="fav-shop-list">
+				<c:if test="${empty stores }">
+					<strong>暂无收藏！</strong>
+				</c:if>
+				<div class="fav-shop-left fl">
+					<ul>
+						<li>
+							<h3>
+								<a href="store/index?storeId=${store.ID}"><span
+									class="color-red">${store.storeName }</span></a>
+							</h3>
+						</li>
+						<li><span class="color-gray">店铺信誉：</span><span
+							class="color-red">${store.levelPoint }</span></li>
+						<li><span class="color-gray">进货咨询：</span> <c:if
+								test="${!empty store.QQ}">
+								<a target="_blank"
+									href="http://wpa.qq.com/msgrd?v=3&uin=${store.QQ }&site=qq&menu=yes"><em
+									class="qq-kefu-icon"></em></a>
+							</c:if> <c:if test="${!empty store.aliWangWang}">
+								<a target="_blank"
+									href="http://amos.im.alisoft.com/msg.aw?v=2&uid=${store.aliWangWang}&site=cntaobao&s=2&charset=utf-8"><em
+									class="wangwang-kefu-icon"></em></a>
+							</c:if></li>
+					</ul>
+					<div>
+						<a href="javascript:delfavouritestore(${store.ID });" class="">删除</a>
+					</div>
+				</div>
+				<div class="fav-shop-right fr">
+					<div class="clear">
+						<span class="fr"><a href="store/index?storeId=${store.ID}"
+							class="color-gray">更多&gt;</a></span>
+					</div>
+					<ul class="clear">
+						<c:forEach var="goods" items="${store.goods }">
+							<li>
+								<p>
+									<a href="goods/detail?goodsId=${goods.id}" target="_blank"><img
+										height="115" width="115" src="${goods.image300}"
+										title="${goods.name}" /></a>
+								</p>
+								<p class="word-overflow">
+									<a href="goods/detail?goodsId=${goods.id}">${goods.name}</a>
+								</p>
+								<p>
+									<strong class="color-red">￥${goods.minPrice}-￥${goods.maxPrice}</strong>
+								</p>
+								<p>
+									<jsp:useBean id="nowDate" class="java.util.Date" />
+
+									<c:set var="someDate" value="${goods.time}" />
+									<c:set var="interval" value="${nowDate.time-goods.time.time}" />
+									<span class="color-gray"> <fmt:formatNumber
+											value="${interval/1000/60/60/24}" pattern="#0" /> 天前
+									</span>
+								</p>
+							</li>
+						</c:forEach>
+					</ul>
+				</div>
+			</div>
+		</c:forEach>
 	</div>
-	</div>
-	</div>
-	<div class="clear"></div>
-<script type="text/javascript">
-	function delfavouritestore(storeID){
-		confirmDialog("确定将该店铺从收藏中删除？",function(){
-			$.ajax({
-				url:"user/favourite/delFavouriteStore",
-				data:{"storeID":storeID},
-				success:function(){
-					f5();
-				}
+	<script type="text/javascript">
+		/* 删除收藏的店铺 */
+		function delfavouritestore(storeID) {
+			layer.confirm('确定将该店铺从收藏中删除？',{
+				btn: ['确定', '取消']
+			},function(){
+				$.ajax({
+					url : "user/favourite/delFavouriteStore",
+					data : {
+						"storeID" : storeID
+					},
+					success : function() {
+						f5();
+					}
+				});
+			},function(){
+				
 			});
-		});
-	}
-</script>
+		}
+	</script>
 </body>
 </html>

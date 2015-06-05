@@ -14,7 +14,7 @@
 <div class="center_body"> 
   <!--// 左侧导航 //-->
   <div class="left_hover fl">
-    <div class="left_bt"> <span>我的智谷</span>
+    <div class="left_bt"><a href="/user/home" class="color-white">我的智谷</a></span>
       <c:if test="${sessionScope.sessionUser.userType==1 }">
         <p><a href="supplier/store/registerInit" class="woyouhuoyuan"></a></p>
       </c:if>

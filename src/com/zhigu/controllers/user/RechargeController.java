@@ -55,9 +55,6 @@ public class RechargeController {
 		boolean hasPaypasswd = StringUtils.isNotBlank(accountService.queryAccountByUserID(SessionHelper.getSessionUser().getUserID()).getPayPasswd());
 		mv.addObject("hasPaypasswd", hasPaypasswd);
 		mv.addObject("auth", userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID()));
-		// List<Offlinetransferaccounts> offlinetransferaccounts =
-		// accountService.offlinetransferaccountsList(SessionHelper.getSessionUser().getUserID());
-		// mv.addObject("offlinetransferaccountsList", offlinetransferaccounts);
 		return mv;
 	}
 

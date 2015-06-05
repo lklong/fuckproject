@@ -6,6 +6,7 @@
 <title>供应商家</title>
 <link href="/css/default/list.css" rel="stylesheet">
 <link href="/css/default/shop.css" rel="stylesheet">
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 </head>
 <body>
 
@@ -40,7 +41,7 @@
               <li>
                 <c:if test="${s.companyAuth==1 }"><span class="rzspan qiye"></span></c:if>
                 <c:if test="${s.realStoreAuth==1 }"><span class="rzspan shidi"></span></c:if>
-                <c:if test="${s.realUserAuthFlg==1 }"><span class="rzspan shiming"></span></c:if>
+                <c:if test="${s.realUserAuth==1 }"><span class="rzspan shiming"></span></c:if>
               </li>
             </ul>
             <ul class="w200">
@@ -57,7 +58,7 @@
                     <div><a href="goods/detail?goodsId=${g.id }" target="_blank"><img src="${g.image300 }" height="175" width="175" /></a></div>
                     <br />
                     <p>价格：<font color="#ff4400"><strong>￥${g.minPrice }</strong></font></p>
-                    <p><a href="goods/detail?goodsId=${g.id }" target="_blank">${g.name }</a></p>
+                    <p style="height:45px;overflow: hidden;"><a href="goods/detail?goodsId=${g.id }" target="_blank">${g.name }</a></p>
                   </div>
                 </c:forEach>
               </div>
@@ -98,9 +99,9 @@ $(function(){
 	function refresh(storeId){
 		ajaxSubmit("supplier/goods/refresh", {"storeId":storeId}, function(msgBean){
 			if(msgBean.code==zhigu.code.success){
-				layer.msg(msgBean.msg, 1, reloadCurrentPage);
+				layer.alert(msgBean.msg,reloadCurrentPage);
 			}else{
-				layer.msg(msgBean.msg, 1, 3);
+				layer.alert(msgBean.msg);
 			}
 		});
 	}

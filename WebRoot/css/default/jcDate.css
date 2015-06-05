@@ -1,12 +1,12 @@
 @charset "utf-8";
 /* jcDateIco */
-.jcDateIco{background:#fff url(../img/default/dateIco.png) no-repeat right center; font-size:12px; color:#000}
+.jcDateIco{background:#fff url(../../img/default/dateIco.png) no-repeat right center; font-size:12px; color:#000}
 input.jcDate{cursor:pointer;font-size:12px;}
 #jcDate{background:#fefefe;width:161px;padding:10px;height:203px;position:absolute;z-index:1000;border:2px solid #2b84b5;color:#333;display:none;font-size:0;overflow:hidden;font-size:12px;}
 #jcDateTt{height:15px;line-height:15px;position:relative;margin-bottom:10px;font-size:12px;}
 #jcDateTt a{color:#333;display:block;position:absolute;top:0;width:15px;height:15px;cursor:pointer;font-size:12px;}
-#jcDateTt a#d_prev{background:url(../img/r_left.png) no-repeat center 3px;left:0;font-size:12px;}
-#jcDateTt a#d_next{background:url(../img/r_right.png) no-repeat center 3px;right:0;font-size:12px;}
+#jcDateTt a#d_prev{background:url(../../img/default/r_left.png) no-repeat center 3px;left:0;font-size:12px;}
+#jcDateTt a#d_next{background:url(../../img/default/r_right.png) no-repeat center 3px;right:0;font-size:12px;}
 #jcDateTt a#d_prev:hover{background-position:center -11px;background-color:#2b84b5;font-size:12px;}
 #jcDateTt a#d_next:hover{background-position:center -11px;background-color:#2b84b5;font-size:12px;}
 #jcDateTt div{position:absolute;top:0;left:15px;right:15px;bottom:0;color:#333;font-size:12px;font-weight:bold;text-align:center;font-size:12px;}

@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!-- 顶部功能条 -->
+
 <div class="header">
 	<div class="wrapper">
 		<div class="pos-drop fl">
@@ -228,12 +229,12 @@
 			</div>
 			<div class="search-keyword fl">
 				<ul>
-					<li><a href="#">连衣裙</a></li>
-					<li><a href="#">短裙</a></li>
-					<li><a href="#">衬衫</a></li>
-					<li><a href="#">T恤</a></li>
-					<li><a href="#">针织衫</a></li>
-					<li><a href="#">情侣装</a></li>
+					<li><a href="/goods/list?categoryId=21">连衣裙</a></li>
+					<li><a href="/goods/list?categoryId=22">T恤</a></li>
+					<li><a href="/goods/list?categoryId=23">衬衫</a></li>
+					<li><a href="/goods/list?categoryId=25">牛仔裤</a></li>
+					<li><a href="/goods/list?categoryId=8">凉鞋</a></li>
+					<li><a href="/goods/list?categoryId=5">低帮鞋</a></li>
 				</ul>
 			</div>
 		</div>
@@ -242,12 +243,28 @@
 <!-- 边栏-默认隐藏样式 -->
 <div id="slide-bar">
 	<ul>
-		<li><span>购&nbsp;物&nbsp;车&nbsp;</span><a href="/user/cart"><em
-				class="cart-icon"></em></a></li>
-		<li><span>我的订单</span><a href="/user/order"><em class="order-icon"></em></a></li>
-		<li><span>我的收藏</span><a href="/user/favourite/favouriteGoods"><em class="fav-icon"></em></a></li>
-		<li><span>联系客服</span><a href="#"><em class="contact-icon"></em></a></li>
-		<li><span>我的智谷</span><a href="/user/home"><em class="user-icon"></em></a></li>
+		<li><i id="cartCount" class="shopping-number">0</i><span>购物车</span><a
+			href="/user/cart"><em class="cart-icon"></em></a></li>
+		<li><i id="orderCount" class="shopping-number">0</i><span>我的订单</span><a
+			href="/user/order"><em class="order-icon"></em></a></li>
+		<li><span>我的收藏</span><a href="/user/favourite/favouriteGoods"><em
+				class="fav-icon"></em></a></li>
+		<li>
+			<div class="kefu-qq">
+				<p class="fl ml15">
+					<a class="color-white"
+						href="http://wpa.qq.com/msgrd?v=3&amp;uin=1469485284&amp;site=qq&amp;menu=yes"
+						target="_blank">客服1<i class="qq-kefu-icon"></i></a>
+				</p>
+				<p class="fl ml15">
+					<a class="color-white"
+						href="http://wpa.qq.com/msgrd?v=3&amp;uin=1469485284&amp;site=qq&amp;menu=yes"
+						target="_blank">客服2<i class="qq-kefu-icon"></i></a>
+				</p>
+			</div> <span>联系客服</span><a href="javascript:;"><em class="contact-icon"></em></a>
+		</li>
+		<li><span>我的智谷</span><a href="/user/home"><em
+				class="user-icon"></em></a></li>
 		<li><span>回到顶部</span><a href="javascript:;" id="goto-top"><em
 				class="gotop-icon"></em></a></li>
 	</ul>
@@ -284,5 +301,23 @@
 				$("#head_search_form").submit();
 			}
 		});
+		//刷新购物车和订单数量显示
+		zhigu.refreshCartNum();
 	});
+	zhigu.isLogin = "${not empty sessionScope.sessionUser}";
+	// 刷新右侧导航购物车数量
+	zhigu.refreshCartNum = function() {
+		if (zhigu.isLogin == 'true') {
+			ajaxSubmit("/index/count", {}, function(msgBean) {
+				if (msgBean.data.cartCount > 0) {
+					$("#cartCount").parent().show();
+					$("#cartCount").html(msgBean.data.cartCount);
+				}
+				if (msgBean.data.orderCount > 0) {
+					$("#orderCount").parent().show()
+					$("#orderCount").html(msgBean.data.orderCount);
+				}
+			});
+		}
+	}
 </script>

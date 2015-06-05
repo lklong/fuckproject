@@ -13,7 +13,6 @@ import com.zhigu.model.GoodsImage;
 import com.zhigu.model.GoodsProperty;
 import com.zhigu.model.GoodsSku;
 import com.zhigu.model.PageBean;
-import com.zhigu.model.Shortcutgoods;
 
 /**
  * 商品Dao
@@ -182,20 +181,6 @@ public interface GoodsMapper {
 	 * @return
 	 */
 	public List<DownloadHistory> queryDownloadHistoryByPage(@Param("page") PageBean<DownloadHistory> page, @Param("goodsId") int goodsId);
-
-	public int saveShortcutGoods(Shortcutgoods shortcutgoods);
-
-	public List<Shortcutgoods> queryshortcutgoods(int userId);
-
-	public List<Shortcutgoods> queryshortcutgoodsByStatus(@Param("userId") int userId, @Param("status") boolean status);
-
-	public boolean deleteShortcut(int id);
-
-	public List<Shortcutgoods> queryshortcutgoodsByManagerListByPage(PageBean<Shortcutgoods> page);
-
-	public boolean changeShortcutGoodsStatus(Shortcutgoods shortcutgoods);
-
-	public Shortcutgoods queryShortcutGoodsByID(int shortcutGoodsID);
 
 	/**
 	 * 正则查询商品名称集合

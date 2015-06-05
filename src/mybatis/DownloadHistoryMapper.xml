@@ -27,13 +27,13 @@
 		order by A.DownloadTime DESC
 	</select>
 	
-	<select id="queryDownloadhistory" parameterType="downloadHistory" resultType="downloadHistory">
+	<select id="queryDownloadHistory"  resultType="downloadHistory">
 		select * from DownloadHistory where DeleteFlg=0
-		<if test="userID>0">
-			and UserID=#{userID}
+		<if test="userId>0">
+			and UserID=#{userId}
 		</if>
-		<if test="goodsID>0">
-			and GoodsID=#{goodsID}
+		<if test="goodsId>0">
+			and GoodsID=#{goodsId}
 		</if>
 	</select>
 	
@@ -45,5 +45,6 @@
 			#{idItem}
 		</foreach>
 	</update>
+	
 </mapper>
 

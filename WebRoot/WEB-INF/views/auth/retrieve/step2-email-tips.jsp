@@ -1,19 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" pageEncoding="utf-8"%>
+<!DOCTYPE html>
 <html>
-<head><base href="${applicationScope.basePath}"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>密码找回</title>
-<link href="css/reg.css" rel="stylesheet" type="text/css" />
+<head>
+<title>密码找回 第二步</title>
+<link href="/css/default/user.css" rel="stylesheet"/>
 </head>
 <body>
 <!--** Step.2 身份验证 **-->
-<div class="userRegPanel disnonex">
+<div class="userRegPanel">
 	<div class="urpInside">
-    	<div class="urpTopBox"></div>
         <div class="urpMiddleBox">
-        	<div class="urpTopTip"><div id="step1"><img src="img/backpass_2.jpg" /></div></div>
+        	<div class="urpTopTip"><div id="step1"><h2>密码已发送到邮箱</h2></div></div>
             <div class="urpMiddleDiv">
             	<div class="urpAlert" style="width:410px;"><p class="okMsg"><em></em><font size="3" color="#000000">${msg }</font></p></div><br />
                 <br /><br /><br />
@@ -22,7 +19,6 @@
             	</div>
             </div>
         </div>
-        <div class="urpFootBox"></div>
     </div>
 </div>
 </body>

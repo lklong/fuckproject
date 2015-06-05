@@ -56,7 +56,7 @@
      	</tr>
      	<tr>
      		<td>&nbsp;</td>
-     		<td><input type="button" value="充值" class="input-button" /><!-- <input type="button" value="提现" /> --></td>
+     		<td><a href="user/recharge"><input type="button" value="充值" class="chongzhi-input-btn" /></a></td>
      	</tr>
      </table>
     </div>

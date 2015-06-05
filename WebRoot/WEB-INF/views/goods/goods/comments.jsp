@@ -15,39 +15,39 @@
 </form>
 <!--** 商品评论框 **-->
 <div id="evaluateList">
-<c:forEach items="${page.datas}" var="comment">
-  <div class="pingLunCommandBox type_${comment.type}">
-    <div class="commandLeft">
-      <p><img src="${comment.avatar}" width="80" height="80" /></p>
-      <p>${comment.userName}</p>
-    </div>
-    <div class="commandRight">
-      <div>
-        <h3> <span>
-          <fmt:formatDate value="${comment.addTime }" pattern="yyyy-MM-dd HH:mm:ss"/>
-          发布“评价”</span>
-          <c:forEach var="i" begin="1" end="${comment.score}"> <img src="img/default/star2.png" /> </c:forEach>
-          &nbsp;&nbsp;${comment.score}星 </h3>
-        ${comment.content}
-        <c:if test="${canReply==1&&comment.merchantReply==null}">
-          <input type="button" value="回复" class="reply reply_btn" >
-        </c:if>
+  <c:forEach items="${page.datas}" var="comment">
+    <div class="pingLunCommandBox type_${comment.type}">
+      <div class="commandLeft">
+        <p><img src="${comment.avatar}" width="80" height="80" /></p>
+        <p>${comment.userName}</p>
       </div>
-      <c:if test="${comment.merchantReply!=null}">
-        <p>回复：${comment.merchantReply}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回复时间：
-          <fmt:formatDate value="${comment.replyTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+      <div class="commandRight">
+        <div>
+          <h3> <span>
+            <fmt:formatDate value="${comment.addTime }" pattern="yyyy-MM-dd HH:mm:ss"/>
+            发布“评价”</span>
+            <c:forEach var="i" begin="1" end="${comment.score}"> <img src="img/default/star2.png" /> </c:forEach>
+            &nbsp;&nbsp;${comment.score}星 </h3>
+          ${comment.content}
+          <c:if test="${canReply==1&&comment.merchantReply==null}">
+            <input type="button" value="回复" class="reply reply_btn" >
+          </c:if>
+        </div>
+        <c:if test="${comment.merchantReply!=null}">
+          <p>回复：${comment.merchantReply}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回复时间：
+            <fmt:formatDate value="${comment.replyTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+          </p>
+        </c:if>
+        <p class="reply_p hidden">
+          <textarea class="reply_text" data-id="${comment.id}" placeholder="200个字符内"></textarea>
+          <input type="button" value="确认回复" class="reply confirm_reply_btn" style="margin-top:36px" >
         </p>
-      </c:if>
-      <p class="reply_p disnone">
-        <textarea class="reply_text" data-id="${comment.id}" placeholder="200个字符内"></textarea>
-        <input type="button" value="确认回复" class="reply confirm_reply_btn" style="margin-top:36px" >
-      </p>
+      </div>
     </div>
-  </div>
-</c:forEach>
+  </c:forEach>
 </div>
-<!--** 提交评论框**-->
-<div class="commandSubmitBox disnone">
+<!--** 提交评论框**--> 
+<!-- <div class="commandSubmitBox disnone">
   <div>评分：<img src="img/default/star2.png" /><img src="img/default/star2.png" /><img src="img/default/star2.png" /><img src="img/default/star2.png" /><img src="img/default/star2.png" />&nbsp;&nbsp;5星</div>
   <div>用户名：西西</div>
   <div>
@@ -57,7 +57,7 @@
     <input type="button" class="input-button" value="提交评论"/>
   </div>
 </div>
-<div class="clear"></div>
+<div class="clear"></div> -->
 <div class="ddpage fr mt20">
   <jsp:include page="../../include/page.jsp">
   <jsp:param name="request" value="ajax"/>

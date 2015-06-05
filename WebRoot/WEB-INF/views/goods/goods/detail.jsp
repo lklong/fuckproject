@@ -7,9 +7,11 @@
 <head>
 <title>商品详情</title>
 <link href="/css/default/goods.css" rel="stylesheet"/>
+
 <script src="js/mz-packed.js"></script>
 <script src="/js/jquery.lazyload.js"></script>
 <script src="/js/3rdparty/layer1.9/layer.js"></script>
+
 <script type="text/javascript">
 	$(function(){
 		$("img.lazy","#description").lazyload({
@@ -17,7 +19,6 @@
 			effect : "fadeIn",
 			threshold : 200,
 		});
-
 	});
 </script>
 </head>
@@ -46,7 +47,7 @@
           <div id="J_isku"  class="tb-key tb-key-sku "> 
             <!-- sku组合 -->
             <div class="tb-skin">
-              <c:forEach items="${skuMap}" var="sku">
+              <c:forEach items="${skuMap}" var="sku" varStatus="index">
                 <dl class="J_Prop J_TMySizeProp tb-size tb-prop tb-clearfix J_Prop_measurement">
                   <dt class="tb-property-type dt-sku-prop-name">${sku.key}</dt>
                   <dd>
@@ -70,15 +71,14 @@
               </dl>
               <dl id="J_DlChoice" class="tb-choice tb-clearfix">
                 <dt>请选择：</dt>
-                <dd> <em>"尺码"</em><em>"颜色分类"</em></dd>
+                <dd id="sku_tips_dd"> <em>"尺码"</em><em>"颜色分类"</em></dd>
               </dl>
             </div>
             <div class="gitbButns">
               <c:choose>
                 <c:when test="${goods.status == 1}"> 
-                  <!-- <a href="javascript:void(0)" onclick="openOrderDialog()"><img src="img/jinhuo_btn.jpg" /></a> --> 
-                  <a href="javascript:void(0)" id="addCartNew"><img src="img/default/jinhuo_btn.jpg" /></a> <a onclick="downloadDatas(${goods.id});" id="downloadDatas" target="_blank"><img src="img/default/xiazai_btn.jpg" /></a> 
-                  <!-- 				                <a href="#"><img src="img/fabutaobao.jpg" /></a> --> 
+                  <a href="javascript:void(0)" id="addCartNew"><img src="img/default/jinhuo_btn.jpg" /></a> 
+                  <a onclick="downloadDatas(${goods.id});" id="downloadDatas" target="_blank"><img src="img/default/xiazai_btn.jpg" /></a> 
                   <a href="/user/tb/auth?goodsId=${goods.id}"><img src="img/default/fabutaobao.jpg" /></a>
                   <%-- <a href="/alibaba/auth?goodsId=${goods.id}"> 发布到阿里</a> --%>
                 </c:when>
@@ -110,12 +110,7 @@
         <!--** 切换条 **-->
         <div class="infoSelectBar">
           <ul class="infoSelectList">
-            <!-- <li onclick="selTab(this,'baseInfo')" class="infoSelectedLi">商品详情</li>
-                	<li onclick="selTab(this,'downDataList')">下载详情</li> --> 
-            <!--<li onclick="selTab(this,'downDataList'),loadDownloadHistory()">下载详情</li>--> 
-            <!--   <li onclick="selTab(this,'pingLunBox'),loadEavaluate()">商品评论</li> -->
             <li class="infoSelectedLi" data-container="baseInfo">商品详情</li>
-            <!-- 	<li class="baseInfo infoSelectedLi" data-path="/goods/ajax/comments" data-container="pingLunBox">商品详情</li> -->
             <li class="download remote" data-path="/goods/ajax/download/history" data-container="downDataList">下载详情</li>
             <li class="comment remote" data-path="/goods/ajax/comments" data-container="pingLunBox">商品评论</li>
             <!--<li style="cursor: pointer;" onclick="selTab(this,'tousuFankui')">投诉反馈</li>-->
@@ -268,6 +263,7 @@ $(function(){
 			
 			// 判断结果
 			var bool = sale_prop_len === selected_span_len;
+			
 		   
 			var goodsId = ${goods.id};
 			var json = {
@@ -296,7 +292,7 @@ $(function(){
 							sku_amount_0.push(sku);
 						}
 					}
-				
+					
 					// 5. 提取当前商品的sku
 					if(bool){
 						var idStr_arr = new Array();
@@ -309,16 +305,24 @@ $(function(){
 								}
 							}
 						}
-						// TODO 多于2个销售属性的商品处理
-						var _skuStr = idStr_arr[0];
 						
-						for(var i = 0 ; i<len ; i++){
-							var sku = skus[i];
-							var propStr = sku.propertyStr;
-							if(propStr.indexOf(skuStr)!=-1&&propStr.indexOf(_skuStr)!=-1){
-								_sku = sku;
+						// 处理只有一个销售属性的商品
+						if(sale_prop_len === 1){
+							_sku = skus[0];
+						}else if(sale_prop_len === 2){
+							var _skuStr = idStr_arr[0];
+							
+							for(var i = 0 ; i<len ; i++){
+								var sku = skus[i];
+								var propStr = sku.propertyStr;
+								if(propStr.indexOf(skuStr)!=-1&&propStr.indexOf(_skuStr)!=-1){
+									_sku = sku;
+								}
 							}
+						}else if(sale_prop_len === 3){
+							// TODO 多于2个销售属性的商品处理 ,若多余2个将提出此方法
 						}
+						
 					}
 					
 					// 6. 处理库存为0商品
@@ -421,6 +425,7 @@ $(function(){
 				    	window.location.href = '/user/cart';
 				    },cancel: function(index){
 				    	layer.close(index);
+				    	zhigu.refreshCartNum();
 				    }
 				});
 			}else{
@@ -453,6 +458,7 @@ $(function(){
 		});			
 	});
 
+	// 大图
 	$(".gitbThumbImgList li a img").mouseover(function(){
 		var img_300 = $(this).attr("src");
 		var img =  img_300.replace("_160x160.jpg","");
@@ -557,8 +563,9 @@ function downloadDatas(goodsID){
 			dataType:"json",
 			async:false,
 			success:function(msgBean){
+				console.log(msgBean);
 				if(msgBean.code == zhigu.code.success){
-					$("#downloadDatas").prop("href","http://www.zhiguw.com"+/^\//.test(json.datasPath)?json.datasPath:("/"+msgBean.data));
+					$("#downloadDatas").prop("href","/"+msgBean.data);
 					return;
 				}else{
 					layer.alert(msgBean.msg);

@@ -130,7 +130,7 @@ public class WithdrawServiceImpl implements IWithdrawService {
 		if (withdraw.getStatus() != WithdrawStatus.ACCEPT.getValue()) {
 			return new MsgBean(Code.FAIL, "失败，该提现申请状态错误", MsgLevel.ERROR);
 		}
-		if (withdraw.getHandlerAdminId() != SessionHelper.getSessionAdmin().getId()) {
+		if (withdraw.getHandlerAdminId() != SessionHelper.getSessionAdmin().getId().intValue()) {
 			return new MsgBean(Code.FAIL, "失败，你不是该提现申请的受理人", MsgLevel.ERROR);
 		}
 
@@ -192,7 +192,7 @@ public class WithdrawServiceImpl implements IWithdrawService {
 		if (withdraw.getStatus() != WithdrawStatus.ACCEPT.getValue() && withdraw.getStatus() != WithdrawStatus.APPLY_FOR.getValue()) {
 			return new MsgBean(Code.FAIL, "失败，该提现申请状态错误", MsgLevel.ERROR);
 		}
-		if (withdraw.getStatus() == WithdrawStatus.ACCEPT.getValue() && withdraw.getHandlerAdminId() != SessionHelper.getSessionAdmin().getId()) {
+		if (withdraw.getStatus() == WithdrawStatus.ACCEPT.getValue() && withdraw.getHandlerAdminId() != SessionHelper.getSessionAdmin().getId().intValue()) {
 			return new MsgBean(Code.FAIL, "失败，你不是该提现申请的受理人", MsgLevel.ERROR);
 		}
 		withdraw.setHandlerAdminId(SessionHelper.getSessionAdmin().getId());

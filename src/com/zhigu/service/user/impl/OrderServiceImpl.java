@@ -96,7 +96,6 @@ public class OrderServiceImpl implements IOrderService {
 
 	@Override
 	public MsgBean saveOrders(int userId, Integer addressId, List<Order> pOrders) {
-
 		// 收货地址
 		Address address = null;
 		if (addressId != null) {
@@ -112,6 +111,9 @@ public class OrderServiceImpl implements IOrderService {
 		addrsb.append(address.getProvince()).append(address.getCity()).append(address.getDistrict()).append(address.getStreet());
 		// 取出购物车中数据，并按店铺排序，便于订单生成
 		List<ShoppingCartItem> cartItems = cartMapper.selectByUserId(userId, true);
+		if (cartItems.isEmpty()) {
+			return new MsgBean(Code.FAIL, "购物车中无选中商品", MsgLevel.ERROR);
+		}
 		for (ShoppingCartItem item : cartItems) {
 			GoodsSku sku = goodsDao.queryGoodsSkuByID(item.getSkuId());
 			Goods goods = goodsDao.queryGoodsById(sku.getGoodsId());
@@ -409,7 +411,7 @@ public class OrderServiceImpl implements IOrderService {
 		systemAcc.setMoney(orderTotalPayMoney);
 		systemAcc.setIncomeFlag(true);
 		systemAcc.setUserId(payUserId);
-		systemAcc.setMatter(DealType.ORDER_DEAL_PAY.getName() + "【" + orderNo + "】");
+		systemAcc.setMatter(DealType.ORDER_DEAL_PAY.getName() + "【" + pOrderNos.toString() + "】");
 		int systemAccRow = systemAccountMapper.insert(systemAcc);
 		if (systemAccRow != 1) {
 			throw new ServiceException(SystemConstants.DB_UPDATE_FAILED_MSG);

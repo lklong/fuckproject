@@ -10,13 +10,14 @@ import com.zhigu.model.PageBean;
 import com.zhigu.model.Store;
 
 /**
- * 用户收藏信息数据库接口
+ * 用户收藏信息数据库接口?
  * 
  * @author HeSiMin
- * @date 2014年7月29日
+ * @date 2014�?�?9�?
  *
  */
 public interface FavouriteMapper {
+
 	/**
 	 * 添加收藏
 	 * 
@@ -32,12 +33,17 @@ public interface FavouriteMapper {
 	public void delFavourite(@Param("userID") Integer userID, @Param("favouriteIDs") int[] idItem, @Param("type") int type);
 
 	/**
-	 * 查询收藏（用户ID,收藏ID,类型）
+	 * 根据条件查询收藏
 	 * 
-	 * @param favourite
+	 * @param userID
+	 *            用户ID
+	 * @param favouriteID
+	 *            商品或店铺ID
+	 * @param type
+	 *            商品或店铺
 	 * @return
 	 */
-	public Favourite queryFavourite(Favourite favourite);
+	public Favourite queryFavourite(@Param("userID") Integer userID, @Param("favouriteID") Integer favouriteID, @Param("type") Integer type);
 
 	/**
 	 * 查询收藏商品
@@ -45,14 +51,14 @@ public interface FavouriteMapper {
 	 * @param favourite
 	 * @return
 	 */
-	public List<Goods> queryFavouriteGoodsByUserID(Favourite favourite);
+	public List<Goods> queryFavouriteGoodsByUserID(@Param("userID") Integer userID);
 
 	/**
 	 * 查询用户收藏店铺
 	 * 
 	 * @param favourite
 	 */
-	public List<Store> queryFavouriteStoreByUserID(Favourite favourite);
+	public List<Store> queryFavouriteStoreByUserID(Integer userID);
 
 	/**
 	 * 分页查询收藏商品

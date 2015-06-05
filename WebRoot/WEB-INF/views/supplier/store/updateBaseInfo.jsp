@@ -9,6 +9,8 @@
 <script type="text/javascript" src="js/validate/jquery.validate.js"></script>
 <script type="text/javascript" src="js/validate/message_cn.js"></script>
 <script type="text/javascript" src="js/validate/additional-methods.js"></script>
+
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 </head>
 <body>
 <div class="rightContainer fr">
@@ -88,7 +90,7 @@
 				function() {
 					var msg = "${msg}";
 		    		if(msg != "")
-		    			dialog(msg);
+		    			layer.alert(msg);
 		    		
 					$("#infoForm").validate({
 						rules : {
@@ -129,7 +131,7 @@
 							var params = zhigu.cmn.formToObj("#infoForm");
 							$.post("/supplier/store/updateBaseInfo",params,function(msgBean){
 								if(msgBean.code == zhigu.code.success){
-									layer.msg(msgBean.msg,2,function(){
+									layer.msg(msgBean.msg,function(){
 										window.location.href="/supplier/store/baseInfoInit";
 									});
 								}else{

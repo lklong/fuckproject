@@ -10,6 +10,7 @@
 <script type="text/javascript" language="javascript" src="js/3rdparty/zTree/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/3rdparty/easyui/jquery.easyui.min.js_bak"></script>
 <script type="text/javascript" src="../js/admin/store.js"></script>
+<script type="text/javascript" src="js/jquery-form.js"></script>
 <title></title>
 </head>
 <body>

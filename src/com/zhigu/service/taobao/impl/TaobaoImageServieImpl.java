@@ -280,7 +280,7 @@ public class TaobaoImageServieImpl implements ITaobaoImageService {
 
 		} catch (Exception e) {
 
-			LOGGER.error("商品描述图片处理错误就：图片地址是" + url + "," + e.getMessage());
+			LOGGER.error("商品描述图片处理错误：图片地址是" + url + "," + e.getMessage());
 
 		}
 

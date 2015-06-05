@@ -1,6 +1,5 @@
 package com.zhigu.service.user.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +26,12 @@ public class FavouriteServiceImpl implements IFavouriteService {
 
 	@Override
 	public void addFavouriteCommodity(int userID, int commodityID) {
-		Favourite f = this.queryFavourite(userID, commodityID, FavouriteType.GOODS.getValue());
-		if (f != null)
+		Favourite oldFavourite = favouriteDao.queryFavourite(userID, commodityID, FavouriteType.GOODS.getValue());
+		if (oldFavourite != null)
 			return;
 		Favourite favourite = new Favourite();
 		favourite.setUserID(userID);
-		favourite.setFavouriteID(commodityID);
+		favourite.setStoreOrGoodsId(commodityID);
 		favourite.setType(FavouriteType.GOODS.getValue());
 		favouriteDao.addFavourite(favourite);
 	}
@@ -44,25 +43,19 @@ public class FavouriteServiceImpl implements IFavouriteService {
 			return;
 		Favourite favourite = new Favourite();
 		favourite.setUserID(userID);
-		favourite.setFavouriteID(storeID);
+		favourite.setStoreOrGoodsId(storeID);
 		favourite.setType(FavouriteType.STORE.getValue());
-		favourite.setAddDate(new Date());
 		favouriteDao.addFavourite(favourite);
 	}
 
 	@Override
 	public List<Goods> queryFavouriteGoods(int userID) {
-		Favourite favourite = new Favourite();
-		favourite.setUserID(userID);
-		return favouriteDao.queryFavouriteGoodsByUserID(favourite);
+		return favouriteDao.queryFavouriteGoodsByUserID(userID);
 	}
 
 	@Override
 	public List<Store> queryFavouriteStore(int userID) {
-		Favourite favourite = new Favourite();
-		favourite.setUserID(userID);
-		favourite.setType(FavouriteType.STORE.getValue());
-		return favouriteDao.queryFavouriteStoreByUserID(favourite);
+		return favouriteDao.queryFavouriteStoreByUserID(userID);
 	}
 
 	@Override
@@ -85,11 +78,7 @@ public class FavouriteServiceImpl implements IFavouriteService {
 
 	@Override
 	public Favourite queryFavourite(int userID, int favouriteID, int type) {
-		Favourite favourite = new Favourite();
-		favourite.setUserID(userID);
-		favourite.setFavouriteID(favouriteID);
-		favourite.setType(type);
-		return favouriteDao.queryFavourite(favourite);
+		return favouriteDao.queryFavourite(userID, favouriteID, type);
 	}
 
 	@Override
@@ -108,10 +97,7 @@ public class FavouriteServiceImpl implements IFavouriteService {
 
 	@Override
 	public List<Store> queryBoughtStore(int userID) {
-		Favourite favourite = new Favourite();
-		favourite.setUserID(userID);
-		favourite.setType(FavouriteType.BOUGHT_STORE.getValue());
-		return favouriteDao.queryFavouriteStoreByUserID(favourite);
+		return favouriteDao.queryFavouriteStoreByUserID(userID);
 	}
 
 	@Override
@@ -121,7 +107,7 @@ public class FavouriteServiceImpl implements IFavouriteService {
 			return;
 		Favourite favourite = new Favourite();
 		favourite.setUserID(userID);
-		favourite.setFavouriteID(storeID);
+		favourite.setStoreOrGoodsId(storeID);
 		favourite.setType(FavouriteType.BOUGHT_STORE.getValue());
 		favouriteDao.addFavourite(favourite);
 	}

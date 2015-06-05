@@ -290,7 +290,7 @@ zhigu.goods.editLoadGoods = function(goodsId) {
 		for (var i = 0; i < properties.length; i++) {
 			var p = properties[i];
 			$("#attributes select[pid='" + p.propertyId + "']").val(p.propertyValueId);
-			$("#attributes .only_input").val(p.propertyValueName);
+			$("#attributes .only_input_"+p.propertyId).val(p.propertyValueName);
 			$("#attributes :checkbox[pid='" + p.propertyId + "'][vid='" + p.propertyValueId + "']").attr("checked", "checked");
 		}
 		//设置规格选择

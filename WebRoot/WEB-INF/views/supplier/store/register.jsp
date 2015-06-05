@@ -10,6 +10,8 @@
 <script type="text/javascript" src="/js/validate/message_cn.js?v=20150505"></script>
 <script type="text/javascript" src="/js/validate/additional-methods.js?v=20150505"></script>
 <script type="text/javascript" src="js/pca.js"></script>
+
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
 </head>
 <body>
 <!--** 注册板块 **-->
@@ -112,9 +114,9 @@
                 <div class="bibAlert"></div>
             </div>
         
-        <div class="busyInfoBox">
-                <div class="bibAlert"><input type="checkbox" checked="checked"  id="readagree" name="readagree" /><a href="help/agreement"> 我同意《智谷同城货源网用户服务协议》</a></div>
-            </div>
+<!--         <div class="busyInfoBox"> -->
+<!--                 <div class="bibAlert"><input type="checkbox" checked="checked"  id="readagree" name="readagree" /><a href="help/agreement"> 我同意《智谷同城货源网用户服务协议》</a></div> -->
+<!--             </div> -->
             
             <div class="urpMiddleDiv mt20">
             	<input type="submit" class="urpSubMit" value="开店申请" title="开店申请" onclick="return storeRegisterSub();"/>
@@ -158,7 +160,7 @@ $(function() {
 			var params = zhigu.cmn.formToObj("#storeRegisterForm");
 			ajaxSubmit("/supplier/store/register",params,function(msgBean){
 				if(msgBean.code==zhigu.code.success){
-					layer.msg(msgBean.msg,2,f5);
+					layer.msg(msgBean.msg,f5);
 				}else{
 					layer.alert(msgBean.msg);
 				}
@@ -177,10 +179,11 @@ $(function() {
 	}
 });
 function storeRegisterSub(){
-	if ($("#readagree").prop("checked")!=true ) {
-		dialog("请同意并阅读《智谷同城货源网用户服务协议》");
-		return false;
-	} 
+	return true;
+// 	if ($("#readagree").prop("checked")!=true ) {
+// 		dialog("请同意并阅读《智谷同城货源网用户服务协议》");
+// 		return false;
+// 	} 
 }
 </script>
 </body>

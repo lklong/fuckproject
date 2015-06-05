@@ -40,7 +40,7 @@ public class RealStoreAuth implements Serializable {
 	/** 申请时间 */
 	private Date applyTime;
 	/** 审核状态（0待审核，1通过，2驳回） */
-	private int approveState;
+	private int status;
 	/** 审核者 */
 	private int approveUser;
 	/** 审核时间 */
@@ -136,12 +136,12 @@ public class RealStoreAuth implements Serializable {
 		this.applyTime = applyTime;
 	}
 
-	public int getApproveState() {
-		return approveState;
+	public int getStatus() {
+		return status;
 	}
 
-	public void setApproveState(int approveState) {
-		this.approveState = approveState;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public int getApproveUser() {

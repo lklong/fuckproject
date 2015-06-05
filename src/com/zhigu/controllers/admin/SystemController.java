@@ -2,7 +2,6 @@ package com.zhigu.controllers.admin;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zhigu.common.utils.ServiceMsg;
-import com.zhigu.controllers.supplier.AdController;
 import com.zhigu.model.Cement;
 import com.zhigu.model.CementContent;
 import com.zhigu.model.PageBean;
@@ -28,7 +26,6 @@ import com.zhigu.service.system.CementContentService;
 @Controller
 @RequestMapping("/admin/system")
 public class SystemController {
-	private static final Logger logger = Logger.getLogger(AdController.class);
 	@Autowired
 	private CementContentService cementContentService;
 

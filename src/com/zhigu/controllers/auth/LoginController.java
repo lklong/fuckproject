@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,11 +25,10 @@ import com.zhigu.common.SessionUser;
 import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.CookieKey;
 import com.zhigu.common.constant.enumconst.MsgLevel;
-import com.zhigu.common.exception.ServiceException;
 import com.zhigu.common.utils.StringUtil;
-import com.zhigu.model.OpenAuth;
+import com.zhigu.model.OpenUser;
 import com.zhigu.model.dto.MsgBean;
-import com.zhigu.service.open.IOpenAuthService;
+import com.zhigu.service.open.IOpenUserService;
 import com.zhigu.service.user.ILoginLogService;
 import com.zhigu.service.user.IUserService;
 
@@ -43,7 +43,7 @@ public class LoginController {
 	@Autowired
 	private IUserService userService;
 	@Autowired
-	private IOpenAuthService openAuthService;
+	private IOpenUserService openUserService;
 	@Autowired
 	private ILoginLogService loginLogService;
 
@@ -138,25 +138,28 @@ public class LoginController {
 				// 利用获取到的accessToken 去获取当前用的openid -------- start
 				OpenID openIDObj = new OpenID(accessToken);
 				openID = openIDObj.getUserOpenID();
-				com.qq.connect.api.qzone.UserInfo qzoneUserInfo = new com.qq.connect.api.qzone.UserInfo(accessToken, openID);
-				com.qq.connect.javabeans.qzone.UserInfoBean userInfoBean = qzoneUserInfo.getUserInfo();
 
-				String avatar = userInfoBean.getAvatar().getAvatarURL100();
-				String nike = userInfoBean.getNickname();
-				SessionHelper.setAttribute("avatar", avatar);
-				SessionHelper.setAttribute("nike", nike);
-
-				OpenAuth auth = openAuthService.queryOpenAuthByOpenID(openID);
-				if (auth == null) {// 第一次登录，让用户绑定
+				OpenUser auth = openUserService.queryOpenUserByOpenId(openID);
+				if (auth == null) {
+					// 第一次登录，让用户绑定
+					com.qq.connect.api.qzone.UserInfo qzoneUserInfo = new com.qq.connect.api.qzone.UserInfo(accessToken, openID);
+					com.qq.connect.javabeans.qzone.UserInfoBean userInfoBean = qzoneUserInfo.getUserInfo();
 					SessionHelper.setAttribute(OPEN_ID, openID);
-					mv.setViewName("redirect:/login/gobound");
+
+					String avatar = userInfoBean.getAvatar().getAvatarURL100();
+					String nike = userInfoBean.getNickname();
+					mv.addObject("avatar", avatar);
+					mv.addObject("nike", nike);
+					mv.setViewName("redirect:/login/bound");
 					return mv;
 				} else {// 直接登录
 					MsgBean result = userService.openIDLogin(openID);
 					if (result.getCode() != Code.SUCCESS) {
-						throw new ServiceException(result.getMsg());
+						mv.addObject("msg", result.getMsg());
+						mv.setViewName("/tips/error-tips");
+					} else {
+						mv.setViewName("redirect:/user/home");
 					}
-					mv.setViewName("redirect:/user/home");
 					return mv;
 				}
 			}
@@ -167,25 +170,25 @@ public class LoginController {
 		return mv;
 	}
 
-	@RequestMapping("/gobound")
-	public String goBound() {
-		return "auth/register/bound";
-	}
-
 	/**
 	 * 执行绑定操作
 	 * 
-	 * @param username
-	 * @param password
-	 * @param mv
-	 * @return
 	 */
-	@RequestMapping("/bound")
+	@RequestMapping(value = "/bound", method = RequestMethod.GET)
+	public String bound() {
+		return "/auth/register/bound";
+	}
+
+	@RequestMapping(value = "/bound", method = RequestMethod.POST)
 	@ResponseBody
-	public MsgBean doBound(@RequestParam String username, @RequestParam String password) {
+	public MsgBean bound(String username, String password) {
 		password = StringUtil.decryptBASE64(password);
 		String openID = (String) SessionHelper.getAttribute(OPEN_ID);
-		return openAuthService.saveOpenAuth(username, password, openID);
+		MsgBean msg = openUserService.saveOpenUser(username, password, openID);
+		if (msg.getCode() == Code.SUCCESS) {
+			SessionHelper.removeAttribute(OPEN_ID);
+		}
+		return msg;
 	}
 
 }

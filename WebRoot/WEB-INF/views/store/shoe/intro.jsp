@@ -1,16 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<base href="${applicationScope.basePath}" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>商家介绍</title>
 </head>
 <body>
 	<jsp:include page="header.jsp" />
-
 	<div class="shop_info_body">
 		<div class="shop_info_inner">
 			<div class="head_info">公司档案</div>
@@ -21,6 +18,7 @@
 						<div class="fl mr10">${store.storeName }</div>
 						<c:if test="${companyAuth != null}"><span class="span_renzheng qiye"></span></c:if>
 						<c:if test="${realStoreAuth != null}"><span class="span_renzheng shidi"></span></c:if>
+						<c:if test="${userInfo.realUserAuthFlg == 1 }"><span class="span_renzheng shiming"></span></c:if>
 <!-- 						<span class="span_renzheng baozhang"></span> -->
 					</h3>
 					<p>${store.introduction }</p>
@@ -70,7 +68,7 @@
 							</tr>
 						</table>
 						<ul>
-							<li class="rz_img"><img style="max-width:120px" src="${companyAuth.imageSmall}" /></li>
+							<li class="rz_img"><img style="max-width:120px" src="${companyAuth.image}" /></li>
 						</ul>
 					</c:if>
 				</div>
@@ -108,6 +106,10 @@
 			</div>
 		</div>
 	</div>
-
+<script type="text/javascript">
+//隐藏主导航和搜索框
+$('.nav').hide();
+$('.search').hide();
+</script>
 </body>
 </html>

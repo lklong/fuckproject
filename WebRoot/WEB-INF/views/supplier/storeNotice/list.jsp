@@ -7,12 +7,12 @@
 <title>店铺公告</title>
 <link rel="stylesheet" href="/js/3rdparty/webuploader/webuploader.css">
 <script type="text/javascript" src="/js/3rdparty/webuploader/webuploader.js"></script>
-<script type="text/javascript" src="/js/3rdparty/layer/layer.min.js?v=20150505"></script>
+<script type="text/javascript" src="/js/3rdparty/layer1.9/layer.js"></script>
 </head>
 <body>
 <div class="rightContainer fr">
   <h4 class="ddtitle">店铺公告<a href="/supplier/storeNotice/addStoreNoticePage?storeID=${storeID }" class="default-a">添加</a></h4>
-  <table cellpadding="0" cellspacing="0" class="user-list-table">
+  <table cellpadding="0" cellspacing="0" class="user-list-table txt-center">
     <thead>
       <tr>
         <th>&nbsp;</th>
@@ -35,20 +35,17 @@
 </div>
 <script type="text/javascript">
 	function delStoreNotice(id){
-		layer.confirm("确定此次操作吗？",function(){ 
+		layer.confirm("确定要删除这条公告吗？",function(){ 
 	         $.post("/supplier/storeNotice/delStoreNotice?id="+id,function(msgBean){
 	       	  if(msgBean.code==zhigu.code.success){
-	       			layer.alert("操作成功！",1);
-	       			layer.msg("操作成功！",1);
-					setTimeout("changePage()", 1000);
+	       			layer.alert("操作成功！",function(){changePage()});
 	       	  }else{
-	       		  layer.alert(msgBean.msg,0);  
+	       		  layer.alert(msgBean.msg);  
 	       	  }
 		});
 	    },'用户状态提示');
 	}
 	function changePage(){
-		layer.closeAll();
 		window.location = "/supplier/storeNotice/storeNoticeList";	
 	}
 </script>

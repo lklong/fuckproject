@@ -1,9 +1,10 @@
 <%@ page language="java" pageEncoding="utf-8"%>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
 <link href="/css/default/user.css" rel="stylesheet"/>
-<title>密码找回</title>
+<script type="text/javascript" src="js/3rdparty/layer1.9/layer.js"></script>
+<title>密码找回 第一步</title>
 </head>
 <body>
 <!--** 找回密码板块 **--> 
@@ -15,7 +16,7 @@
       <div class="urpMiddleBox">
         <div class="urpTopTip">
           <div id="step1">
-            <h1>密码找回-第一步</h1>
+            <h2>密码找回 - 第一步</h2>
           </div>
         </div>
         <div class="busyInfoBox">
@@ -27,26 +28,23 @@
           </div>
           <div class="bibinput">
             <input type="text" class="busyInput" value="${username }" id="username" name="username"/>
+            <div class="color-red" id="msg_username"></div>
           </div>
-          <div class="bibAlert" id="msg_username"></div>
         </div>
         <div class="busyInfoBox">
           <div class="bibTxt">验证码</div>
           <div class="bibinput">
             <input type="text" class="busyInput" style="width:160px; clear:both"  name="captcha" id="captcha"/>
-            <img alt="验证码" title="点击换一个" src="captcha"  width="100" height="40" onclick="this.src=this.src+'?'+Math.random()" /> </div>
-          <div class="bibAlert" id="msg_captcha"></div>
+            <img alt="验证码" title="点击换一个" src="captcha"  width="100" height="40" onclick="this.src=this.src+'?'+Math.random()" />
+			<div class="color-red" id="msg_captcha"></div>
+			</div>
         </div>
         <div class="urpMiddleDiv mt30"> <br />
           <br />
+
+          <input type="button" class="urpSubMit" value="下一步" title="下一步" onclick="return retrieveSubmit()"/>
           <br />
-          <input type="button" class="urpSubMit" value="下一步" title="下一步" onclick="return _submit()"/>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+<br />
         </div>
       </div>
     </div>

@@ -49,7 +49,7 @@
       </div>
     </div>
   </c:if>
-  <table cellpadding="0" cellspacing="0" class="user-list-table">
+  <table cellpadding="0" cellspacing="0" class="user-list-table txt-center">
     <tr>
       <th>货品</th>
       <th>单价(元)</th>
@@ -60,8 +60,10 @@
     </tr>
     <c:forEach items="${order.details }" var="od">
       <tr>
-        <td><a height="50" width="50" href="goods/detail?goodsId=${od.goodsID}" target="_blank"><img src="${od.goodsPic}" /></a></td>
-        <td><a href="goods/detail?goodsId=${od.goodsID}" target="_blank">${od.goodsName }</a></td>
+        <td>
+        <span class="fl"><a href="goods/detail?goodsId=${od.goodsID}" target="_blank"><img src="${od.goodsPic}"  height="50" width="50"/></a></span>
+        <span class="fl mt15 ml10"><a href="goods/detail?goodsId=${od.goodsID}" target="_blank">${od.goodsName }</a></span>
+        </td>
         <td>${od.unitPrice }</td>
         <td>${od.quantity }</td>
         <td>${order.statusLabel }</td>

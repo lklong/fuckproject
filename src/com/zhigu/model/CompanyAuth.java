@@ -3,91 +3,112 @@ package com.zhigu.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.zhigu.common.constant.enumconst.AuthStatus;
 import com.zhigu.common.constant.enumconst.CompanyType;
 
 /**
  * 企业认证
  * 
- * @author HeSiMin
- * @date 2014年8月12日
+ * @author Y.Z.X
+ * @since 2015-06-04
  *
  */
 public class CompanyAuth implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** ID */
-	private int ID;
+	private int id;
+
 	/** 用户ID */
 	private int userID;
+
 	/** 店铺ID */
 	private int storeID;
+
 	/** 企业名称 */
 	private String companyName;
+
 	/** 企业类型 */
 	private int companyType;
+
 	/** 工商注册号 */
 	private String regNumber;
+
 	/** 企业法人 */
 	private String corporation;
+
 	/** 营业期限 */
 	private Date businessTerm;
+
 	/** 长期有效 */
 	private int perpetual;
+
 	/** 注册资金 */
 	private int capital;
+
 	/** 营业范围 */
 	private String businessScope;
+
 	/** 注册地址(省) */
 	private String regProvince;
+
 	/** 注册地址(市) */
 	private String regCity;
+
 	/** 注册地址(区) */
 	private String regDistrict;
+
 	/** 注册地址(具体地址) */
 	private String regStreet;
+
 	/** 公司地址(省) */
 	private String companyProvince;
+
 	/** 公司地址(市) */
 	private String companyCity;
+
 	/** 公司地址(区) */
 	private String companyDistrict;
+
 	/** 公司地址(具体地址) */
 	private String companyStreet;
-	/** 图片 */
+
+	/** 营业执照 */
 	private String image;
-	/** 图片(小) */
-	private String imageSmall;
+
 	/** 业务员 **/
 	private Integer salesman;
+
 	/** 申请时间 */
 	private Date applyTime;
+
 	/** 审核状态（1通过，2驳回， 3待审核） */
-	private int approveState;
+	private int status;
+
 	/** 审核者 */
 	private int approveUser;
+
 	/** 审核时间 */
 	private Date authTime;
+
 	/** 驳回原因 */
 	private String rejectReason;
-	private String authStatusLabel;
 
-	public String getAuthStatusLabel() {
-		return AuthStatus.getNameByValue(this.approveState);
+	public int getId() {
+		return id;
 	}
 
-	public int getID() {
-		return ID;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public int getStatus() {
+		return status;
 	}
 
-	public String getImageSmall() {
-		return imageSmall;
-	}
-
-	public void setImageSmall(String imageSmall) {
-		this.imageSmall = imageSmall;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public int getUserID() {
@@ -240,14 +261,6 @@ public class CompanyAuth implements Serializable {
 
 	public void setApplyTime(Date applyTime) {
 		this.applyTime = applyTime;
-	}
-
-	public int getApproveState() {
-		return approveState;
-	}
-
-	public void setApproveState(int approveState) {
-		this.approveState = approveState;
 	}
 
 	public int getApproveUser() {

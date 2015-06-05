@@ -202,20 +202,15 @@ function freezelist(){
  * @param id
  */
 function updateApproveState(id){
-	parent.layer.confirm("确定此次操作吗？",function(){ 
-         $.post("<%=basePath%>admin/store/updateStroeAuditStatus?id="+id, function(msgBean){
+	layer.confirm("确定此次操作吗？",function(){ 
+         $.post("/admin/store/updateStroeAuditStatus?id="+id, function(msgBean){
        	  if(msgBean.code==zhigu.code.success){
-       			parent.layer.alert("操作成功！",1);
-					setTimeout("changePage()", 1000);
+       			layer.msg("操作成功！",2,reloadCurrentPage);
        	  }else{
-       		  parent.layer.alert(msgBean.msg,0);  
+       		  layer.alert(msgBean.msg);  
        	  }
 	});
     },'用户状态提示');
-}
-function changePage(){
-	parent.layer.closeAll();
-	window.location = "<%=basePath%>admin/store/index";	
 }
 </script>
 </body>

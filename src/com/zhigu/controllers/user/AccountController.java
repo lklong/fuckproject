@@ -1,23 +1,23 @@
 package com.zhigu.controllers.user;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zhigu.common.SessionHelper;
-import com.zhigu.common.exception.ServiceException;
 import com.zhigu.common.utils.DateUtil;
 import com.zhigu.model.Account;
 import com.zhigu.model.AccountDetail;
 import com.zhigu.model.PageBean;
 import com.zhigu.model.RechargeRecord;
 import com.zhigu.service.user.IAccountService;
-import com.zhigu.service.user.IUserPointService;
 import com.zhigu.service.user.IUserService;
 
 /**
@@ -33,8 +33,6 @@ public class AccountController {
 	private IAccountService accountService;
 	@Autowired
 	private IUserService userService;
-	@Autowired
-	private IUserPointService userPointService;
 
 	@RequestMapping("/pay")
 	public String pay() {
@@ -70,8 +68,15 @@ public class AccountController {
 
 	// 收支明细
 	@RequestMapping("/detail")
-	public ModelAndView detail(PageBean<AccountDetail> page, Integer month, Date startDate, Date endDate, ModelAndView mv) {
+	public ModelAndView detail(PageBean<AccountDetail> page, Integer month, String startDateStr, String endDateStr, ModelAndView mv) throws ParseException {
 		int userID = SessionHelper.getSessionUser().getUserID();
+		Date startDate = null;
+		Date endDate = null;
+		if (StringUtils.isNotBlank(startDateStr))
+			startDate = DateUtils.parseDate(startDateStr, "yyyy-MM-dd");
+		if (StringUtils.isNotBlank(endDateStr))
+			endDate = DateUtils.parseDate(endDateStr, "yyyy-MM-dd");
+
 		// 账户冻结和可用金额的计算
 		Account acc = accountService.queryAccountByUserID(SessionHelper.getSessionUser().getUserID());
 		mv.addObject("userName", SessionHelper.getSessionUser().getUsername());
@@ -103,24 +108,6 @@ public class AccountController {
 
 		mv.setViewName("user/acc/detail");
 		return mv;
-	}
-
-	/**
-	 * 展示提成记录
-	 * 
-	 * @param mv
-	 * @param page
-	 * @return
-	 */
-	@RequestMapping("/showCommissionRecord")
-	public ModelAndView showCommissionRecord(ModelAndView mv, PageBean page) {
-		throw new ServiceException("推广提成已停！");
-		// mv.setViewName("user/acc/commissiondetail");
-		// page.addParas("userID", SessionHelper.getSessionUser().getUserID());
-		// mv.addObject("commissionRecords",
-		// promotionService.queryCommissionRecordByPage(page));
-		// mv.addObject("page", page);
-		// return mv;
 	}
 
 }
