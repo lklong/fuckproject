@@ -1,7 +1,5 @@
 package com.zhigu.controllers.mobile.user;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.enumconst.MsgLevel;
-import com.zhigu.common.utils.ServiceMsg;
 import com.zhigu.model.Address;
 import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.user.IAddressService;
@@ -35,9 +32,8 @@ public class MobileAddressController {
 	 */
 	@RequestMapping("/queryAddress")
 	@ResponseBody
-	public List<Address> queryAddress() {
-		// 收货地址
-		return addressService.queryAddressByUserID(SessionHelper.getSessionUser().getUserID());
+	public MsgBean queryAddress() {
+		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(addressService.queryAddressByUserID(SessionHelper.getSessionUser().getUserId()));
 	}
 
 	/**
@@ -48,8 +44,7 @@ public class MobileAddressController {
 	@RequestMapping("/addAddress")
 	@ResponseBody
 	public MsgBean addAddress(Address address) {
-		addressService.saveAddress(address);
-		return ServiceMsg.getMsgBean();
+		return addressService.saveAddress(address);
 	}
 
 	/**
@@ -61,8 +56,7 @@ public class MobileAddressController {
 	@RequestMapping("/modify")
 	@ResponseBody
 	public MsgBean modify(Address address) {
-		addressService.updateAddress(address);
-		return ServiceMsg.getMsgBean();
+		return addressService.updateAddress(address);
 	}
 
 	/**
@@ -74,11 +68,10 @@ public class MobileAddressController {
 	@RequestMapping("/delete")
 	@ResponseBody
 	public MsgBean delete(Integer addressID) {
-		if (addressID == null) {
+		if (addressID == null)
 			return new MsgBean(Code.FAIL, "参数错误！", MsgLevel.ERROR);
-		}
-		addressService.deleteAddress(SessionHelper.getSessionUser().getUserID(), addressID);
-		return new MsgBean(Code.SUCCESS, "删除成功！", MsgLevel.NORMAL);
+		return addressService.deleteAddress(SessionHelper.getSessionUser().getUserId(), addressID);
+
 	}
 
 	/**
@@ -90,7 +83,6 @@ public class MobileAddressController {
 	@RequestMapping("/setDefault")
 	@ResponseBody
 	public MsgBean updateDefault(Integer addressID) {
-		addressService.updateDefaultAddress(SessionHelper.getSessionUser().getUserID(), addressID);
-		return new MsgBean(Code.SUCCESS, "设置默认地址成功！", MsgLevel.NORMAL);
+		return addressService.updateDefaultAddress(SessionHelper.getSessionUser().getUserId(), addressID);
 	}
 }

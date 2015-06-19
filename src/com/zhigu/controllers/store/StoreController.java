@@ -74,8 +74,8 @@ public class StoreController {
 		page = storeService.queryStoreByPage(page, scope, searchStoreName);
 
 		mv.addObject("page", page);
-		// 查询参数回传到画面
 
+		// 查询参数回传到画面
 		mv.addObject("searchStoreName", searchStoreName);
 		mv.addObject("scope", scope);
 		mv.addObject("orderBy", page.getOrderBy());
@@ -124,6 +124,9 @@ public class StoreController {
 		}
 		if (store == null && !StringUtil.isEmpty(domain)) {
 			store = storeService.queryStoreByDomain(domain);
+			if (store != null) {
+				gc.setStoreId(store.getID());
+			}
 		}
 		if (store == null) {
 			mv.addObject("msg", "很抱歉，未找到该店铺！");

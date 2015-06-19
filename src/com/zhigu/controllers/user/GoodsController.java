@@ -36,7 +36,7 @@ public class GoodsController {
 	@RequestMapping("/complaint")
 	@ResponseBody
 	public MsgBean complaint(GoodsComplaint gc) {
-		gc.setUserId(SessionHelper.getSessionUser().getUserID());
+		gc.setUserId(SessionHelper.getSessionUser().getUserId());
 		gc.setStatus(1);
 		int result = goodsComplaintService.saveGoodsComplaint(gc);
 		if (result == 1)

@@ -1,27 +1,114 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhigu.mapper.LoginLogMapper">
-	<insert id="addLoginLog" parameterType="loginLog">
-		insert into LoginLog(ID,UserID,IP,LoginDate,LoginStatus,Browser) value(#{ID},#{userID},#{IP},#{loginDate},#{loginStatus},#{browser});
-		<selectKey resultType="int" keyProperty="ID" order="AFTER" >
-			SELECT LAST_INSERT_ID();
-		</selectKey>
-	</insert>
-	<select id="queryLoginLog" parameterType="com.zhigu.model.PageBean" resultType="loginLog">
-		select * from LoginLog where 1=1 
-		<if test="paras.userID!=null and paras.userID!=''">
-			and UserID = #{paras.userID}
-		</if>
-			<if test="paras.startDate!=null  and paras.startDate!=''">
-			and DATE_FORMAT(LoginDate,"%Y-%m-%d")&gt;=STR_TO_DATE(#{paras.startDate},"%Y-%m-%d")
-		</if>
-		<if test="paras.endDate!=null  and paras.endDate!=''">
-			and DATE_FORMAT(LoginDate,"%Y-%m-%d")&lt;=STR_TO_DATE(#{paras.endDate},"%Y-%m-%d")
-		</if>
-		order by LoginDate DESC
+	<resultMap id="BaseResultMap" type="com.zhigu.model.LoginLog">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
+		<result column="success" property="success" jdbcType="BIT" />
+		<result column="browser" property="browser" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_id, ip, login_time, success, browser
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from login_log
+		where id = #{id,jdbcType=INTEGER}
 	</select>
-	<select id="queryPreviousLoginLogByUserID" parameterType="int" resultType="loginLog">
-		select * from LoginLog where  UserID = #{paras.userID} order by LoginDate DESC limit 1,1;
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from login_log
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zhigu.model.LoginLog">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into login_log (id, user_id, ip,
+		login_time, success, browser
+		)
+		values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR},
+		#{loginTime,jdbcType=TIMESTAMP}, #{success,jdbcType=BIT}, #{browser,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.zhigu.model.LoginLog">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into login_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="loginTime != null">
+				login_time,
+			</if>
+			<if test="success != null">
+				success,
+			</if>
+			<if test="browser != null">
+				browser,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=INTEGER},
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="loginTime != null">
+				#{loginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="success != null">
+				#{success,jdbcType=BIT},
+			</if>
+			<if test="browser != null">
+				#{browser,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zhigu.model.LoginLog">
+		update login_log
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="ip != null">
+				ip = #{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="loginTime != null">
+				login_time = #{loginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="success != null">
+				success = #{success,jdbcType=BIT},
+			</if>
+			<if test="browser != null">
+				browser = #{browser,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zhigu.model.LoginLog">
+		update login_log
+		set user_id = #{userId,jdbcType=INTEGER},
+		ip = #{ip,jdbcType=VARCHAR},
+		login_time = #{loginTime,jdbcType=TIMESTAMP},
+		success = #{success,jdbcType=BIT},
+		browser = #{browser,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+		<select id="queryPreviousLoginLogByUserId" parameterType="int" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from Login_log where user_id = #{userId} order by login_time DESC limit 1,1;
 	</select>
 </mapper>
-

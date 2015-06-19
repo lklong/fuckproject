@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="css/taobao/default.css">
 <script type="text/javascript" src="/js/3rdparty/jquery1.9.1.js"></script>
 <script type="text/javascript" src="/js/taobao/taobao.js"></script>
-<script type="text/javascript" src="/js/3rdparty/layer/layer.min.js"></script>
+<script type="text/javascript" src="/js/3rdparty/layer1.9/layer.js"></script>
 <style type="text/css">
 	input{
 		border:1px solid #ABADB3;
@@ -112,7 +112,7 @@ $(function(){
 	$('.taobaocsv').click(function() {
 		
 		var that = $(this);
-		var index = layer.msg('正在发布中...', {icon: 16});
+		var index = layer.msg('正在发布中...', {icon: 16,shade: [0.8]});
 		
 		var url = host+"/taobao/ajax/item/save";
 		var form = $("#taobaocsv").serialize();
@@ -122,11 +122,22 @@ $(function(){
         $.post(url,param,function(data){
         	layer.close(index);
         	if(data.status){
-        		layer.msg(data.msg,2,function(){
+        		layer.msg(data.msg, {
+				    icon: -1,
+				    time: 3000, 
+				    shade: [0.8],
+				    shadeClose: true
+				},function(){
         			window.location.href= "http://www.zhiguw.com"
         		});
+        		
         	}else{
-        		layer.msg(data.msg,1);
+        		layer.msg(data.msg, {
+				    icon: -1,
+				    time: 2000, 
+				    shade: [0.8],
+				    shadeClose: true
+				});
         	}
         });
 	});

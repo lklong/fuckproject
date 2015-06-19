@@ -41,7 +41,7 @@ public class OrderController {
 	public ModelAndView detail(ModelAndView mv, Integer orderID) {
 		Order order = orderService.queryOrder(orderID);
 		// 非网商订单
-		if (order != null && order.getStoreUserID() == SessionHelper.getSessionUser().getUserID())
+		if (order != null && order.getStoreUserID() == SessionHelper.getSessionUser().getUserId())
 			mv.addObject("order", order);
 		mv.setViewName("/supplier/order/detail");
 		return mv;
@@ -57,7 +57,7 @@ public class OrderController {
 	 */
 	@RequestMapping("")
 	public ModelAndView list(ModelAndView mv, OrderCondition oc, String startDateStr, String endDateStr, PageBean<Order> page) throws ParseException {
-		oc.setUserID(SessionHelper.getSessionUser().getUserID());
+		oc.setUserID(SessionHelper.getSessionUser().getUserId());
 		oc.setUserType(2);
 		page.setPageSize(10);
 		if (StringUtils.isNotBlank(startDateStr)) {

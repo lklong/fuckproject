@@ -1,9 +1,17 @@
 package com.zhigu.controllers.mobile.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zhigu.common.SessionHelper;
+import com.zhigu.common.constant.Code;
+import com.zhigu.common.constant.enumconst.MsgLevel;
+import com.zhigu.model.ShoppingCart;
+import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.user.IAccountService;
 import com.zhigu.service.user.ICartService;
 import com.zhigu.service.user.IOrderService;
@@ -28,6 +36,19 @@ public class MobileOrderController {
 	@Autowired
 	private IUserService userService;
 
+	/**
+	 * 查看购物车
+	 *
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping("/mycart")
+	@ResponseBody
+	public MsgBean myCart() {
+		List<ShoppingCart> list = cartService.queryShoppingCart(SessionHelper.getSessionUser().getUserId(), true);
+		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(list);
+	}
+
 	// /**
 	// * 查看购物车
 	// *
@@ -38,7 +59,7 @@ public class MobileOrderController {
 	// @ResponseBody
 	// public List<ShoppingCart> myCart() {
 	// List<ShoppingCart> list =
-	// cartService.shoppingCartList(SessionHelper.getSessionUser().getUserID());
+	// cartService.shoppingCartList(SessionHelper.getSessionUser().getUserId());
 	// return list;
 	// }
 	//
@@ -54,7 +75,7 @@ public class MobileOrderController {
 	// if (cartIDs == null || cartIDs.length == 0) {
 	// return new MsgBean(Code.FAIL, "未选择删除商品！", MsgLevel.ERROR);
 	// }
-	// cartService.deleteShoppingCart(SessionHelper.getSessionUser().getUserID(),
+	// cartService.deleteShoppingCart(SessionHelper.getSessionUser().getUserId(),
 	// Arrays.asList(cartIDs));
 	// return new MsgBean(Code.SUCCESS, "商品已删除！", MsgLevel.NORMAL);
 	// }
@@ -103,7 +124,7 @@ public class MobileOrderController {
 	// @ResponseBody
 	// public List<ShoppingCart> confirmOrderGoods() {
 	// return
-	// orderService.confirmOrderQuery(SessionHelper.getSessionUser().getUserID());
+	// orderService.confirmOrderQuery(SessionHelper.getSessionUser().getUserId());
 	// }
 	//
 	// /**
@@ -118,7 +139,7 @@ public class MobileOrderController {
 	// public MsgBean createOrder(Integer addressID, Club club) {
 	// // 需要店铺id、代发商物流id、留言
 	// return
-	// orderService.saveOrders(SessionHelper.getSessionUser().getUserID(),
+	// orderService.saveOrders(SessionHelper.getSessionUser().getUserId(),
 	// addressID, club.getOrders(), 0);
 	// }
 	//
@@ -128,7 +149,7 @@ public class MobileOrderController {
 	//
 	// JSONObject jsonObject = new JSONObject();
 	//
-	// oc.setUserID(SessionHelper.getSessionUser().getUserID());
+	// oc.setUserID(SessionHelper.getSessionUser().getUserId());
 	// oc.setUserType(UserType.USER);
 	//
 	// orderService.queryOrders(page, oc);
@@ -169,7 +190,7 @@ public class MobileOrderController {
 	// return new MsgBean(Code.FAIL, "fail", MsgLevel.ERROR);
 	// // return
 	// //
-	// orderService.handlerPaymentOrder(SessionHelper.getSessionUser().getUserID(),
+	// orderService.handlerPaymentOrder(SessionHelper.getSessionUser().getUserId(),
 	// // Arrays.asList(orderID));
 	// }
 

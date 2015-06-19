@@ -53,7 +53,7 @@ public class SecurityController {
 	 */
 	@RequestMapping("/center")
 	public ModelAndView conter(ModelAndView mv) {
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userID = SessionHelper.getSessionUser().getUserId();
 		UserAuth auth = userService.queryUserAuthByUserID(userID);
 		UserInfo info = userService.queryUserInfoById(userID);
 		// mv.addObject("hasLoginPwd", StringUtil.isEmpty(auth.getPassword()) ?
@@ -81,7 +81,7 @@ public class SecurityController {
 	 */
 	@RequestMapping(value = "/updateLoginpwd", method = RequestMethod.GET)
 	public ModelAndView updateLoginpwd(ModelAndView mv) {
-		mv.addObject("hasPwd", StringUtil.isEmpty(userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID()).getPassword()) ? "0" : "1");
+		mv.addObject("hasPwd", StringUtil.isEmpty(userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId()).getPassword()) ? "0" : "1");
 		mv.setViewName("user/security/loginpwd");
 		return mv;
 	}
@@ -104,7 +104,7 @@ public class SecurityController {
 	 */
 	@RequestMapping("phone")
 	public ModelAndView phone(ModelAndView mv, String oldPhoneVerifyKey) {
-		String phone = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID()).getPhone();
+		String phone = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId()).getPhone();
 		if (StringUtils.isBlank(phone) || StringUtils.isNotBlank(oldPhoneVerifyKey)) {
 			// 第二步，手机设置页面
 			mv.addObject("oldPhoneVerifyKey", oldPhoneVerifyKey);
@@ -119,7 +119,7 @@ public class SecurityController {
 	@RequestMapping(value = "verifyOldPhone", method = RequestMethod.GET)
 	public ModelAndView verifyOldPhone(ModelAndView mv) {
 		// 去旧手机验证页
-		String oldPhone = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID()).getPhone();
+		String oldPhone = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId()).getPhone();
 		mv.addObject("oldPhone", oldPhone);
 		mv.setViewName("user/security/phone_old_verify");
 		return mv;
@@ -133,7 +133,7 @@ public class SecurityController {
 	@RequestMapping(value = "/verifyOldPhone/send")
 	@ResponseBody
 	public MsgBean verifyOldPhoneSend() {
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 		UserAuth auth = userService.queryUserAuthByUserID(userId);
 		return phoneSendService.send(auth.getPhone(), PhoneSendType.PHONE_BIND_OLD_VERIFY);
 	}
@@ -141,7 +141,7 @@ public class SecurityController {
 	@RequestMapping(value = "verifyOldPhone", method = RequestMethod.POST)
 	@ResponseBody
 	public MsgBean verifyOldPhone(String captcha) {
-		String oldPhone = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID()).getPhone();
+		String oldPhone = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId()).getPhone();
 		// 验证码
 		MsgBean captchaMsg = phoneSendService.verify(oldPhone, PhoneSendType.PHONE_BIND_OLD_VERIFY, captcha);
 		if (captchaMsg.getCode() != Code.SUCCESS) {
@@ -165,14 +165,14 @@ public class SecurityController {
 		if (captchaMsg.getCode() != Code.SUCCESS) {
 			return captchaMsg;
 		}
-		String oldPhone = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID()).getPhone();
+		String oldPhone = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId()).getPhone();
 		if (StringUtils.isNotBlank(oldPhone)) {
 			// 有旧手机，对旧手机验证key检查
 			if (!Md5.convert(oldPhone + PHONE_VERIFY_KEY).equals(oldPhoneVerifyKey)) {
 				return new MsgBean(Code.FAIL, "请重新进行旧手机验证", MsgLevel.ERROR);
 			}
 		}
-		return userService.updatePhone(SessionHelper.getSessionUser().getUserID(), phone);
+		return userService.updatePhone(SessionHelper.getSessionUser().getUserId(), phone);
 	}
 
 	@RequestMapping("/newphone/send")
@@ -188,7 +188,7 @@ public class SecurityController {
 	 */
 	@RequestMapping("email")
 	public ModelAndView email(ModelAndView mv) {
-		mv.addObject("email", StringUtil.hideEmail(userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID()).getEmail()));
+		mv.addObject("email", StringUtil.hideEmail(userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId()).getEmail()));
 		mv.setViewName("user/security/email");
 		return mv;
 	}
@@ -213,7 +213,7 @@ public class SecurityController {
 	 */
 	@RequestMapping("/paymentpwd")
 	public ModelAndView paymentPwd(ModelAndView mv) {
-		UserAuth auth = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID());
+		UserAuth auth = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId());
 		auth.setPhone(StringUtil.hidePhone(auth.getPhone()));
 		mv.addObject("auth", auth);
 		mv.setViewName("user/security/paymentpwd");
@@ -224,14 +224,14 @@ public class SecurityController {
 	@ResponseBody
 	public MsgBean savePaymentPwd(String captcha, String paypasswd) {
 		paypasswd = StringUtil.decryptBASE64(paypasswd);
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userID = SessionHelper.getSessionUser().getUserId();
 		return accountService.updatePaypasswd(userID, paypasswd, captcha);
 	}
 
 	@RequestMapping("/paypwd/update/phoneSend")
 	@ResponseBody
 	public MsgBean paypwdUpdatePhoneSend() {
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 		UserAuth auth = userService.queryUserAuthByUserID(userId);
 		return phoneSendService.send(auth.getPhone(), PhoneSendType.PAY_PASSWORD);
 	}
@@ -255,7 +255,7 @@ public class SecurityController {
 	 */
 	@RequestMapping(value = "/bank", method = RequestMethod.GET)
 	public ModelAndView blank(ModelAndView mv) {
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 		UserAuth auth = userService.queryUserAuthByUserID(userId);
 		auth.setPhone(StringUtil.hidePhone(auth.getPhone()));
 		mv.addObject("auth", auth);
@@ -275,7 +275,7 @@ public class SecurityController {
 	@RequestMapping(value = "/bank/phone/send")
 	@ResponseBody
 	public MsgBean blank() {
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 		UserAuth auth = userService.queryUserAuthByUserID(userId);
 		return phoneSendService.send(auth.getPhone(), PhoneSendType.BANK_BIND);
 	}

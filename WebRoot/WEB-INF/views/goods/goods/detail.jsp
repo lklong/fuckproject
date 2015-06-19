@@ -165,7 +165,7 @@
         <ul class="chuchuang">
           <c:forEach items="${sellGoods }" var="g">
             <li> <a href="goods/detail?goodsId=${g.id }" target="_blank"><img src="${g.image300 }_160x160.jpg" height="158" width="158" /></a>
-              <p><a href="goods/detail?goodsId=${g.id }" target="_blank">${g.name }</a></p>
+             <%--  <p><a href="goods/detail?goodsId=${g.id }" target="_blank">${g.name }</a></p> --%>
               <p><font color="#ff4400">￥${g.minPrice }</font></p>
             </li>
           </c:forEach>
@@ -176,7 +176,7 @@
         <ul class="chuchuang">
           <c:forEach items="${download }" var="g">
             <li> <a href="goods/detail?goodsId=${g.id }" target="_blank"><img src="${g.image300 }" height="158" width="158" /></a>
-              <p><a href="goods/detail?goodsId=${g.id }" target="_blank">${g.name }</a></p>
+              <%-- <p><a href="goods/detail?goodsId=${g.id }" target="_blank">${g.name }</a></p> --%>
               <p><font color="#ff4400">￥${g.minPrice }</font></p>
             </li>
           </c:forEach>

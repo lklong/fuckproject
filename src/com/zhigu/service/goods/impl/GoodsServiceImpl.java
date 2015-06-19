@@ -68,7 +68,7 @@ public class GoodsServiceImpl implements IGoodsService {
 	public MsgBean saveGoods(Goods goods, List<GoodsSku> skus, List<GoodsProperty> properties, List<GoodsImage> images) {
 		// 店铺id设置
 		SessionUser user = SessionHelper.getSessionUser();
-		int userID = user.getUserID();
+		int userID = user.getUserId();
 		Store store = storeDao.queryStoreByUserID(userID);
 		goods.setStoreId(store.getID());
 		// 图片处理
@@ -200,7 +200,7 @@ public class GoodsServiceImpl implements IGoodsService {
 	public MsgBean updateGoods(Goods goods, List<GoodsSku> skus, List<GoodsProperty> properties, List<GoodsImage> images) {
 		int goodsId = goods.getId();
 		// 验证
-		Store store = storeDao.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store store = storeDao.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		Goods ogoods = goodsDao.queryGoodsById(goodsId);
 		if (ogoods == null || ogoods.getStoreId() != store.getID()) {
 			throw new ServiceException("非法操作！不能更新非自己的商品。");
@@ -385,7 +385,7 @@ public class GoodsServiceImpl implements IGoodsService {
 
 	@Override
 	public MsgBean updateGoodsRefreshDate(Integer goodsId) {
-		Integer userId = SessionHelper.getSessionUser().getUserID();
+		Integer userId = SessionHelper.getSessionUser().getUserId();
 		Date now = new Date();
 		int refreshCount = goodsAndStoreRefreshMapper.countNum(DateUtil.format(now, DateUtil.yyyy_MM_dd), userId, goodsId, null);
 		int usableRefreshNum = GOODS_REFRESH_NUM_LIMIT - refreshCount;
@@ -429,9 +429,14 @@ public class GoodsServiceImpl implements IGoodsService {
 	}
 
 	@Override
-	public PageBean<Goods> queryForHome(Integer pageNo, String propName, String goodsName) {
+	public PageBean<Goods> queryForHome(Integer pageNo, String propName, String goodsName, String city) {
 
 		PageBean<Goods> page = new PageBean<Goods>();
+
+		Map<String, Object> paras = page.getParas();
+		paras.put("city", city);
+		page.setParas(paras);
+
 		if (pageNo != null) {
 			page.setPageNo(pageNo);
 		}

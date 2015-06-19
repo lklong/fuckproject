@@ -55,7 +55,7 @@ public class WithdrawServiceImpl implements IWithdrawService {
 		if (!VerifyUtil.isMoney(money)) {
 			return new MsgBean(Code.FAIL, "金额格式格式错误", MsgLevel.ERROR);
 		}
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 		Account userAcc = accountMapper.queryAccountByUserId(userId);
 		BigDecimal withdrawMoney = new BigDecimal(money);
 		if (withdrawMoney.floatValue() > userAcc.getNormalMoney().floatValue()) {
@@ -130,7 +130,7 @@ public class WithdrawServiceImpl implements IWithdrawService {
 		if (withdraw.getStatus() != WithdrawStatus.ACCEPT.getValue()) {
 			return new MsgBean(Code.FAIL, "失败，该提现申请状态错误", MsgLevel.ERROR);
 		}
-		if (withdraw.getHandlerAdminId() != SessionHelper.getSessionAdmin().getId().intValue()) {
+		if (withdraw.getHandlerAdminId() != SessionHelper.getSessionAdmin().getId()) {
 			return new MsgBean(Code.FAIL, "失败，你不是该提现申请的受理人", MsgLevel.ERROR);
 		}
 
@@ -192,7 +192,7 @@ public class WithdrawServiceImpl implements IWithdrawService {
 		if (withdraw.getStatus() != WithdrawStatus.ACCEPT.getValue() && withdraw.getStatus() != WithdrawStatus.APPLY_FOR.getValue()) {
 			return new MsgBean(Code.FAIL, "失败，该提现申请状态错误", MsgLevel.ERROR);
 		}
-		if (withdraw.getStatus() == WithdrawStatus.ACCEPT.getValue() && withdraw.getHandlerAdminId() != SessionHelper.getSessionAdmin().getId().intValue()) {
+		if (withdraw.getStatus() == WithdrawStatus.ACCEPT.getValue() && withdraw.getHandlerAdminId() != SessionHelper.getSessionAdmin().getId()) {
 			return new MsgBean(Code.FAIL, "失败，你不是该提现申请的受理人", MsgLevel.ERROR);
 		}
 		withdraw.setHandlerAdminId(SessionHelper.getSessionAdmin().getId());

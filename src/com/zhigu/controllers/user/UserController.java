@@ -66,7 +66,7 @@ public class UserController {
 			mv.setViewName("redirect:/supplier/store/home");
 			return mv;
 		}
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userID = SessionHelper.getSessionUser().getUserId();
 		// 店铺信息
 		Store store = storeService.queryStoreByUserID(userID);
 		mv.addObject("store", store);
@@ -113,8 +113,8 @@ public class UserController {
 	@RequestMapping("/info")
 	public ModelAndView info(ModelAndView mv) {
 		mv.setViewName("user/baseinfo");
-		UserAuth auth = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID());
-		UserInfo info = userService.queryUserInfoById(SessionHelper.getSessionUser().getUserID());
+		UserAuth auth = userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId());
+		UserInfo info = userService.queryUserInfoById(SessionHelper.getSessionUser().getUserId());
 
 		mv.addObject("auth", auth);
 		mv.addObject("info", info);
@@ -132,7 +132,7 @@ public class UserController {
 	@ResponseBody
 	public MsgBean modify(UserInfo info, String username, ModelAndView mv) {
 
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userID = SessionHelper.getSessionUser().getUserId();
 
 		// JSONObject json = new JSONObject();
 		// 修改用户名
@@ -160,7 +160,7 @@ public class UserController {
 			}
 		}
 
-		info.setUserID(SessionHelper.getSessionUser().getUserID());
+		info.setUserID(SessionHelper.getSessionUser().getUserId());
 		userService.updateUserInfo(username, info);
 
 		return new MsgBean(Code.SUCCESS, "修改信息成功！", MsgLevel.NORMAL);
@@ -169,7 +169,7 @@ public class UserController {
 	@RequestMapping("/getUserInfo")
 	@ResponseBody
 	public UserInfo getUserInfo() {
-		UserInfo userInfo = userService.queryUserInfoById(SessionHelper.getSessionUser().getUserID());
+		UserInfo userInfo = userService.queryUserInfoById(SessionHelper.getSessionUser().getUserId());
 		return userInfo;
 	}
 
@@ -182,7 +182,7 @@ public class UserController {
 	@RequestMapping("/recommend")
 	public ModelAndView recommend(ModelAndView mv) {
 		mv.setViewName("user/recommend/recommend");
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userID = SessionHelper.getSessionUser().getUserId();
 		String url = ZhiguConfig.getValue(ZhiguConfig.HOST) + "register?recommendUserID=" + userID;
 		mv.addObject("recommendUrl", url);
 		return mv;

@@ -39,7 +39,7 @@ public class AddressServiceImpl implements IAddressService {
 
 	@Override
 	public MsgBean saveAddress(Address address) {
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 		// 现有地址数
 		List<Address> list = addressMapper.selectByUserId(userId);
 		if (list != null && list.size() >= 10) {
@@ -103,7 +103,7 @@ public class AddressServiceImpl implements IAddressService {
 
 	@Override
 	public MsgBean updateAddress(Address address) {
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 		Address oldAddress = this.queryAddressByID(userId, address.getId());
 		if (oldAddress == null) {
 			return new MsgBean(Code.FAIL, "没找到该地址，不能修改！", MsgLevel.ERROR);

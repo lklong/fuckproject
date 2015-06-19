@@ -47,7 +47,7 @@ public class EmailServiceImpl implements IEmailService {
 			return new MsgBean(Code.FAIL, "无效邮箱地址", MsgLevel.ERROR);
 		}
 		// 绑定邮件数据，存入数据库
-		UserAuth user = userMapper.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID());
+		UserAuth user = userMapper.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId());
 		EmailVerify ev = new EmailVerify();
 		ev.setStatus(EmailVerifyStatus.UNUSED);
 		ev.setExpireTime(DateUtils.addHours(new Date(), EXPIRE_HOURS));
@@ -87,7 +87,7 @@ public class EmailServiceImpl implements IEmailService {
 	@Override
 	public MsgBean sendPasswordResetEmail(String loginName) {
 		// UserAuth user =
-		// userMapper.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID());
+		// userMapper.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId());
 		UserAuth user = userService.queryUserAuthByLoginName(loginName);
 		if (user == null) {
 			return new MsgBean(Code.FAIL, "未找到此账号", MsgLevel.ERROR);

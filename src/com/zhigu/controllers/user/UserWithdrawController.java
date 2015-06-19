@@ -44,7 +44,7 @@ public class UserWithdrawController {
 	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView withdrawList(ModelAndView mv, PageBean page, Integer status) {
-		withdrawService.queryWithdraw(page, SessionHelper.getSessionUser().getUserID(), status);
+		withdrawService.queryWithdraw(page, SessionHelper.getSessionUser().getUserId(), status);
 		List<Withdraw> list = page.getDatas();
 		// 信息隐藏处理
 		if (list != null && !list.isEmpty()) {
@@ -72,7 +72,7 @@ public class UserWithdrawController {
 	 */
 	@RequestMapping(value = "add", method = RequestMethod.GET)
 	public ModelAndView withdrawGet(ModelAndView mv) {
-		Account acc = accountService.queryAccountByUserID(SessionHelper.getSessionUser().getUserID());
+		Account acc = accountService.queryAccountByUserID(SessionHelper.getSessionUser().getUserId());
 		mv.addObject("account", acc);
 		mv.setViewName("/user/withdraw/add");
 		return mv;

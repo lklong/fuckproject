@@ -88,12 +88,24 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public MsgBean saveRechargeRecord(RechargeRecord record) {
-		int row = rechargeRecordMapper.insert(record);
-		if (row != 1) {
+	public MsgBean saveRechargeRecord(int payType, String money) {
+		if (!VerifyUtil.isMoney(money))
+			return new MsgBean(Code.FAIL, "充值金额填写错误！", MsgLevel.ERROR);
+		int userId = SessionHelper.getSessionUser().getUserId();
+		// 保存充值记录
+		RechargeRecord rechargeRecord = new RechargeRecord();
+		rechargeRecord.setRechargeMoney(new BigDecimal(money));
+		rechargeRecord.setUserId(userId);
+		rechargeRecord.setRechargeTime(new Date());
+		rechargeRecord.setOperator(userId);
+		rechargeRecord.setType(payType);
+		rechargeRecord.setPaymentNo(Sequence.generateSeq(SequenceConstant.FLOW));
+
+		int row = rechargeRecordMapper.insert(rechargeRecord);
+		if (row != 1)
 			throw new ServiceException(SystemConstants.DB_UPDATE_FAILED_MSG);
-		}
-		return new MsgBean(Code.SUCCESS, "success", MsgLevel.NORMAL);
+
+		return new MsgBean(Code.SUCCESS, "充值订单已生成！", MsgLevel.NORMAL).setData(rechargeRecord);
 	}
 
 	@Override
@@ -147,7 +159,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	public MsgBean verifyPaypasswd(String payPasswd) {
-		Account account = accountMapper.queryAccountByUserId(SessionHelper.getSessionUser().getUserID());
+		Account account = accountMapper.queryAccountByUserId(SessionHelper.getSessionUser().getUserId());
 		if (StringUtil.isEmpty(account.getPayPasswd())) {
 			return new MsgBean(Code.FAIL, "未设置支付密码，<a href='/user/security/paymentpwd' style='color: red;' target='_blank'>点此去设置 >> </a>", MsgLevel.ERROR);
 		}
@@ -185,7 +197,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	public MsgBean updateBankNo(String bankNo, String bankCardMaster, String captcha, String bankName) {
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 		UserAuth userAuth = userDao.queryUserAuthByUserID(userId);
 
 		MsgBean captchaMsg = phoneSendService.verify(userAuth.getPhone(), PhoneSendType.BANK_BIND, captcha);

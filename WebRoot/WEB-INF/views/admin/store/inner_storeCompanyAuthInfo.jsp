@@ -39,8 +39,12 @@
 		}
 	});
 	function callbackImagePre(json){
-		$("#preImage").attr("src","/"+json.url);
-		$("#image").val(json.url);
+		if(json.code === 1){
+			$("#preImage").attr("src","/"+json.url);
+			$("#image").val(json.url);
+		}else{
+			layer.msg(json.msg)
+		}
 	}
 </script>
 <style type="text/css">

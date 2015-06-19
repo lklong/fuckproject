@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.HtmlUtils;
 
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.SessionUser;
@@ -81,7 +80,7 @@ public class StoreServiceImpl implements IStoreService {
 
 	@Override
 	public MsgBean registerStore(Store store) {
-		store.setUserID(SessionHelper.getSessionUser().getUserID());
+		store.setUserID(SessionHelper.getSessionUser().getUserId());
 		// 默认logo
 		store.setLogoPath("/img/storelogo.jpg");
 		// 输入数据check
@@ -178,7 +177,7 @@ public class StoreServiceImpl implements IStoreService {
 
 	@Override
 	public MsgBean updateStoreBase(Store store) {
-		store.setUserID(SessionHelper.getSessionUser().getUserID());
+		store.setUserID(SessionHelper.getSessionUser().getUserId());
 		Store storeOld = storeDao.queryStoreByUserID(store.getUserID());
 		MsgBean checkResult = this.checkStoreInfo(store, storeOld);
 		if (checkResult.getCode() != Code.SUCCESS) {
@@ -208,20 +207,29 @@ public class StoreServiceImpl implements IStoreService {
 	}
 
 	@Override
-	public void updateStoreDecorate(Store store) {
-		Store storeOld = storeDao.queryStoreByUserID(store.getUserID());
-		if (storeOld != null) {
-			store.setID(storeOld.getID());
-			if (StringUtils.isNotBlank(store.getLogoPath())) {
-				storeOld.setLogoPath(store.getLogoPath());
-			}
-			if (StringUtils.isNotBlank(store.getSignagePath())) {
-				storeOld.setSignagePath(store.getSignagePath());
-			}
-			// html 标签转义保存
-			storeOld.setIntroduction(HtmlUtils.htmlEscape(store.getIntroduction()));
-			storeDao.updateStore(storeOld);
+	public MsgBean updateStoreDecorate(Store store) {
+		Store storeOld = storeDao.queryStoreByID(store.getID());
+		if (storeOld == null || storeOld.getUserID() != SessionHelper.getSessionUser().getUserId()) {
+			return new MsgBean(Code.FAIL, "未找到店铺", MsgLevel.ERROR);
 		}
+		if (StringUtils.isNotBlank(store.getSignagePath())) {
+			storeOld.setSignagePath(store.getSignagePath());
+		}
+		if (StringUtils.isNotBlank(store.getLogoBackPic())) {
+			storeOld.setLogoBackPic(store.getLogoBackPic());
+		}
+		if (StringUtils.isNotBlank(store.getLogoPath())) {
+			storeOld.setLogoPath(store.getLogoPath());
+		}
+		if (StringUtils.isNotBlank(store.getNavColor())) {
+			storeOld.setNavColor(store.getNavColor());
+		}
+		storeDao.updateStore(storeOld);
+		return new MsgBean(Code.SUCCESS, "修改成功", MsgLevel.NORMAL);
+	}
+
+	public void updateStoreDecorate2(Store store) {
+		storeDao.updateStore(store);
 	}
 
 	@Override
@@ -238,7 +246,7 @@ public class StoreServiceImpl implements IStoreService {
 			return null;
 		SessionUser loginUser = SessionHelper.getSessionUser();
 		if (loginUser != null && store != null) {
-			Favourite favourite = favouriteDao.queryFavourite(loginUser.getUserID(), storeID, FavouriteType.STORE.getValue());
+			Favourite favourite = favouriteDao.queryFavourite(loginUser.getUserId(), storeID, FavouriteType.STORE.getValue());
 			store.setIsFavourite(favourite == null ? 0 : 1);
 		}
 		GoodsCondition gc = new GoodsCondition();
@@ -309,7 +317,7 @@ public class StoreServiceImpl implements IStoreService {
 	@Override
 	public MsgBean updateRefreshDate() {
 		SessionUser sessionUser = SessionHelper.getSessionUser();
-		int userId = sessionUser.getUserID();
+		int userId = sessionUser.getUserId();
 		Integer storeId = sessionUser.getStoreId();
 		Date now = new Date();
 		int refreshCount = goodsAndStoreRefreshMapper.countNum(DateUtil.format(now, DateUtil.yyyy_MM_dd), userId, null, storeId);
@@ -327,6 +335,11 @@ public class StoreServiceImpl implements IStoreService {
 			storeDao.updateStoreRefreshDateByStoreId(now, storeId);
 			return new MsgBean(Code.SUCCESS, "刷新成功，今天还可刷新 " + (usableRefreshNum - 1) + " 次", MsgLevel.NORMAL);
 		}
+	}
+
+	@Override
+	public Integer checkStoreExist(Integer userId, Integer storeId) {
+		return storeDao.checkStoreExist(userId, storeId);
 	}
 
 }

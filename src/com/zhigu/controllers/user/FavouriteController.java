@@ -52,7 +52,7 @@ public class FavouriteController {
 		SessionUser user = SessionHelper.getSessionUser();
 		Favourite favourite = null;
 		if (user != null)
-			favourite = favouriteService.queryFavourite(user.getUserID(), fID, type);
+			favourite = favouriteService.queryFavourite(user.getUserId(), fID, type);
 		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(favourite == null ? false : true);
 	}
 
@@ -65,7 +65,7 @@ public class FavouriteController {
 	@RequestMapping("/favouriteGoods")
 	public ModelAndView favouritecmmodity(ModelAndView mv) {
 		mv.setViewName("user/favouritegoods");
-		List list = favouriteService.queryFavouriteGoods(SessionHelper.getSessionUser().getUserID());
+		List list = favouriteService.queryFavouriteGoods(SessionHelper.getSessionUser().getUserId());
 		mv.addObject("goodsList", list);
 		return mv;
 	}
@@ -79,7 +79,7 @@ public class FavouriteController {
 	@RequestMapping("/favouritestore")
 	public ModelAndView favouriteStore(ModelAndView mv) {
 		mv.setViewName("/user/favouritestore");
-		List<Store> list = favouriteService.queryFavouriteStore(SessionHelper.getSessionUser().getUserID());
+		List<Store> list = favouriteService.queryFavouriteStore(SessionHelper.getSessionUser().getUserId());
 		// 查询店铺的商品
 		for (Store s : list) {
 			PageBean page = new PageBean();
@@ -101,7 +101,7 @@ public class FavouriteController {
 	@RequestMapping("/boughtstore")
 	public ModelAndView boughtStore(ModelAndView mv) {
 		mv.setViewName("/user/boughtstore");
-		List<Store> list = favouriteService.queryBoughtStore(SessionHelper.getSessionUser().getUserID());
+		List<Store> list = favouriteService.queryBoughtStore(SessionHelper.getSessionUser().getUserId());
 		// 查询店铺的商品
 		for (Store s : list) {
 			PageBean page = new PageBean();
@@ -126,7 +126,7 @@ public class FavouriteController {
 	 * { if (SessionHelper.getSessionUser() == null) { return new
 	 * MsgBean(Code.FAIL, "未登录！", MsgLevel.ERROR); }
 	 * favouriteService.addFavouriteCommodity
-	 * (SessionHelper.getSessionUser().getUserID(), goodsID); return new
+	 * (SessionHelper.getSessionUser().getUserId(), goodsID); return new
 	 * MsgBean(Code.SUCCESS, "收藏成功！", MsgLevel.NORMAL); }
 	 */
 	@RequestMapping("/addFavouriteGoods")
@@ -142,7 +142,7 @@ public class FavouriteController {
 
 		for (String goodsId : idSet) {
 			if (StringUtils.isNotBlank(goodsId)) {
-				favouriteService.addFavouriteCommodity(SessionHelper.getSessionUser().getUserID(), Integer.valueOf(goodsId));
+				favouriteService.addFavouriteCommodity(SessionHelper.getSessionUser().getUserId(), Integer.valueOf(goodsId));
 			}
 		}
 		MsgBean msgBean = new MsgBean(Code.SUCCESS, "收藏成功！", MsgLevel.NORMAL);
@@ -162,10 +162,10 @@ public class FavouriteController {
 			return new MsgBean(Code.FAIL, "未登录！", MsgLevel.ERROR);
 		}
 		Store store = storeService.queryStoreByID(storeID);
-		if (SessionHelper.getSessionUser().getUserID() == store.getUserID()) {
+		if (SessionHelper.getSessionUser().getUserId() == store.getUserID()) {
 			return new MsgBean(Code.FAIL, "收藏失败，不能收藏自己！", MsgLevel.ERROR);
 		} else {
-			favouriteService.addFavouriteStore(SessionHelper.getSessionUser().getUserID(), storeID);
+			favouriteService.addFavouriteStore(SessionHelper.getSessionUser().getUserId(), storeID);
 			return new MsgBean(Code.SUCCESS, "收藏成功！", MsgLevel.NORMAL);
 		}
 	}
@@ -176,7 +176,7 @@ public class FavouriteController {
 	@RequestMapping("/delFavouriteGoods")
 	@ResponseBody
 	public MsgBean delFavouriteGoods(@RequestParam(required = false) int[] goodsID) {
-		favouriteService.deleteFavouriteCommodity(SessionHelper.getSessionUser().getUserID(), goodsID);
+		favouriteService.deleteFavouriteCommodity(SessionHelper.getSessionUser().getUserId(), goodsID);
 		return new MsgBean(Code.SUCCESS, "删除收藏商品成功！", MsgLevel.NORMAL);
 	}
 
@@ -186,7 +186,7 @@ public class FavouriteController {
 	@RequestMapping("/delFavouriteStore")
 	@ResponseBody
 	public String delFavouriteStore(@RequestParam(required = false) int[] storeID) {
-		favouriteService.deleteFavouriteStore(SessionHelper.getSessionUser().getUserID(), storeID);
+		favouriteService.deleteFavouriteStore(SessionHelper.getSessionUser().getUserId(), storeID);
 		return "200";
 	}
 
@@ -196,7 +196,7 @@ public class FavouriteController {
 	@RequestMapping("/delBoughtStoree")
 	@ResponseBody
 	public String delBoughtStoree(@RequestParam(required = false) int[] storeID) {
-		favouriteService.deleteBoughtStoree(SessionHelper.getSessionUser().getUserID(), storeID);
+		favouriteService.deleteBoughtStoree(SessionHelper.getSessionUser().getUserId(), storeID);
 		return "200";
 	}
 }

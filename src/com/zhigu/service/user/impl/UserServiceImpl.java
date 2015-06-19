@@ -22,7 +22,6 @@ import com.zhigu.common.SessionUser;
 import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.Common;
 import com.zhigu.common.constant.CookieKey;
-import com.zhigu.common.constant.Flg;
 import com.zhigu.common.constant.SystemConstants;
 import com.zhigu.common.constant.UserAuthStatus;
 import com.zhigu.common.constant.UserType;
@@ -145,7 +144,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public MsgBean updateLoginPwd(String oldPassword, String newPassword) {
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 
 		UserAuth auth = userDao.queryUserAuthByUserID(userId);
 		// 存在原始密码，则要求传入旧密码
@@ -255,7 +254,7 @@ public class UserServiceImpl implements IUserService {
 		UserInfo info = queryUserInfoById(userID);
 
 		SessionUser sess = new SessionUser();
-		sess.setUserID(userID);
+		sess.setUserId(userID);
 		sess.setUsername(auth.getUsername());
 		if (info.getAvatar() != null) {
 			sess.setAvatar(info.getAvatar());
@@ -272,7 +271,7 @@ public class UserServiceImpl implements IUserService {
 	public void refreshSessionUser() {
 		SessionUser su = SessionHelper.getSessionUser();
 		if (su != null)
-			SessionHelper.setSessionUser(this.getSessionUser(su.getUserID()));
+			SessionHelper.setSessionUser(this.getSessionUser(su.getUserId()));
 	}
 
 	@Override
@@ -291,7 +290,7 @@ public class UserServiceImpl implements IUserService {
 		// 用户名或错误
 		if (auth == null || !Md5.convert(password, auth.getSalt()).equals(auth.getPassword())) {
 			if (auth != null) {
-				loginFailLog(auth.getUserID());
+				loginFailLog(auth.getUserID(), false);
 			}
 			return new MsgBean(Code.FAIL, "用户名或密码填写错误！", MsgLevel.ERROR);
 		}
@@ -321,7 +320,7 @@ public class UserServiceImpl implements IUserService {
 				logger.warn("encode error", e);
 			}
 		}
-		return new MsgBean(Code.SUCCESS, "登陆成功", MsgLevel.NORMAL);
+		return new MsgBean(Code.SUCCESS, "登陆成功", MsgLevel.NORMAL).setData(userDao.queryUserInfoById(auth.getUserID()));
 	}
 
 	@Override
@@ -384,32 +383,23 @@ public class UserServiceImpl implements IUserService {
 		SessionUser sess = SessionHelper.getSessionUser();
 		if (sess == null)
 			return;
-
 		// 添加登陆日志
-		HttpServletRequest request = SessionHelper.getRequest();
-
-		LoginLog loginLog = new LoginLog();
-		loginLog.setUserID(sess.getUserID());
-		loginLog.setLoginDate(new Date());
-		loginLog.setIP(NetUtil.getIpAddr(request));
-		loginLog.setBrowser(request.getHeader("User-Agent"));
-		loginLog.setLoginStatus(Flg.ON);
-		loginLogService.addLoginLog(loginLog);
+		loginFailLog(sess.getUserId(), true);
 	}
 
 	/**
 	 * 登录日志
 	 */
-	private void loginFailLog(int userID) {
+	private void loginFailLog(int userID, boolean success) {
 		// 添加登陆日志
 		HttpServletRequest request = SessionHelper.getRequest();
 
 		LoginLog loginLog = new LoginLog();
-		loginLog.setUserID(userID);
-		loginLog.setLoginDate(new Date());
-		loginLog.setIP(NetUtil.getIpAddr(request));
+		loginLog.setUserId(userID);
+		loginLog.setLoginTime(new Date());
+		loginLog.setIp(NetUtil.getIpAddr(request));
 		loginLog.setBrowser(request.getHeader("User-Agent"));
-		loginLog.setLoginStatus(Flg.OFF);
+		loginLog.setSuccess(success);
 		loginLogService.addLoginLog(loginLog);
 	}
 

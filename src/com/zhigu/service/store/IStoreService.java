@@ -62,7 +62,7 @@ public interface IStoreService {
 	 * 
 	 * @param store
 	 */
-	public void updateStoreDecorate(Store store);
+	public MsgBean updateStoreDecorate(Store store);
 
 	/**
 	 * 修改店铺正式会员flg
@@ -127,4 +127,20 @@ public interface IStoreService {
 	 * @return
 	 */
 	public MsgBean updateRefreshDate();
+
+	/**
+	 * 检查用户的店铺是否存在
+	 * 
+	 * @param userId
+	 * @param storeId
+	 * @return
+	 */
+	public Integer checkStoreExist(Integer userId, Integer storeId);
+
+	/**
+	 * 更新店铺装饰
+	 * 
+	 * @param store
+	 */
+	void updateStoreDecorate2(Store store);
 }

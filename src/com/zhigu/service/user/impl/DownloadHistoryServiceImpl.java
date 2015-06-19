@@ -40,7 +40,7 @@ public class DownloadHistoryServiceImpl implements IDownloadHistoryService {
 			if (_downloadHistory == null) {
 				// 添加下载历史
 				DownloadHistory downloadHistory = new DownloadHistory();
-				downloadHistory.setUserID(SessionHelper.getSessionUser().getUserID());
+				downloadHistory.setUserID(SessionHelper.getSessionUser().getUserId());
 				downloadHistory.setGoodsID(goodsID);
 				downloadHistory.setGoodsName(goods.getName());
 				downloadHistory.setStoreID(goods.getStoreId());

@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.enumconst.GoodsStatus;
+import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.utils.StringUtil;
-import com.zhigu.model.Category;
 import com.zhigu.model.Goods;
 import com.zhigu.model.GoodsCondition;
 import com.zhigu.model.GoodsProperty;
-import com.zhigu.model.GoodsSku;
 import com.zhigu.model.PageBean;
+import com.zhigu.model.dto.MsgBean;
 import com.zhigu.service.goods.ICategoryService;
 import com.zhigu.service.goods.IGoodsService;
 
@@ -42,7 +43,7 @@ public class MobileGoodsController {
 	 */
 	@RequestMapping("/goodsList")
 	@ResponseBody
-	public List<Goods> goodsList(int pageNo, @RequestParam(required = false) String goodsName, @RequestParam(required = false) String[] condition, @RequestParam(required = false) Integer categoryID,
+	public MsgBean goodsList(int pageNo, @RequestParam(required = false) String goodsName, @RequestParam(required = false) String[] condition, @RequestParam(required = false) Integer categoryID,
 			@RequestParam(required = false) Integer sort) {
 		PageBean page = new PageBean();
 		page.setPageNo(pageNo);
@@ -71,7 +72,7 @@ public class MobileGoodsController {
 		gc.setCategoryId(categoryID);
 		gc.setStatus(GoodsStatus.NORMAL.getValue());
 		List<Goods> goodsList = goodsService.queryGoodsList(gc, page);
-		return goodsList;
+		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(goodsList);
 	}
 
 	/**
@@ -82,9 +83,8 @@ public class MobileGoodsController {
 	 */
 	@RequestMapping("/detail")
 	@ResponseBody
-	public Goods detail(Integer goodsId) {
-		Goods goods = goodsService.queryGoods(goodsId);
-		return goods;
+	public MsgBean detail(Integer goodsId) {
+		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(goodsService.queryGoods(goodsId));
 	}
 
 	/**
@@ -95,9 +95,8 @@ public class MobileGoodsController {
 	 */
 	@RequestMapping("/getCategoryByID")
 	@ResponseBody
-	public Category getCategoryByID(int categoryID) {
-		Category categorie = categoryService.queryCategoryById(categoryID);
-		return categorie;
+	public MsgBean getCategoryByID(int categoryID) {
+		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(categoryService.queryCategoryById(categoryID));
 	}
 
 	/**
@@ -108,9 +107,8 @@ public class MobileGoodsController {
 	 */
 	@RequestMapping("/getCategoryByParent")
 	@ResponseBody
-	public List<Category> getCategoryByParent(int categoryID) {
-		List<Category> categories = categoryService.queryCategoryByParent(categoryID);
-		return categories;
+	public MsgBean getCategoryByParent(int categoryID) {
+		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(categoryService.queryCategoryByParent(categoryID));
 	}
 
 	/**
@@ -121,7 +119,7 @@ public class MobileGoodsController {
 	 */
 	@RequestMapping("/queryGoodsSku")
 	@ResponseBody
-	public List<GoodsSku> queryGoodsSku(int goodsID) {
-		return goodsService.queryGoodsSkus(goodsID);
+	public MsgBean queryGoodsSku(int goodsID) {
+		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(goodsService.queryGoodsSkus(goodsID));
 	}
 }

@@ -36,7 +36,7 @@ public class OpenUserServiceImpl implements IOpenUserService {
 		if (loginMsg.getCode() == Code.SUCCESS) {
 			// 执行绑定
 			OpenUser openUser = new OpenUser();
-			openUser.setUserId(SessionHelper.getSessionUser().getUserID());
+			openUser.setUserId(SessionHelper.getSessionUser().getUserId());
 			openUser.setOpenId(openId);
 			openUser.setAddTime(new Date());
 			openUserMapper.insert(openUser);

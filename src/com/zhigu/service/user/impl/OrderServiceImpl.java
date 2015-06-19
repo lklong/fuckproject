@@ -258,7 +258,7 @@ public class OrderServiceImpl implements IOrderService {
 	}
 
 	public LogisticsDto getExpressMoney(int addressId, int logisticsId, BigDecimal weight) {
-		Address address = addressMapper.selectAddressByUserIdAndId(SessionHelper.getSessionUser().getUserID(), addressId);
+		Address address = addressMapper.selectAddressByUserIdAndId(SessionHelper.getSessionUser().getUserId(), addressId);
 		if (address == null) {
 			throw new ServiceException("收货地址错误");
 		}
@@ -634,7 +634,7 @@ public class OrderServiceImpl implements IOrderService {
 		}
 		// 所有者检查
 		if (!isAdmin) {
-			if (order.getStoreUserID() != SessionHelper.getSessionUser().getUserID()) {
+			if (order.getStoreUserID() != SessionHelper.getSessionUser().getUserId()) {
 				throw new ServiceException("只有卖家才能修改金额！");
 			}
 		}
@@ -671,7 +671,7 @@ public class OrderServiceImpl implements IOrderService {
 		} else {
 			// 供货处理发货
 			Store store = storeDao.queryStoreByID(order.getStoreID());
-			if (store.getUserID() != SessionHelper.getSessionUser().getUserID()) {
+			if (store.getUserID() != SessionHelper.getSessionUser().getUserId()) {
 				return new MsgBean(Code.FAIL, "非法操作！", MsgLevel.ERROR);
 			}
 		}

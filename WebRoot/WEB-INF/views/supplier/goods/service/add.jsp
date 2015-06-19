@@ -16,16 +16,9 @@
 	<div class="body_center2 fl p10 ml10"  id="alldd">
 		<div class="wdddbj over_hid">
 			<ul class="allqunbudd over_hid">
-				<c:choose>
-					<c:when test="${sessionScope.sessionUser.userID==0&&sessionScope.sessionUser.fakeUserID>0 }">
-						<li><a href="javascript:void(0)" class="sected">代发布商品</a></li>
-					</c:when>
-					<c:otherwise>
-						<li><a href="javascript:void(0)" class="sected">商品发布</a></li>
-						<li><a href="supplier/goods/list?status=1">出售中的商品</a></li>
-						<li><a href="supplier/goods/list?status=2">下架的商品</a></li>
-					</c:otherwise>
-				</c:choose>
+				<li><a href="javascript:void(0)" class="sected">商品发布</a></li>
+				<li><a href="supplier/goods/list?status=1">出售中的商品</a></li>
+				<li><a href="supplier/goods/list?status=2">下架的商品</a></li>
 			</ul>		  	
 		</div>
 		<div class="jibenxinxi ml20">

@@ -1,21 +1,56 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script type="text/javascript" src="/js/3rdparty/layer1.9/layer.js"></script>
+<style type="text/css">
+	.checked_area{
+		background-color: gray;
+	}
+</style>
 <!-- 顶部功能条 -->
 
 <div class="header">
 	<div class="wrapper">
 		<div class="pos-drop fl">
-			您所在的位置：
+			<div class="fl">您所在的位置：</div>
+			<form class="hidden" id="area_form"  method="post">
+				<input name="city" value="${geoVO.city}"/>
+				<input name="province" value="${geoVO.province}"/>
+				<input name="district" value="${geoVO.district}"/>
+				<input name="cityCode"/>
+				<input name="provinceCode"/>
+				<input name="districtCode"/>
+				<input name=""/>
+			</form>
 			<div class="pos-select-list">
 				<p id="pos-cur">
-					<span id="pos-span">成都</span><i></i>
+					<!-- 当前城市 -->
+					<span id="JS-span-province" class="fl ml5" data-level="1">${geoVO.province}</span>
+					<span id="JS-span-city" class="fl ml5" data-level="2">${geoVO.city}</span>
+					<span id="JS-span-area" class="fl ml5" data-level="3">${geoVO.district}</span>
+					<i title="选择"></i>
 				</p>
-				<ul id="pos-ul">
-					<li>成都</li>
-					<li>武汉</li>
-					<li>南京</li>
-					<li>长沙</li>
-				</ul>
+				<div id="JS-pos-div">
+					<!-- 省(选项卡标题) -->
+					<div id="JS-pos-head">
+						<ul class="pos-tab">
+							<!-- <li class="curr li_province" data-level="1">四川省</li>
+							<li class="li_city" data-level="2">请选择</li>
+							<li class="li_district" data-level="3">请选择</li> -->
+						</ul>
+					</div>
+					<div id="JS-pos-province" class="">
+						<ul class="pos-content" data-level="1">
+						</ul>
+					</div>
+					<div id="JS-pos-city" class="">
+						<ul class="pos-content" data-level="2">
+						</ul>
+					</div>
+					<div id="JS-pos-area" class="">
+						<ul class="pos-content" data-level="3">
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="loginbar fr">
@@ -213,7 +248,7 @@
 			<div class="search-input-div fl">
 				<form id="head_search_form" action="/home/search" method="post">
 					<input name="goodsName" id="keyword" type="text"
-						class="search-input" value="输入商品名或货号" maxlength="30">
+						class="search-input" placeholder="输入商品名或货号" maxlength="30">
 				</form>
 				<div class="search-selector">
 					<div id="search-selector-cur">商品</div>

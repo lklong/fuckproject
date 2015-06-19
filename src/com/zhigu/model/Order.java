@@ -79,7 +79,7 @@ public class Order implements Serializable {
 	private String statusLabel;// 状态标签
 	private int styleNum;// 款式数量，一个商品算一款
 	private int quantity;// 商品数量，一个扩展算一个
-	private String username;// 购买都帐号（应该是昵称）
+	private String username;// 购买者帐号（应该是昵称）
 	private int supplierType;
 
 	private String LogisticsName;// 物流名称
@@ -265,10 +265,6 @@ public class Order implements Serializable {
 		return OrderStatus.getNameByValue(status);
 	}
 
-	public void setStatusLabel(String statusLabel) {
-		this.statusLabel = statusLabel;
-	}
-
 	public BigDecimal getLogisticsMoney() {
 		return logisticsMoney;
 	}
@@ -345,6 +341,10 @@ public class Order implements Serializable {
 
 	public void setSupplierType(int supplierType) {
 		this.supplierType = supplierType;
+	}
+
+	public void setStatusLabel(String statusLabel) {
+		this.statusLabel = statusLabel;
 	}
 
 	public void setStyleNum(int styleNum) {

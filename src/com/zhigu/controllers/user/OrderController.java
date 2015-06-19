@@ -83,7 +83,7 @@ public class OrderController {
 	public ModelAndView orderList(ModelAndView mv, OrderCondition oc, String startDateStr, String endDateStr, PageBean<Order> page) throws ParseException {
 		page.setPageSize(5);
 
-		oc.setUserID(SessionHelper.getSessionUser().getUserID());
+		oc.setUserID(SessionHelper.getSessionUser().getUserId());
 		oc.setUserType(UserType.USER);
 		if (StringUtils.isNotBlank(startDateStr)) {
 			oc.setStartDate(DateUtils.parseDate(startDateStr, "yyyy-MM-dd"));
@@ -108,7 +108,7 @@ public class OrderController {
 	 */
 	@RequestMapping(value = "/confirm", method = RequestMethod.GET)
 	public ModelAndView confirmOrder(ModelAndView mv) {
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 		// 收货地址
 		// List<Address> address =
 		// shippingAddressService.queryAddressByUserID(userId);
@@ -136,7 +136,7 @@ public class OrderController {
 		// }
 		// List<Order> orders = club.getOrders();
 		List<Order> orders = JSON.parseArray(ordersJson, Order.class);
-		return orderService.saveOrders(SessionHelper.getSessionUser().getUserID(), addressId, orders);
+		return orderService.saveOrders(SessionHelper.getSessionUser().getUserId(), addressId, orders);
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class OrderController {
 		mv.setViewName("/user/order/detail");
 		// 非自己订单不显示，商家暂不考虑
 		Order order = orderService.queryOrder(orderID);
-		if (order != null && order.getUserID() == SessionHelper.getSessionUser().getUserID()) {
+		if (order != null && order.getUserID() == SessionHelper.getSessionUser().getUserId()) {
 			mv.addObject("order", order);
 			mv.addObject("store", storeService.queryStoreByID(order.getStoreID()));
 		}
@@ -187,7 +187,7 @@ public class OrderController {
 	 */
 	@RequestMapping("/pay")
 	public ModelAndView pay(ModelAndView mv, String[] orderNo) {
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userID = SessionHelper.getSessionUser().getUserId();
 		if (orderNo == null || orderNo.length == 0) {
 			throw new ServiceException("未找到订单");
 		}
@@ -249,7 +249,7 @@ public class OrderController {
 			throw new ServiceException("数据验证错误");
 		}
 		payPasswd = StringUtil.decryptBASE64(payPasswd);
-		MsgBean msgBean = orderService.handlerPaymentOrder(SessionHelper.getSessionUser().getUserID(), orderNo, payPasswd);
+		MsgBean msgBean = orderService.handlerPaymentOrder(SessionHelper.getSessionUser().getUserId(), orderNo, payPasswd);
 		if (msgBean.getCode() == Code.FAIL) {
 			attr.addFlashAttribute("msg", msgBean.getMsg());
 			StringBuilder urlParams = new StringBuilder();
@@ -278,7 +278,7 @@ public class OrderController {
 	@RequestMapping("/cancel")
 	@ResponseBody
 	public MsgBean cancelOrder(String orderNo) {
-		return orderService.handlerCancelOrder(orderNo, SessionHelper.getSessionUser().getUserID());
+		return orderService.handlerCancelOrder(orderNo, SessionHelper.getSessionUser().getUserId());
 	}
 
 	/**
@@ -296,7 +296,7 @@ public class OrderController {
 		if (verifyPaypasswd.getCode() != Code.SUCCESS) {
 			return verifyPaypasswd;
 		}
-		return orderService.handlerConfirmReceipt(SessionHelper.getSessionUser().getUserID(), orderID);
+		return orderService.handlerConfirmReceipt(SessionHelper.getSessionUser().getUserId(), orderID);
 	}
 
 	@Autowired

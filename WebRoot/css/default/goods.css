@@ -13,6 +13,7 @@
 	clear: both;
 	height: 245px;
 	padding-top: 15px;
+	width:100%;
 }
 .shop-nav-inner {
 	width: 100%;
@@ -238,8 +239,9 @@ a.add_fav:hover {
 /* 店铺顶部 */
 .shop-banner {
 	height: 150px;
-	background: url(../../img/default/shop_banner.jpg) no-repeat center top;
+	background: url(../../img/default/shop_banner.jpg) repeat-x center top;
 	position: relative;
+	width:100%;
 }
 .shop-info-panel {
 	position: absolute;
@@ -281,17 +283,23 @@ a.add_fav:hover {
 	border-bottom: 1px dotted #f0f0f0;
 }
 .chuchuang li {
+	position: relative;
 	width: 158px;
 	margin: 0 auto;
 	border-bottom: 1px dotted #dedede;
-	padding-bottom: 15px;
+	padding-bottom: 5px;
 	padding-top: 15px;
 }
 .chuchuang li img {
-	border: 1px solid #f0f0f0;
+	border: 1px solid #f0f0f0; 
 }
 .chuchuang li p {
-	padding-top: 2px;
+  position: relative;
+ 	height: 18px; 
+ 	line-height:18px;
+ 	text-align:center;
+ 	  background-color:#efefda;
+/* 	padding-top: 2px; */
 }
 .priceAlert {
 	width: 151px;

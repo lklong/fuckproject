@@ -20,17 +20,6 @@ import com.zhigu.model.dto.MsgBean;
 public interface ZhiguFileService {
 
 	/**
-	 * 文件处理，保存
-	 * 
-	 * @param file
-	 * @param specs
-	 * @param specType
-	 * @return
-	 * @throws IOException
-	 */
-	MsgBean saveImage2(MultipartFile file, String[] specs, String specType, Integer minWidth, Integer maxWidth, String fileNamePrefix) throws IOException;
-
-	/**
 	 * 保存数据包
 	 * 
 	 * @param file
@@ -39,6 +28,15 @@ public interface ZhiguFileService {
 	 */
 	MsgBean saveData(MultipartFile file) throws IOException;
 
-//	MsgBean saveImage(MultipartFile file, String[] specs, String specType, Integer minWidth, Integer maxWidth, String fileNamePrefix) throws IOException;
+	/**
+	 * 保存图片
+	 * 
+	 * @param file
+	 * @param type
+	 * @param fileNamePrefix
+	 * @return
+	 * @throws IOException
+	 */
+	MsgBean saveImage(MultipartFile file, Integer type) throws IOException;
 
 }

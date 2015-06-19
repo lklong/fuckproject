@@ -107,7 +107,7 @@ public class TaobaoGoodsController {
 
 		SessionUser user = SessionHelper.getSessionUser();
 
-		int userId = user.getUserID();
+		int userId = user.getUserId();
 
 		session.setAttribute(String.valueOf(userId), goodsId);
 
@@ -142,7 +142,7 @@ public class TaobaoGoodsController {
 
 		SessionUser user = SessionHelper.getSessionUser();
 
-		int userId = user.getUserID();
+		int userId = user.getUserId();
 
 		session.setAttribute(String.valueOf(userId), goodsId);
 
@@ -169,7 +169,7 @@ public class TaobaoGoodsController {
 
 		SessionUser sessionUser = SessionHelper.getSessionUser();
 
-		Integer userId = sessionUser.getUserID();
+		Integer userId = sessionUser.getUserId();
 
 		Object _goodsId = session.getAttribute(userId.toString());
 

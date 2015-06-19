@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.constant.Code;
+import com.zhigu.common.constant.enumconst.ImageSource;
 import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.utils.DateUtil;
 import com.zhigu.common.utils.ImageUtil;
@@ -55,13 +56,12 @@ public class UploadController {
 	/** 文件保存路径 */
 	private static final String UPLOAD = "upload";
 
+	@Autowired
+	private IUserService userService;
+
 	/** 文件上传业务处理 */
 	@Autowired
 	private ZhiguFileService zhiguFileService;
-
-	/** 头像处理 */
-	@Autowired
-	private IUserService userService;
 
 	// 缓存文件头信息-文件头信息
 	public static final HashMap<String, String> mFileTypes = new HashMap<String, String>();
@@ -98,70 +98,40 @@ public class UploadController {
 	}
 
 	/**
-	 * 上传图片
+	 * 店铺图片处理
 	 * 
 	 * @param file
-	 *            图片文件,保存到zhiguConfig.save_file_root+年+月
-	 * @param spec
-	 *            非必须 最多3个，生成小图的规格："320x320"
-	 * @param specType
-	 *            非必须 规格类型：1-根据规格生成小图（默认）
-	 * @return msgBean.data :
-	 *         ZhiguFile，有规格的在url后加规格获取。eg:123.jpg--->123.jpg_320x320.jpg
+	 * @param type
+	 * @return
 	 */
-	@RequestMapping(value = "/img", method = RequestMethod.POST)
+	@RequestMapping(value = "/store/img", method = RequestMethod.POST)
 	@ResponseBody
-	public MsgBean img(MultipartFile file, @RequestParam(required = false) String[] specs, @RequestParam(required = false, defaultValue = "1") String specType) {
+	public MsgBean uploadStoreImg(MultipartFile file, Integer source) {
 		try {
-			// return zhiguFileService.saveImage(file, null, "1", 975,
-			// "goods_d");
-			return zhiguFileService.saveImage2(file, specs, "1", null, 975, null);
+			return zhiguFileService.saveImage(file, source);
 		} catch (IOException e) {
 			return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
 		}
 	}
 
 	/**
-	 * 上传图片
-	 * 
-	 * @param file
-	 *            图片文件,保存到zhiguConfig.save_file_root+年+月
-	 * @param spec
-	 *            非必须 最多3个，生成小图的规格："320x320"
-	 * @param specType
-	 *            非必须 规格类型：1-根据规格生成小图（默认）
-	 * @return msgBean.data :
-	 *         ZhiguFile，有规格的在url后加规格获取。eg:123.jpg--->123.jpg_320x320.jpg
-	 */
-	@RequestMapping(value = "/img/goods/main", method = RequestMethod.POST)
-	@ResponseBody
-	public MsgBean goodsMain(MultipartFile file) {
-		String[] specs = new String[] { "285x285", "160x160" };
-		try {
-			return zhiguFileService.saveImage2(file, specs, "1", 430, 430 * 3, "goodsm_");
-		} catch (IOException e) {
-			return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
-		}
-	}
-
-	/**
-	 * 数据包上传
+	 * 商品图片处理
 	 * 
 	 * @param file
 	 * @return
 	 */
-	@RequestMapping(value = "/data", method = RequestMethod.POST)
+	@RequestMapping(value = "/img/goods/main", method = RequestMethod.POST)
 	@ResponseBody
-	public MsgBean data(MultipartFile file) {
+	public MsgBean goodsMain(MultipartFile file) {
 		try {
-			return zhiguFileService.saveData(file);
+			return zhiguFileService.saveImage(file, ImageSource.Goods_Main.getType());
 		} catch (IOException e) {
-			return new MsgBean(Code.FAIL, "数据包保存失败，请重试", MsgLevel.ERROR);
+			return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
 		}
 	}
 
 	/**
-	 * 上传描述图片
+	 * 描述图片处理
 	 * 
 	 * @param file
 	 * @return
@@ -174,8 +144,7 @@ public class UploadController {
 		UeditorImage ueditorImage = new UeditorImage();
 		try {
 
-			MsgBean msgBean = zhiguFileService.saveImage2(upfile, null, "1", null, 975, "goodsd_");
-
+			MsgBean msgBean = zhiguFileService.saveImage(upfile, ImageSource.Goods_Description.getType());
 			if (msgBean.getCode() == Code.SUCCESS) {
 
 				ueditorImage.setState("SUCCESS");
@@ -197,6 +166,22 @@ public class UploadController {
 	}
 
 	/**
+	 * 数据包上传
+	 * 
+	 * @param file
+	 * @return
+	 */
+	@RequestMapping(value = "/data", method = RequestMethod.POST)
+	@ResponseBody
+	public MsgBean data(MultipartFile file) {
+		try {
+			return zhiguFileService.saveData(file);
+		} catch (IOException e) {
+			return new MsgBean(Code.FAIL, "数据包保存失败，请重试", MsgLevel.ERROR);
+		}
+	}
+
+	/**
 	 * 头像上传
 	 * 
 	 * @return
@@ -207,7 +192,7 @@ public class UploadController {
 	@ResponseBody
 	public MsgBean avatar(@RequestParam(value = "__avatar1", required = false) MultipartFile file) throws IllegalStateException, IOException {
 
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 		String dir = UPLOAD + "/" + DateUtil.format(new Date(), "yyyyMM") + "/";
 		String savePath = UploadFileUtil.saveFile(file, dir, "avatar_" + UUID.randomUUID());
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -222,7 +207,7 @@ public class UploadController {
 	@ResponseBody
 	public MsgBean imgUserCard(@RequestParam("file") MultipartFile file) {
 		try {
-			return zhiguFileService.saveImage2(file, null, "1", null, 800, "cd_");
+			return zhiguFileService.saveImage(file, ImageSource.User_Card.getType());
 		} catch (IOException e) {
 			return new MsgBean(Code.FAIL, "图片保存失败，请重试", MsgLevel.ERROR);
 		}
@@ -240,18 +225,21 @@ public class UploadController {
 	@RequestMapping(value = "/uploadImageFile", method = RequestMethod.POST)
 	public void uploadLogoFile(@RequestParam("preImageFile") MultipartFile logoFile, String callBackFun, HttpServletResponse response) throws IOException {
 		JSONObject json = new JSONObject();
+
 		try {
-			MsgBean msg = zhiguFileService.saveImage2(logoFile, null, "1", null, 800, null);
-			ZhiguFile zf = (ZhiguFile) msg.getData();
-			try {
+			MsgBean msg = zhiguFileService.saveImage(logoFile, ImageSource.User_Certificate.getType());
+			if (msg.getCode() == Code.SUCCESS) {
+				ZhiguFile zf = (ZhiguFile) msg.getData();
 				// 画水印
 				ImageUtil.pressText(zf.getRealPath(), "www.zhiguw.com");
-			} catch (IOException e) {
+				json.put("code", Code.SUCCESS);
+				json.put("url", zf.getUri());
 
+			} else {
+				json.put("code", Code.FAIL);
+				json.put("msg", msg.getMsg());
 			}
 
-			json.put("code", Code.SUCCESS);
-			json.put("url", zf.getUri());
 		} catch (IOException e) {
 			json.put("code", Code.FAIL);
 			json.put("msg", "图片保存失败，请重试");

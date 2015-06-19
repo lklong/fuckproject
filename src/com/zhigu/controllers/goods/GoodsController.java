@@ -514,7 +514,7 @@ public class GoodsController {
 			}
 		}
 		// 添加下载历史
-		downloadHistoryService.addDownloadHistory(SessionHelper.getSessionUser().getUserID(), goodsID);
+		downloadHistoryService.addDownloadHistory(SessionHelper.getSessionUser().getUserId(), goodsID);
 
 		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(goods.getFile());
 	}

@@ -72,7 +72,7 @@ public class AjaxTaobaoGoodsController {
 
 		SessionUser user = SessionHelper.getSessionUser();
 
-		String access_token = taobaoTokenService.getTaobaoTokenByUserId(user.getUserID()).getAccessToken();
+		String access_token = taobaoTokenService.getTaobaoTokenByUserId(user.getUserId()).getAccessToken();
 
 		String approveStatus = itemRequest.getApproveStatus();
 
@@ -127,7 +127,7 @@ public class AjaxTaobaoGoodsController {
 			}
 
 			// 插入商品分销表
-			taobaoItemService.saveGoodsDistribution(Long.valueOf(goodsId), itemRequest.getPrice().toString(), user.getUserID(), response.getItem().getNumIid());
+			taobaoItemService.saveGoodsDistribution(Long.valueOf(goodsId), itemRequest.getPrice().toString(), user.getUserId(), response.getItem().getNumIid());
 
 		} catch (ApiException e) {
 

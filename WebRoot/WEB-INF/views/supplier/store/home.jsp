@@ -35,7 +35,7 @@
 			</div>
 			<div class="gy-baseinfo fl color-78">
 				<p>今天： ${today } </p>
-				<p>上次登录：<fmt:formatDate value="${loginLog.loginDate }" pattern="yyyy-MM-dd HH:mm:ss"/></p>
+				<p>上次登录：<fmt:formatDate value="${loginLog.loginTime }" pattern="yyyy-MM-dd HH:mm:ss"/></p>
 			</div>
 			<div class="gy-userinfo">
 				<span>欢迎您，<strong class="color-red">${sessionUser.username }</strong></span>

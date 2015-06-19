@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.zhigu.common.constant.BusinessArea;
 
 public class Store implements Serializable {
@@ -12,9 +14,9 @@ public class Store implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	/** ID */
-	private int ID;
+	private Integer ID;
 	/** 用户ID */
-	private int userID;
+	private Integer userID;
 	/** 网站域名 */
 	private String domain;
 	/** 商店名称 */
@@ -38,60 +40,66 @@ public class Store implements Serializable {
 	/** 联系旺旺 */
 	private String aliWangWang;
 	/** 店铺名可用修改次数 */
-	private int storeNameModify;
+	private Integer storeNameModify;
 	/** 域名可用修改次数 */
-	private int domainModify;
+	private Integer domainModify;
 	/** 等级点数（转换等级） */
-	private int levelPoint;
+	private Integer levelPoint;
 	/** 积分（按卖出商品价格计算，非4舍5入，取整数，舍去小数部分 */
-	private int score;
+	private Integer score;
 	/** Logo */
 	private String logoPath;
 	/** 招牌 */
 	private String signagePath;
 	/** 诚信认证 */
-	private int integrityAuth;
+	private Integer integrityAuth;
 	/** 企业认证 1:认证通过 2.认证不通过 3:待认证 */
-	private int companyAuth;
+	private Integer companyAuth;
 	/** 实体认证 */
-	private int realStoreAuth;
+	private Integer realStoreAuth;
 	/** 简介 */
 	private String introduction;
 	/** 开店时间 */
 	private Date openStoreDate;
 	/** 正式会员Flg */
-	private int fullMemberFlg;
+	private Integer fullMemberFlg;
 	/** 申请时间 */
 	private Date applyTime;
 	/** 状态(创建时) 0:非会员 1:会员 */
-	private int applyType;
+	private Integer applyType;
 	/** 审核状态 */
 	private Integer approveState;
 	/** 审核后拒绝的理由 */
 	private String rejectReason;
 	/** 供应商类型 */
-	private int supplierType;
+	private Integer supplierType;
 	/** 刷新时间 **/
 	private Date refreshDate;
 
 	/** 店铺商品 */
 	private List<Goods> goods;
 	/** 是否被收藏 */
-	private int isFavourite;
+	private Integer isFavourite;
 	/** 已发布商品（总数） */
-	private int commodityTotal;
+	private Integer commodityTotal;
 	/** 在售商品数 */
-	private int commodityOnSaleTotal;
+	private Integer commodityOnSaleTotal;
 	/** 上月发布商品总数 */
-	private int commodityPrecedingMonthTotal;
+	private Integer commodityPrecedingMonthTotal;
 	/** 本月发布商品总数 */
-	private int commodityThisMonthTotal;
+	private Integer commodityThisMonthTotal;
 	/** 累计下载量 */
-	private int downloadTotal;
+	private Integer downloadTotal;
 	/** 累计销量 */
-	private int purchaseTotal;
+	private Integer purchaseTotal;
 	/** 新上架销售 1个月内 */
-	private int newPurchaseTotal;
+	private Integer newPurchaseTotal;
+
+	/** 背景图 */
+	private String logoBackPic;
+
+	/** 导航条颜色 */
+	private String navColor;
 
 	private String businessAreaLabel;
 	/** 作为临时查询使用 非数据库字段 实名认证标示 */
@@ -101,19 +109,35 @@ public class Store implements Serializable {
 		return BusinessArea.getNameByValue(businessArea);
 	}
 
-	public int getID() {
+	public String getLogoBackPic() {
+		return logoBackPic;
+	}
+
+	public void setLogoBackPic(String logoBackPic) {
+		this.logoBackPic = StringUtils.isBlank(logoBackPic) ? null : logoBackPic.trim();
+	}
+
+	public String getNavColor() {
+		return navColor;
+	}
+
+	public void setNavColor(String navColor) {
+		this.navColor = navColor = StringUtils.isBlank(navColor) ? null : navColor.trim();
+	}
+
+	public Integer getID() {
 		return ID;
 	}
 
-	public void setID(int ID) {
+	public void setID(Integer ID) {
 		this.ID = ID;
 	}
 
-	public int getUserID() {
+	public Integer getUserID() {
 		return userID;
 	}
 
-	public void setUserID(int userID) {
+	public void setUserID(Integer userID) {
 		this.userID = userID;
 	}
 
@@ -122,14 +146,14 @@ public class Store implements Serializable {
 	}
 
 	public void setDomain(String domain) {
-		this.domain = domain;
+		this.domain = domain = StringUtils.isBlank(domain) ? null : domain.toString();
 	}
 
-	public int getSupplierType() {
+	public Integer getSupplierType() {
 		return supplierType;
 	}
 
-	public void setSupplierType(int supplierType) {
+	public void setSupplierType(Integer supplierType) {
 		this.supplierType = supplierType;
 	}
 
@@ -138,7 +162,7 @@ public class Store implements Serializable {
 	}
 
 	public void setStoreName(String storeName) {
-		this.storeName = storeName;
+		this.storeName = storeName = StringUtils.isBlank(storeName) ? null : storeName.trim();
 	}
 
 	public String getProvince() {
@@ -146,7 +170,7 @@ public class Store implements Serializable {
 	}
 
 	public void setProvince(String province) {
-		this.province = province;
+		this.province = province = StringUtils.isBlank(province) ? null : province.trim();
 	}
 
 	public String getCity() {
@@ -154,7 +178,7 @@ public class Store implements Serializable {
 	}
 
 	public void setCity(String city) {
-		this.city = city;
+		this.city = city = StringUtils.isBlank(city) ? null : city.trim();
 	}
 
 	public String getDistrict() {
@@ -162,7 +186,7 @@ public class Store implements Serializable {
 	}
 
 	public void setDistrict(String district) {
-		this.district = district;
+		this.district = district = StringUtils.isBlank(district) ? null : district.trim();
 	}
 
 	public String getStreet() {
@@ -170,7 +194,7 @@ public class Store implements Serializable {
 	}
 
 	public void setStreet(String street) {
-		this.street = street;
+		this.street = street = StringUtils.isBlank(street) ? null : street.trim();
 	}
 
 	public Integer getBusinessArea() {
@@ -186,7 +210,7 @@ public class Store implements Serializable {
 	}
 
 	public void setContactName(String contactName) {
-		this.contactName = contactName;
+		this.contactName = contactName = StringUtils.isBlank(contactName) ? null : contactName.trim();
 	}
 
 	public String getPhone() {
@@ -194,15 +218,15 @@ public class Store implements Serializable {
 	}
 
 	public void setPhone(String phone) {
-		this.phone = phone;
+		this.phone = phone = StringUtils.isBlank(phone) ? null : phone.trim();
 	}
 
 	public String getQQ() {
 		return QQ;
 	}
 
-	public void setQQ(String qQ) {
-		QQ = qQ;
+	public void setQQ(String QQ) {
+		this.QQ = QQ = StringUtils.isBlank(QQ) ? null : QQ.trim();
 	}
 
 	public String getAliWangWang() {
@@ -210,30 +234,30 @@ public class Store implements Serializable {
 	}
 
 	public void setAliWangWang(String aliWangWang) {
-		this.aliWangWang = aliWangWang;
+		this.aliWangWang = aliWangWang = StringUtils.isBlank(aliWangWang) ? null : aliWangWang.trim();
 	}
 
-	public int getStoreNameModify() {
+	public Integer getStoreNameModify() {
 		return storeNameModify;
 	}
 
-	public void setStoreNameModify(int storeNameModify) {
+	public void setStoreNameModify(Integer storeNameModify) {
 		this.storeNameModify = storeNameModify;
 	}
 
-	public int getDomainModify() {
+	public Integer getDomainModify() {
 		return domainModify;
 	}
 
-	public void setDomainModify(int domainModify) {
+	public void setDomainModify(Integer domainModify) {
 		this.domainModify = domainModify;
 	}
 
-	public int getLevelPoint() {
+	public Integer getLevelPoint() {
 		return levelPoint;
 	}
 
-	public void setLevelPoint(int levelPoint) {
+	public void setLevelPoint(Integer levelPoint) {
 		this.levelPoint = levelPoint;
 	}
 
@@ -242,7 +266,7 @@ public class Store implements Serializable {
 	}
 
 	public void setLogoPath(String logoPath) {
-		this.logoPath = logoPath;
+		this.logoPath = logoPath = StringUtils.isBlank(logoPath) ? null : logoPath.trim();
 	}
 
 	public String getSignagePath() {
@@ -250,30 +274,30 @@ public class Store implements Serializable {
 	}
 
 	public void setSignagePath(String signagePath) {
-		this.signagePath = signagePath;
+		this.signagePath = signagePath = StringUtils.isBlank(signagePath) ? null : signagePath.trim();
 	}
 
-	public int getIntegrityAuth() {
+	public Integer getIntegrityAuth() {
 		return integrityAuth;
 	}
 
-	public void setIntegrityAuth(int integrityAuth) {
+	public void setIntegrityAuth(Integer integrityAuth) {
 		this.integrityAuth = integrityAuth;
 	}
 
-	public int getCompanyAuth() {
+	public Integer getCompanyAuth() {
 		return companyAuth;
 	}
 
-	public void setCompanyAuth(int companyAuth) {
+	public void setCompanyAuth(Integer companyAuth) {
 		this.companyAuth = companyAuth;
 	}
 
-	public int getRealStoreAuth() {
+	public Integer getRealStoreAuth() {
 		return realStoreAuth;
 	}
 
-	public void setRealStoreAuth(int realStoreAuth) {
+	public void setRealStoreAuth(Integer realStoreAuth) {
 		this.realStoreAuth = realStoreAuth;
 	}
 
@@ -282,7 +306,7 @@ public class Store implements Serializable {
 	}
 
 	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
+		this.introduction = introduction = StringUtils.isBlank(introduction) ? null : introduction.trim();
 	}
 
 	public Date getOpenStoreDate() {
@@ -301,11 +325,11 @@ public class Store implements Serializable {
 		this.applyTime = applyTime;
 	}
 
-	public int getApplyType() {
+	public Integer getApplyType() {
 		return applyType;
 	}
 
-	public void setApplyType(int applyType) {
+	public void setApplyType(Integer applyType) {
 		this.applyType = applyType;
 	}
 
@@ -322,7 +346,7 @@ public class Store implements Serializable {
 	}
 
 	public void setRejectReason(String rejectReason) {
-		this.rejectReason = rejectReason;
+		this.rejectReason = rejectReason = StringUtils.isBlank(rejectReason) ? null : rejectReason.trim();
 	}
 
 	public List<Goods> getGoods() {
@@ -333,83 +357,83 @@ public class Store implements Serializable {
 		this.goods = goods;
 	}
 
-	public int getCommodityTotal() {
+	public Integer getCommodityTotal() {
 		return commodityTotal;
 	}
 
-	public void setCommodityTotal(int commodityTotal) {
+	public void setCommodityTotal(Integer commodityTotal) {
 		this.commodityTotal = commodityTotal;
 	}
 
-	public int getCommodityOnSaleTotal() {
+	public Integer getCommodityOnSaleTotal() {
 		return commodityOnSaleTotal;
 	}
 
-	public void setCommodityOnSaleTotal(int commodityOnSaleTotal) {
+	public void setCommodityOnSaleTotal(Integer commodityOnSaleTotal) {
 		this.commodityOnSaleTotal = commodityOnSaleTotal;
 	}
 
-	public int getCommodityPrecedingMonthTotal() {
+	public Integer getCommodityPrecedingMonthTotal() {
 		return commodityPrecedingMonthTotal;
 	}
 
-	public void setCommodityPrecedingMonthTotal(int commodityPrecedingMonthTotal) {
+	public void setCommodityPrecedingMonthTotal(Integer commodityPrecedingMonthTotal) {
 		this.commodityPrecedingMonthTotal = commodityPrecedingMonthTotal;
 	}
 
-	public int getCommodityThisMonthTotal() {
+	public Integer getCommodityThisMonthTotal() {
 		return commodityThisMonthTotal;
 	}
 
-	public void setCommodityThisMonthTotal(int commodityThisMonthTotal) {
+	public void setCommodityThisMonthTotal(Integer commodityThisMonthTotal) {
 		this.commodityThisMonthTotal = commodityThisMonthTotal;
 	}
 
-	public int getDownloadTotal() {
+	public Integer getDownloadTotal() {
 		return downloadTotal;
 	}
 
-	public void setDownloadTotal(int downloadTotal) {
+	public void setDownloadTotal(Integer downloadTotal) {
 		this.downloadTotal = downloadTotal;
 	}
 
-	public int getPurchaseTotal() {
+	public Integer getPurchaseTotal() {
 		return purchaseTotal;
 	}
 
-	public void setPurchaseTotal(int purchaseTotal) {
+	public void setPurchaseTotal(Integer purchaseTotal) {
 		this.purchaseTotal = purchaseTotal;
 	}
 
-	public int getIsFavourite() {
+	public Integer getIsFavourite() {
 		return isFavourite;
 	}
 
-	public void setIsFavourite(int isFavourite) {
+	public void setIsFavourite(Integer isFavourite) {
 		this.isFavourite = isFavourite;
 	}
 
-	public int getFullMemberFlg() {
+	public Integer getFullMemberFlg() {
 		return fullMemberFlg;
 	}
 
-	public void setFullMemberFlg(int fullMemberFlg) {
+	public void setFullMemberFlg(Integer fullMemberFlg) {
 		this.fullMemberFlg = fullMemberFlg;
 	}
 
-	public int getScore() {
+	public Integer getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(Integer score) {
 		this.score = score;
 	}
 
-	public int getNewPurchaseTotal() {
+	public Integer getNewPurchaseTotal() {
 		return newPurchaseTotal;
 	}
 
-	public void setNewPurchaseTotal(int newPurchaseTotal) {
+	public void setNewPurchaseTotal(Integer newPurchaseTotal) {
 		this.newPurchaseTotal = newPurchaseTotal;
 	}
 

@@ -92,7 +92,7 @@ public class CartServiceImpl implements ICartService {
 		if (sku.getAmount() < quantity) {
 			return new MsgBean(Code.FAIL, "商品库存不足", MsgLevel.ERROR);
 		}
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 
 		ShoppingCartItem item = cartItemMapper.selectByUserIdAndSkuId(userId, skuId);
 		if (item != null) {
@@ -117,7 +117,7 @@ public class CartServiceImpl implements ICartService {
 	@Override
 	public MsgBean updateCartChecked(int id, Boolean checked) {
 		ShoppingCartItem item = cartItemMapper.selectByPrimaryKey(id);
-		if (item == null || item.getUserId() != SessionHelper.getSessionUser().getUserID()) {
+		if (item == null || item.getUserId() != SessionHelper.getSessionUser().getUserId()) {
 			return new MsgBean(Code.FAIL, "购物车中无该商品", MsgLevel.ERROR);
 		}
 		item.setChecked(checked);
@@ -131,7 +131,7 @@ public class CartServiceImpl implements ICartService {
 			return new MsgBean(Code.FAIL, "商品数量不能小于1 ", MsgLevel.ERROR);
 		}
 		ShoppingCartItem item = cartItemMapper.selectByPrimaryKey(id);
-		if (item == null || item.getUserId() != SessionHelper.getSessionUser().getUserID()) {
+		if (item == null || item.getUserId() != SessionHelper.getSessionUser().getUserId()) {
 			return new MsgBean(Code.FAIL, "购物车中无该商品", MsgLevel.ERROR);
 		}
 		GoodsSku sku = goodsMapper.queryGoodsSkuByID(item.getSkuId());
@@ -149,7 +149,7 @@ public class CartServiceImpl implements ICartService {
 			// 可考虑使用SQL直接删
 			for (Integer id : ids) {
 				ShoppingCartItem item = cartItemMapper.selectByPrimaryKey(id);
-				if (item == null || item.getUserId() != SessionHelper.getSessionUser().getUserID()) {
+				if (item == null || item.getUserId() != SessionHelper.getSessionUser().getUserId()) {
 					// return new MsgBean(Code.FAIL, "购物车中无该商品",
 					// MsgLevel.ERROR);
 					continue;

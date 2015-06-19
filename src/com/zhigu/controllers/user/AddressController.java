@@ -32,7 +32,7 @@ public class AddressController {
 	@RequestMapping("userAllAddress")
 	@ResponseBody
 	public MsgBean userAllAddress() {
-		return new MsgBean(Code.SUCCESS, "ok", MsgLevel.NORMAL).setData(addressService.queryAddressByUserID(SessionHelper.getSessionUser().getUserID()));
+		return new MsgBean(Code.SUCCESS, "ok", MsgLevel.NORMAL).setData(addressService.queryAddressByUserID(SessionHelper.getSessionUser().getUserId()));
 	}
 
 	// 初始化跳转操作
@@ -40,7 +40,7 @@ public class AddressController {
 	public ModelAndView index(Integer addressId, ModelAndView mv) {
 		// 查询并显示所有的地址信息
 		List<Address> list = new ArrayList<Address>();
-		list = addressService.queryAddressByUserID(SessionHelper.getSessionUser().getUserID());
+		list = addressService.queryAddressByUserID(SessionHelper.getSessionUser().getUserId());
 		mv.setViewName("user/address/address");
 		mv.addObject("list", list);
 		return mv;
@@ -54,7 +54,7 @@ public class AddressController {
 	@RequestMapping("/getDefaultAddress")
 	@ResponseBody
 	public Address getDefaultAddress() {
-		return addressService.queryDefaultAddress(SessionHelper.getSessionUser().getUserID());
+		return addressService.queryDefaultAddress(SessionHelper.getSessionUser().getUserId());
 	}
 
 	@RequestMapping("/add")
@@ -67,7 +67,7 @@ public class AddressController {
 	@ResponseBody
 	public ModelAndView set(ModelAndView mv, Integer addressId) {
 		if (addressId != null) {
-			Address address = addressService.queryAddressByID(SessionHelper.getSessionUser().getUserID(), addressId);
+			Address address = addressService.queryAddressByID(SessionHelper.getSessionUser().getUserId(), addressId);
 			mv.addObject("address", address);
 		}
 		mv.setViewName("/user/address/set");
@@ -98,7 +98,7 @@ public class AddressController {
 		if (addressId == null) {
 			return new MsgBean(Code.FAIL, "传递信息丢失", MsgLevel.ERROR);
 		}
-		addressService.updateDefaultAddress(SessionHelper.getSessionUser().getUserID(), addressId);
+		addressService.updateDefaultAddress(SessionHelper.getSessionUser().getUserId(), addressId);
 		return new MsgBean(Code.SUCCESS, "设置默认地址成功", MsgLevel.NORMAL);
 	}
 
@@ -114,7 +114,7 @@ public class AddressController {
 		if (addressId == null)
 			return new MsgBean(Code.FAIL, "传递信息丢失", MsgLevel.ERROR);
 
-		addressService.deleteAddress(SessionHelper.getSessionUser().getUserID(), addressId);
+		addressService.deleteAddress(SessionHelper.getSessionUser().getUserId(), addressId);
 
 		return new MsgBean(Code.SUCCESS, "删除地址成功", MsgLevel.NORMAL);
 	}
@@ -132,7 +132,7 @@ public class AddressController {
 		if (addressId == null)
 			return mv;
 
-		Address address = addressService.queryAddressByID(SessionHelper.getSessionUser().getUserID(), addressId);
+		Address address = addressService.queryAddressByID(SessionHelper.getSessionUser().getUserId(), addressId);
 		mv.addObject("address", address);
 		return mv;
 	}

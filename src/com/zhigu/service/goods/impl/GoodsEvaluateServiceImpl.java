@@ -36,7 +36,7 @@ public class GoodsEvaluateServiceImpl implements IGoodsEvaluateService {
 	@Override
 	public MsgBean saveGoodsEvaluate(Integer orderDetailId, Integer score, String content) {
 
-		int userId = SessionHelper.getSessionUser().getUserID();
+		int userId = SessionHelper.getSessionUser().getUserId();
 
 		OrderDetail orderDetail = orderDao.queryOrderDetail(userId, orderDetailId);
 

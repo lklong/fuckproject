@@ -35,7 +35,7 @@
 				<tr class="js-store-tr">
 					<td colspan="8">
 						<!-- 店铺 -->
-						<div class="shop-list-head">
+					<div class="shop-list-head">
 							<span class="ml10">
 								 <input onclick="zhigu.storeCheckBoxClick(this);" name="storeCheckBox" value="${sc.storeId}" type="checkbox" />
 							</span> 
@@ -54,7 +54,7 @@
 										src="http://amos.im.alisoft.com/online.aw?v=2&uid=${sc.aliWangWang }&site=cntaobao&s=2&charset=utf-8" alt="点击这里给我发消息" /></a>
 								</c:if>
 							</span>
-						</div> 
+						</div>
 						<!-- 商品 --> 
 						<c:forEach items="${sc.item }" var="item" varStatus="itemStatus">
 							<table cellpadding="0" cellspacing="0" class="shopping-list-table no-border-margin">
@@ -348,7 +348,7 @@ function addFavouriteGoodsBatch(){
 						$(".favourite"+goodsIds[i]).html("已收藏").attr('onClick',"");
 					}
 				}
-				layer.alert(msgBean.msg);
+				layer.msg(msgBean.msg);
 			}else{
 				layer.alert(msgBean.msg);
 			}

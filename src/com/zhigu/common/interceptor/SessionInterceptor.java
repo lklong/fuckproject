@@ -49,7 +49,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 		if (logger.isInfoEnabled()) {
 			StringBuilder sb = new StringBuilder();
 			SessionUser user = SessionHelper.getSessionUser();
-			sb.append("userID=").append(user != null ? user.getUserID() : null);
+			sb.append("userID=").append(user != null ? user.getUserId() : null);
 			sb.append("; adminID=").append(SessionHelper.getSessionAdmin() != null ? SessionHelper.getSessionAdmin().getId() : null);
 			sb.append("; ip=").append(NetUtil.getIpAddr(request));
 			sb.append("; uri=").append(request.getRequestURI());

@@ -11,7 +11,7 @@
 <script type="text/javascript" src="/js/global.js"></script>
 <script type="text/javascript" src="/js/admin/bonegrid.js"></script>
 <script src="/js/admin/admin.js" type="text/javascript"></script>
-<script type="text/javascript" language="javascript" src="/js/3rdparty/layer/layer.min.js"></script>
+<script type="text/javascript" src="/js/3rdparty/layer/layer.min.js"></script>
 <script type="text/javascript" language="javascript" src="/js/3rdparty/easyui/jquery.easyui.min.js"></script>
 
 <link href="/js/3rdparty/easyui/themes/bootstrap/easyui.css" rel="stylesheet" type="text/css" />

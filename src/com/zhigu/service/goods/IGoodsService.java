@@ -165,6 +165,6 @@ public interface IGoodsService {
 	 *            分页
 	 * @return
 	 */
-	PageBean<Goods> queryForHome(Integer pageNo, String propName, String goodsName);
+	PageBean<Goods> queryForHome(Integer pageNo, String propName, String goodsName, String city);
 
 }

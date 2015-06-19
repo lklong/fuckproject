@@ -43,7 +43,7 @@ public class SupplierStoreNoticeController {
 	@ResponseBody
 	public ModelAndView StoreNoticeList() {
 		ModelAndView mav = new ModelAndView();
-		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		List<StoreNotice> sn = storeNoticeService.queryStoreNoticeByPage(new PageBean<StoreNotice>(), store.getID(), StoreNoticeType.LOGGER);
 		mav.addObject("storeNotice", sn);
 		mav.addObject("storeID", store.getID());

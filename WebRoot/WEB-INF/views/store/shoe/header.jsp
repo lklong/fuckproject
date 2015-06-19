@@ -23,7 +23,7 @@
 				<!-- 企业认证 -->
 				<c:if test="${store.companyAuth == 1 }"><li><span class="rzspan qiye"></span></li></c:if>
 				<!-- 买家保障 -->
-				<li></li>
+				<c:if test="${store.integrityAuth == 1 }"><li><span class="rzspan maijia"></span></li></c:if>
 			</ul>
 		</div>
       </div>
@@ -67,7 +67,12 @@
     </div>
     </div>
   </div>
-  <div class="shop-banner">
+  <c:if test="${store.signagePath!=null&&store.signagePath!=''}">
+  	<div class="shop-banner" style="background: url(${store.signagePath}) repeat-x center top !important;">
+  </c:if>
+   <c:if test="${store.signagePath==null||store.signagePath==''}">
+  	<div class="shop-banner">
+  </c:if>
   	  <div class="shop-nav-inner">
 	  	  <div class="shopNavInside">
 		      <ul>
@@ -81,7 +86,12 @@
 		  </div>
   	  </div>
   	  <!-- 半透明背景条 -->
-  	  <div class="shopTopNav"></div>
+  	  <c:if test="${store.navColor!=null&&store.navColor!=''}">
+  	 	 <div class="shopTopNav" style="background-color:#${store.navColor} !important"></div>
+  	  </c:if>
+  	  <c:if test="${store.navColor==null||store.navColor==''}">
+  	 	 <div class="shopTopNav" style="background-color:#${store.navColor} !important"></div>
+  	  </c:if>
   </div>
 </div>
 <script type="text/javascript">

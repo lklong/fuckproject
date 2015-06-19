@@ -20,7 +20,7 @@
             <dl>
               <dt><a href="store/index?storeId=${s.ID }"><img src="${s.logoPath}" height="80" width="80" /></a></dt>
             </dl>
-            <ul style="width: 220px;">
+               <ul style="width: 220px;">
               <li id="buniesName">
                 <h3><a href="store/index?storeId=${s.ID }">${s.storeName }</a></h3>
               </li>

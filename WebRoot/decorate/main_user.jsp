@@ -68,7 +68,7 @@
         <li><a href="/supplier/goods/list?status=1">商品管理</a></li>
         <li><a href="/supplier/store/lookStore" target="_blank">我的店铺</a></li>
         <li><a href="/supplier/store/baseInfoInit">店铺基本信息</a></li>
-        <li><a href="/supplier/store/decorateInit">店铺装饰 </a></li>
+        <li><a href="/supplier/store/decorate">店铺装饰 </a></li>
         <li><a href="/supplier/storeNotice/storeNoticeList">店铺公告 </a></li>
       </ul>
       <div class="space"></div>

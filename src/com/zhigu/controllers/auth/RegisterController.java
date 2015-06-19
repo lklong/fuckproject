@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,19 +35,18 @@ public class RegisterController {
 	private IPhoneSendService phoneSendService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public ModelAndView goRegister(ModelAndView mv, @RequestParam(required = false) String recommendUserID) {
+	public ModelAndView register(ModelAndView mv) {
 		if (SessionHelper.getSessionUser() != null) {
 			mv.setViewName("redirect:/user/home");
 		} else {
 			mv.setViewName("auth/register/register");
-			mv.addObject("recommendUserID", recommendUserID);
 		}
 		return mv;
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ResponseBody
-	public MsgBean goRegister(String username, String encodePwd, String captcha) {
+	public MsgBean register(String username, String encodePwd, String captcha) {
 		String password = StringUtil.decryptBASE64(encodePwd);
 		MsgBean captchaMsg = phoneSendService.verify(username, PhoneSendType.PHONE_REGISTER, captcha);
 		if (captchaMsg.getCode() != Code.SUCCESS) {

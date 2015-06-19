@@ -60,7 +60,7 @@ public class SupplierGoodsController {
 	 */
 	@RequestMapping("/add")
 	public ModelAndView add(ModelAndView mv) {
-		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		if (store.getSupplierType() == UserType.SUPPLIER) {// 普通供应商（实物）
 			List<Category> category = categoryService.queryCategoryByParent(0);
 			List<Category> categorykeep = new ArrayList<Category>();
@@ -114,7 +114,7 @@ public class SupplierGoodsController {
 	public ModelAndView finishList(GoodsCondition gc, PageBean<Goods> page, ModelAndView mv) {
 		page.setPageSize(10);
 
-		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		if (gc.getStatus() == null)
 			gc.setStatus(1);
 
@@ -135,7 +135,7 @@ public class SupplierGoodsController {
 	 */
 	@RequestMapping("/edit")
 	public ModelAndView edit(Integer goodsId, ModelAndView mv) {
-		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		Goods goods = goodsService.queryGoods(goodsId);
 		if (goods == null || goods.getStoreId() != store.getID())
 			return mv;
@@ -177,7 +177,7 @@ public class SupplierGoodsController {
 	@RequestMapping("/soldOut")
 	@ResponseBody
 	public MsgBean soldOut(Integer goodsId) {
-		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		Goods goods = goodsService.queryGoods(goodsId);
 		if (goods.getStoreId() != store.getID()) {
 			return new MsgBean(Code.FAIL, "不能操作其它商店的商品", MsgLevel.ERROR);

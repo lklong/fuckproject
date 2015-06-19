@@ -18,8 +18,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
-import java.awt.image.renderable.ParameterBlock;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,12 +26,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
 import javax.swing.ImageIcon;
+
+import org.apache.log4j.Logger;
+import org.apache.sanselan.ImageReadException;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.zhigu.common.utils.image.CmykImageUtil;
 
 /**
  * 图片工具类
@@ -40,6 +41,8 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  * @author
  */
 public final class ImageUtil {
+
+	private static final Logger LOGGER = Logger.getLogger(ImageUtil.class);
 
 	private ImageUtil() {
 	}
@@ -54,21 +57,27 @@ public final class ImageUtil {
 	 * @throws IOException
 	 */
 	public static void pressText(String srcImgPath, String logoText) throws IOException {
+		File _file = new File(srcImgPath);
+
+		BufferedImage srcImg = null;
+
 		// 主图片的路径
 		InputStream is = null;
 		OutputStream os = null;
 		try {
-			InputStream _is = new FileInputStream(srcImgPath);
-
-			ByteArraySeekableStreamWrap wrap = ByteArraySeekableStreamWrap.wrapInputStream(_is);
-
-			/**
-			 * 利用JAI读取源图片
-			 */
-			ParameterBlock pb = new ParameterBlock();
-			pb.add(wrap);
-			PlanarImage srcImg = JAI.create("Stream", pb);
-			srcImg = ImageColorConvertHelper.convertCMYK2RGB(srcImg);
+			srcImg = CmykImageUtil.readImage(_file);
+			// InputStream _is = new FileInputStream(srcImgPath);
+			//
+			// ByteArraySeekableStreamWrap wrap =
+			// ByteArraySeekableStreamWrap.wrapInputStream(_is);
+			//
+			// /**
+			// * 利用JAI读取源图片
+			// */
+			// ParameterBlock pb = new ParameterBlock();
+			// pb.add(wrap);
+			// PlanarImage srcImg = JAI.create("Stream", pb);
+			// srcImg = ImageColorConvertHelper.convertCMYK2RGB(srcImg);
 
 			int fontSize = srcImg.getWidth() / 15;
 			BufferedImage buffImg = new BufferedImage(srcImg.getWidth(), srcImg.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -76,7 +85,7 @@ public final class ImageUtil {
 			Graphics2D g = buffImg.createGraphics();
 			// 设置对线段的锯齿状边缘处理
 			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			g.drawImage(srcImg.getAsBufferedImage(), 0, 0, null);
+			g.drawImage(srcImg, 0, 0, null);
 			// 设置水印旋转
 			g.rotate(Math.toRadians(325), (double) buffImg.getWidth() / 2, (double) buffImg.getHeight() / 2);
 			// 设置颜色
@@ -103,18 +112,20 @@ public final class ImageUtil {
 			os = new FileOutputStream(srcImgPath);
 			// 生成图片
 			ImageIO.write(buffImg, "jpg", os);
+		} catch (ImageReadException e) {
+			LOGGER.error("读取图片出错：" + e.getMessage());
 		} finally {
 			try {
 				if (null != is)
 					is.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOGGER.error("关闭图片输入流出错：" + e.getMessage());
 			}
 			try {
 				if (null != os)
 					os.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOGGER.error("关闭图片输出流出错：" + e.getMessage());
 			}
 		}
 	}

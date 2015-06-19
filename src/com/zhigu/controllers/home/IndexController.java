@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,11 +23,15 @@ import com.zhigu.common.constant.BusinessArea;
 import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.enumconst.CategoryType;
 import com.zhigu.common.constant.enumconst.MsgLevel;
+import com.zhigu.common.utils.geoip.GeoIPUtils;
+import com.zhigu.common.utils.geoip.GeoVO;
+import com.zhigu.common.utils.geoip.RequestIPUtils;
 import com.zhigu.model.Goods;
 import com.zhigu.model.GoodsCondition;
 import com.zhigu.model.PageBean;
 import com.zhigu.model.Store;
 import com.zhigu.model.dto.MsgBean;
+import com.zhigu.service.common.AreaService;
 import com.zhigu.service.goods.IGoodsService;
 import com.zhigu.service.store.IStoreService;
 import com.zhigu.service.system.CementContentService;
@@ -51,14 +57,44 @@ public class IndexController {
 	@Autowired
 	private ICartService cartService;
 
+	@Autowired
+	private AreaService areaService;
+
 	/** 全部商品页面每个类目下的商品条数 */
 	private static final int PAGESIZE = 12;
 
+	private GeoVO getCity(HttpServletRequest request, GeoVO geoVO) {
+		String cityCode = geoVO.getCityCode();
+		if (StringUtils.isBlank(cityCode)) {
+			String ip = RequestIPUtils.getIpAddr(request);
+			geoVO = GeoIPUtils.getAddressByIP(ip);
+			if (StringUtils.isBlank(geoVO.getCity())) {
+				cityCode = "510100";
+			}
+		}
+		return geoVO;
+	}
+
+	/**
+	 * 首页
+	 * 
+	 * @param mv
+	 * @param city
+	 *            默认为 ：成都
+	 * @return
+	 */
 	@RequestMapping("/welcome")
-	public ModelAndView welcome(ModelAndView mv) {
+	public ModelAndView welcome(ModelAndView mv, GeoVO geoVO, HttpServletRequest request) {
+
+		geoVO = getCity(request, geoVO);
+		String cityCode = geoVO.getCityCode();
+
 		mv.addObject("cAction", "welcome");
 		PageBean<Goods> page = new PageBean<Goods>();
 		page.setPageSize(PAGESIZE);
+		Map<String, Object> paras = page.getParas();
+		paras.put("cityCode", cityCode);
+		page.setParas(paras);
 
 		// 男鞋
 		GoodsCondition gc = new GoodsCondition();
@@ -95,6 +131,7 @@ public class IndexController {
 		// 热销
 		page.setPageSize(5);
 		gc.setCategoryId(null);
+
 		List<Goods> hotSale = goodsService.queryGoodsList(gc, page);
 		mv.addObject("hotSale", hotSale);
 		mv.setViewName("welcome");
@@ -111,12 +148,20 @@ public class IndexController {
 	 * @return
 	 */
 	@RequestMapping("searchStore")
-	public ModelAndView searchStore(ModelAndView mv, @RequestParam(required = false) Integer pageNo, @RequestParam(required = false) Integer businessArea,
-			@RequestParam(required = false) String searchName) {
+	public ModelAndView searchStore(ModelAndView mv, GeoVO geoVO, @RequestParam(required = false) Integer pageNo, @RequestParam(required = false) Integer businessArea,
+			@RequestParam(required = false) String searchName, HttpServletRequest request) {
+
+		geoVO = getCity(request, geoVO);
+		String cityCode = geoVO.getCityCode();
 
 		// mv.setViewName("home/search_store");
 		mv.setViewName("store/list");
+
 		PageBean<Store> page = new PageBean<Store>();
+		Map<String, Object> paras = page.getParas();
+		paras.put("cityCode", cityCode);
+		page.setParas(paras);
+
 		if (pageNo != null) {
 			page.setPageNo(pageNo);
 		}
@@ -153,9 +198,17 @@ public class IndexController {
 	 * @return
 	 */
 	@RequestMapping("/searchCommodity")
-	public ModelAndView searchCommodity(ModelAndView mv, @RequestParam(required = false) Integer pageNo, @RequestParam(required = false) String searchName,
-			@RequestParam(defaultValue = "0") Integer storeID) {
+	public ModelAndView searchCommodity(ModelAndView mv, GeoVO geoVO, @RequestParam(required = false) Integer pageNo, @RequestParam(required = false) String searchName,
+			@RequestParam(defaultValue = "0") Integer storeID, HttpServletRequest request) {
 		PageBean<Goods> page = new PageBean<Goods>();
+
+		geoVO = getCity(request, geoVO);
+		String cityCode = geoVO.getCityCode();
+
+		Map<String, Object> paras = page.getParas();
+		paras.put("cityCode", cityCode);
+		page.setParas(paras);
+
 		page.setPageSize(24);
 		page.setPageNo(pageNo == null ? 1 : pageNo.intValue());
 		Goods goods = new Goods();
@@ -182,10 +235,11 @@ public class IndexController {
 	 * @return
 	 */
 	@RequestMapping(value = "/home/search", method = { RequestMethod.POST, RequestMethod.GET })
-	public String indexSearch(ModelMap model, RedirectAttributesModelMap redirectAttributesModelMap, @RequestParam(required = false) Integer pageNo, @RequestParam(required = false) String propName,
-			@RequestParam(required = false) String storeName, @RequestParam(required = false) String goodsName) {
+	public String indexSearch(ModelMap model, GeoVO geoVO, RedirectAttributesModelMap redirectAttributesModelMap, @RequestParam(required = false) Integer pageNo,
+			@RequestParam(required = false) String propName, @RequestParam(required = false) String storeName, @RequestParam(required = false) String goodsName, HttpServletRequest request) {
 
-		// TODO 地区选择
+		geoVO = getCity(request, geoVO);
+		String cityCode = geoVO.getCityCode();
 
 		pageNo = pageNo == null ? 1 : pageNo;
 
@@ -193,11 +247,12 @@ public class IndexController {
 		if (StringUtils.isNotBlank(storeName)) {
 			redirectAttributesModelMap.addAttribute("pageNo", pageNo);
 			redirectAttributesModelMap.addAttribute("searchStoreName", storeName);
+			redirectAttributesModelMap.addAttribute("cityCode", cityCode);
 			return "redirect:/store/list";
 		}
 
 		// 商品货号，名称搜索
-		PageBean<Goods> page = goodsService.queryForHome(pageNo, propName, goodsName);
+		PageBean<Goods> page = goodsService.queryForHome(pageNo, propName, goodsName, cityCode);
 
 		model.addAttribute("storeName", storeName);
 		model.addAttribute("propName", propName);
@@ -226,20 +281,44 @@ public class IndexController {
 			return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(map);
 		}
 
-		map.put("cartCount", cartService.countNumByUserId(user.getUserID()));
-		map.put("orderCount", orderService.queryOrderCountByUserID(user.getUserID()));
+		map.put("cartCount", cartService.countNumByUserId(user.getUserId()));
+		map.put("orderCount", orderService.queryOrderCountByUserID(user.getUserId()));
 
 		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL).setData(map);
 	}
 
 	/**
-	 *
+	 * 专题页
 	 * 
 	 * @return
 	 */
 	@RequestMapping("/topic")
-	public String indexTopic() {
+	public String indexTopic(ModelMap model, GeoVO geoVO, HttpServletRequest request) {
 
+		// TODO 专题数据过滤
 		return "index";
 	}
+
+	/**
+	 * 位置初始化
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/ajax/addr")
+	@ResponseBody
+	public MsgBean getAddr(String parentId, GeoVO geoVO, HttpServletRequest request) {
+
+		String city = geoVO.getCity();
+		if (StringUtils.isBlank(city)) {
+			String ip = RequestIPUtils.getIpAddr(request);
+			geoVO = GeoIPUtils.getAddressByIP(ip);
+			if (StringUtils.isBlank(geoVO.getCity())) {
+				geoVO.setCityCode("510100");
+			}
+		}
+		MsgBean msgBean = new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL);
+		msgBean.setData(geoVO);
+		return msgBean;
+	}
+
 }

@@ -40,7 +40,7 @@ public class MobileController {
 			SessionUser sess = SessionHelper.getSessionUser();
 			UserAuth auth = null;
 			if (sess != null)
-				auth = userService.queryUserAuthByUserID(sess.getUserID());
+				auth = userService.queryUserAuthByUserID(sess.getUserId());
 			if (auth != null)
 				phone = auth.getPhone();
 		}

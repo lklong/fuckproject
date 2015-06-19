@@ -1,15 +1,11 @@
 package com.zhigu.service.user.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zhigu.common.constant.Flg;
 import com.zhigu.mapper.LoginLogMapper;
 import com.zhigu.mapper.UserMapper;
 import com.zhigu.model.LoginLog;
-import com.zhigu.model.PageBean;
 import com.zhigu.service.user.ILoginLogService;
 
 @Service
@@ -21,22 +17,15 @@ public class LoginLogServiceImpl implements ILoginLogService {
 
 	@Override
 	public void addLoginLog(LoginLog loginLog) {
-		if (loginLog.getLoginStatus() == Flg.ON) {
-			userDao.updateUserauthInfoLoginData(loginLog.getUserID());
+		if (loginLog.getSuccess()) {
+			userDao.updateUserauthInfoLoginData(loginLog.getUserId());
 		}
-		loginLogDao.addLoginLog(loginLog);
-	}
-
-	@Override
-	public PageBean<LoginLog> queryLoginLog(PageBean<LoginLog> page) {
-		List<LoginLog> list = loginLogDao.queryLoginLogByPage(page);
-		page.setDatas(list);
-		return page;
+		loginLogDao.insert(loginLog);
 	}
 
 	@Override
 	public LoginLog queryPreviousLoginLogByUserID(int userId) {
-		return loginLogDao.queryPreviousLoginLogByUserID(userId);
+		return loginLogDao.queryPreviousLoginLogByUserId(userId);
 	}
 
 }

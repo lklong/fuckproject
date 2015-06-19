@@ -31,7 +31,7 @@ public class CartController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView myCart(ModelAndView mv) {
 		mv.setViewName("/user/order/mycart");
-		List<ShoppingCart> shoppingCartList = cartService.queryShoppingCart(SessionHelper.getSessionUser().getUserID(), null);
+		List<ShoppingCart> shoppingCartList = cartService.queryShoppingCart(SessionHelper.getSessionUser().getUserId(), null);
 		mv.addObject("shoppingCartList", shoppingCartList);
 		return mv;
 	}

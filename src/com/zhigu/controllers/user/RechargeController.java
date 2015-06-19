@@ -1,9 +1,7 @@
 package com.zhigu.controllers.user;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.rmi.ServerException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,10 +22,7 @@ import com.alipay.util.AlipaySubmit;
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.constant.RechargeStatus;
 import com.zhigu.common.constant.RechargeType;
-import com.zhigu.common.constant.SequenceConstant;
 import com.zhigu.common.exception.ServiceException;
-import com.zhigu.common.utils.Sequence;
-import com.zhigu.common.utils.VerifyUtil;
 import com.zhigu.model.RechargeRecord;
 import com.zhigu.service.user.IAccountService;
 import com.zhigu.service.user.IUserService;
@@ -52,9 +47,9 @@ public class RechargeController {
 	@RequestMapping("/user/recharge")
 	public ModelAndView recharge(ModelAndView mv) {
 		mv.setViewName("user/acc/recharge");
-		boolean hasPaypasswd = StringUtils.isNotBlank(accountService.queryAccountByUserID(SessionHelper.getSessionUser().getUserID()).getPayPasswd());
+		boolean hasPaypasswd = StringUtils.isNotBlank(accountService.queryAccountByUserID(SessionHelper.getSessionUser().getUserId()).getPayPasswd());
 		mv.addObject("hasPaypasswd", hasPaypasswd);
-		mv.addObject("auth", userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserID()));
+		mv.addObject("auth", userService.queryUserAuthByUserID(SessionHelper.getSessionUser().getUserId()));
 		return mv;
 	}
 
@@ -84,21 +79,7 @@ public class RechargeController {
 	@RequestMapping("/user/recharge/pay")
 	public void pay(int rechargeType, String money, HttpServletResponse response) throws IOException {
 		if (rechargeType == RechargeType.ALIPAY) {
-			// 支付宝
-			if (!VerifyUtil.isMoney(money)) {
-				throw new ServiceException("充值金额填写错误！");
-			}
-			// 保存充值记录
-			RechargeRecord rr = new RechargeRecord();
-			rr.setRechargeMoney(new BigDecimal(money));
-			rr.setUserId(SessionHelper.getSessionUser().getUserID());
-			rr.setRechargeTime(new Date());
-			rr.setOperator(SessionHelper.getSessionUser().getUserID());
-			rr.setType(RechargeType.ALIPAY);
-			rr.setPaymentNo(Sequence.generateSeq(SequenceConstant.FLOW));
-			rr.setStatus(RechargeStatus.WAITING_PAY);
-			accountService.saveRechargeRecord(rr);
-
+			RechargeRecord rr = (RechargeRecord) accountService.saveRechargeRecord(rechargeType, money).getData();
 			response.getWriter().print(createAlipayForm(rr));
 		} else {
 			throw new ServiceException("不支持的充值类型");

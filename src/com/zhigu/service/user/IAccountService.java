@@ -41,7 +41,7 @@ public interface IAccountService {
 	 * 
 	 * @param record
 	 */
-	public MsgBean saveRechargeRecord(RechargeRecord record);
+	public MsgBean saveRechargeRecord(int payType, String money);
 
 	/**
 	 * 查询充值记录

@@ -48,7 +48,7 @@ public class AccountController {
 	@RequestMapping("")
 	public ModelAndView account(ModelAndView mv) {
 		mv.setViewName("/user/acc/account");
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userID = SessionHelper.getSessionUser().getUserId();
 		mv.addObject("auth", userService.queryUserAuthByUserID(userID));
 		mv.addObject("userInfo", userService.queryUserInfoById(userID));
 		mv.addObject("acc", accountService.queryAccountByUserID(userID));
@@ -59,7 +59,7 @@ public class AccountController {
 
 	@RequestMapping("/rechargelist")
 	public ModelAndView rechargelist(PageBean<RechargeRecord> page, ModelAndView mv) {
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userID = SessionHelper.getSessionUser().getUserId();
 		accountService.queryRechargeRecord(userID, page);
 		mv.addObject("page", page);
 		mv.setViewName("/user/acc/rechargelist");
@@ -69,7 +69,7 @@ public class AccountController {
 	// 收支明细
 	@RequestMapping("/detail")
 	public ModelAndView detail(PageBean<AccountDetail> page, Integer month, String startDateStr, String endDateStr, ModelAndView mv) throws ParseException {
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userID = SessionHelper.getSessionUser().getUserId();
 		Date startDate = null;
 		Date endDate = null;
 		if (StringUtils.isNotBlank(startDateStr))
@@ -78,7 +78,7 @@ public class AccountController {
 			endDate = DateUtils.parseDate(endDateStr, "yyyy-MM-dd");
 
 		// 账户冻结和可用金额的计算
-		Account acc = accountService.queryAccountByUserID(SessionHelper.getSessionUser().getUserID());
+		Account acc = accountService.queryAccountByUserID(SessionHelper.getSessionUser().getUserId());
 		mv.addObject("userName", SessionHelper.getSessionUser().getUsername());
 		mv.addObject("acc", acc);
 

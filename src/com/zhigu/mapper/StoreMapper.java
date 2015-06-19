@@ -151,4 +151,13 @@ public interface StoreMapper {
 	 */
 	public List<String> queryStoreIDList();
 
+	/**
+	 * 检查用户的店铺是否存在
+	 * 
+	 * @param userId
+	 * @param storeId
+	 * @return
+	 */
+	public Integer checkStoreExist(@Param("userId") Integer userId, @Param("storeId") Integer storeId);
+
 }

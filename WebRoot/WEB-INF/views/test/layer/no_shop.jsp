@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>淘宝产品发布-没店铺</title>
-<script type="text/javascript" src="js/3rdparty/layer/layer.min.js"></script>
+<script type="text/javascript" src="/js/3rdparty/layer1.9/layer.js"></script>
 
 </head>
 <body>
@@ -16,19 +16,21 @@
 	}
 </style>
 <script type="text/javascript">
-$.layer({
-	shade : [0.5 , '#000' , true],
+
+var index = layer.msg('正在发布中...', {icon: 16,shade: [0.8]});
+ layer.open({
+	title:'提示',
+	shade : [0.5 , '#000'],
     area : ['auto','auto'],
-    dialog : {
-    	msg : '您的淘宝账号尚未开启店铺,<a href="http://www.zhiguw.com" class="immedite" style="color:red;">回到智谷首页</a>',
-        btns : 2, 
-        type : 4,
-        btn : ['返回智谷首页', '去申请店铺'],
-        yes : function(index){window.location.href="http://www.zhiguw.com" },
-	    no : function(index){window.location.href="http://www.taobao.com" },
-    },
-	close : function(index){window.location.href="http://www.zhiguw.com"},
-});
+    content : '您的淘宝账号尚未开启店铺,<a href="http://www.zhiguw.com" class="immedite" style="color:red;">回到智谷首页</a>',
+    btn : ['返回智谷首页', '去申请店铺'], 
+    yes : function(index){window.location.href="http://www.zhiguw.com" },
+    cancel: function(index){window.location.href="http://www.taobao.com" },
+    closeBtn: false
+}); 
+
+
+
 </script>
 </div>
 </body>

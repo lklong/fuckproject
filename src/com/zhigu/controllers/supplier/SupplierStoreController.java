@@ -15,9 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.zhigu.common.SessionHelper;
 import com.zhigu.common.SessionUser;
 import com.zhigu.common.constant.BusinessArea;
+import com.zhigu.common.constant.Code;
 import com.zhigu.common.constant.Flg;
 import com.zhigu.common.constant.StoreConst;
 import com.zhigu.common.constant.UserType;
+import com.zhigu.common.constant.enumconst.MsgLevel;
 import com.zhigu.common.constant.enumconst.StoreApproveState;
 import com.zhigu.common.utils.DateUtil;
 import com.zhigu.model.Account;
@@ -63,7 +65,7 @@ public class SupplierStoreController {
 	 */
 	@RequestMapping("/registerInit")
 	public ModelAndView registerInit(Store store, ModelAndView mv) {
-		Store queryStore = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store queryStore = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		if (queryStore != null) {
 			if (queryStore.getApproveState() == StoreApproveState.OPEN.getValue() && SessionHelper.getSessionUser().getUserType() == UserType.SUPPLIER) {
 				// 店铺用户首页
@@ -113,7 +115,7 @@ public class SupplierStoreController {
 	@RequestMapping("/payStoreCost")
 	public ModelAndView payStoreCost(ModelAndView mv) {
 		// 帐户信息
-		mv.addObject("acc", accountService.queryAccountByUserID(SessionHelper.getSessionUser().getUserID()));
+		mv.addObject("acc", accountService.queryAccountByUserID(SessionHelper.getSessionUser().getUserId()));
 		mv.setViewName("supplier/store/payStoreCost");
 		return mv;
 	}
@@ -127,7 +129,7 @@ public class SupplierStoreController {
 	@RequestMapping("/home")
 	public ModelAndView storeHome(ModelAndView mv, OrderCondition oc) {
 		mv.setViewName("supplier/store/home");
-		int userID = SessionHelper.getSessionUser().getUserID();
+		int userID = SessionHelper.getSessionUser().getUserId();
 		// 店铺信息
 		Store store = storeService.queryStoreByUserID(userID);
 		mv.addObject("store", store);
@@ -172,7 +174,7 @@ public class SupplierStoreController {
 	 */
 	@RequestMapping("/lookStore")
 	public String lookStore() {
-		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		return "redirect:/store/index?storeId=" + store.getID();
 	}
 
@@ -185,7 +187,7 @@ public class SupplierStoreController {
 	@RequestMapping("/baseInfoInit")
 	public ModelAndView baseInfoInit(ModelAndView mv) {
 		mv.setViewName("supplier/store/base_info");
-		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		mv.addObject("store", store);
 		mv.addObject("businessArea", BusinessArea.values());
 		return mv;
@@ -200,7 +202,7 @@ public class SupplierStoreController {
 	@RequestMapping(value = "/updateBaseInfo", method = RequestMethod.GET)
 	public ModelAndView updateBaseInfoUI(ModelAndView mv) {
 		mv.setViewName("supplier/store/updateBaseInfo");
-		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		mv.addObject("store", store);
 		mv.addObject("businessArea", BusinessArea.values());
 		return mv;
@@ -226,10 +228,10 @@ public class SupplierStoreController {
 	 * @param mv
 	 * @return
 	 */
-	@RequestMapping("/decorateInit")
+	@RequestMapping(value = "/decorate", method = RequestMethod.GET)
 	public ModelAndView decorateInit(ModelAndView mv) {
 		mv.setViewName("supplier/store/decorate");
-		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserID());
+		Store store = storeService.queryStoreByUserID(SessionHelper.getSessionUser().getUserId());
 		mv.addObject("store", store);
 		return mv;
 	}
@@ -241,11 +243,14 @@ public class SupplierStoreController {
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/updateDecorate")
-	public String updateDecorate(Store store) throws IOException {
-		store.setUserID(SessionHelper.getSessionUser().getUserID());
-		storeService.updateStoreDecorate(store);
-		return "redirect:/store/index?storeId=" + store.getID();
+	@RequestMapping(value = "/decorate", method = RequestMethod.POST)
+	@ResponseBody
+	public MsgBean updateDecorate(Store store) {
+		SessionUser user = SessionHelper.getSessionUser();
+		Integer storeId = user.getStoreId();
+		store.setID(storeId);
+		storeService.updateStoreDecorate2(store);
+		return new MsgBean(Code.SUCCESS, "", MsgLevel.NORMAL);
 	}
 
 	/**

@@ -19,7 +19,7 @@
     </selectKey>
     insert into favourite (user_id, store_or_goods_id, type, 
       add_time)
-    values(#{userID},#{favouriteID},#{type},now());
+    values(#{userID},#{storeOrGoodsId},#{type},now());
   </insert>
   
   <!-- 批量删除 -->
@@ -32,7 +32,7 @@
 	
   <!-- 查询收藏（用户ID,收藏ID,类型） -->
 	<select id="queryFavourite" resultMap="BaseResultMap" >
-		select  <include refid="Base_Column_List" /> from Favourite where user_id=#{userID} and store_or_goods_id=#{storeOrGoodsId} and type=#{type} limit 1;
+		select  <include refid="Base_Column_List" /> from Favourite where user_id=#{userID} and store_or_goods_id=#{favouriteID} and type=#{type} limit 1;
 	</select>
 	
 	<!-- 查询用户收藏商品 -->

@@ -30,7 +30,7 @@ public class UploadFileUtil {
 		File sourceFile = new File(basePath + sourcePath);
 		String userID = null;
 		if (SessionHelper.getSessionUser() != null) {
-			userID = "user" + String.valueOf(SessionHelper.getSessionUser().getUserID());
+			userID = "user" + String.valueOf(SessionHelper.getSessionUser().getUserId());
 		} else if (SessionHelper.getSessionAdmin() != null) {
 			userID = "admin" + String.valueOf(SessionHelper.getSessionAdmin().getId());
 		}

@@ -50,7 +50,7 @@ public class DownloadHistoryControll {
 		mv.addObject("endDate", endDate);
 
 		// 取得下载历史
-		page.addParas("userID", SessionHelper.getSessionUser().getUserID());
+		page.addParas("userID", SessionHelper.getSessionUser().getUserId());
 		page.addParas("goodsName", goodsName);
 		page.addParas("storeName", storeName);
 		page.addParas("startDate", startDate);

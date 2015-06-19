@@ -1,23 +1,350 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhigu.mapper.StoreMapper">
-	<!-- 添加店铺基本信息 -->
-	<insert id="addStore" parameterType="com.zhigu.model.Store">
-		Insert Into
-		Store(UserID,Domain,storeName,Province,City,District,Street,BusinessArea,ContactName,Phone,QQ,AliWangWang,StoreNameModify,DomainModify,LevelPoint,LogoPath,SignagePath,IntegrityAuth,CompanyAuth,RealStoreAuth,Introduction,OpenStoreDate,FullMemberFlg,ApplyTime,ApplyType,ApproveState,RejectReason,SupplierType,refresh_date)
-		Values(#{userID},#{domain},#{storeName},#{province},#{city},#{district},#{street},#{businessArea},#{contactName},#{phone},#{QQ},#{aliWangWang},#{storeNameModify},#{domainModify},#{levelPoint},#{logoPath},#{signagePath},#{integrityAuth},#{companyAuth},#{realStoreAuth},#{introduction},#{openStoreDate},#{fullMemberFlg},#{applyTime}
-		,#{applyType},#{approveState},#{rejectReason},#{supplierType},#{refreshDate});
-		<selectKey resultType="int" keyProperty="ID" order="AFTER" >
-			SELECT LAST_INSERT_ID();
-		</selectKey>
-	</insert>
-	<!-- 修改店铺基本信息 -->
-	<update id="updateStore" parameterType="store">
-		Update Store set
-		Domain=#{domain},DomainModify=#{domainModify},StoreName=#{storeName},StoreNameModify=#{storeNameModify},Province=#{province},City=#{city},District=#{district},Street=#{street},BusinessArea=#{businessArea},ContactName=#{contactName},
-		Phone=#{phone},QQ=#{QQ},AliWangWang=#{aliWangWang},LogoPath=#{logoPath},SignagePath=#{signagePath},Introduction=#{introduction},CompanyAuth=#{companyAuth},IntegrityAuth=#{integrityAuth},RealStoreAuth=#{realStoreAuth}
-		where ID=#{ID};
-	</update>
+ <resultMap id="BaseResultMap" type="com.zhigu.model.Store" >
+    <id column="ID" property="ID" jdbcType="INTEGER" />
+    <result column="UserID" property="userID" jdbcType="INTEGER" />
+    <result column="Domain" property="domain" jdbcType="VARCHAR" />
+    <result column="StoreName" property="storeName" jdbcType="VARCHAR" />
+    <result column="Province" property="province" jdbcType="VARCHAR" />
+    <result column="City" property="city" jdbcType="VARCHAR" />
+    <result column="District" property="district" jdbcType="VARCHAR" />
+    <result column="Street" property="street" jdbcType="VARCHAR" />
+    <result column="BusinessArea" property="businessArea" jdbcType="INTEGER" />
+    <result column="ContactName" property="contactName" jdbcType="VARCHAR" />
+    <result column="Phone" property="phone" jdbcType="VARCHAR" />
+    <result column="QQ" property="QQ" jdbcType="VARCHAR" />
+    <result column="AliWangWang" property="aliWangWang" jdbcType="VARCHAR" />
+    <result column="StoreNameModify" property="storeNameModify" jdbcType="INTEGER" />
+    <result column="DomainModify" property="domainModify" jdbcType="INTEGER" />
+    <result column="LevelPoint" property="levelPoint" jdbcType="INTEGER" />
+    <result column="Score" property="score" jdbcType="INTEGER" />
+    <result column="LogoPath" property="logoPath" jdbcType="VARCHAR" />
+    <result column="SignagePath" property="signagePath" jdbcType="VARCHAR" />
+    <result column="IntegrityAuth" property="integrityAuth" jdbcType="TINYINT" />
+    <result column="companyAuth" property="companyAuth" jdbcType="TINYINT" />
+    <result column="RealStoreAuth" property="realStoreAuth" jdbcType="TINYINT" />
+    <result column="OpenStoreDate" property="openStoreDate" jdbcType="TIMESTAMP" />
+    <result column="ApplyType" property="applyType" jdbcType="INTEGER" />
+    <result column="ApplyTime" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="ApproveState" property="approveState" jdbcType="INTEGER" />
+    <result column="RejectReason" property="rejectReason" jdbcType="VARCHAR" />
+    <result column="FullMemberFlg" property="fullMemberFlg" jdbcType="TINYINT" />
+    <result column="SupplierType" property="supplierType" jdbcType="INTEGER" />
+    <result column="refresh_date" property="refreshDate" jdbcType="TIMESTAMP" />
+    <result column="nav_color" property="navColor" jdbcType="VARCHAR" />
+    <result column="logo_back_pic" property="logoBackPic" jdbcType="VARCHAR" />
+    <result column="Introduction" property="introduction" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, UserID, Domain, StoreName, Province, City, District, Street, BusinessArea, ContactName, 
+    Phone, QQ, AliWangWang, StoreNameModify, DomainModify, LevelPoint, Score, LogoPath, 
+    SignagePath, IntegrityAuth, companyAuth, RealStoreAuth, OpenStoreDate, ApplyType, 
+    ApplyTime, ApproveState, RejectReason, FullMemberFlg, SupplierType, refresh_date, 
+    nav_color, logo_back_pic,Introduction
+  </sql>
+  <insert id="addStore" parameterType="com.zhigu.model.Store" keyProperty="ID" useGeneratedKeys="true">
+    insert into store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userID != null" >
+        UserID,
+      </if>
+      <if test="domain != null" >
+        Domain,
+      </if>
+      <if test="storeName != null" >
+        StoreName,
+      </if>
+      <if test="province != null" >
+        Province,
+      </if>
+      <if test="city != null" >
+        City,
+      </if>
+      <if test="district != null" >
+        District,
+      </if>
+      <if test="street != null" >
+        Street,
+      </if>
+      <if test="businessArea != null" >
+        BusinessArea,
+      </if>
+      <if test="contactName != null" >
+        ContactName,
+      </if>
+      <if test="phone != null" >
+        Phone,
+      </if>
+      <if test="QQ != null" >
+        QQ,
+      </if>
+      <if test="aliWangWang != null" >
+        AliWangWang,
+      </if>
+      <if test="storeNameModify != null" >
+        StoreNameModify,
+      </if>
+      <if test="domainModify != null" >
+        DomainModify,
+      </if>
+      <if test="levelPoint != null" >
+        LevelPoint,
+      </if>
+      <if test="score != null" >
+        Score,
+      </if>
+      <if test="logoPath != null" >
+        LogoPath,
+      </if>
+      <if test="signagePath != null" >
+        SignagePath,
+      </if>
+      <if test="integrityAuth != null" >
+        IntegrityAuth,
+      </if>
+      <if test="companyAuth != null" >
+        companyAuth,
+      </if>
+      <if test="realStoreAuth != null" >
+        RealStoreAuth,
+      </if>
+      <if test="openStoreDate != null" >
+        OpenStoreDate,
+      </if>
+      <if test="applyType != null" >
+        ApplyType,
+      </if>
+      <if test="applyTime != null" >
+        ApplyTime,
+      </if>
+      <if test="approveState != null" >
+        ApproveState,
+      </if>
+      <if test="rejectReason != null" >
+        RejectReason,
+      </if>
+      <if test="fullMemberFlg != null" >
+        FullMemberFlg,
+      </if>
+      <if test="supplierType != null" >
+        SupplierType,
+      </if>
+      <if test="refreshDate != null" >
+        refresh_date,
+      </if>
+      <if test="navColor != null" >
+        nav_color,
+      </if>
+      <if test="logoBackPic != null" >
+        logo_back_pic,
+      </if>
+      <if test="introduction != null" >
+        Introduction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userID != null" >
+        #{userID,jdbcType=INTEGER},
+      </if>
+      <if test="domain != null" >
+        #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="storeName != null" >
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null" >
+        #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="businessArea != null" >
+        #{businessArea,jdbcType=INTEGER},
+      </if>
+      <if test="contactName != null" >
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="QQ != null" >
+        #{QQ,jdbcType=VARCHAR},
+      </if>
+      <if test="aliWangWang != null" >
+        #{aliWangWang,jdbcType=VARCHAR},
+      </if>
+      <if test="storeNameModify != null" >
+        #{storeNameModify,jdbcType=INTEGER},
+      </if>
+      <if test="domainModify != null" >
+        #{domainmodify,jdbcType=INTEGER},
+      </if>
+      <if test="levelPoint != null" >
+        #{levelPoint,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="logoPath != null" >
+        #{logoPath,jdbcType=VARCHAR},
+      </if>
+      <if test="signagePath != null" >
+        #{signagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="integrityAuth != null" >
+        #{integrityAuth,jdbcType=TINYINT},
+      </if>
+      <if test="companyAuth != null" >
+        #{companyAuth,jdbcType=TINYINT},
+      </if>
+      <if test="realStoreAuth != null" >
+        #{realStoreAuth,jdbcType=TINYINT},
+      </if>
+      <if test="openStoreDate != null" >
+        #{openStoreDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyType != null" >
+        #{applyType,jdbcType=INTEGER},
+      </if>
+      <if test="applyTime != null" >
+        #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveState != null" >
+        #{approveState,jdbcType=INTEGER},
+      </if>
+      <if test="rejectrReason != null" >
+        #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="fullMemberFlg != null" >
+        #{fullMemberFlg,jdbcType=TINYINT},
+      </if>
+      <if test="supplierType != null" >
+        #{supplierType,jdbcType=INTEGER},
+      </if>
+      <if test="refreshDate != null" >
+        #{refreshDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="navColor != null" >
+        #{navColor,jdbcType=VARCHAR},
+      </if>
+      <if test="logoBackPic != null" >
+        #{logoBackPic,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateStore" parameterType="com.zhigu.model.Store" >
+    update store
+    <set >
+      <if test="userID != null" >
+        UserID = #{userID,jdbcType=INTEGER},
+      </if>
+      <if test="domain != null" >
+        Domain = #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="storeName != null" >
+        StoreName = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        Province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        City = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        District = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null" >
+        Street = #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="businessArea != null" >
+        BusinessArea = #{businessArea,jdbcType=INTEGER},
+      </if>
+      <if test="contactName != null" >
+        ContactName = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        Phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="QQ != null" >
+        QQ = #{QQ,jdbcType=VARCHAR},
+      </if>
+      <if test="aliWangWang != null" >
+        AliWangWang = #{aliWangWang,jdbcType=VARCHAR},
+      </if>
+      <if test="storeNameModify != null" >
+        StoreNameModify = #{storeNameModify,jdbcType=INTEGER},
+      </if>
+      <if test="domainModify != null" >
+        DomainModify = #{domainModify,jdbcType=INTEGER},
+      </if>
+      <if test="levelPoint != null" >
+        LevelPoint = #{levelPoint,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        Score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="logoPath != null" >
+        LogoPath = #{logoPath,jdbcType=VARCHAR},
+      </if>
+      <if test="signagePath != null" >
+        SignagePath = #{signagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="integrityAuth != null" >
+        IntegrityAuth = #{integrityAuth,jdbcType=TINYINT},
+      </if>
+      <if test="companyAuth != null" >
+        companyAuth = #{companyAuth,jdbcType=TINYINT},
+      </if>
+      <if test="realStoreAuth != null" >
+        RealStoreAuth = #{realStoreAuth,jdbcType=TINYINT},
+      </if>
+      <if test="openStoreDate != null" >
+        OpenStoreDate = #{openStoreDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyType != null" >
+        ApplyType = #{applyType,jdbcType=INTEGER},
+      </if>
+      <if test="applyTime != null" >
+        ApplyTime = #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveState != null" >
+        ApproveState = #{approveState,jdbcType=INTEGER},
+      </if>
+      <if test="rejectReason != null" >
+        RejectReason = #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="fullMemberFlg != null" >
+        FullMemberFlg = #{fullMemberFlg,jdbcType=TINYINT},
+      </if>
+      <if test="supplierType != null" >
+        SupplierType = #{supplierType,jdbcType=INTEGER},
+      </if>
+      <if test="refreshDate != null" >
+        refresh_date = #{refreshDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="navColor != null" >
+        nav_color = #{navColor,jdbcType=VARCHAR},
+      </if>
+      <if test="logoBackPic != null" >
+        logo_back_pic = #{logoBackPic,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        Introduction = #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{ID,jdbcType=INTEGER}
+  </update>
+  
 	<update id="updateLevelPoint" >
 		Update Store set LevelPoint=LevelPoint+#{levelPoint} where ID=#{ID}
 	</update>
@@ -36,6 +363,17 @@
 	<insert id="updateCompanyAuthState" >Update Store set CompanyAuth=#{status} where ID=#{id};</insert>
 	<!-- 修改店铺公司实地认证状态 -->
 	<insert id="updateRealStoreAuthState" >Update Store set RealStoreAuth=#{status} where ID=#{id};</insert>
+	
+	<!-- 检查店铺是否存在（只检查开启的店铺） -->
+	<select id="checkStoreExist" resultType="int">
+		select count(0) from store where approveState=4
+		<if test="storeId!=null">
+		 and ID = #{storeId}
+		</if>
+		<if test="userId!=null">
+		 and UserID = #{UserID}
+		</if> 
+	</select>
 	<!-- 分页查询店铺 orderBy: 1*下载量 2*销售量 3*信誉等级 41:商品数量-->
 	<select id="queryStoreByPage"  resultMap="storeMap">
 		Select A.*,R.* ,U.realUserAuthFlg realUserAuth From Store A 
@@ -45,9 +383,9 @@
 						Where B.id = C.goodsid Group By B.StoreId) R 
 			On A.ID = R.storeid 
 			left join userInfo U on U.userid=A.userID
-		Where 1 = 1 
+		Where A.approveState = 4 
 		<if test="businessArea != null">
-			and BusinessArea=#{businessArea}
+			and A.BusinessArea=#{businessArea}
 		</if>
 		<if test="storeName!=null and storeName!=''">
 			and( A.StoreName REGEXP #{storeName} OR A.Phone REGEXP #{storeName})
@@ -55,34 +393,31 @@
 		GROUP BY A.ID
 		<choose>
 			<when test="page.orderBy==10">
-				order by DownloadTotal 
-			</when>
-			<when test="page.orderBy==10">
-				order by DownloadTotal 
+				order by R.DownloadTotal 
 			</when>
 			<when test="page.orderBy==11">
-				order by DownloadTotal DESC
+				order by R.DownloadTotal DESC
 			</when>
 			<when test="page.orderBy==20">
-				order by PurchaseTotal
+				order by R.PurchaseTotal
 			</when>
 			<when test="page.orderBy==21">
-				order by PurchaseTotal DESC
+				order by R.PurchaseTotal DESC
 			</when>
 			<when test="page.orderBy==30">
-				order by LevelPoint 
+				order by A.LevelPoint 
 			</when>
 			<when test="page.orderBy==31">
-				order by LevelPoint DESC
+				order by A.LevelPoint DESC
 			</when>
 			<when test="page.orderBy==40">
-				order by commodityOnSaleTotal
+				order by R.commodityOnSaleTotal
 			</when>
 			<when test="page.orderBy==41">
-				order by commodityOnSaleTotal DESC
+				order by R.commodityOnSaleTotal DESC
 			</when>
 			<otherwise>
-				order by refresh_date DESC
+				order by A.refresh_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -98,13 +433,13 @@
 	
 	
 	<!-- userID查询店铺信息 -->
-	<select id="queryStoreByID" parameterType="int" resultType="store">Select * from Store where ID = #{ID}</select>
+	<select id="queryStoreByID" parameterType="int" resultMap="BaseResultMap">Select <include refid="Base_Column_List"/> from Store where ID = #{ID}</select>
 	<!-- userID查询店铺信息 -->
-	<select id="queryStoreByUserID" parameterType="int" resultType="store">Select * from Store where UserID = #{userID}</select>
+	<select id="queryStoreByUserID" parameterType="int"  resultMap="BaseResultMap">Select  <include refid="Base_Column_List"/>  from Store where UserID = #{userID}</select>
 	<!-- domain查询店铺信息 -->
-	<select id="queryStoreByDomain" parameterType="java.lang.String" resultType="store">Select * from Store where Domain = #{domain}</select>
+	<select id="queryStoreByDomain" parameterType="String" resultMap="BaseResultMap">Select <include refid="Base_Column_List"/> from Store where Domain = #{domain}</select>
 	<!-- 商店名查询店铺信息 -->
-	<select id="queryStoreByStoreName" parameterType="java.lang.String" resultType="store">Select * from Store where storeName = #{storeName}</select>
+	<select id="queryStoreByStoreName" parameterType="String" resultMap="BaseResultMap">Select <include refid="Base_Column_List"/> from Store where storeName = #{storeName}</select>
 	<!-- 查询店铺商品 （by店铺ID） -->
 	<select id="queryStoreGoodsByPage" resultType="goods" >
 		SELECT *
@@ -131,17 +466,8 @@
 		<if test="rows>0">limit #{rows}</if>
 	</select>
 	
-	  <sql id="Base_Column_List" >
-    ID, UserID, Domain, StoreName, Province, City, District, Street, BusinessArea, ContactName, 
-    Phone, QQ, AliWangWang, StoreNameModify, DomainModify, LevelPoint, Score, LogoPath, 
-    SignagePath, IntegrityAuth, companyAuth, RealStoreAuth, OpenStoreDate, ApplyType, 
-    ApplyTime, ApproveState, RejectReason, FullMemberFlg, SupplierType
-  </sql>
-  <sql id="Blob_Column_List" >
-    Introduction
-  </sql>
   <!-- 根据查询条件获取店铺列表  （用于后台） -->
-	  <select id="queryStoreListByPage"  parameterType="com.zhigu.model.PageBean" resultType="com.zhigu.model.Store">
+	  <select id="queryStoreListByPage"  parameterType="com.zhigu.model.PageBean" resultMap="BaseResultMap">
 			select 
 		    <include refid="Base_Column_List" />
 		    from store where 1=1
@@ -172,7 +498,7 @@
 	
 	<!-- 获取店铺ID列表 （用于后台）-->
 	<select id="queryStoreIDList"  resultType="hashmap">
-		select id,storeName from store 
+		select id,storeName from store
 	</select>
 </mapper>
 

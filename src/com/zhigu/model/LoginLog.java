@@ -2,52 +2,57 @@ package com.zhigu.model;
 
 import java.util.Date;
 
-/**
- * 登陆日志
- * 
- * @author HeSiMin
- * @date 2014年8月18日
- *
- */
 public class LoginLog {
+	private Integer id;
 
-	private int ID;
-	private int userID;
-	private String IP;
-	private Date loginDate;
-	private int loginStatus;
+	private Integer userId;
+
+	private String ip;
+
+	private Date loginTime;
+
+	private Boolean success;
+
 	private String browser;
 
-	public int getID() {
-		return ID;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public int getUserID() {
-		return userID;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
-	public String getIP() {
-		return IP;
+	public String getIp() {
+		return ip;
 	}
 
-	public void setIP(String iP) {
-		IP = iP;
+	public void setIp(String ip) {
+		this.ip = ip == null ? null : ip.trim();
 	}
 
-	public Date getLoginDate() {
-		return loginDate;
+	public Date getLoginTime() {
+		return loginTime;
 	}
 
-	public void setLoginDate(Date loginDate) {
-		this.loginDate = loginDate;
+	public void setLoginTime(Date loginTime) {
+		this.loginTime = loginTime;
+	}
+
+	public Boolean getSuccess() {
+		return success;
+	}
+
+	public void setSuccess(Boolean success) {
+		this.success = success;
 	}
 
 	public String getBrowser() {
@@ -55,15 +60,6 @@ public class LoginLog {
 	}
 
 	public void setBrowser(String browser) {
-		this.browser = browser;
+		this.browser = browser == null ? null : browser.trim();
 	}
-
-	public int getLoginStatus() {
-		return loginStatus;
-	}
-
-	public void setLoginStatus(int loginStatus) {
-		this.loginStatus = loginStatus;
-	}
-
 }

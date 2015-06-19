@@ -30,7 +30,7 @@
     	</div>
     	<div class="gy-baseinfo fl side-border">
     		<p>今天：${today}</p>
-    		<p>上次登录：<fmt:formatDate value="${loginLog.loginDate }" pattern="yyyy-MM-dd HH:mm:ss"/></p>
+    		<p>上次登录：<fmt:formatDate value="${loginLog.loginTime}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
     	</div>
     	<div class="gy-baseinfo fl side-border">
     		<p>可用金额：<strong class="color-red">${acc.normalMoney }</strong> 元 <a href="user/recharge" class="chongzhi-input-btn fr">充值</a></p>

@@ -10,17 +10,28 @@
 		}
 	});
 	function callbackImagePre1(json){
-		console.log(json);
-		$("#preImage1").attr("src","/"+json.url);
-		$("#image1").val(json.url);
+		if(json.code === 1){
+			$("#preImage1").attr("src","/"+json.url);
+			$("#image1").val(json.url);
+		}else{
+			layer.msg(json.msg)
+		}
 	}
 	function callbackImagePre2(json){
-		$("#preImage2").attr("src","/"+json.url);
-		$("#image2").val(json.url);
+		if(json.code === 1){
+			$("#preImage2").attr("src","/"+json.url);
+			$("#image2").val(json.url);
+		}else{
+			layer.msg(json.msg)
+		}
 	}
 	function callbackImagePre3(json){
-		$("#preImage3").attr("src","/"+json.url);
-		$("#image3").val(json.url);
+		if(json.code === 1){
+			$("#preImage3").attr("src","/"+json.url);
+			$("#image3").val(json.url);
+		}else{
+			layer.msg(json.msg)
+		}
 	}
 </script>
 <div style="height:20px;"></div>

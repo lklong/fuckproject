@@ -10,8 +10,7 @@
 .header .wrapper {
 	overflow:visible;}
 .pos-drop {
-	color:#c9c9c9;
-	width:130px;}
+	color:#c9c9c9;}
 .loginbar li {
 	float:left;
 	padding-left:15px;}
@@ -25,22 +24,51 @@
 	padding-left:15px;}
 .pos-select-list {
 	position:relative;
-	float:right;}
+	float:left;}
 #pos-cur {
-	cursor:pointer;
-	width:37px;}
-#pos-ul {
-	width:50px;
-	position:absolute;
-	left:-13px;
-	top:0;
-	display:none;
-	background:#1f1f1f;
-	color:#ffffff;
-	text-align:center;
-	z-index:13;}
-#pos-ul li {
 	cursor:pointer;}
+#JS-pos-div {
+	width:400px;
+	height:260px;
+	position:absolute;
+	left:0;
+	top:29px;
+	background:#ffffff;
+	border:1px solid #1f1f1f;
+	z-index:13;
+	display:none;
+	z-index:555;}
+.pos-tab {
+	width:400px;
+	height:35px;
+	font-weight:bold;
+	border-bottom:1px solid #1f1f1f;
+	overflow:visible;}
+.pos-tab li {
+	float:left;
+	cursor:pointer;
+	color:#353535;
+	font-weight:blod;
+	width:90px;
+	height:34px;
+	line-height:30px;
+	border:1px solid #dedede;
+	border-bottom:1px solid #1f1f1f;
+	border-top:1px solid #ffffff;
+	text-align:center;
+	background-color:#ffffff;}
+.curr {
+	border:1px solid #1f1f1f !important;
+	border-bottom:1px solid #ffffff !important;}
+.pos-content li {
+	cursor:pointer;
+	margin:3px;
+	padding:0 5px;
+	color:#454545;
+	float:left;}
+.pos-content li:hover {
+	color:#ffffff;
+	background-color:#606060;}
 #pos-ul li:hover {
 	background-color:#454545;}
 #pos-cur i {
@@ -48,6 +76,7 @@
 	margin-top:13px;
 	width:9px;
 	height:5px;
+	margin-left:5px;
 	background:url(../../img/default/all_bg.png) no-repeat left -92px;}
 
 /* 主导航条 */
